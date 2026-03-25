@@ -1,0 +1,54 @@
+# sync-figma-tokens.yml
+# Pulls variables from the Figma REST API and writes them
+# to packages/tokens/src/ as JSON token files.
+#
+# Triggers:
+#   - Manual (workflow_dispatch) — run from GitHub Actions tab
+#   - Scheduled — every day at 09:00 UTC
+#
+# Required secrets (set in GitHub repo → Settings → Secrets):
+#   FIGMA_ACCESS_TOKEN  — personal access token from figma.com/settings
+#   FIGMA_FILE_KEY      — the key from your Figma file URL
+#                         e.g. https://figma.com/design/3wbYstse9TYKlPtCPpZH5X/...
+#                         → FIGMA_FILE_KEY = 3wbYstse9TYKlPtCPpZH5X
+
+name: Sync Figma Tokens
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 9 * * *'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch Figma variables
+        env:
+          FIGMA_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
+          FILE_KEY:    ${{ secrets.FIGMA_FILE_KEY }}
+        run: |
+          curl -s \
+            -H "X-FIGMA-TOKEN: $FIGMA_TOKEN" \
+            "https://api.figma.com/v1/files/$FILE_KEY/variables/local" \
+            -o figma-variables.json
+
+      - name: Transform variables to token JSON
+        run: node .github/scripts/transform-figma-variables.js
+
+      - name: Commit updated tokens
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore(tokens): sync from Figma variables'
+          file_pattern: 'packages/tokens/src/**/*.json'

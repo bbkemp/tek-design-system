@@ -1,0 +1,56 @@
+# publish-tokens.yml
+# Runs Style Dictionary build and publishes @tek/tokens to
+# GitHub Packages whenever token source files change.
+#
+# Required secrets:
+#   GITHUB_TOKEN — automatically provided by GitHub Actions
+
+name: Publish @tek/tokens
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/tokens/src/**'
+      - 'packages/tokens/build.js'
+      - 'packages/tokens/package.json'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node + GitHub Packages registry
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@tek'
+
+      - name: Install dependencies
+        run: npm ci --workspace=packages/tokens
+
+      - name: Build tokens
+        run: npm run build --workspace=packages/tokens
+
+      - name: Bump patch version
+        working-directory: packages/tokens
+        run: npm version patch --no-git-tag-version
+
+      - name: Commit version bump
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore(tokens): bump version'
+          file_pattern: 'packages/tokens/package.json'
+
+      - name: Publish to GitHub Packages
+        working-directory: packages/tokens
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
