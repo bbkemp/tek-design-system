@@ -1,0 +1,89 @@
+/**
+ * tek-input
+ * Figma: DS-v2 → Input (node 7003:495)
+ * States: Default | Focus | Filled | Disabled | Error
+ * Heights: Single (31px) | Double (48px) | Triple (64px)
+ *
+ * Tokens:
+ *   --tek-color-input-background-default
+ *   --tek-color-input-border-default|focus|filled|disabled|error
+ *   --tek-color-input-text-default|focus|filled|disabled|error
+ */
+const STYLES = `
+  :host {
+    display: block;
+    background: var(--tek-color-input-background-default, #252525);
+    border: 0.5px solid var(--tek-color-input-border-default, #7b7b7b);
+    border-radius: 5px;
+    padding: 8px 4px 8px 10px;
+    width: 258px;
+    box-sizing: border-box;
+    transition: border-color 0.1s;
+  }
+  :host([state="focus"])    { border-color: var(--tek-color-input-border-focus,   #ffffff); }
+  :host([state="filled"])   { border-color: var(--tek-color-input-border-filled,  #afafaf); }
+  :host([state="disabled"]) { border-color: var(--tek-color-input-border-disabled,#454545); }
+  :host([state="error"])    { border-color: var(--tek-color-input-border-error,   #e74848); }
+  :host([height="double"])  { min-height: 48px; }
+  :host([height="triple"])  { min-height: 64px; }
+
+  input, textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'SF Compact', system-ui, sans-serif;
+    font-size: 12px;
+    line-height: 15px;
+    color: var(--tek-color-input-text-default, #979797);
+    resize: none;
+    padding: 0;
+  }
+  :host([state="focus"])    input, :host([state="focus"])    textarea { color: var(--tek-color-input-text-focus,   #ffffff); }
+  :host([state="filled"])   input, :host([state="filled"])   textarea { color: var(--tek-color-input-text-filled,  #cccccc); }
+  :host([state="disabled"]) input, :host([state="disabled"]) textarea { color: var(--tek-color-input-text-disabled,#454545); }
+  :host([state="error"])    input, :host([state="error"])    textarea  { color: var(--tek-color-input-text-error,   #ffffff); }
+
+  input::placeholder, textarea::placeholder { color: inherit; }
+  :host([state="disabled"]) { pointer-events: none; }
+`;
+
+export class TekInput extends HTMLElement {
+  static get observedAttributes() { return ['state','height','placeholder','value','type']; }
+
+  get state()       { return this.getAttribute('state') || 'default'; }
+  get height()      { return this.getAttribute('height') || 'single'; }
+  get placeholder() { return this.getAttribute('placeholder') || ''; }
+  get value()       { return this.getAttribute('value') || ''; }
+  get type()        { return this.getAttribute('type') || 'text'; }
+
+  private _shadow = this.attachShadow({ mode: 'open' });
+
+  connectedCallback()    { this._render(); }
+  attributeChangedCallback() { this._render(); }
+
+  private _render() {
+    const isMulti = this.height === 'double' || this.height === 'triple';
+    const rows = this.height === 'double' ? 2 : this.height === 'triple' ? 3 : 1;
+    const field = isMulti
+      ? `<textarea rows="${rows}" placeholder="${this.placeholder}">${this.value}</textarea>`
+      : `<input type="${this.type}" placeholder="${this.placeholder}" value="${this.value}">`;
+    this._shadow.innerHTML = `<style>${STYLES}</style>${field}`;
+
+    const el = this._shadow.querySelector('input, textarea') as HTMLElement;
+    el?.addEventListener('focus', () => {
+      if (this.state === 'default') this.setAttribute('state','focus');
+    });
+    el?.addEventListener('blur', () => {
+      const inp = el as HTMLInputElement;
+      if (inp.value) this.setAttribute('state','filled');
+      else this.setAttribute('state','default');
+    });
+    el?.addEventListener('input', () => {
+      this.dispatchEvent(new CustomEvent('tek-input', { bubbles:true, composed:true,
+        detail: { value: (el as HTMLInputElement).value }
+      }));
+    });
+  }
+}
+customElements.define('tek-input', TekInput);

@@ -1,0 +1,10 @@
+{
+  "name": "tek-design-system",
+  "private": true,
+  "workspaces": ["packages/tokens", "packages/ui"],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "build:tokens": "npm run build --workspace=packages/tokens",
+    "build:ui": "npm run build --workspace=packages/ui"
+  }
+}

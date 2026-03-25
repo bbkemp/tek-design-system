@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@tek/ui — Component Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,100..900&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --tek-primitive-color-neutral-grey-100: #cccccc;
+  --tek-primitive-color-neutral-grey-200: #afafaf;
+  --tek-primitive-color-neutral-grey-300: #979797;
+  --tek-primitive-color-neutral-grey-400: #7b7b7b;
+  --tek-primitive-color-neutral-grey-500: #454545;
+  --tek-primitive-color-neutral-grey-700: #252525;
+  --tek-primitive-color-neutral-grey-800: #1e1e1e;
+  --tek-primitive-color-neutral-grey-900: #181818;
+  --tek-primitive-color-core-tek-blue:    #33baea;
+  --tek-primitive-color-core-white:       #ffffff;
+  --tek-primitive-color-core-black:       #000000;
+  --tek-primitive-color-ui-alert-red:     #e74848;
+  --tek-primitive-color-ui-alert-amber:   #e0b732;
+  --tek-primitive-color-ui-shadow:        rgba(0,0,0,0.2);
+
+  --tek-color-selector-background-default:   #252525;
+  --tek-color-selector-background-unchecked: #454545;
+  --tek-color-selector-background-checked:   #cccccc;
+  --tek-color-selector-border-unchecked:     #7b7b7b;
+  --tek-color-selector-border-checked:       #979797;
+  --tek-color-selector-border-error:         #e74848;
+  --tek-color-selector-label-unchecked:      #cccccc;
+  --tek-color-selector-label-checked:        #ffffff;
+  --tek-color-selector-label-error:          #ffffff;
+  --tek-color-input-background-default:      #252525;
+  --tek-color-input-border-default:          #7b7b7b;
+  --tek-color-input-border-focus:            #ffffff;
+  --tek-color-input-border-filled:           #afafaf;
+  --tek-color-input-border-disabled:         #454545;
+  --tek-color-input-border-error:            #e74848;
+  --tek-color-input-text-default:            #979797;
+  --tek-color-input-text-focus:              #ffffff;
+  --tek-color-input-text-filled:             #cccccc;
+  --tek-color-input-text-disabled:           #454545;
+  --tek-color-input-text-error:              #ffffff;
+  --tek-color-input-label-default:           #cccccc;
+  --tek-color-input-character-count-default: #cccccc;
+  --tek-color-input-character-count-focus:   #ffffff;
+  --tek-color-input-character-count-filled:  #afafaf;
+  --tek-color-input-character-count-error:   #e74848;
+  --tek-color-input-character-count-warning: #e0b732;
+  --tek-color-button-background-default:     #1e1e1e;
+  --tek-color-button-background-hover:       #000000;
+  --tek-color-button-background-inactive:    #181818;
+  --tek-color-button-border-default:         #33baea;
+  --tek-color-button-border-hover:           #33baea;
+  --tek-color-button-border-inactive:        #454545;
+  --tek-color-button-text-default:           #cccccc;
+  --tek-color-button-text-hover:             #ffffff;
+  --tek-color-button-text-inactive:          #454545;
+  --tek-color-modal-background-default:      #181818;
+  --tek-color-modal-border-default:          #7b7b7b;
+  --tek-color-modal-text-default:            #ffffff;
+  --tek-color-footer-background-default:     #252525;
+  --tek-color-footer-text-default:           #cccccc;
+  --tek-color-text-link-default:             #33baea;
+  --tek-color-icons-default:                 #ffffff;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+button{background:none;border:none;cursor:pointer;font:inherit;}
+body{background:#111111;color:var(--tek-primitive-color-neutral-grey-100);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.6;min-height:100vh;}
+
+.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;background:#0d0d0d;border-right:0.5px solid #1f1f1f;padding:32px 0;display:flex;flex-direction:column;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:0.5px solid #1f1f1f;margin-bottom:16px;}
+.sidebar-logo-name{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:-0.03em;color:#fff;}
+.sidebar-logo-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--tek-primitive-color-neutral-grey-500);margin-top:2px;}
+.sidebar-section{padding:12px 24px 4px;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--tek-primitive-color-neutral-grey-500);}
+.sidebar-link{display:block;padding:6px 24px;font-size:13px;color:var(--tek-primitive-color-neutral-grey-400);text-decoration:none;cursor:pointer;transition:color 0.1s;}
+.sidebar-link:hover{color:var(--tek-primitive-color-neutral-grey-100);}
+.sidebar-link.active{color:var(--tek-primitive-color-core-tek-blue);font-weight:500;}
+.main{padding:48px 56px;max-width:900px;}
+.page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:42px;letter-spacing:-0.04em;line-height:1;color:#fff;margin-bottom:8px;}
+.page-sub{font-size:14px;color:var(--tek-primitive-color-neutral-grey-400);margin-bottom:56px;max-width:480px;}
+.section{margin-bottom:64px;scroll-margin-top:32px;}
+.section-header{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:0.5px solid #1f1f1f;}
+.section-title{font-family:'Syne',sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.03em;color:#fff;}
+.section-tag{font-family:'DM Mono',monospace;font-size:11px;color:var(--tek-primitive-color-core-tek-blue);padding:2px 8px;border:0.5px solid var(--tek-primitive-color-core-tek-blue);border-radius:3px;opacity:0.7;}
+.preview-block{background:var(--tek-primitive-color-neutral-grey-800);border:0.5px solid #2a2a2a;border-radius:8px 8px 0 0;overflow:hidden;}
+.preview-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:#161616;border-bottom:0.5px solid #2a2a2a;}
+.preview-bar-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--tek-primitive-color-neutral-grey-500);letter-spacing:0.04em;}
+.preview-canvas{padding:32px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;}
+.preview-canvas.col{flex-direction:column;align-items:flex-start;}
+.preview-item{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.preview-item.left{align-items:flex-start;}
+.state-lbl{font-family:'DM Mono',monospace;font-size:10px;color:var(--tek-primitive-color-neutral-grey-500);}
+.code-wrap{position:relative;}
+.code-block{background:#0d0d0d;border:0.5px solid #1f1f1f;border-top:none;border-radius:0 0 8px 8px;padding:16px 20px;font-family:'DM Mono',monospace;font-size:12px;line-height:1.7;color:var(--tek-primitive-color-neutral-grey-300);overflow-x:auto;white-space:pre;}
+.kw{color:var(--tek-primitive-color-core-tek-blue);}.str{color:#a8d8a8;}.attr{color:#f0c674;}.cmt{color:var(--tek-primitive-color-neutral-grey-500);}
+.copy-btn{position:absolute;top:10px;right:12px;font-family:'DM Mono',monospace;font-size:10px;padding:4px 10px;background:var(--tek-primitive-color-neutral-grey-700);border:0.5px solid #3a3a3a;border-radius:4px;color:var(--tek-primitive-color-neutral-grey-300);cursor:pointer;transition:all 0.15s;}
+.copy-btn:hover{background:var(--tek-primitive-color-neutral-grey-500);color:#fff;}
+.copy-btn.copied{color:#a8d8a8;border-color:#a8d8a8;}
+.divider{border:none;border-top:0.5px solid #1a1a1a;margin:40px 0;}
+
+/* ── Component styles (same as signin.html) ── */
+.tek-checkbox{position:relative;width:16px;height:16px;display:inline-block;flex-shrink:0;cursor:pointer;}
+.tek-checkbox__box{position:absolute;inset:0;background:var(--tek-color-selector-background-default);border:0.5px solid var(--tek-color-selector-border-unchecked);border-radius:3px;}
+.tek-checkbox[data-state="checked"] .tek-checkbox__box{border-color:var(--tek-color-selector-border-checked);}
+.tek-checkbox[data-state="error"]   .tek-checkbox__box{border-color:var(--tek-color-selector-border-error);}
+.tek-checkbox__icon{position:absolute;inset:0;overflow:hidden;display:none;}
+.tek-checkbox[data-state="checked"] .tek-checkbox__icon{display:block;}
+.tek-checkbox__mark{position:absolute;left:15.63%;right:15.62%;height:9.001px;top:50%;transform:translateY(-50%);}
+.tek-checkbox__mark svg{width:100%;height:100%;overflow:visible;}
+
+.tek-radio{background:var(--tek-color-selector-background-default);border:0.5px solid var(--tek-color-selector-border-unchecked);border-radius:9999px;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;box-sizing:border-box;}
+.tek-radio[data-state="checked"]{border-color:var(--tek-color-selector-border-checked);}
+.tek-radio[data-state="error"]{border-color:var(--tek-color-selector-border-error);}
+.tek-radio__dot{background:var(--tek-color-selector-background-checked);border-radius:9999px;flex-shrink:0;width:10px;height:10px;display:none;}
+.tek-radio[data-state="checked"] .tek-radio__dot{display:block;}
+
+.tek-toggle{background:var(--tek-color-selector-background-default);border:0.5px solid var(--tek-color-selector-border-unchecked);display:inline-flex;align-items:center;justify-content:flex-start;height:14px;width:28px;border-radius:9999px;padding:0;flex-shrink:0;cursor:pointer;box-sizing:border-box;}
+.tek-toggle[data-state="checked"]{border-color:var(--tek-color-selector-border-checked);justify-content:flex-end;}
+.tek-toggle[data-state="error"]{border-color:var(--tek-color-selector-border-error);}
+.tek-toggle__thumb{border-radius:9999px;flex-shrink:0;width:14px;height:14px;background:var(--tek-color-selector-background-unchecked);border:0.5px solid var(--tek-color-selector-border-unchecked);box-sizing:border-box;}
+.tek-toggle[data-state="checked"] .tek-toggle__thumb{background:var(--tek-color-selector-background-checked);border:none;}
+.tek-toggle[data-state="error"]   .tek-toggle__thumb{background:var(--tek-color-selector-background-unchecked);border:0.5px solid var(--tek-color-selector-border-error);}
+
+.tek-selector-label{display:flex;gap:0;align-items:center;padding:0;width:106px;cursor:pointer;}
+.tek-selector-label__text{font-family:'SF Compact',system-ui,sans-serif;font-size:12px;font-weight:400;line-height:12px;color:var(--tek-color-selector-label-unchecked);}
+.tek-selector-label[data-state="checked"] .tek-selector-label__text{color:var(--tek-color-selector-label-checked);}
+.tek-selector-label[data-state="error"]   .tek-selector-label__text{color:var(--tek-color-selector-label-error);}
+
+.tek-selector{display:inline-flex;gap:0;align-items:center;width:129px;padding:0;cursor:pointer;}
+.tek-selector--toggle{padding-top:1px;padding-bottom:1px;}
+.tek-selector__inner{display:flex;flex:1 0 0;gap:8px;align-items:center;min-height:1px;min-width:1px;padding:0;}
+
+.tek-input{background:var(--tek-color-input-background-default);border:0.5px solid var(--tek-color-input-border-default);border-radius:5px;padding:8px 4px 8px 10px;width:258px;box-sizing:border-box;transition:border-color 0.1s;display:flex;}
+.tek-input[data-state="focus"]    {border-color:var(--tek-color-input-border-focus);}
+.tek-input[data-state="filled"]   {border-color:var(--tek-color-input-border-filled);}
+.tek-input[data-state="disabled"] {border-color:var(--tek-color-input-border-disabled);}
+.tek-input[data-state="error"]    {border-color:var(--tek-color-input-border-error);}
+.tek-input input{flex:1 0 0;background:transparent;border:none;outline:none;font-family:'SF Compact',system-ui,sans-serif;font-size:12px;line-height:15px;color:var(--tek-color-input-text-default);padding:0;min-width:1px;}
+.tek-input[data-state="focus"]    input{color:var(--tek-color-input-text-focus);}
+.tek-input[data-state="filled"]   input{color:var(--tek-color-input-text-filled);}
+.tek-input[data-state="disabled"] input{color:var(--tek-color-input-text-disabled);}
+.tek-input[data-state="error"]    input{color:var(--tek-color-input-text-error);}
+.tek-input input::placeholder{color:inherit;}
+
+.tek-btn{display:inline-flex;align-items:center;justify-content:center;border-radius:9999px;border:1px solid var(--tek-color-button-border-default);background:var(--tek-color-button-background-default);padding:12px 24px;cursor:pointer;outline:none;transition:all 0.15s;box-sizing:border-box;}
+.tek-btn--secondary{padding:6px 14px;}
+.tek-btn:hover{background:var(--tek-color-button-background-hover);}
+.tek-btn:hover .tek-btn__label{color:var(--tek-color-button-text-hover);}
+.tek-btn--inactive{background:var(--tek-color-button-background-inactive);border-color:var(--tek-color-button-border-inactive);pointer-events:none;}
+.tek-btn--inactive .tek-btn__label{color:var(--tek-color-button-text-inactive);}
+.tek-btn__label{font-family:'Archivo',sans-serif;font-size:16px;font-weight:578;font-variation-settings:'wdth' 106;line-height:18px;letter-spacing:0.32px;color:var(--tek-color-button-text-default);text-align:center;white-space:nowrap;transition:color 0.15s;}
+.tek-btn--secondary .tek-btn__label{font-size:13px;font-weight:534;line-height:15px;letter-spacing:0.13px;}
+
+.tek-text-link{font-family:'SF Compact',system-ui,sans-serif;font-size:10px;font-weight:400;line-height:15px;color:var(--tek-color-text-link-default);text-decoration:none;cursor:pointer;transition:opacity 0.1s;display:inline;}
+.tek-text-link:hover{opacity:0.8;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:0.5px;text-decoration-color:var(--tek-color-text-link-default);}
+
+.tek-charcount{font-family:'SF Compact',system-ui,sans-serif;font-size:10px;font-weight:400;line-height:15px;color:var(--tek-color-input-character-count-default);display:inline-block;}
+.tek-charcount[data-state="focus"]   {color:var(--tek-color-input-character-count-focus);}
+.tek-charcount[data-state="filled"]  {color:var(--tek-color-input-character-count-filled);}
+.tek-charcount[data-state="error"]   {color:var(--tek-color-input-character-count-error);}
+.tek-charcount[data-state="warning"] {color:var(--tek-color-input-character-count-warning);}
+
+.tek-modal{background:var(--tek-color-modal-background-default);border:0.25px solid var(--tek-color-modal-border-default);border-radius:11px;padding:32px;width:320px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px;overflow:hidden;box-shadow:0px 2px 6px 0px var(--tek-primitive-color-ui-shadow);}
+.tek-modal__header{font-family:'Archivo',sans-serif;font-size:24px;font-weight:600;font-variation-settings:'wdth' 106;line-height:24px;color:var(--tek-color-modal-text-default);}
+
+.tek-footer{display:flex;align-items:center;width:100%;height:36px;padding:12px 16px;box-sizing:border-box;background:var(--tek-color-footer-background-default);}
+.tek-footer__text{flex:1 0 0;font-family:'SF Compact',system-ui,sans-serif;font-size:12px;font-weight:400;line-height:12px;color:var(--tek-color-footer-text-default);text-align:right;}
+
+.token-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:16px;}
+.token-table th{text-align:left;padding:6px 12px;font-family:'DM Mono',monospace;font-size:10px;color:var(--tek-primitive-color-neutral-grey-500);border-bottom:0.5px solid #2a2a2a;font-weight:400;}
+.token-table td{padding:7px 12px;border-bottom:0.5px solid #1a1a1a;font-family:'DM Mono',monospace;color:var(--tek-primitive-color-neutral-grey-400);vertical-align:middle;}
+.token-table tr:hover td{background:#161616;}
+.swatch{display:inline-block;width:10px;height:10px;border-radius:2px;border:0.5px solid #3a3a3a;margin-right:6px;vertical-align:middle;}
+.token-name{color:var(--tek-primitive-color-neutral-grey-200);}
+.token-group td{color:#2f2f2f;padding:8px 12px;font-size:10px;letter-spacing:0.06em;}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-name">@tek/ui</div>
+      <div class="sidebar-logo-sub">component library · v0.2</div>
+    </div>
+    <span class="sidebar-section">Selectors</span>
+    <a class="sidebar-link active" onclick="nav(event,'checkbox')">Checkbox</a>
+    <a class="sidebar-link" onclick="nav(event,'radio')">Radio</a>
+    <a class="sidebar-link" onclick="nav(event,'toggle')">Toggle</a>
+    <a class="sidebar-link" onclick="nav(event,'selector-label')">SelectorLabel</a>
+    <a class="sidebar-link" onclick="nav(event,'selector')">Selector</a>
+    <span class="sidebar-section">Forms</span>
+    <a class="sidebar-link" onclick="nav(event,'input')">Input</a>
+    <a class="sidebar-link" onclick="nav(event,'charcount')">CharacterCount</a>
+    <a class="sidebar-link" onclick="nav(event,'textlink')">TextLink</a>
+    <span class="sidebar-section">Actions</span>
+    <a class="sidebar-link" onclick="nav(event,'button')">Button</a>
+    <span class="sidebar-section">Layout</span>
+    <a class="sidebar-link" onclick="nav(event,'modal')">Modal</a>
+    <a class="sidebar-link" onclick="nav(event,'footer')">Footer</a>
+    <span class="sidebar-section">Reference</span>
+    <a class="sidebar-link" onclick="nav(event,'tokens')">Tokens</a>
+  </nav>
+
+  <main class="main">
+    <h1 class="page-title">Component Library</h1>
+    <p class="page-sub">All components derived pixel-perfect from Figma DS-v2. Every value references a <code style="font-family:'DM Mono',monospace;font-size:12px;color:var(--tek-primitive-color-core-tek-blue)">--tek-*</code> semantic token.</p>
+
+    <!-- CHECKBOX -->
+    <section class="section" id="checkbox">
+      <div class="section-header"><h2 class="section-title">Checkbox</h2><span class="section-tag">tek-checkbox</span></div>
+      <div class="preview-block">
+        <div class="preview-bar"><span class="preview-bar-label">all states</span></div>
+        <div class="preview-canvas">
+          <div class="preview-item"><div class="tek-checkbox" data-state="unchecked"><div class="tek-checkbox__box"></div><div class="tek-checkbox__icon"><div class="tek-checkbox__mark"><svg viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="var(--tek-color-icons-default)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div><div class="state-lbl">Unchecked</div></div>
+          <div class="preview-item"><div class="tek-checkbox" data-state="checked"><div class="tek-checkbox__box"></div><div class="tek-checkbox__icon"><div class="tek-checkbox__mark"><svg viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="var(--tek-color-icons-default)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div><div class="state-lbl">Checked</div></div>
+          <div class="preview-item"><div class="tek-checkbox" data-state="error"><div class="tek-checkbox__box"></div><div class="tek-checkbox__icon"><div class="tek-checkbox__mark"><svg viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="var(--tek-color-icons-default)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div><div class="state-lbl">Error</div></div>
+          <div class="preview-item" style="margin-left:16px"><div class="tek-checkbox" data-state="unchecked" onclick="toggleState(this)"><div class="tek-checkbox__box"></div><div class="tek-checkbox__icon"><div class="tek-checkbox__mark"><svg viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="var(--tek-color-icons-default)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div><div class="state-lbl">click me</div></div>
+        </div>
+      </div>
+      <div class="code-wrap"><pre class="code-block" id="code-cb"><span class="kw">import</span> <span class="str">'@tek/ui'</span>
+
+<span class="attr">&lt;tek-checkbox&gt;&lt;/tek-checkbox&gt;</span>
+<span class="attr">&lt;tek-checkbox</span> <span class="kw">checked</span><span class="attr">&gt;&lt;/tek-checkbox&gt;</span>
+<span class="attr">&lt;tek-checkbox</span> <span class="kw">error</span><span class="attr">&gt;&lt;/tek-checkbox&gt;</span>
+<span class="attr">&lt;tek-checkbox</span> <span class="kw">disabled</span><span class="attr">&gt;&lt;/tek-checkbox&gt;</span></pre><button class="copy-btn" onclick="copy('code-cb',this)">Copy</button></div>
+    </section>
+
+    <!-- RADIO -->
+    <section class="section" id="radio">
+      <div class="section-header"><h2 class="section-title">Radio</h2><span class="section-tag">tek-radio</span></div>
+      <div class="preview-block">
+        <div class="preview-bar"><span class="preview-bar-label">all states</span></div>
+        <div class="preview-canvas">
+          <div class="preview-item"><div class="tek-radio" data-state="unchecked"><div class="tek-radio__dot"></div></div><div class="state-lbl">Unchecked</div></div>
+          <div class="preview-item"><div class="tek-radio" data-state="checked"><div class="tek-radio__dot"></div></div><div class="state-lbl">Checked</div></div>
+          <div class="preview-item"><div class="tek-radio" data-state="error"><div class="tek-radio__dot"></div></div><div class="state-lbl">Error</div></div>
+          <div class="preview-item" style="margin-left:16px"><div class="tek-radio" data-state="unchecked" onclick="toggleState(this)"><div class="tek-radio__dot"></div></div><div class="state-lbl">click me</div></div>
+        </div>
+      </div>
+      <div class="code-wrap"><pre class="code-block" id="code-radio"><span class="kw">import</span> <span class="str">'@tek/ui'</span>
+
+<span class="attr">&lt;tek-radio</span> <span class="kw">name</span>=<span class="str">"group"</span><span class="attr">&gt;&lt;/tek-radio&gt;</span>
+<span class="attr">&lt;tek-radio</span> <span class="kw">name</span>=<span class="str">"group"</span> <span class="kw">checked</span><span class="attr">&gt;&lt;/tek-radio&gt;</span>
+<span class="attr">&lt;tek-radio</span> <span class="kw">name</span>=<span class="str">"group"</span> <span class="kw">error</span><span class="attr">&gt;&lt;/tek-radio&gt;</span></pre><button class="copy-btn" onclick="copy('code-radio',this)">Copy</button></div>
+    </section>
+
+    <!-- TOGGLE -->
+    <section class="section" id="toggle">
+      <div class="section-header"><h2 class="section-title">Toggle</h2><span class="section-tag">tek-toggle</span></div>
+      <div class="preview-block">
+        <div class="preview-bar"><span class="preview-bar-label">all states</span></div>
+        <div class="preview-canvas">
+          <div class="preview-item"><div class="tek-toggle" data-state="unchecked"><div class="tek-toggle__thumb"></div></div><div class="state-lbl">Unchecked</div></div>
+          <div class="preview-item"><div class="tek-toggle" data-state="checked"><div class="tek-toggle__thumb"></div></div><div class="state-lbl">Checked</div></div>
+          <div class="preview-item"><div class="tek-toggle" data-state="error"><div class="tek-toggle__thumb"></div></div><div class="state-lbl">Error</div></div>
+          <div class="preview-item" style="margin-left:16px"><div class="tek-toggle" data-state="unchecked" onclick="toggleState(this)"><div class="tek-toggle__thumb"></div></div><div class="state-lbl">click me</div></div>
+        </div>
+      </div>
+      <div class="code-wrap"><pre class="code-block" id="code-toggle"><span class="kw">import</span> <span class="str">'@tek/ui'</span>
+
+<span class="attr">&lt;tek-toggle&gt;&lt;/tek-toggle&gt;</span>
+<span class="attr">&lt;tek-toggle</span> <span class="kw">checked</span><span class="attr">&gt;&lt;/tek-toggle&gt;</span>
+<span class="attr">&lt;tek-toggle</span> <span class="kw">error</span><span class="attr">&gt;&lt;/tek-toggle&gt;</span></pre><button class="copy-btn" onclick="copy('code-toggle',this)">Copy</button></div>
+    </section>
+
+    <!-- SELECTOR LABEL -->
+    <section class="section" id="selector-label">
+      <div class="section-header"><h2 class="section-title">SelectorLabel</h2><span class="section-tag">tek-selector-label</span></div>
+      <div class="preview-block">
+        <div class="preview-bar"><span class="preview-bar-label">all states</span></div>
+        <div class="preview-canvas">
+          <div class="preview-item left"><div class="tek-selector-label" data-state="unchecked"><div class="tek-selector-label__text">Please select</div></div><div class="state-lbl">Unchecked</div></div>
+          <div class="preview-item left"><div class="tek-selector-label" data-state="checked"><div class="tek-selector-label__text">Please select</div></div><div class="state-lbl">Checked</div></div>
+          <div class="preview-item left"><div class="tek-selector-label" data-state="error"><div class="tek-selector-label__text">Please select</div></div><div class="state-lbl">Error</div></div>
+        </div>
+      </div>
+      <div class="code-wrap"><pre class="code-block" id="code-label"><span class="kw">import</span> <span class="str">'@tek/ui'</span>
+
+<span class="attr">&lt;tek-selector-label&gt;</span>Please select<span class="attr">&lt;/tek-selector-label&gt;</span>
+<span class="attr">&lt;tek-selector-label</span> <span class="kw">checked</span><span class="attr">&gt;</span>Please select<span class="attr">&lt;/tek-selector-label&gt;</span>
+<span class="attr">&lt;tek-selector-label</span> <span class="kw">error</span><span class="attr">&gt;</span>Please select<span class="attr">&lt;/tek-selector-label&gt;</span></pre><button class="copy-btn" onclick="copy('code-label',this)">Copy</button></div>
+    </section>
+
+    <!-- SELECTOR -->
+    <section class="section" id="selector">
+      <div class="section-header"><h2 class="section-title">Selector</h2><span class="section-tag">tek-selector</span></div>
+      <div class="preview-block">
+        <div class="preview-bar"><span class="preview-bar-label">checkbox · radio · toggle — unchecked / checked / error</span></div>
+        <div class="preview-canvas col">
+          <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center;">
+            <div class="tek-selector" onclick="toggleSel(this)"><div class="tek-selector__inner"><div class="tek-checkbox" data-state="unchecked"><div class="tek-checkbox__box"></div><div class="tek-checkbox__icon"><div class="tek-checkbox__mark"><svg viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="var(--tek-color-icons-default)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div><div class="tek-selector-label" data-state="unchecked"><div class="tek-selector-label__text">Please select</div></div></div></div>
+            <div class="tek-selector" onclick="toggleSel(this)"><div class="tek-selector__inner"><div class="tek-checkbox" data-state="checked"><div class="tek-checkbox__box"></div><div class="tek-checkbox__icon"><div class="tek-checkbox__mark"><svg viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="var(--tek-color-icons-default)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div><div class="tek-selector-label" data-state="checked"><div class="tek-selector-label__text">Please select</div></div></div></div>
+            <div class="tek-selector"><div class="tek-selector__inner"><div class="tek-checkbox" data-state="error"><div class="tek-checkbox__box"></div><div class="tek-checkbox__icon"><div class="tek-checkbox__mark"><svg viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="var(--tek-color-icons-default)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div><div class="tek-selector-label" data-state="error"><div class="tek-selector-label__text">Please select</div></div></div></div>
+          </div>
+          <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center;">
+            <div class="tek-selector" onclick="toggleSel(this)"><div class="tek-selector__inner"><div class="tek-radio" data-state="unchecked"><div class="tek-radio__dot"></div></div><div class="tek-selector-label" data-state="unchecked"><div class="tek-selector-label__text">Please select</div></div></div></div>
+            <div class="tek-selector" onclick="toggleSel(this)"><div class="tek-selector__inner"><div class="tek-radio" data-state="checked"><div class="tek-radio__dot"></div></div><div class="tek-selector-label" data-state="checked"><div class="tek-selector-label__text">Please select</div></div></div></div>
+            <div class="tek-selector"><div class="tek-selector__inner"><div class="tek-radio" data-state="error"><div class="tek-radio__dot"></div></div><div class="tek-selector-label" data-state="error"><div class="tek-selector-label__text">Please select</div></div></div></div>
+          </div>
+          <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center;">
+            <div class="tek-selector tek-selector--toggle" onclick="toggleSel(this)"><div class="tek-selector__inner"><div class="tek-toggle" data-state="unchecked"><div class="tek-toggle__thumb"></div></div><div class="tek-selector-label" data-state="unchecked"><div class="tek-selector-label__text">Please select</div></div></div></div>
+            <div class="tek-selector tek-selector--toggle" onclick="toggleSel(this)"><div class="tek-selector__inner"><div class="tek-toggle" data-state="checked"><div class="tek-toggle__thumb"></div></div><div class="tek-selector-label" data-state="checked"><div class="tek-selector-label__text">Please select</div></div></div></div>
+            <div class="tek-selector tek-selector--toggle"><div class="tek-selector__inner"><div class="tek-toggle" data-state="error"><div class="tek-toggle__thumb"></div></div><div class="tek-selector-label" data-state="error"><div class="tek-selector-label__text">Please select</div></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="code-wrap"><pre class="code-block" id="code-sel"><span class="kw">import</span> <span class="str">'@tek/ui'</span>
+
+<span class="attr">&lt;tek-selector&gt;</span>
+  <span class="attr">&lt;tek-checkbox&gt;&lt;/tek-checkbox&gt;</span>
+  <span class="attr">&lt;tek-selector-label&gt;</span>Please select<span class="attr">&lt;/tek-selector-label&gt;</span>
+<span class="attr">&lt;/tek-selector&gt;</span></pre><button class="copy-btn" onclick="copy('code-sel',this)">Copy</button></div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- INPUT -->
+    <section class="section" id="input">
+      <div class="section-header"><h2 class="section-title">Input</h2><span class="section-tag">tek-input</span></div>
+      <div class="preview-block">
+        <div class="preview-bar"><span class="preview-bar-label">all states — single height</span></div>
+        <div class="preview-canvas col">
+          <div class="preview-item left"><div class="tek-input" data-state="default"><input placeholder="Enter message here"></div><div class="state-lbl">Default</div></div>
+          <div class="preview-item left"><div class="tek-input" data-state="focus"><input placeholder="Enter message here"></div><div class="state-lbl">Focus</div></div>
+          <div class="preview-item left"><div class="tek-input" data-state="filled"><input value="Some value" placeholder=""></div><div class="state-lbl">Filled</div></div>
+          <div class="preview-item left"><div class="tek-input" data-state="disabled"><input placeholder="Enter message here" disabled></div><div class="state-lbl">Disabled</div></div>
+          <div class="preview-item left"><div class="tek-input" data-state="error"><input placeholder="Enter message here"></div><div class="state-lbl">Error</div></div>
+        </div>
+      </div>
+      <div class="code-wrap"><pre class="code-block" id="code-input"><span class="kw">import</span> <span class="str">'@tek/ui'</span>
+
+<span class="attr">&lt;tek-input</span> <span class="kw">placeholder</span>=<span class="str">"Email"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
+<span class="attr">&lt;tek-input</span> <span class="kw">height</span>=<span class="str">"double"</span> <span class="kw">placeholder</span>=<span class="str">"Notes"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
+<span class="attr">&lt;tek-input</span> <span class="kw">height</span>=<span class="str">"triple"</span> <span class="kw">placeholder</span>=<span class="str">"Message"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
+<span class="attr">&lt;tek-input</span> <span class="kw">state</span>=<span class="str">"error"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
+<span class="attr">&lt;tek-input</span> <span class="kw">state</span>=<span class="str">"disabled"</span><span class="attr">&gt;&lt;/tek-input&gt;</span></pre><button class="copy-btn" onclick="copy('code-input',this)">Copy</button></div>
+    </section>
+
+    <!-- CHARACTER COUNT -->
+    <section class="section" id="charcount">
+      <div class="section-header"><h2 class="section-title">CharacterCount</h2><span class="section-tag">tek-character-count</span></div>
+      <div class="preview-block">
+        <div class="preview-bar"><span class="preview-bar-label">all states</span></div>
+        <div class="preview-canvas">
+          <div class="preview-item"><span class="tek-charcount" data-state="default">10/52</span><div class="state-lbl">Default</div></div>
+          <div class="preview-item"><span class="tek-charcount" data-state="focus">10/52</span><div class="state-lbl">Focus</div></div>
+          <div class="preview-item"><span class="tek-charcount" data-state="filled">10/52</span><div class="state-lbl">Filled</div></div>
+          <div class="preview-item"><span class="tek-charcount" data-state="warning">48/52</span><div class="state-lbl">Warning</div></div>
+          <div class="preview-item"><span class="tek-charcount" data-state="error">54/52</span><div class="state-lbl">Error</div></div>
+        </div>
+      </div>
+      <div class="code-wrap"><pre class="code-block" id="code-charcount"><span class="kw">import</span> <span class="str">'@tek/ui'</span>
+
+<span class="attr">&lt;tek-character-count</span> <span class="kw">current</span>=<span class="str">"10"</span> <span class="kw">max</span>=<span class="str">"52"</span><span class="attr">&gt;&lt;/tek-character-count&gt;</span>
+<span class="attr">&lt;tek-character-count</span> <span class="kw">current</span>=<span class="str">"48"</span> <span class="kw">max</span>=<span class="str">"52"</span> <span class="kw">state</span>=<span class="str">"warning"</span><span class="attr">&gt;&lt;/tek-character-count&gt;</span>
+<span class="attr">&lt;tek-character-count</span> <span class="kw">current</span>=<span class="str">"54"</span> <span class="kw">max</span>=<span class="str">"52"</span> <span class="kw">state</span>=<span class="str">"error"</span><span class="attr">&gt;&lt;/tek-character-count&gt;</span></pre><button class="copy-btn" onclick="copy('code-charcount',this)">Copy</button></div>
+    </section>
+
+    <!-- TEXT LINK -->
+    <section class="section" id="textlink">
+      <div class="section-header"><h2 class="section-title">TextLink</h2><span class="section-tag">tek-text-link</span></div>
+      <div class="preview-block">
+        <div class="preview-bar"><span class="preview-bar-label">default · hover (hover to see)</span></div>
+        <div class="preview-canvas">
+          <div class="preview-item left"><a class="tek-text-link" href="#">Forgot password?</a><div class="state-lbl">Default</div></div>
+        </div>
+      </div>
+      <div class="code-wrap"><pre class="code-block" id="code-link"><span class="kw">import</span> <span class="str">'@tek/ui'</span>
+
+<span class="attr">&lt;tek-text-link</span> <span class="kw">href</span>=<span class="str">"/forgot"</span><span class="attr">&gt;</span>Forgot password?<span class="attr">&lt;/tek-text-link&gt;</span></pre><button class="copy-btn" onclick="copy('code-link',this)">Copy</button></div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- BUTTON -->
+    <section class="section" id="button">
+      <div class="section-header"><h2 class="section-title">Button</h2><span class="section-tag">tek-button</span></div>
+      <div class="preview-block">
+        <div class="preview-bar"><span class="preview-bar-label">primary · secondary — default / hover / inactive</span></div>
+        <div class="preview-canvas col">
+          <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+            <div class="preview-item"><button class="tek-btn"><span class="tek-btn__label">Sign In</span></button><div class="state-lbl">Primary Default</div></div>
+            <div class="preview-item"><button class="tek-btn" style="background:var(--tek-color-button-background-hover)"><span class="tek-btn__label" style="color:var(--tek-color-button-text-hover)">Sign In</span></button><div class="state-lbl">Primary Hover</div></div>
+            <div class="preview-item"><button class="tek-btn tek-btn--inactive"><span class="tek-btn__label">Sign In</span></button><div class="state-lbl">Primary Inactive</div></div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+            <div class="preview-item"><button class="tek-btn tek-btn--secondary"><span class="tek-btn__label">Cancel</span></button><div class="state-lbl">Secondary Default</div></div>
+            <div class="preview-item"><button class="tek-btn tek-btn--secondary" style="background:var(--tek-color-button-background-hover)"><span class="tek-btn__label" style="color:var(--tek-color-button-text-hover)">Cancel</span></button><div class="state-lbl">Secondary Hover</div></div>
+            <div class="preview-item"><button class="tek-btn tek-btn--secondary tek-btn--inactive"><span class="tek-btn__label">Cancel</span></button><div class="state-lbl">Secondary Inactive</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="code-wrap"><pre class="code-block" id="code-btn"><span class="kw">import</span> <span class="str">'@tek/ui'</span>
+
+<span class="attr">&lt;tek-button&gt;</span>Sign In<span class="attr">&lt;/tek-button&gt;</span>
+<span class="attr">&lt;tek-button</span> <span class="kw">variant</span>=<span class="str">"secondary"</span><span class="attr">&gt;</span>Cancel<span class="attr">&lt;/tek-button&gt;</span>
+<span class="attr">&lt;tek-button</span> <span class="kw">inactive</span><span class="attr">&gt;</span>Sign In<span class="attr">&lt;/tek-button&gt;</span></pre><button class="copy-btn" onclick="copy('code-btn',this)">Copy</button></div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- MODAL -->
+    <section class="section" id="modal">
+      <div class="section-header"><h2 class="section-title">Modal</h2><span class="section-tag">tek-modal</span></div>
+      <div class="preview-block">
+        <div class="preview-bar"><span class="preview-bar-label">sign in modal — as designed</span></div>
+        <div class="preview-canvas" style="background:#1e1e1e;justify-content:center;">
+          <div class="tek-modal">
+            <div class="tek-modal__header">Sign In</div>
+            <div style="display:flex;flex-direction:column;gap:10px;width:256px;">
+              <div style="display:flex;flex-direction:column;gap:6px;padding-bottom:12px;">
+                <div style="font-family:'SF Compact',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-input-label-default);">Placeholder</div>
+                <div class="tek-input" data-state="default" style="width:100%;"><input placeholder="Enter message here"></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;padding-bottom:12px;">
+                <div style="font-family:'SF Compact',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-input-label-default);">Placeholder</div>
+                <div class="tek-input" data-state="default" style="width:100%;"><input type="password" placeholder="Enter message here"></div>
+              </div>
+              <div class="tek-selector" onclick="toggleSel(this)" style="width:100%;">
+                <div class="tek-selector__inner">
+                  <div class="tek-checkbox" data-state="unchecked"><div class="tek-checkbox__box"></div><div class="tek-checkbox__icon"><div class="tek-checkbox__mark"><svg viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="var(--tek-color-icons-default)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div>
+                  <div class="tek-selector-label" data-state="unchecked"><div class="tek-selector-label__text">Stay signed in</div></div>
+                </div>
+              </div>
+            </div>
+            <div style="width:100%;">
+              <button class="tek-btn" style="width:100%;"><span class="tek-btn__label">Sign In</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="code-wrap"><pre class="code-block" id="code-modal"><span class="kw">import</span> <span class="str">'@tek/ui'</span>
+
+<span class="attr">&lt;tek-modal&gt;</span>
+  <span class="attr">&lt;span</span> <span class="kw">slot</span>=<span class="str">"header"</span><span class="attr">&gt;</span>Sign In<span class="attr">&lt;/span&gt;</span>
+  <span class="attr">&lt;div</span> <span class="kw">slot</span>=<span class="str">"input-blocks"</span><span class="attr">&gt;</span>...<span class="attr">&lt;/div&gt;</span>
+  <span class="attr">&lt;tek-button</span> <span class="kw">slot</span>=<span class="str">"action-blocks"</span><span class="attr">&gt;</span>Sign In<span class="attr">&lt;/tek-button&gt;</span>
+<span class="attr">&lt;/tek-modal&gt;</span></pre><button class="copy-btn" onclick="copy('code-modal',this)">Copy</button></div>
+    </section>
+
+    <!-- FOOTER -->
+    <section class="section" id="footer">
+      <div class="section-header"><h2 class="section-title">Footer</h2><span class="section-tag">tek-footer</span></div>
+      <div class="preview-block">
+        <div class="preview-bar"><span class="preview-bar-label">default</span></div>
+        <div class="preview-canvas" style="padding:0;">
+          <div class="tek-footer" style="width:100%;"><div class="tek-footer__text">©2026 Tektronix. All Rights Reserved.</div></div>
+        </div>
+      </div>
+      <div class="code-wrap"><pre class="code-block" id="code-footer"><span class="kw">import</span> <span class="str">'@tek/ui'</span>
+
+<span class="attr">&lt;tek-footer&gt;</span>©2026 Tektronix. All Rights Reserved.<span class="attr">&lt;/tek-footer&gt;</span></pre><button class="copy-btn" onclick="copy('code-footer',this)">Copy</button></div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- TOKEN REFERENCE -->
+    <section class="section" id="tokens">
+      <div class="section-header"><h2 class="section-title">Token reference</h2><span class="section-tag">@tek/tokens v0.2</span></div>
+      <table class="token-table">
+        <thead><tr><th>CSS custom property</th><th>Resolves to</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr class="token-group"><td colspan="3">SELECTOR / BACKGROUND</td></tr>
+          <tr><td class="token-name">--tek-color-selector-background-default</td><td>neutral/grey-700</td><td><span class="swatch" style="background:#252525"></span>#252525</td></tr>
+          <tr><td class="token-name">--tek-color-selector-background-unchecked</td><td>neutral/grey-500</td><td><span class="swatch" style="background:#454545"></span>#454545</td></tr>
+          <tr><td class="token-name">--tek-color-selector-background-checked</td><td>neutral/grey-100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+          <tr class="token-group"><td colspan="3">SELECTOR / BORDER</td></tr>
+          <tr><td class="token-name">--tek-color-selector-border-unchecked</td><td>neutral/grey-400</td><td><span class="swatch" style="background:#7b7b7b"></span>#7b7b7b</td></tr>
+          <tr><td class="token-name">--tek-color-selector-border-checked</td><td>neutral/grey-300</td><td><span class="swatch" style="background:#979797"></span>#979797</td></tr>
+          <tr><td class="token-name">--tek-color-selector-border-error</td><td>ui/alert-red</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
+          <tr class="token-group"><td colspan="3">INPUT / BORDER</td></tr>
+          <tr><td class="token-name">--tek-color-input-border-default</td><td>neutral/grey-400</td><td><span class="swatch" style="background:#7b7b7b"></span>#7b7b7b</td></tr>
+          <tr><td class="token-name">--tek-color-input-border-focus</td><td>core/white</td><td><span class="swatch" style="background:#fff;border-color:#444"></span>#ffffff</td></tr>
+          <tr><td class="token-name">--tek-color-input-border-filled</td><td>neutral/grey-200</td><td><span class="swatch" style="background:#afafaf"></span>#afafaf</td></tr>
+          <tr><td class="token-name">--tek-color-input-border-disabled</td><td>neutral/grey-500</td><td><span class="swatch" style="background:#454545"></span>#454545</td></tr>
+          <tr><td class="token-name">--tek-color-input-border-error</td><td>ui/alert-red</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
+          <tr class="token-group"><td colspan="3">INPUT / TEXT</td></tr>
+          <tr><td class="token-name">--tek-color-input-text-default</td><td>neutral/grey-300</td><td><span class="swatch" style="background:#979797"></span>#979797</td></tr>
+          <tr><td class="token-name">--tek-color-input-text-focus</td><td>core/white</td><td><span class="swatch" style="background:#fff;border-color:#444"></span>#ffffff</td></tr>
+          <tr><td class="token-name">--tek-color-input-text-filled</td><td>neutral/grey-100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+          <tr><td class="token-name">--tek-color-input-text-disabled</td><td>neutral/grey-500</td><td><span class="swatch" style="background:#454545"></span>#454545</td></tr>
+          <tr><td class="token-name">--tek-color-input-text-error</td><td>core/white</td><td><span class="swatch" style="background:#fff;border-color:#444"></span>#ffffff</td></tr>
+          <tr class="token-group"><td colspan="3">INPUT / CHARACTER COUNT</td></tr>
+          <tr><td class="token-name">--tek-color-input-character-count-default</td><td>neutral/grey-100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+          <tr><td class="token-name">--tek-color-input-character-count-warning</td><td>ui/alert-amber</td><td><span class="swatch" style="background:#e0b732"></span>#e0b732</td></tr>
+          <tr><td class="token-name">--tek-color-input-character-count-error</td><td>ui/alert-red</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
+          <tr class="token-group"><td colspan="3">BUTTON</td></tr>
+          <tr><td class="token-name">--tek-color-button-background-default</td><td>neutral/grey-800</td><td><span class="swatch" style="background:#1e1e1e"></span>#1e1e1e</td></tr>
+          <tr><td class="token-name">--tek-color-button-background-hover</td><td>core/black</td><td><span class="swatch" style="background:#000000"></span>#000000</td></tr>
+          <tr><td class="token-name">--tek-color-button-border-default</td><td>core/tek-blue</td><td><span class="swatch" style="background:#33baea"></span>#33baea</td></tr>
+          <tr><td class="token-name">--tek-color-button-text-default</td><td>neutral/grey-100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+          <tr><td class="token-name">--tek-color-button-text-hover</td><td>core/white</td><td><span class="swatch" style="background:#fff;border-color:#444"></span>#ffffff</td></tr>
+          <tr class="token-group"><td colspan="3">MODAL + FOOTER + LINK</td></tr>
+          <tr><td class="token-name">--tek-color-modal-background-default</td><td>neutral/grey-900</td><td><span class="swatch" style="background:#181818"></span>#181818</td></tr>
+          <tr><td class="token-name">--tek-color-modal-border-default</td><td>neutral/grey-400</td><td><span class="swatch" style="background:#7b7b7b"></span>#7b7b7b</td></tr>
+          <tr><td class="token-name">--tek-color-footer-background-default</td><td>neutral/grey-700</td><td><span class="swatch" style="background:#252525"></span>#252525</td></tr>
+          <tr><td class="token-name">--tek-color-text-link-default</td><td>core/tek-blue</td><td><span class="swatch" style="background:#33baea"></span>#33baea</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+</div>
+
+<script>
+function nav(e,id){document.getElementById(id).scrollIntoView({behavior:'smooth'});document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));e.target.classList.add('active');}
+function copy(id,btn){navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>{btn.textContent='Copied';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});}
+function toggleState(el){el.dataset.state=el.dataset.state==='checked'?'unchecked':'checked';}
+function toggleSel(sel){const ctrl=sel.querySelector('.tek-checkbox,.tek-radio,.tek-toggle');const label=sel.querySelector('.tek-selector-label');if(!ctrl||!label)return;const next=ctrl.dataset.state==='checked'?'unchecked':'checked';ctrl.dataset.state=next;label.dataset.state=next;}
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));const m=document.querySelector(`.sidebar-link[onclick*="'${e.target.id}'"]`);if(m)m.classList.add('active');}});},{rootMargin:'-40% 0px -55% 0px'});
+document.querySelectorAll('.section').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>

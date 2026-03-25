@@ -1,0 +1,16 @@
+{
+  "border": {
+    "radius": {
+      "none": { "$value": "0px",    "$type": "dimension" },
+      "02":   { "$value": "3px",    "$type": "dimension" },
+      "03":   { "$value": "5px",    "$type": "dimension" },
+      "05":   { "$value": "11px",   "$type": "dimension" },
+      "full": { "$value": "9999px", "$type": "dimension" }
+    },
+    "width": {
+      "01": { "$value": "0.5px", "$type": "dimension" },
+      "02": { "$value": "1px",   "$type": "dimension" },
+      "04": { "$value": "2px",   "$type": "dimension" }
+    }
+  }
+}
