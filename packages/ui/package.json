@@ -1,5 +1,5 @@
 {
-  "name": "@tek/ui",
+  "name": "@bbkemp/ui",
   "version": "0.2.0",
   "description": "Web Components for the Tek design system",
   "type": "module",
@@ -17,8 +17,11 @@
     "build": "npx rollup -c rollup.config.js",
     "dev":   "npx rollup -c rollup.config.js --watch"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "peerDependencies": {
-    "@tek/tokens": "^0.2.0"
+    "@bbkemp/tokens": "^0.2.0"
   },
   "devDependencies": {
     "rollup": "^4.0.0",
