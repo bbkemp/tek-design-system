@@ -37,7 +37,7 @@ jobs:
       - name: Fetch Figma variables
         env:
           FIGMA_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
-          FILE_KEY:    ${{ secrets.FIGMA_FILE_KEY }}
+          FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
         run: |
           curl -s \
             -H "X-FIGMA-TOKEN: $FIGMA_TOKEN" \
@@ -52,3 +52,9 @@ jobs:
         with:
           commit_message: 'chore(tokens): sync from Figma variables'
           file_pattern: 'packages/tokens/src/**/*.json'
+```
+
+The two lines that changed are:
+```
+FIGMA_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
+FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
