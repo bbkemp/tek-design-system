@@ -328,3 +328,6 @@ Lives in `/figma-token-push/`. This is a local Figma development plugin — it i
 Open the plugin → Push Tokens to GitHub. That's it.
 
 The plugin reads all Figma Variables, transforms them to W3C DTCG JSON, and commits directly to GitHub via the Contents API. No third-party services involved.
+
+## Contributing
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the update process, review requirements, and versioning policy.
