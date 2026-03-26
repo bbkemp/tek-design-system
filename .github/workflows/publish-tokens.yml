@@ -1,4 +1,4 @@
-name: Publish @tek/tokens
+name: Publish @bbkemp/tokens
 
 on:
   workflow_dispatch:
@@ -25,10 +25,10 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://npm.pkg.github.com'
-          scope: '@tek'
+          scope: '@bbkemp'
 
       - name: Install dependencies
-        run: npm ci --workspace=packages/tokens
+        run: npm install --workspace=packages/tokens
 
       - name: Build tokens
         run: npm run build --workspace=packages/tokens
@@ -48,3 +48,15 @@ jobs:
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+Commit.
+
+---
+
+**Step 4 — Run the workflow**
+```
+github.com/bbkemp/tek-design-system
+  → Actions tab
+  → Publish @bbkemp/tokens
+  → Run workflow
