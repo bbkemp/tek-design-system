@@ -1,7 +1,7 @@
 {
-  "name": "@tek/tokens",
+  "name": "@bbkemp/tokens",
   "version": "0.2.0",
-  "description": "Design tokens for the Tek design system — auto-generated from Figma",
+  "description": "Design tokens for the Tek design system",
   "main": "dist/tek.tokens.js",
   "exports": {
     ".":        "./dist/tek.tokens.js",
@@ -14,6 +14,9 @@
   "scripts": {
     "build": "node build.js",
     "prebuild": "mkdir -p dist"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "devDependencies": {
     "style-dictionary": "^3.9.2"
