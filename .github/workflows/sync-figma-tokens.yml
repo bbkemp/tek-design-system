@@ -1,17 +1,3 @@
-# sync-figma-tokens.yml
-# Pulls variables from the Figma REST API and writes them
-# to packages/tokens/src/ as JSON token files.
-#
-# Triggers:
-#   - Manual (workflow_dispatch) — run from GitHub Actions tab
-#   - Scheduled — every day at 09:00 UTC
-#
-# Required secrets (set in GitHub repo → Settings → Secrets):
-#   FIGMA_ACCESS_TOKEN  — personal access token from figma.com/settings
-#   FIGMA_FILE_KEY      — the key from your Figma file URL
-#                         e.g. https://figma.com/design/3wbYstse9TYKlPtCPpZH5X/...
-#                         → FIGMA_FILE_KEY = 3wbYstse9TYKlPtCPpZH5X
-
 name: Sync Figma Tokens
 
 on:
@@ -52,9 +38,3 @@ jobs:
         with:
           commit_message: 'chore(tokens): sync from Figma variables'
           file_pattern: 'packages/tokens/src/**/*.json'
-```
-
-The two lines that changed are:
-```
-FIGMA_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
-FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
