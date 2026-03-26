@@ -48,15 +48,3 @@ jobs:
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
-
-Commit.
-
----
-
-**Step 4 — Run the workflow**
-```
-github.com/bbkemp/tek-design-system
-  → Actions tab
-  → Publish @bbkemp/tokens
-  → Run workflow
