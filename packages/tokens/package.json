@@ -4,11 +4,11 @@
   "description": "Design tokens for the Tek design system",
   "main": "dist/tek.tokens.js",
   "exports": {
-    ".":        "./dist/tek.tokens.js",
-    "./css":    "./dist/tek.tokens.css",
-    "./primitives/css": "./dist/tek.primitives.css",
-    "./primitives/js":  "./dist/tek.primitives.js",
-    "./json":   "./src/semantic/tokens.json"
+    ".":                    "./dist/tek.tokens.js",
+    "./css":                "./dist/tek.tokens.css",
+    "./primitives/css":     "./dist/tek.primitives.css",
+    "./primitives/js":      "./dist/tek.primitives.js",
+    "./json":               "./src/semantic/tokens.json"
   },
   "files": ["dist", "src"],
   "scripts": {
