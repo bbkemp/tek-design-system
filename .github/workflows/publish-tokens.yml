@@ -1,13 +1,7 @@
-# publish-tokens.yml
-# Runs Style Dictionary build and publishes @tek/tokens to
-# GitHub Packages whenever token source files change.
-#
-# Required secrets:
-#   GITHUB_TOKEN — automatically provided by GitHub Actions
-
 name: Publish @tek/tokens
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
