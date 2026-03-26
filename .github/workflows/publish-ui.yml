@@ -1,10 +1,7 @@
-# publish-ui.yml
-# Builds and publishes @tek/ui to GitHub Packages
-# whenever component source files change.
-
-name: Publish @tek/ui
+name: Publish @bbkemp/ui
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -28,10 +25,10 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://npm.pkg.github.com'
-          scope: '@tek'
+          scope: '@bbkemp'
 
       - name: Install dependencies
-        run: npm ci --workspace=packages/ui
+        run: npm install --workspace=packages/ui
 
       - name: Build
         run: npm run build --workspace=packages/ui
