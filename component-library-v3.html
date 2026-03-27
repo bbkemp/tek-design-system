@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tek Design System — Component Library v3</title>
+
+<!--
+  TOKEN IMPORT
+  In production, replace the <style> token block below with:
+  @import url('https://npm.pkg.github.com/@bbkemp/tokens/dist/tek.tokens.css');
+  or in your build pipeline: import '@bbkemp/tokens/dist/tek.tokens.css';
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,100..900&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   @bbkemp/tokens — tek.tokens.css
+   Source: packages/tokens/src/primitives/ + semantic/
+   DO NOT EDIT — generated via Style Dictionary
+═══════════════════════════════════════════════════════════ */
+:root {
+  /* primitives: neutral */
+  --tek-p-grey-100: #cccccc;
+  --tek-p-grey-200: #afafaf;
+  --tek-p-grey-300: #979797;
+  --tek-p-grey-400: #7b7b7b;
+  --tek-p-grey-500: #454545;
+  --tek-p-grey-700: #252525;
+  --tek-p-grey-800: #1e1e1e;
+  --tek-p-grey-900: #181818;
+
+  /* primitives: core */
+  --tek-p-blue:  #33baea;
+  --tek-p-white: #ffffff;
+  --tek-p-black: #000000;
+
+  /* primitives: ui */
+  --tek-p-red:   #e74848;
+
+  /* primitives: border */
+  --tek-p-radius-none: 0px;
+  --tek-p-radius-sm:   3px;
+  --tek-p-radius-md:   5px;
+  --tek-p-radius-lg:   11px;
+  --tek-p-radius-full: 9999px;
+  --tek-p-border-thin: 0.5px;
+  --tek-p-border-reg:  1px;
+
+  /* primitives: spacing */
+  --tek-p-space-0:    0px;
+  --tek-p-space-1:    4px;
+  --tek-p-space-2:    8px;
+  --tek-p-space-2h:   10px;
+  --tek-p-space-3h:   14px;
+  --tek-p-space-4:    16px;
+  --tek-p-space-7:    28px;
+
+  /* semantic: selector */
+  --tek-color-selector-bg-default:     var(--tek-p-grey-700);
+  --tek-color-selector-bg-unchecked:   var(--tek-p-grey-500);
+  --tek-color-selector-bg-checked:     var(--tek-p-grey-100);
+  --tek-color-selector-border-default: var(--tek-p-grey-400);
+  --tek-color-selector-border-checked: var(--tek-p-grey-300);
+  --tek-color-selector-border-error:   var(--tek-p-red);
+  --tek-color-selector-label-default:  var(--tek-p-grey-100);
+  --tek-color-selector-label-checked:  var(--tek-p-white);
+  --tek-color-selector-label-error:    var(--tek-p-white);
+
+  /* semantic: toggle */
+  --tek-color-toggle-track-off:        var(--tek-p-grey-500);
+  --tek-color-toggle-track-on:         var(--tek-p-grey-100);
+  --tek-color-toggle-track-error:      var(--tek-p-grey-500);
+  --tek-color-toggle-track-border-error: var(--tek-p-red);
+  --tek-color-toggle-thumb-off:        var(--tek-p-white);
+  --tek-color-toggle-thumb-on:         var(--tek-p-grey-800);
+
+  /* semantic: input */
+  --tek-color-input-bg:                var(--tek-p-grey-900);
+  --tek-color-input-border-default:    var(--tek-p-grey-400);
+  --tek-color-input-border-focus:      var(--tek-p-white);
+  --tek-color-input-border-filled:     var(--tek-p-grey-200);
+  --tek-color-input-border-disabled:   var(--tek-p-grey-500);
+  --tek-color-input-border-error:      var(--tek-p-red);
+  --tek-color-input-text-default:      var(--tek-p-grey-300);
+  --tek-color-input-text-focus:        var(--tek-p-white);
+  --tek-color-input-text-filled:       var(--tek-p-grey-100);
+  --tek-color-input-text-disabled:     var(--tek-p-grey-500);
+  --tek-color-input-text-error:        var(--tek-p-white);
+  --tek-color-input-label:             var(--tek-p-grey-100);
+
+  /* semantic: button */
+  --tek-color-btn-bg-default:          var(--tek-p-grey-800);
+  --tek-color-btn-bg-hover:            var(--tek-p-black);
+  --tek-color-btn-bg-inactive:         var(--tek-p-grey-900);
+  --tek-color-btn-border-default:      var(--tek-p-blue);
+  --tek-color-btn-border-hover:        var(--tek-p-blue);
+  --tek-color-btn-border-inactive:     var(--tek-p-grey-500);
+  --tek-color-btn-text-default:        var(--tek-p-grey-100);
+  --tek-color-btn-text-hover:          var(--tek-p-white);
+  --tek-color-btn-text-inactive:       var(--tek-p-grey-500);
+
+  /* semantic: modal */
+  --tek-color-modal-bg:                var(--tek-p-grey-900);
+  --tek-color-modal-border:            var(--tek-p-grey-400);
+  --tek-color-modal-text:              var(--tek-p-white);
+
+  /* semantic: footer */
+  --tek-color-footer-bg:               var(--tek-p-grey-700);
+  --tek-color-footer-text:             var(--tek-p-grey-100);
+
+  /* semantic: text-link */
+  --tek-color-text-link:               var(--tek-p-blue);
+
+  /* semantic: icons */
+  --tek-color-icon:                    var(--tek-p-white);
+
+  /* page-level */
+  --tek-page-bg:     #111111;
+  --tek-surface:     var(--tek-p-grey-900);
+  --tek-surface-2:   var(--tek-p-grey-800);
+  --tek-sidebar-w:   240px;
+  --tek-content-max: 960px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESET + BASE
+═══════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--tek-page-bg);
+  color: var(--tek-p-grey-100);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════════════════ */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: var(--tek-sidebar-w);
+  background: var(--tek-surface);
+  border-right: 0.5px solid var(--tek-p-grey-700);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(0);
+  transition: transform 0.25s ease;
+  scrollbar-width: none;
+}
+.sidebar::-webkit-scrollbar { display: none; }
+
+.sidebar-header {
+  padding: 24px 20px 16px;
+  border-bottom: 0.5px solid var(--tek-p-grey-700);
+  flex-shrink: 0;
+}
+
+.sidebar-wordmark {
+  font-family: 'Archivo', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  font-variation-settings: 'wdth' 125;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tek-p-white);
+}
+
+.sidebar-badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--tek-p-blue);
+  background: rgba(51,186,234,0.1);
+  border: 0.5px solid rgba(51,186,234,0.3);
+  border-radius: var(--tek-p-radius-sm);
+  padding: 2px 6px;
+  letter-spacing: 0.04em;
+}
+
+.sidebar-nav {
+  padding: 16px 0 24px;
+  flex: 1;
+}
+
+.sidebar-group {
+  margin-bottom: 4px;
+}
+
+.sidebar-group-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tek-p-grey-400);
+  padding: 8px 20px 4px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 20px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--tek-p-grey-300);
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  transition: color 0.15s, background 0.15s;
+  border-left: 2px solid transparent;
+}
+
+.sidebar-link:hover {
+  color: var(--tek-p-grey-100);
+  background: rgba(255,255,255,0.04);
+}
+
+.sidebar-link.active {
+  color: var(--tek-p-white);
+  background: rgba(51,186,234,0.08);
+  border-left-color: var(--tek-p-blue);
+  font-weight: 500;
+}
+
+.sidebar-link .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+.sidebar-link.active .dot { opacity: 1; background: var(--tek-p-blue); }
+
+/* Mobile nav toggle */
+.mobile-nav-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 200;
+  background: var(--tek-surface);
+  border: 0.5px solid var(--tek-p-grey-700);
+  border-radius: var(--tek-p-radius-md);
+  padding: 8px 10px;
+  cursor: pointer;
+  color: var(--tek-p-grey-100);
+  line-height: 1;
+}
+
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 99;
+  backdrop-filter: blur(2px);
+}
+
+/* Main content */
+.main {
+  margin-left: var(--tek-sidebar-w);
+  flex: 1;
+  min-width: 0;
+  padding: 48px clamp(20px, 4vw, 56px) 80px;
+  max-width: calc(var(--tek-content-max) + var(--tek-sidebar-w));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PAGE HEADER
+═══════════════════════════════════════════════════════════ */
+.page-header {
+  margin-bottom: 56px;
+  padding-bottom: 32px;
+  border-bottom: 0.5px solid var(--tek-p-grey-700);
+}
+
+.page-title {
+  font-family: 'Archivo', sans-serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  font-variation-settings: 'wdth' 112;
+  line-height: 1.1;
+  color: var(--tek-p-white);
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.page-title span { color: var(--tek-p-blue); }
+
+.page-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.meta-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--tek-p-grey-300);
+  background: var(--tek-p-grey-800);
+  border: 0.5px solid var(--tek-p-grey-700);
+  border-radius: var(--tek-p-radius-full);
+  padding: 3px 10px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COMPONENT SECTIONS
+═══════════════════════════════════════════════════════════ */
+.section {
+  margin-bottom: 72px;
+  scroll-margin-top: 24px;
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: 'Archivo', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  font-variation-settings: 'wdth' 106;
+  color: var(--tek-p-white);
+  letter-spacing: -0.01em;
+}
+
+.section-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--tek-p-blue);
+}
+
+.section-desc {
+  font-size: 13px;
+  color: var(--tek-p-grey-300);
+  margin-bottom: 24px;
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+/* Demo surface */
+.demo-surface {
+  background: var(--tek-surface);
+  border: 0.5px solid var(--tek-p-grey-700);
+  border-radius: var(--tek-p-radius-lg);
+  padding: 32px;
+  margin-bottom: 2px;
+}
+
+.demo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 32px;
+  align-items: flex-start;
+}
+
+.demo-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+
+.demo-cell-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--tek-p-grey-400);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* State chips row */
+.state-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.state-chip {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: var(--tek-p-radius-full);
+  background: var(--tek-p-grey-800);
+  border: 0.5px solid var(--tek-p-grey-700);
+  color: var(--tek-p-grey-300);
+  letter-spacing: 0.04em;
+}
+
+/* Code block */
+.code-block-wrapper {
+  background: #0d0d0d;
+  border: 0.5px solid var(--tek-p-grey-700);
+  border-top: none;
+  border-radius: 0 0 var(--tek-p-radius-lg) var(--tek-p-radius-lg);
+  position: relative;
+}
+
+.code-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-bottom: 0.5px solid var(--tek-p-grey-700);
+}
+
+.code-lang {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--tek-p-grey-400);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.copy-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--tek-p-grey-300);
+  background: var(--tek-p-grey-800);
+  border: 0.5px solid var(--tek-p-grey-700);
+  border-radius: var(--tek-p-radius-md);
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.copy-btn:hover {
+  color: var(--tek-p-white);
+  background: var(--tek-p-grey-700);
+  border-color: var(--tek-p-grey-500);
+}
+
+.copy-btn.copied {
+  color: var(--tek-p-blue);
+  border-color: rgba(51,186,234,0.3);
+}
+
+.code-pre {
+  margin: 0;
+  padding: 16px 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--tek-p-grey-200);
+  overflow-x: auto;
+  white-space: pre;
+  scrollbar-width: thin;
+  scrollbar-color: var(--tek-p-grey-700) transparent;
+}
+
+.code-pre .kw  { color: var(--tek-p-blue); }
+.code-pre .attr{ color: #c3e88d; }
+.code-pre .val { color: #f78c6c; }
+.code-pre .cmt { color: var(--tek-p-grey-500); font-style: italic; }
+.code-pre .tag { color: var(--tek-p-grey-100); }
+
+/* Divider */
+.section-divider {
+  border: none;
+  border-top: 0.5px solid var(--tek-p-grey-700);
+  margin-bottom: 72px;
+}
+
+/* Token reference table */
+.token-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 20px;
+  background: var(--tek-p-grey-900);
+  border: 0.5px solid var(--tek-p-grey-700);
+  border-radius: var(--tek-p-radius-md);
+  overflow: hidden;
+}
+
+.token-table th {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tek-p-grey-400);
+  text-align: left;
+  padding: 8px 16px;
+  background: var(--tek-p-grey-800);
+  border-bottom: 0.5px solid var(--tek-p-grey-700);
+}
+
+.token-table td {
+  padding: 8px 16px;
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  font-family: 'DM Mono', monospace;
+  color: var(--tek-p-grey-200);
+  vertical-align: middle;
+}
+
+.token-table tr:last-child td { border-bottom: none; }
+
+.token-swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.token-swatch-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 0.5px solid rgba(255,255,255,0.15);
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  :root { --tek-sidebar-w: 0px; }
+
+  .sidebar {
+    transform: translateX(-100%);
+    width: 260px;
+    box-shadow: 4px 0 32px rgba(0,0,0,0.4);
+  }
+
+  .sidebar.open { transform: translateX(0); }
+
+  .mobile-nav-toggle { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+  .mobile-overlay.open { display: block; }
+
+  .main {
+    margin-left: 0;
+    padding: 64px 16px 60px;
+  }
+
+  .demo-surface { padding: 20px 16px; }
+  .demo-grid { gap: 20px 24px; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root { --tek-sidebar-w: 200px; }
+  .sidebar-link { padding: 7px 16px; font-size: 12px; }
+  .sidebar-group-label { padding: 8px 16px 4px; font-size: 9px; }
+  .main { padding: 40px 28px 80px; }
+}
+
+@media (min-width: 1024px) {
+  .main { padding: 48px 48px 80px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile overlay -->
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeSidebar()"></div>
+
+<!-- Mobile nav toggle -->
+<button class="mobile-nav-toggle" id="mobileToggle" onclick="toggleSidebar()" aria-label="Open navigation">
+  <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+    <rect width="14" height="1.5" rx="0.75" fill="currentColor"/>
+    <rect y="4.25" width="10" height="1.5" rx="0.75" fill="currentColor"/>
+    <rect y="8.5" width="14" height="1.5" rx="0.75" fill="currentColor"/>
+  </svg>
+  Menu
+</button>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-wordmark">Tek Design System</div>
+      <div class="sidebar-badge">v3.0.0 · @bbkemp/ui</div>
+    </div>
+    <nav class="sidebar-nav" aria-label="Component navigation">
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Selectors</div>
+        <a class="sidebar-link" href="#checkbox"><span class="dot"></span>Checkbox</a>
+        <a class="sidebar-link" href="#radio"><span class="dot"></span>Radio</a>
+        <a class="sidebar-link" href="#toggle"><span class="dot"></span>Toggle</a>
+        <a class="sidebar-link" href="#selector-label"><span class="dot"></span>SelectorLabel</a>
+        <a class="sidebar-link" href="#selector"><span class="dot"></span>Selector</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Form</div>
+        <a class="sidebar-link" href="#input"><span class="dot"></span>Input</a>
+        <a class="sidebar-link" href="#character-count"><span class="dot"></span>CharacterCount</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Actions</div>
+        <a class="sidebar-link" href="#button"><span class="dot"></span>Button</a>
+        <a class="sidebar-link" href="#text-link"><span class="dot"></span>TextLink</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Layout</div>
+        <a class="sidebar-link" href="#modal"><span class="dot"></span>Modal</a>
+        <a class="sidebar-link" href="#footer"><span class="dot"></span>Footer</a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-group-label">Reference</div>
+        <a class="sidebar-link" href="#tokens"><span class="dot"></span>Tokens</a>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <header class="page-header">
+      <h1 class="page-title">Component <span>Library</span></h1>
+      <div class="page-meta">
+        <span class="meta-pill">11 components</span>
+        <span class="meta-pill">Web Components · TypeScript</span>
+        <span class="meta-pill">W3C DTCG Tokens</span>
+        <span class="meta-pill">Mobile-first</span>
+      </div>
+    </header>
+
+    <!-- ───────────────────────────── CHECKBOX -->
+    <section class="section" id="checkbox">
+      <div class="section-header">
+        <h2 class="section-title">Checkbox</h2>
+        <code class="section-tag">&lt;tek-checkbox&gt;</code>
+      </div>
+      <p class="section-desc">Binary selection control. Use for independent options. Supports <code>checked</code>, <code>error</code>, and <code>disabled</code> attributes.</p>
+      <div class="state-chips">
+        <span class="state-chip">default</span>
+        <span class="state-chip">checked</span>
+        <span class="state-chip">error</span>
+        <span class="state-chip">disabled</span>
+      </div>
+      <div class="demo-surface">
+        <div class="demo-grid">
+          <div class="demo-cell">
+            <span class="demo-cell-label">Default</span>
+            <tek-checkbox></tek-checkbox>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Checked</span>
+            <tek-checkbox checked></tek-checkbox>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Error</span>
+            <tek-checkbox error></tek-checkbox>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Disabled</span>
+            <tek-checkbox disabled></tek-checkbox>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Interactive</span>
+            <tek-checkbox id="cb-demo"></tek-checkbox>
+          </div>
+        </div>
+      </div>
+      <div class="code-block-wrapper">
+        <div class="code-toolbar">
+          <span class="code-lang">HTML</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1"/><path d="M3 8H2C1.4 8 1 7.6 1 7V2C1 1.4 1.4 1 2 1H7C7.6 1 8 1.4 8 2V3" stroke="currentColor" stroke-width="1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre class="code-pre"><code><span class="cmt">&lt;!-- Default --&gt;</span>
+<span class="tag">&lt;tek-checkbox&gt;&lt;/tek-checkbox&gt;</span>
+
+<span class="cmt">&lt;!-- Checked --&gt;</span>
+<span class="tag">&lt;tek-checkbox</span> <span class="attr">checked</span><span class="tag">&gt;&lt;/tek-checkbox&gt;</span>
+
+<span class="cmt">&lt;!-- Error state --&gt;</span>
+<span class="tag">&lt;tek-checkbox</span> <span class="attr">error</span><span class="tag">&gt;&lt;/tek-checkbox&gt;</span>
+
+<span class="cmt">&lt;!-- Disabled --&gt;</span>
+<span class="tag">&lt;tek-checkbox</span> <span class="attr">disabled</span><span class="tag">&gt;&lt;/tek-checkbox&gt;</span>
+
+<span class="cmt">&lt;!-- Listen for changes --&gt;</span>
+<span class="kw">document</span>.querySelector(<span class="val">'tek-checkbox'</span>)
+  .addEventListener(<span class="val">'tek-change'</span>, e =&gt; <span class="kw">console</span>.log(e.detail.checked));</code></pre>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── RADIO -->
+    <section class="section" id="radio">
+      <div class="section-header">
+        <h2 class="section-title">Radio</h2>
+        <code class="section-tag">&lt;tek-radio&gt;</code>
+      </div>
+      <p class="section-desc">Single selection from a group. Use the <code>name</code> attribute to group radios — only one per group can be checked.</p>
+      <div class="state-chips">
+        <span class="state-chip">default</span>
+        <span class="state-chip">checked</span>
+        <span class="state-chip">error</span>
+        <span class="state-chip">disabled</span>
+      </div>
+      <div class="demo-surface">
+        <div class="demo-grid">
+          <div class="demo-cell">
+            <span class="demo-cell-label">Default</span>
+            <tek-radio name="demo-r"></tek-radio>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Checked</span>
+            <tek-radio checked></tek-radio>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Error</span>
+            <tek-radio error></tek-radio>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Disabled</span>
+            <tek-radio disabled></tek-radio>
+          </div>
+        </div>
+      </div>
+      <div class="code-block-wrapper">
+        <div class="code-toolbar">
+          <span class="code-lang">HTML</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1"/><path d="M3 8H2C1.4 8 1 7.6 1 7V2C1 1.4 1.4 1 2 1H7C7.6 1 8 1.4 8 2V3" stroke="currentColor" stroke-width="1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre class="code-pre"><code><span class="cmt">&lt;!-- Grouped radios — same name = mutually exclusive --&gt;</span>
+<span class="tag">&lt;tek-radio</span> <span class="attr">name</span>=<span class="val">"channel"</span> <span class="attr">value</span>=<span class="val">"ch1"</span><span class="tag">&gt;&lt;/tek-radio&gt;</span>
+<span class="tag">&lt;tek-radio</span> <span class="attr">name</span>=<span class="val">"channel"</span> <span class="attr">value</span>=<span class="val">"ch2"</span> <span class="attr">checked</span><span class="tag">&gt;&lt;/tek-radio&gt;</span>
+<span class="tag">&lt;tek-radio</span> <span class="attr">name</span>=<span class="val">"channel"</span> <span class="attr">value</span>=<span class="val">"ch3"</span> <span class="attr">disabled</span><span class="tag">&gt;&lt;/tek-radio&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── TOGGLE -->
+    <section class="section" id="toggle">
+      <div class="section-header">
+        <h2 class="section-title">Toggle</h2>
+        <code class="section-tag">&lt;tek-toggle&gt;</code>
+      </div>
+      <p class="section-desc">Immediate-effect binary switch. Use when the action takes effect without a submit step. Thumb color inverts on light track (checked state).</p>
+      <div class="state-chips">
+        <span class="state-chip">off</span>
+        <span class="state-chip">on (checked)</span>
+        <span class="state-chip">error</span>
+        <span class="state-chip">disabled</span>
+      </div>
+      <div class="demo-surface">
+        <div class="demo-grid">
+          <div class="demo-cell">
+            <span class="demo-cell-label">Off</span>
+            <tek-toggle></tek-toggle>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">On</span>
+            <tek-toggle checked></tek-toggle>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Error</span>
+            <tek-toggle error></tek-toggle>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Disabled</span>
+            <tek-toggle disabled></tek-toggle>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Interactive</span>
+            <tek-toggle id="toggle-demo"></tek-toggle>
+          </div>
+        </div>
+      </div>
+      <div class="code-block-wrapper">
+        <div class="code-toolbar">
+          <span class="code-lang">HTML</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1"/><path d="M3 8H2C1.4 8 1 7.6 1 7V2C1 1.4 1.4 1 2 1H7C7.6 1 8 1.4 8 2V3" stroke="currentColor" stroke-width="1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre class="code-pre"><code><span class="tag">&lt;tek-toggle&gt;&lt;/tek-toggle&gt;</span>                          <span class="cmt">&lt;!-- off --&gt;</span>
+<span class="tag">&lt;tek-toggle</span> <span class="attr">checked</span><span class="tag">&gt;&lt;/tek-toggle&gt;</span>                    <span class="cmt">&lt;!-- on --&gt;</span>
+<span class="tag">&lt;tek-toggle</span> <span class="attr">error</span><span class="tag">&gt;&lt;/tek-toggle&gt;</span>                     <span class="cmt">&lt;!-- validation error --&gt;</span>
+<span class="tag">&lt;tek-toggle</span> <span class="attr">disabled</span><span class="tag">&gt;&lt;/tek-toggle&gt;</span>                  <span class="cmt">&lt;!-- non-interactive --&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── SELECTOR LABEL -->
+    <section class="section" id="selector-label">
+      <div class="section-header">
+        <h2 class="section-title">SelectorLabel</h2>
+        <code class="section-tag">&lt;tek-selector-label&gt;</code>
+      </div>
+      <p class="section-desc">Standalone label component used inside <code>tek-selector</code>. Reflects checked state with distinct color and weight changes.</p>
+      <div class="state-chips">
+        <span class="state-chip">unchecked</span>
+        <span class="state-chip">checked</span>
+        <span class="state-chip">error</span>
+      </div>
+      <div class="demo-surface">
+        <div class="demo-grid">
+          <div class="demo-cell">
+            <span class="demo-cell-label">Unchecked</span>
+            <tek-selector-label>Channel 1</tek-selector-label>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Checked</span>
+            <tek-selector-label checked>Channel 1</tek-selector-label>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Error</span>
+            <tek-selector-label error>Channel 1</tek-selector-label>
+          </div>
+        </div>
+      </div>
+      <div class="code-block-wrapper">
+        <div class="code-toolbar">
+          <span class="code-lang">HTML</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1"/><path d="M3 8H2C1.4 8 1 7.6 1 7V2C1 1.4 1.4 1 2 1H7C7.6 1 8 1.4 8 2V3" stroke="currentColor" stroke-width="1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre class="code-pre"><code><span class="tag">&lt;tek-selector-label&gt;</span>Label text<span class="tag">&lt;/tek-selector-label&gt;</span>
+<span class="tag">&lt;tek-selector-label</span> <span class="attr">checked</span><span class="tag">&gt;</span>Label text<span class="tag">&lt;/tek-selector-label&gt;</span>
+<span class="tag">&lt;tek-selector-label</span> <span class="attr">error</span><span class="tag">&gt;</span>Label text<span class="tag">&lt;/tek-selector-label&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── SELECTOR -->
+    <section class="section" id="selector">
+      <div class="section-header">
+        <h2 class="section-title">Selector</h2>
+        <code class="section-tag">&lt;tek-selector&gt;</code>
+      </div>
+      <p class="section-desc">Composite component — wraps a control (<code>checkbox</code>, <code>radio</code>, or <code>toggle</code>) with a <code>tek-selector-label</code>. Clicking the label or control toggles checked state across both.</p>
+      <div class="state-chips">
+        <span class="state-chip">checkbox</span>
+        <span class="state-chip">radio</span>
+        <span class="state-chip">toggle</span>
+        <span class="state-chip">error</span>
+        <span class="state-chip">disabled</span>
+      </div>
+      <div class="demo-surface">
+        <div class="demo-grid" style="gap:16px 40px">
+          <div class="demo-cell">
+            <span class="demo-cell-label">Checkbox</span>
+            <tek-selector type="checkbox" label="Enable logging"></tek-selector>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Radio</span>
+            <tek-selector type="radio" name="sel-demo" label="Channel A"></tek-selector>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Toggle</span>
+            <tek-selector type="toggle" label="Live mode"></tek-selector>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Checked</span>
+            <tek-selector type="checkbox" label="Autorange" checked></tek-selector>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Error</span>
+            <tek-selector type="checkbox" label="Required field" error></tek-selector>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Disabled</span>
+            <tek-selector type="toggle" label="Unavailable" disabled></tek-selector>
+          </div>
+        </div>
+      </div>
+      <div class="code-block-wrapper">
+        <div class="code-toolbar">
+          <span class="code-lang">HTML</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1"/><path d="M3 8H2C1.4 8 1 7.6 1 7V2C1 1.4 1.4 1 2 1H7C7.6 1 8 1.4 8 2V3" stroke="currentColor" stroke-width="1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre class="code-pre"><code><span class="tag">&lt;tek-selector</span> <span class="attr">type</span>=<span class="val">"checkbox"</span> <span class="attr">label</span>=<span class="val">"Enable logging"</span><span class="tag">&gt;&lt;/tek-selector&gt;</span>
+<span class="tag">&lt;tek-selector</span> <span class="attr">type</span>=<span class="val">"radio"</span>    <span class="attr">name</span>=<span class="val">"group"</span> <span class="attr">label</span>=<span class="val">"Channel A"</span><span class="tag">&gt;&lt;/tek-selector&gt;</span>
+<span class="tag">&lt;tek-selector</span> <span class="attr">type</span>=<span class="val">"toggle"</span>   <span class="attr">label</span>=<span class="val">"Live mode"</span> <span class="attr">checked</span><span class="tag">&gt;&lt;/tek-selector&gt;</span>
+<span class="tag">&lt;tek-selector</span> <span class="attr">type</span>=<span class="val">"checkbox"</span> <span class="attr">label</span>=<span class="val">"Required"</span> <span class="attr">error</span><span class="tag">&gt;&lt;/tek-selector&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── INPUT -->
+    <section class="section" id="input">
+      <div class="section-header">
+        <h2 class="section-title">Input</h2>
+        <code class="section-tag">&lt;tek-input&gt;</code>
+      </div>
+      <p class="section-desc">Text input supporting single-line and multi-line heights. State is driven by the <code>state</code> attribute and also updates automatically on focus/blur.</p>
+      <div class="state-chips">
+        <span class="state-chip">default</span>
+        <span class="state-chip">focus</span>
+        <span class="state-chip">filled</span>
+        <span class="state-chip">disabled</span>
+        <span class="state-chip">error</span>
+      </div>
+      <div class="demo-surface">
+        <div class="demo-grid" style="gap:20px 32px">
+          <div class="demo-cell">
+            <span class="demo-cell-label">Default</span>
+            <tek-input placeholder="Enter value"></tek-input>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Filled</span>
+            <tek-input state="filled" value="192.168.1.1"></tek-input>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Disabled</span>
+            <tek-input state="disabled" placeholder="Unavailable"></tek-input>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Error</span>
+            <tek-input state="error" value="bad_val!"></tek-input>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Multi-line</span>
+            <tek-input placeholder="Notes..." height="double"></tek-input>
+          </div>
+        </div>
+      </div>
+      <div class="code-block-wrapper">
+        <div class="code-toolbar">
+          <span class="code-lang">HTML</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1"/><path d="M3 8H2C1.4 8 1 7.6 1 7V2C1 1.4 1.4 1 2 1H7C7.6 1 8 1.4 8 2V3" stroke="currentColor" stroke-width="1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre class="code-pre"><code><span class="tag">&lt;tek-input</span> <span class="attr">placeholder</span>=<span class="val">"Enter value"</span><span class="tag">&gt;&lt;/tek-input&gt;</span>
+<span class="tag">&lt;tek-input</span> <span class="attr">state</span>=<span class="val">"filled"</span>    <span class="attr">value</span>=<span class="val">"192.168.1.1"</span><span class="tag">&gt;&lt;/tek-input&gt;</span>
+<span class="tag">&lt;tek-input</span> <span class="attr">state</span>=<span class="val">"disabled"</span><span class="tag">&gt;&lt;/tek-input&gt;</span>
+<span class="tag">&lt;tek-input</span> <span class="attr">state</span>=<span class="val">"error"</span>    <span class="attr">value</span>=<span class="val">"bad_val!"</span><span class="tag">&gt;&lt;/tek-input&gt;</span>
+<span class="tag">&lt;tek-input</span> <span class="attr">height</span>=<span class="val">"double"</span>  <span class="attr">placeholder</span>=<span class="val">"Notes..."</span><span class="tag">&gt;&lt;/tek-input&gt;</span>
+
+<span class="cmt">&lt;!-- Listen for input --&gt;</span>
+<span class="kw">document</span>.querySelector(<span class="val">'tek-input'</span>)
+  .addEventListener(<span class="val">'tek-input'</span>, e =&gt; <span class="kw">console</span>.log(e.detail.value));</code></pre>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── CHARACTER COUNT -->
+    <section class="section" id="character-count">
+      <div class="section-header">
+        <h2 class="section-title">CharacterCount</h2>
+        <code class="section-tag">&lt;tek-character-count&gt;</code>
+      </div>
+      <p class="section-desc">Displays current character usage against a maximum. Set <code>max</code> and <code>count</code> attributes. Transitions to error styling at 100% capacity.</p>
+      <div class="state-chips">
+        <span class="state-chip">default</span>
+        <span class="state-chip">focus</span>
+        <span class="state-chip">filled</span>
+        <span class="state-chip">disabled</span>
+        <span class="state-chip">error</span>
+      </div>
+      <div class="demo-surface">
+        <div class="demo-grid">
+          <div class="demo-cell">
+            <span class="demo-cell-label">Default</span>
+            <tek-character-count count="0" max="140"></tek-character-count>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Partial</span>
+            <tek-character-count count="72" max="140"></tek-character-count>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Near limit</span>
+            <tek-character-count count="130" max="140"></tek-character-count>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Error (at max)</span>
+            <tek-character-count count="140" max="140" state="error"></tek-character-count>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Disabled</span>
+            <tek-character-count count="0" max="140" state="disabled"></tek-character-count>
+          </div>
+        </div>
+      </div>
+      <div class="code-block-wrapper">
+        <div class="code-toolbar">
+          <span class="code-lang">HTML</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1"/><path d="M3 8H2C1.4 8 1 7.6 1 7V2C1 1.4 1.4 1 2 1H7C7.6 1 8 1.4 8 2V3" stroke="currentColor" stroke-width="1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre class="code-pre"><code><span class="tag">&lt;tek-character-count</span> <span class="attr">count</span>=<span class="val">"0"</span>   <span class="attr">max</span>=<span class="val">"140"</span><span class="tag">&gt;&lt;/tek-character-count&gt;</span>
+<span class="tag">&lt;tek-character-count</span> <span class="attr">count</span>=<span class="val">"72"</span>  <span class="attr">max</span>=<span class="val">"140"</span><span class="tag">&gt;&lt;/tek-character-count&gt;</span>
+<span class="tag">&lt;tek-character-count</span> <span class="attr">count</span>=<span class="val">"140"</span> <span class="attr">max</span>=<span class="val">"140"</span> <span class="attr">state</span>=<span class="val">"error"</span><span class="tag">&gt;&lt;/tek-character-count&gt;</span>
+
+<span class="cmt">&lt;!-- Bind to an input --&gt;</span>
+<span class="kw">const</span> input = document.querySelector(<span class="val">'tek-input'</span>);
+<span class="kw">const</span> counter = document.querySelector(<span class="val">'tek-character-count'</span>);
+input.addEventListener(<span class="val">'tek-input'</span>, e =&gt; {
+  counter.setAttribute(<span class="val">'count'</span>, e.detail.value.length);
+});</code></pre>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── BUTTON -->
+    <section class="section" id="button">
+      <div class="section-header">
+        <h2 class="section-title">Button</h2>
+        <code class="section-tag">&lt;tek-button&gt;</code>
+      </div>
+      <p class="section-desc">Primary call-to-action. Dark background with blue border default. <code>variant="secondary"</code> reduces visual weight. <code>inactive</code> or <code>disabled</code> for non-interactive states.</p>
+      <div class="state-chips">
+        <span class="state-chip">default</span>
+        <span class="state-chip">hover</span>
+        <span class="state-chip">inactive</span>
+        <span class="state-chip">secondary</span>
+      </div>
+      <div class="demo-surface">
+        <div class="demo-grid" style="align-items:center">
+          <div class="demo-cell">
+            <span class="demo-cell-label">Primary</span>
+            <tek-button>Sign In</tek-button>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Secondary</span>
+            <tek-button variant="secondary">Cancel</tek-button>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Inactive</span>
+            <tek-button inactive>Submit</tek-button>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">Disabled</span>
+            <tek-button disabled>Disabled</tek-button>
+          </div>
+        </div>
+      </div>
+      <div class="code-block-wrapper">
+        <div class="code-toolbar">
+          <span class="code-lang">HTML</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1"/><path d="M3 8H2C1.4 8 1 7.6 1 7V2C1 1.4 1.4 1 2 1H7C7.6 1 8 1.4 8 2V3" stroke="currentColor" stroke-width="1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre class="code-pre"><code><span class="tag">&lt;tek-button&gt;</span>Sign In<span class="tag">&lt;/tek-button&gt;</span>
+<span class="tag">&lt;tek-button</span> <span class="attr">variant</span>=<span class="val">"secondary"</span><span class="tag">&gt;</span>Cancel<span class="tag">&lt;/tek-button&gt;</span>
+<span class="tag">&lt;tek-button</span> <span class="attr">inactive</span><span class="tag">&gt;</span>Submit<span class="tag">&lt;/tek-button&gt;</span>
+
+<span class="cmt">&lt;!-- Listen for clicks --&gt;</span>
+<span class="kw">document</span>.querySelector(<span class="val">'tek-button'</span>)
+  .addEventListener(<span class="val">'tek-click'</span>, () =&gt; <span class="kw">console</span>.log(<span class="val">'clicked'</span>));</code></pre>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── TEXT LINK -->
+    <section class="section" id="text-link">
+      <div class="section-header">
+        <h2 class="section-title">TextLink</h2>
+        <code class="section-tag">&lt;tek-text-link&gt;</code>
+      </div>
+      <p class="section-desc">Inline navigational link. Uses brand blue with underline on hover. Pass an <code>href</code> attribute; defaults to <code>#</code>.</p>
+      <div class="state-chips">
+        <span class="state-chip">default</span>
+        <span class="state-chip">hover</span>
+      </div>
+      <div class="demo-surface">
+        <div class="demo-grid">
+          <div class="demo-cell">
+            <span class="demo-cell-label">Default</span>
+            <tek-text-link href="#">Forgot password?</tek-text-link>
+          </div>
+          <div class="demo-cell">
+            <span class="demo-cell-label">In context</span>
+            <span style="color:var(--tek-p-grey-300);font-size:13px">Need help? <tek-text-link href="#">Contact support</tek-text-link></span>
+          </div>
+        </div>
+      </div>
+      <div class="code-block-wrapper">
+        <div class="code-toolbar">
+          <span class="code-lang">HTML</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1"/><path d="M3 8H2C1.4 8 1 7.6 1 7V2C1 1.4 1.4 1 2 1H7C7.6 1 8 1.4 8 2V3" stroke="currentColor" stroke-width="1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre class="code-pre"><code><span class="tag">&lt;tek-text-link</span> <span class="attr">href</span>=<span class="val">"/forgot"</span><span class="tag">&gt;</span>Forgot password?<span class="tag">&lt;/tek-text-link&gt;</span>
+<span class="tag">&lt;tek-text-link</span> <span class="attr">href</span>=<span class="val">"/docs"</span> <span class="attr">target</span>=<span class="val">"_blank"</span><span class="tag">&gt;</span>Documentation<span class="tag">&lt;/tek-text-link&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── MODAL -->
+    <section class="section" id="modal">
+      <div class="section-header">
+        <h2 class="section-title">Modal</h2>
+        <code class="section-tag">&lt;tek-modal&gt;</code>
+      </div>
+      <p class="section-desc">Container for focused interaction. Uses named slots: <code>header</code>, <code>input-blocks</code>, and <code>action-blocks</code>. Width fixed at 320px per Figma spec.</p>
+      <div class="demo-surface" style="display:flex;justify-content:center;padding:40px 20px">
+        <tek-modal>
+          <span slot="header">Sign In</span>
+          <div slot="input-blocks" style="display:flex;flex-direction:column;gap:10px;width:100%">
+            <tek-input placeholder="Username"></tek-input>
+            <tek-input type="password" placeholder="Password"></tek-input>
+            <tek-selector type="checkbox" label="Stay signed in"></tek-selector>
+          </div>
+          <div slot="action-blocks" style="display:flex;flex-direction:column;gap:8px;width:100%">
+            <tek-button style="width:100%">Sign In</tek-button>
+            <div style="text-align:right"><tek-text-link href="#">Forgot password?</tek-text-link></div>
+          </div>
+        </tek-modal>
+      </div>
+      <div class="code-block-wrapper">
+        <div class="code-toolbar">
+          <span class="code-lang">HTML</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1"/><path d="M3 8H2C1.4 8 1 7.6 1 7V2C1 1.4 1.4 1 2 1H7C7.6 1 8 1.4 8 2V3" stroke="currentColor" stroke-width="1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre class="code-pre"><code><span class="tag">&lt;tek-modal&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">slot</span>=<span class="val">"header"</span><span class="tag">&gt;</span>Sign In<span class="tag">&lt;/span&gt;</span>
+
+  <span class="tag">&lt;div</span> <span class="attr">slot</span>=<span class="val">"input-blocks"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;tek-input</span> <span class="attr">placeholder</span>=<span class="val">"Username"</span><span class="tag">&gt;&lt;/tek-input&gt;</span>
+    <span class="tag">&lt;tek-input</span> <span class="attr">type</span>=<span class="val">"password"</span> <span class="attr">placeholder</span>=<span class="val">"Password"</span><span class="tag">&gt;&lt;/tek-input&gt;</span>
+    <span class="tag">&lt;tek-selector</span> <span class="attr">type</span>=<span class="val">"checkbox"</span> <span class="attr">label</span>=<span class="val">"Stay signed in"</span><span class="tag">&gt;&lt;/tek-selector&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+
+  <span class="tag">&lt;div</span> <span class="attr">slot</span>=<span class="val">"action-blocks"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;tek-button&gt;</span>Sign In<span class="tag">&lt;/tek-button&gt;</span>
+    <span class="tag">&lt;tek-text-link</span> <span class="attr">href</span>=<span class="val">"/forgot"</span><span class="tag">&gt;</span>Forgot password?<span class="tag">&lt;/tek-text-link&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/tek-modal&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── FOOTER -->
+    <section class="section" id="footer">
+      <div class="section-header">
+        <h2 class="section-title">Footer</h2>
+        <code class="section-tag">&lt;tek-footer&gt;</code>
+      </div>
+      <p class="section-desc">Page footer. Full-width, 36px height, right-aligned text at 12px. Slotted content.</p>
+      <div class="demo-surface" style="padding:0;overflow:hidden;border-radius:var(--tek-p-radius-lg)">
+        <tek-footer>©2026 Tektronix. All rights reserved.</tek-footer>
+      </div>
+      <div class="code-block-wrapper">
+        <div class="code-toolbar">
+          <span class="code-lang">HTML</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1"/><path d="M3 8H2C1.4 8 1 7.6 1 7V2C1 1.4 1.4 1 2 1H7C7.6 1 8 1.4 8 2V3" stroke="currentColor" stroke-width="1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre class="code-pre"><code><span class="tag">&lt;tek-footer&gt;</span>©2026 Tektronix. All rights reserved.<span class="tag">&lt;/tek-footer&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ───────────────────────────── TOKENS REFERENCE -->
+    <section class="section" id="tokens">
+      <div class="section-header">
+        <h2 class="section-title">Tokens</h2>
+        <code class="section-tag">@bbkemp/tokens</code>
+      </div>
+      <p class="section-desc">Semantic tokens from <code>packages/tokens/src/semantic/tokens.json</code> — resolved via Style Dictionary. All values reference primitives.</p>
+
+      <table class="token-table">
+        <thead>
+          <tr><th>Token</th><th>Value</th><th>Primitive</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>--tek-color-btn-border-default</td><td><span class="token-swatch"><span class="token-swatch-dot" style="background:#33baea"></span>#33baea</span></td><td>--tek-p-blue</td></tr>
+          <tr><td>--tek-color-btn-bg-default</td><td><span class="token-swatch"><span class="token-swatch-dot" style="background:#1e1e1e"></span>#1e1e1e</span></td><td>--tek-p-grey-800</td></tr>
+          <tr><td>--tek-color-input-border-focus</td><td><span class="token-swatch"><span class="token-swatch-dot" style="background:#ffffff"></span>#ffffff</span></td><td>--tek-p-white</td></tr>
+          <tr><td>--tek-color-input-border-error</td><td><span class="token-swatch"><span class="token-swatch-dot" style="background:#e74848"></span>#e74848</span></td><td>--tek-p-red</td></tr>
+          <tr><td>--tek-color-selector-bg-checked</td><td><span class="token-swatch"><span class="token-swatch-dot" style="background:#cccccc"></span>#cccccc</span></td><td>--tek-p-grey-100</td></tr>
+          <tr><td>--tek-color-modal-bg</td><td><span class="token-swatch"><span class="token-swatch-dot" style="background:#181818"></span>#181818</span></td><td>--tek-p-grey-900</td></tr>
+          <tr><td>--tek-color-footer-bg</td><td><span class="token-swatch"><span class="token-swatch-dot" style="background:#252525"></span>#252525</span></td><td>--tek-p-grey-700</td></tr>
+          <tr><td>--tek-color-text-link</td><td><span class="token-swatch"><span class="token-swatch-dot" style="background:#33baea"></span>#33baea</span></td><td>--tek-p-blue</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     WEB COMPONENTS
+     In production: import '@bbkemp/ui';
+     These inline definitions are the same source as packages/ui/src/
+═══════════════════════════════════════════════════════════ -->
+<script>
+// ── tek-checkbox ──────────────────────────────────────────────
+customElements.define('tek-checkbox', class extends HTMLElement {
+  static get observedAttributes() { return ['checked','error','disabled']; }
+  connectedCallback() { this._render(); this._setupClick(); }
+  attributeChangedCallback() { this._render(); }
+
+  _setupClick() {
+    this.addEventListener('click', () => {
+      if (this.hasAttribute('disabled')) return;
+      this.hasAttribute('checked') ? this.removeAttribute('checked') : this.setAttribute('checked','');
+      this.dispatchEvent(new CustomEvent('tek-change', { bubbles:true, composed:true,
+        detail:{ checked: this.hasAttribute('checked') } }));
+    });
+  }
+
+  _render() {
+    const checked  = this.hasAttribute('checked');
+    const error    = this.hasAttribute('error');
+    const disabled = this.hasAttribute('disabled');
+    const s = this.attachShadow ? this.shadowRoot || this.attachShadow({mode:'open'}) : null;
+    if (!s) return;
+    const borderColor = error ? 'var(--tek-color-selector-border-error,#e74848)'
+                     : checked ? 'var(--tek-color-selector-border-checked,#979797)'
+                     : 'var(--tek-color-selector-border-default,#7b7b7b)';
+    const bgColor = checked ? 'var(--tek-color-selector-bg-checked,#cccccc)' : 'transparent';
+    const opacity = disabled ? '0.35' : '1';
+    s.innerHTML = `
+      <style>
+        :host { display:inline-flex; align-items:center; justify-content:center;
+                width:16px; height:16px; cursor:${disabled?'not-allowed':'pointer'};
+                opacity:${opacity}; flex-shrink:0; }
+        .box { width:16px; height:16px; border-radius:3px;
+               border:1px solid ${borderColor}; background:${bgColor};
+               display:flex; align-items:center; justify-content:center;
+               transition:background 0.15s, border-color 0.15s; }
+        .check { display:${checked?'block':'none'}; }
+      </style>
+      <div class="box">
+        <svg class="check" width="10" height="8" viewBox="0 0 10 8" fill="none">
+          <path d="M1 4L3.5 6.5L9 1" stroke="var(--tek-p-grey-800,#1e1e1e)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>`;
+  }
+});
+
+// ── tek-radio ─────────────────────────────────────────────────
+customElements.define('tek-radio', class extends HTMLElement {
+  static get observedAttributes() { return ['checked','error','disabled']; }
+  connectedCallback() { this._render(); this._setupClick(); }
+  attributeChangedCallback() { this._render(); }
+
+  _setupClick() {
+    this.addEventListener('click', () => {
+      if (this.hasAttribute('disabled')) return;
+      if (!this.hasAttribute('checked')) {
+        const name = this.getAttribute('name');
+        if (name) document.querySelectorAll(`tek-radio[name="${name}"]`)
+          .forEach(r => r.removeAttribute('checked'));
+        this.setAttribute('checked','');
+        this.dispatchEvent(new CustomEvent('tek-change', { bubbles:true, composed:true,
+          detail:{ checked:true } }));
+      }
+    });
+  }
+
+  _render() {
+    const checked  = this.hasAttribute('checked');
+    const error    = this.hasAttribute('error');
+    const disabled = this.hasAttribute('disabled');
+    const s = this.shadowRoot || this.attachShadow({mode:'open'});
+    const borderColor = error ? 'var(--tek-color-selector-border-error,#e74848)'
+                     : checked ? 'var(--tek-color-selector-border-checked,#979797)'
+                     : 'var(--tek-color-selector-border-default,#7b7b7b)';
+    s.innerHTML = `
+      <style>
+        :host { display:inline-flex; align-items:center; justify-content:center;
+                width:16px; height:16px; cursor:${disabled?'not-allowed':'pointer'};
+                opacity:${disabled?'0.35':'1'}; flex-shrink:0; }
+        .ring { width:16px; height:16px; border-radius:50%;
+                border:1px solid ${borderColor};
+                display:flex; align-items:center; justify-content:center;
+                transition:border-color 0.15s; }
+        .dot { width:8px; height:8px; border-radius:50%;
+               background:var(--tek-color-selector-bg-checked,#cccccc);
+               display:${checked?'block':'none'}; }
+      </style>
+      <div class="ring"><div class="dot"></div></div>`;
+  }
+});
+
+// ── tek-toggle ────────────────────────────────────────────────
+customElements.define('tek-toggle', class extends HTMLElement {
+  static get observedAttributes() { return ['checked','error','disabled']; }
+  connectedCallback() { this._render(); this._setupClick(); }
+  attributeChangedCallback() { this._render(); }
+
+  _setupClick() {
+    this.addEventListener('click', () => {
+      if (this.hasAttribute('disabled')) return;
+      this.hasAttribute('checked') ? this.removeAttribute('checked') : this.setAttribute('checked','');
+      this.dispatchEvent(new CustomEvent('tek-change', { bubbles:true, composed:true,
+        detail:{ checked: this.hasAttribute('checked') } }));
+    });
+  }
+
+  _render() {
+    const checked  = this.hasAttribute('checked');
+    const error    = this.hasAttribute('error');
+    const disabled = this.hasAttribute('disabled');
+    const s = this.shadowRoot || this.attachShadow({mode:'open'});
+    const trackBg = error ? 'var(--tek-color-toggle-track-error,#454545)'
+                  : checked ? 'var(--tek-color-toggle-track-on,#cccccc)'
+                  : 'var(--tek-color-toggle-track-off,#454545)';
+    const trackBorder = error ? '1px solid var(--tek-color-toggle-track-border-error,#e74848)' : 'none';
+    const thumbBg = checked ? 'var(--tek-color-toggle-thumb-on,#1e1e1e)' : 'var(--tek-color-toggle-thumb-off,#ffffff)';
+    s.innerHTML = `
+      <style>
+        :host { display:inline-flex; align-items:center; cursor:${disabled?'not-allowed':'pointer'};
+                opacity:${disabled?'0.35':'1'}; }
+        .track { width:28px; height:16px; border-radius:9999px; background:${trackBg};
+                 border:${trackBorder}; position:relative; transition:background 0.2s; }
+        .thumb { position:absolute; top:2px; width:12px; height:12px; border-radius:50%;
+                 background:${thumbBg}; transition:left 0.2s, background 0.2s;
+                 left:${checked?'14px':'2px'}; }
+      </style>
+      <div class="track"><div class="thumb"></div></div>`;
+  }
+});
+
+// ── tek-selector-label ────────────────────────────────────────
+customElements.define('tek-selector-label', class extends HTMLElement {
+  static get observedAttributes() { return ['checked','error']; }
+  connectedCallback() { this._render(); }
+  attributeChangedCallback() { this._render(); }
+
+  _render() {
+    const checked = this.hasAttribute('checked');
+    const error   = this.hasAttribute('error');
+    const s = this.shadowRoot || this.attachShadow({mode:'open'});
+    const color = error   ? 'var(--tek-color-selector-label-error,#ffffff)'
+                : checked ? 'var(--tek-color-selector-label-checked,#ffffff)'
+                : 'var(--tek-color-selector-label-default,#cccccc)';
+    const weight = checked ? '500' : '400';
+    s.innerHTML = `
+      <style>
+        :host { display:inline; }
+        span { font-family:'DM Sans',system-ui,sans-serif; font-size:13px;
+               font-weight:${weight}; color:${color}; line-height:1.5;
+               transition:color 0.15s; }
+      </style>
+      <span><slot></slot></span>`;
+  }
+});
+
+// ── tek-selector ──────────────────────────────────────────────
+customElements.define('tek-selector', class extends HTMLElement {
+  static get observedAttributes() { return ['type','label','checked','error','disabled','name']; }
+  connectedCallback() { this._render(); }
+  attributeChangedCallback() { this._render(); }
+
+  _render() {
+    const type    = this.getAttribute('type') || 'checkbox';
+    const label   = this.getAttribute('label') || '';
+    const checked = this.hasAttribute('checked') ? 'checked' : '';
+    const error   = this.hasAttribute('error')   ? 'error'   : '';
+    const disabled= this.hasAttribute('disabled')? 'disabled': '';
+    const name    = this.getAttribute('name')    ? `name="${this.getAttribute('name')}"` : '';
+    const s = this.shadowRoot || this.attachShadow({mode:'open'});
+    s.innerHTML = `
+      <style>
+        :host { display:inline-flex; align-items:center; gap:8px;
+                cursor:${disabled?'not-allowed':'pointer'}; user-select:none; }
+      </style>
+      <tek-${type} ${checked} ${error} ${disabled} ${name}></tek-${type}>
+      <tek-selector-label ${checked} ${error}>${label}</tek-selector-label>`;
+
+    const control = s.querySelector(`tek-${type}`);
+    const lbl     = s.querySelector('tek-selector-label');
+    s.host.addEventListener('click', (e) => {
+      if (disabled) return;
+      if (e.target === control) return; // let control handle its own click
+      control.click();
+    });
+    control.addEventListener('tek-change', (e) => {
+      e.detail.checked ? lbl.setAttribute('checked','') : lbl.removeAttribute('checked');
+    });
+  }
+});
+
+// ── tek-input ─────────────────────────────────────────────────
+customElements.define('tek-input', class extends HTMLElement {
+  static get observedAttributes() { return ['state','height','placeholder','value','type']; }
+  connectedCallback() { this._render(); }
+  attributeChangedCallback() { this._render(); }
+
+  _render() {
+    const state  = this.getAttribute('state') || 'default';
+    const height = this.getAttribute('height') || 'single';
+    const ph     = this.getAttribute('placeholder') || '';
+    const val    = this.getAttribute('value') || '';
+    const type   = this.getAttribute('type') || 'text';
+    const s = this.shadowRoot || this.attachShadow({mode:'open'});
+
+    const borderColor = {
+      default:  'var(--tek-color-input-border-default,#7b7b7b)',
+      focus:    'var(--tek-color-input-border-focus,#ffffff)',
+      filled:   'var(--tek-color-input-border-filled,#afafaf)',
+      disabled: 'var(--tek-color-input-border-disabled,#454545)',
+      error:    'var(--tek-color-input-border-error,#e74848)',
+    }[state] || 'var(--tek-color-input-border-default,#7b7b7b)';
+
+    const textColor = {
+      default:  'var(--tek-color-input-text-default,#979797)',
+      focus:    'var(--tek-color-input-text-focus,#ffffff)',
+      filled:   'var(--tek-color-input-text-filled,#cccccc)',
+      disabled: 'var(--tek-color-input-text-disabled,#454545)',
+      error:    'var(--tek-color-input-text-error,#ffffff)',
+    }[state] || 'var(--tek-color-input-text-default,#979797)';
+
+    const isMulti = height !== 'single';
+    const rows = height === 'double' ? 2 : height === 'triple' ? 3 : 1;
+    const field = isMulti
+      ? `<textarea rows="${rows}" placeholder="${ph}">${val}</textarea>`
+      : `<input type="${type}" placeholder="${ph}" value="${val}">`;
+
+    s.innerHTML = `
+      <style>
+        :host { display:block; }
+        input, textarea {
+          width:100%; min-width:180px; background:var(--tek-color-input-bg,#181818);
+          border:1px solid ${borderColor}; border-radius:5px;
+          padding:8px 10px; font-family:'DM Sans',system-ui,sans-serif;
+          font-size:13px; color:${textColor};
+          outline:none; resize:none; transition:border-color 0.15s, color 0.15s;
+          pointer-events:${state==='disabled'?'none':'auto'};
+        }
+        input::placeholder, textarea::placeholder { color:inherit; opacity:0.7; }
+        input:focus, textarea:focus { border-color:var(--tek-color-input-border-focus,#ffffff);
+          color:var(--tek-color-input-text-focus,#ffffff); }
+      </style>
+      ${field}`;
+
+    const el = s.querySelector('input, textarea');
+    el?.addEventListener('focus', () => {
+      if (state === 'default') this.setAttribute('state','focus');
+    });
+    el?.addEventListener('blur', () => {
+      const v = el.value;
+      if (state !== 'error' && state !== 'disabled')
+        this.setAttribute('state', v ? 'filled' : 'default');
+    });
+    el?.addEventListener('input', () => {
+      this.dispatchEvent(new CustomEvent('tek-input', { bubbles:true, composed:true,
+        detail:{ value: el.value } }));
+    });
+  }
+});
+
+// ── tek-character-count ───────────────────────────────────────
+customElements.define('tek-character-count', class extends HTMLElement {
+  static get observedAttributes() { return ['count','max','state']; }
+  connectedCallback() { this._render(); }
+  attributeChangedCallback() { this._render(); }
+
+  _render() {
+    const count = parseInt(this.getAttribute('count') || '0');
+    const max   = parseInt(this.getAttribute('max')   || '140');
+    const state = this.getAttribute('state') || 'default';
+    const s = this.shadowRoot || this.attachShadow({mode:'open'});
+    const isError = state === 'error' || count >= max;
+    const color = isError ? 'var(--tek-p-red,#e74848)'
+                : state === 'disabled' ? 'var(--tek-p-grey-500,#454545)'
+                : 'var(--tek-p-grey-300,#979797)';
+    s.innerHTML = `
+      <style>
+        :host { display:block; }
+        span { font-family:'DM Mono',monospace; font-size:11px;
+               color:${color}; transition:color 0.15s; }
+      </style>
+      <span>${count}/${max}</span>`;
+  }
+});
+
+// ── tek-button ────────────────────────────────────────────────
+customElements.define('tek-button', class extends HTMLElement {
+  static get observedAttributes() { return ['variant','inactive','disabled']; }
+  connectedCallback() { this._render(); this._setupEvents(); }
+  attributeChangedCallback() { this._render(); }
+
+  _setupEvents() {
+    this.setAttribute('role','button');
+    this.addEventListener('click', () => {
+      if (this.hasAttribute('inactive') || this.hasAttribute('disabled')) return;
+      this.dispatchEvent(new CustomEvent('tek-click', { bubbles:true, composed:true }));
+    });
+    this.addEventListener('keydown', e => {
+      if ((e.key === ' ' || e.key === 'Enter') && !this.hasAttribute('inactive') && !this.hasAttribute('disabled')) {
+        e.preventDefault();
+        this.dispatchEvent(new CustomEvent('tek-click', { bubbles:true, composed:true }));
+      }
+    });
+  }
+
+  _render() {
+    const inactive = this.hasAttribute('inactive') || this.hasAttribute('disabled');
+    const s = this.shadowRoot || this.attachShadow({mode:'open'});
+    s.innerHTML = `
+      <style>
+        :host { display:inline-block; }
+        button {
+          width:100%; background:${inactive?'var(--tek-color-btn-bg-inactive,#181818)':'var(--tek-color-btn-bg-default,#1e1e1e)'};
+          border:1px solid ${inactive?'var(--tek-color-btn-border-inactive,#454545)':'var(--tek-color-btn-border-default,#33baea)'};
+          border-radius:5px; padding:10px 28px;
+          font-family:'DM Sans',system-ui,sans-serif; font-size:13px; font-weight:500;
+          color:${inactive?'var(--tek-color-btn-text-inactive,#454545)':'var(--tek-color-btn-text-default,#cccccc)'};
+          cursor:${inactive?'not-allowed':'pointer'};
+          transition:background 0.15s, color 0.15s; white-space:nowrap;
+        }
+        button:not(:disabled):hover {
+          background:var(--tek-color-btn-bg-hover,#000000);
+          color:var(--tek-color-btn-text-hover,#ffffff);
+        }
+        button:focus-visible { outline:2px solid var(--tek-p-blue,#33baea); outline-offset:2px; }
+      </style>
+      <button ${inactive?'disabled':''}><slot></slot></button>`;
+  }
+});
+
+// ── tek-text-link ─────────────────────────────────────────────
+customElements.define('tek-text-link', class extends HTMLElement {
+  static get observedAttributes() { return ['href','target']; }
+  connectedCallback() { this._render(); }
+  attributeChangedCallback() { this._render(); }
+
+  _render() {
+    const href   = this.getAttribute('href') || '#';
+    const target = this.getAttribute('target') || '';
+    const s = this.shadowRoot || this.attachShadow({mode:'open'});
+    s.innerHTML = `
+      <style>
+        :host { display:inline; }
+        a { font-family:'DM Sans',system-ui,sans-serif; font-size:inherit;
+            font-weight:400; color:var(--tek-color-text-link,#33baea);
+            text-decoration:none; transition:text-decoration 0.1s; }
+        a:hover { text-decoration:underline; }
+      </style>
+      <a href="${href}"${target?` target="${target}"`:''}><slot></slot></a>`;
+  }
+});
+
+// ── tek-modal ─────────────────────────────────────────────────
+customElements.define('tek-modal', class extends HTMLElement {
+  connectedCallback() { this._render(); }
+
+  _render() {
+    const s = this.shadowRoot || this.attachShadow({mode:'open'});
+    s.innerHTML = `
+      <style>
+        :host { display:block; background:var(--tek-color-modal-bg,#181818);
+                border:0.5px solid var(--tek-color-modal-border,#7b7b7b);
+                border-radius:11px; padding:32px; width:320px; max-width:100%;
+                display:flex; flex-direction:column; gap:14px; box-sizing:border-box;
+                box-shadow:0 4px 24px rgba(0,0,0,0.4); }
+        .header { font-family:'Archivo',sans-serif; font-size:24px; font-weight:600;
+                  line-height:1; color:var(--tek-color-modal-text,#ffffff);
+                  letter-spacing:-0.01em; }
+        .inputs, .actions { display:flex; flex-direction:column; gap:10px; width:100%; }
+      </style>
+      <div class="header"><slot name="header"></slot></div>
+      <div class="inputs"><slot name="input-blocks"></slot></div>
+      <div class="actions"><slot name="action-blocks"></slot></div>`;
+  }
+});
+
+// ── tek-footer ────────────────────────────────────────────────
+customElements.define('tek-footer', class extends HTMLElement {
+  connectedCallback() { this._render(); }
+
+  _render() {
+    const s = this.shadowRoot || this.attachShadow({mode:'open'});
+    s.innerHTML = `
+      <style>
+        :host { display:block; background:var(--tek-color-footer-bg,#252525);
+                width:100%; min-height:36px; padding:10px 16px;
+                display:flex; align-items:center; justify-content:flex-end; }
+        span { font-family:'DM Sans',system-ui,sans-serif; font-size:12px;
+               font-weight:400; line-height:1; color:var(--tek-color-footer-text,#cccccc); }
+      </style>
+      <span><slot></slot></span>`;
+  }
+});
+
+// ── Page JS ────────────────────────────────────────────────────
+function copyCode(btn) {
+  const pre = btn.closest('.code-block-wrapper').querySelector('.code-pre');
+  const text = pre.textContent.trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copied`;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1"/><path d="M3 8H2C1.4 8 1 7.6 1 7V2C1 1.4 1.4 1 2 1H7C7.6 1 8 1.4 8 2V3" stroke="currentColor" stroke-width="1"/></svg> Copy`;
+    }, 2000);
+  });
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('mobileOverlay').classList.toggle('open');
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('mobileOverlay').classList.remove('open');
+}
+
+// Scroll spy
+const sections = document.querySelectorAll('.section[id]');
+const links = document.querySelectorAll('.sidebar-link');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const match = document.querySelector(`.sidebar-link[href="#${e.target.id}"]`);
+      if (match) match.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+sections.forEach(s => obs.observe(s));
+
+// Close sidebar on link click (mobile)
+links.forEach(l => l.addEventListener('click', () => {
+  if (window.innerWidth < 768) closeSidebar();
+}));
+</script>
+
+</body>
+</html>
