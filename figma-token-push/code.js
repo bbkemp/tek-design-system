@@ -1,5 +1,5 @@
 // code.js — Token Push plugin (ES5 compatible)
-// v3 — dimension px fix, multi-mode warning, improved error handling
+// v4 — sidebar group routing, flat variable names supported
 
 figma.showUI(__html__, { width: 420, height: 500, title: "Token Push" });
 
@@ -31,18 +31,18 @@ figma.ui.onmessage = async function(msg) {
   }
 };
 
-// ── Groups that contain dimension values (floats that need px) ───────────────
-// Unitless groups (like opacity, z-index) are NOT in this list.
+// ── Groups whose float values should get px appended ────────────────────────
 var DIMENSION_GROUPS = {
   "spacing":    true,
+  "dimension":  true,
   "borders":    true,
   "border":     true,
+  "radius":     true,
   "typography": true,
   "type":       true,
   "motion":     true,
   "animation":  true,
   "elevation":  true,
-  "radius":     true,
   "size":       true,
   "sizing":     true
 };
@@ -69,18 +69,49 @@ async function collectTokenFiles() {
     // ── Mode handling ──────────────────────────────────────────────────────
     var modeMap = {};
     for (var mi = 0; mi < col.modes.length; mi++) {
-      var mode = col.modes[mi];
-      modeMap[mode.name] = mode.modeId;
+      modeMap[col.modes[mi].name] = col.modes[mi].modeId;
     }
     var defaultModeId = col.defaultModeId;
 
-    // Warn if multiple modes exist — data would be silently dropped otherwise
     if (col.modes.length > 1) {
       var modeNames = [];
       for (var mn = 0; mn < col.modes.length; mn++) {
         modeNames.push(col.modes[mn].name);
       }
-      warnings.push("\"" + col.name + "\" has " + col.modes.length + " modes (" + modeNames.join(", ") + ") — only \"" + col.modes[0].name + "\" exported. Multi-mode support coming soon.");
+      warnings.push(
+        "\"" + col.name + "\" has " + col.modes.length +
+        " modes (" + modeNames.join(", ") +
+        ") — only \"" + col.modes[0].name + "\" exported. Multi-mode support coming soon."
+      );
+    }
+
+    // ── Build sidebar group map ────────────────────────────────────────────
+    // Figma encodes sidebar groups in the variable name using "/" as separator.
+    // e.g. "spacing/s00" → group is "spacing", token key is "s00"
+    // e.g. "s00" (flat) → no group in name, we derive group from name prefix
+    //
+    // For flat variables, we look at the variable's name prefix pattern:
+    // If ALL variables in the collection share the same sidebar group
+    // (visible in col.variableGroupIds), we can map them.
+    //
+    // Figma API: col.variableGroupIds maps groupId → { name, variableIds }
+    // This is the definitive way to get sidebar group membership.
+
+    var groupForVar = {}; // varId → sidebar group name (lowercased, stripped of emoji)
+
+    if (col.variableGroupIds) {
+      var groupIds = Object.keys(col.variableGroupIds);
+      for (var gi = 0; gi < groupIds.length; gi++) {
+        var groupId = groupIds[gi];
+        var group   = col.variableGroupIds[groupId];
+        var groupName = stripEmoji(group.name).toLowerCase().trim();
+        var groupVarIds = group.variableIds;
+        if (groupVarIds) {
+          for (var gvi = 0; gvi < groupVarIds.length; gvi++) {
+            groupForVar[groupVarIds[gvi]] = groupName;
+          }
+        }
+      }
     }
 
     // ── Variable loop ──────────────────────────────────────────────────────
@@ -88,16 +119,33 @@ async function collectTokenFiles() {
       var v = varById[col.variableIds[vi]];
       if (!v) continue;
 
+      // Split name into path segments (handles both flat "s00" and nested "spacing/s00")
       var nameParts = v.name.split("/");
       for (var ni = 0; ni < nameParts.length; ni++) {
         nameParts[ni] = nameParts[ni].trim();
       }
-      if (nameParts.length === 0) continue;
+      if (nameParts.length === 0 || !nameParts[0]) continue;
 
-      var topGroup = nameParts[0].toLowerCase();
+      // Determine the routing group:
+      // 1. If variable name has a "/" prefix (e.g. "spacing/s00"), use that
+      // 2. Otherwise use the sidebar group from variableGroupIds
+      // 3. Fall back to the first name segment
+      var routingGroup;
+      if (nameParts.length > 1) {
+        // Has explicit group in name — use it
+        routingGroup = nameParts[0].toLowerCase();
+      } else if (groupForVar[v.id]) {
+        // Flat name but we know the sidebar group
+        routingGroup = groupForVar[v.id];
+      } else {
+        // Last resort — use first name segment
+        routingGroup = nameParts[0].toLowerCase();
+      }
 
-      // Determine if this float should be treated as a dimension (px)
-      var isDimension = (v.resolvedType === "FLOAT") && DIMENSION_GROUPS[topGroup];
+      routingGroup = stripEmoji(routingGroup).trim();
+
+      // isDimension: this float should get px appended
+      var isDimension = (v.resolvedType === "FLOAT") && DIMENSION_GROUPS[routingGroup];
 
       var type = dtcgType(v.resolvedType, isDimension);
       if (!type) continue;
@@ -110,23 +158,33 @@ async function collectTokenFiles() {
         token.$description = v.description;
       }
 
+      // Build the token key path:
+      // For flat variables in a named group, nest under the group name
+      // so output is { spacing: { s00: {...}, s01: {...} } }
+      var keyPath;
+      if (nameParts.length === 1 && groupForVar[v.id]) {
+        // Flat variable with known group → nest it: [groupName, varName]
+        keyPath = [groupForVar[v.id], nameParts[0]];
+      } else {
+        keyPath = nameParts;
+      }
+
       // ── Route to correct file ────────────────────────────────────────────
 
       if (col.name === "Primitives") {
-        var fileName = groupToFileName(topGroup);
+        var fileName = groupToFileName(routingGroup);
         var filePath = "packages/tokens/src/primitives/" + fileName + ".json";
         if (!buckets[filePath]) buckets[filePath] = {};
-        setNested(buckets[filePath], nameParts, token);
+        setNested(buckets[filePath], keyPath, token);
 
       } else if (col.name === "Semantic") {
         var semPath = "packages/tokens/src/semantic/tokens.json";
         if (!buckets[semPath]) buckets[semPath] = {};
-        setNested(buckets[semPath], nameParts, token);
+        setNested(buckets[semPath], keyPath, token);
       }
     }
   }
 
-  // Return files + any warnings
   var result = [];
   var paths = Object.keys(buckets).sort();
   for (var pi = 0; pi < paths.length; pi++) {
@@ -139,7 +197,14 @@ async function collectTokenFiles() {
   return { files: result, warnings: warnings };
 }
 
-// ── Group name → file name ───────────────────────────────────────────────────
+// ── Strip emoji and non-ASCII from group names ───────────────────────────────
+
+function stripEmoji(str) {
+  // Remove emoji and non-standard characters, keep letters/numbers/spaces/hyphens
+  return str.replace(/[^\x00-\x7F]/g, "").replace(/\s+/g, " ").trim();
+}
+
+// ── Group name → file name mapping ──────────────────────────────────────────
 
 function groupToFileName(group) {
   var aliases = {
@@ -147,12 +212,14 @@ function groupToFileName(group) {
     "borders":    "border",
     "border":     "border",
     "spacing":    "spacing",
+    "dimension":  "dimension",
     "typography": "typography",
     "type":       "typography",
     "motion":     "motion",
     "animation":  "motion",
     "elevation":  "elevation",
-    "shadow":     "elevation"
+    "shadow":     "elevation",
+    "radius":     "border"
   };
   return aliases[group] ? aliases[group] : group;
 }
@@ -179,11 +246,7 @@ function resolveValue(variable, modeId, varById, isDimension) {
   if (variable.resolvedType === "BOOLEAN") return raw;
 
   if (variable.resolvedType === "FLOAT") {
-    // Dimension groups get px appended, unitless groups (opacity etc.) stay as numbers
-    if (isDimension) {
-      return raw + "px";
-    }
-    return raw;
+    return isDimension ? (raw + "px") : raw;
   }
 
   return String(raw);
