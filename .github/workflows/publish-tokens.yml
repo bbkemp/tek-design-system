@@ -9,6 +9,10 @@ on:
       - 'packages/tokens/build.js'
       - 'packages/tokens/package.json'
 
+concurrency:
+  group: publish-tokens
+  cancel-in-progress: false
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -19,6 +23,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Set up Node + GitHub Packages registry
         uses: actions/setup-node@v4
