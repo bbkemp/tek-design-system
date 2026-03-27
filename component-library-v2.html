@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tek Design System — Component Library v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+/* ── Design Tokens ─────────────────────────────────────────────────────── */
+:root {
+  /* Primitives */
+  --tek-colors-neutral-black:    #000000;
+  --tek-colors-neutral-900:      #181818;
+  --tek-colors-neutral-800:      #1E1E1E;
+  --tek-colors-neutral-700:      #252525;
+  --tek-colors-neutral-600:      #333333;
+  --tek-colors-neutral-500:      #454545;
+  --tek-colors-neutral-450:      #646464;
+  --tek-colors-neutral-400:      #7B7B7B;
+  --tek-colors-neutral-300:      #979797;
+  --tek-colors-neutral-200:      #AFAFAF;
+  --tek-colors-neutral-100:      #CCCCCC;
+  --tek-colors-neutral-white:    #FFFFFF;
+  --tek-colors-brand-tek-blue:   #33BAEA;
+  --tek-colors-ui-error-red:     #E74848;
+  --tek-colors-ui-success-green: #42B54C;
+  --tek-colors-ui-warning-yellow:#E0B732;
+  --tek-colors-ui-shadow:        rgba(0,0,0,0.2);
+
+  /* Spacing */
+  --tek-spacing-s00: 0px;  --tek-spacing-s01: 1px;   --tek-spacing-s02: 2px;
+  --tek-spacing-s03: 4px;  --tek-spacing-s04: 6px;   --tek-spacing-s05: 8px;
+  --tek-spacing-s06: 10px; --tek-spacing-s07: 12px;  --tek-spacing-s08: 14px;
+  --tek-spacing-s09: 16px; --tek-spacing-s10: 20px;  --tek-spacing-s11: 24px;
+  --tek-spacing-s12: 28px; --tek-spacing-s13: 32px;  --tek-spacing-s14: 36px;
+  --tek-spacing-s15: 40px; --tek-spacing-s16: 44px;  --tek-spacing-s17: 48px;
+  --tek-spacing-s18: 56px; --tek-spacing-s19: 64px;  --tek-spacing-s20: 80px;
+
+  /* Border */
+  --tek-borders-radius-none: 0px;
+  --tek-borders-radius-02:   3px;
+  --tek-borders-radius-03:   5px;
+  --tek-borders-radius-05:   11px;
+  --tek-borders-radius-full: 9999px;
+  --tek-borders-width-01:    0.5px;
+  --tek-borders-width-02:    1px;
+  --tek-borders-width-04:    2px;
+
+  /* Semantic — selector */
+  --color-selector-bg-default:   var(--tek-colors-neutral-700);
+  --color-selector-bg-unchecked: var(--tek-colors-neutral-500);
+  --color-selector-bg-checked:   var(--tek-colors-neutral-100);
+  --color-selector-border-unchecked: var(--tek-colors-neutral-400);
+  --color-selector-border-checked:   var(--tek-colors-neutral-300);
+  --color-selector-border-error:     var(--tek-colors-ui-error-red);
+  --color-selector-label-unchecked:  var(--tek-colors-neutral-100);
+  --color-selector-label-checked:    var(--tek-colors-neutral-white);
+  --color-selector-label-error:      var(--tek-colors-neutral-white);
+
+  /* Semantic — input */
+  --color-input-bg:             var(--tek-colors-neutral-700);
+  --color-input-border-default: var(--tek-colors-neutral-400);
+  --color-input-border-focus:   var(--tek-colors-neutral-white);
+  --color-input-border-filled:  var(--tek-colors-neutral-200);
+  --color-input-border-disabled:var(--tek-colors-neutral-500);
+  --color-input-border-error:   var(--tek-colors-ui-error-red);
+  --color-input-text-default:   var(--tek-colors-neutral-300);
+  --color-input-text-focus:     var(--tek-colors-neutral-white);
+  --color-input-text-filled:    var(--tek-colors-neutral-100);
+  --color-input-text-disabled:  var(--tek-colors-neutral-500);
+  --color-input-label:          var(--tek-colors-neutral-100);
+
+  /* Semantic — button */
+  --color-btn-bg:         var(--tek-colors-neutral-800);
+  --color-btn-bg-hover:   var(--tek-colors-neutral-black);
+  --color-btn-bg-inactive:var(--tek-colors-neutral-900);
+  --color-btn-border:     var(--tek-colors-brand-tek-blue);
+  --color-btn-border-inactive: var(--tek-colors-neutral-500);
+  --color-btn-text:       var(--tek-colors-neutral-100);
+  --color-btn-text-hover: var(--tek-colors-neutral-white);
+  --color-btn-text-inactive: var(--tek-colors-neutral-500);
+
+  /* Semantic — modal */
+  --color-modal-bg:     var(--tek-colors-neutral-900);
+  --color-modal-border: var(--tek-colors-neutral-400);
+
+  /* Semantic — footer */
+  --color-footer-bg:   var(--tek-colors-neutral-700);
+  --color-footer-text: var(--tek-colors-neutral-100);
+}
+
+/* ── Reset ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Layout ────────────────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--tek-colors-neutral-900);
+  color: var(--tek-colors-neutral-white);
+  font-family: 'Archivo', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ── Header ────────────────────────────────────────────────────────────── */
+.ds-header {
+  background: var(--tek-colors-neutral-800);
+  border-bottom: var(--tek-borders-width-02) solid var(--tek-colors-neutral-600);
+  padding: var(--tek-spacing-s09) var(--tek-spacing-s13);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.ds-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--tek-spacing-s09);
+}
+
+.ds-wordmark {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--tek-colors-brand-tek-blue);
+}
+
+.ds-separator {
+  width: 1px;
+  height: 16px;
+  background: var(--tek-colors-neutral-600);
+}
+
+.ds-title {
+  font-size: 13px;
+  color: var(--tek-colors-neutral-300);
+  letter-spacing: 0.5px;
+}
+
+.ds-version {
+  font-size: 11px;
+  color: var(--tek-colors-neutral-450);
+  background: var(--tek-colors-neutral-700);
+  border: var(--tek-borders-width-02) solid var(--tek-colors-neutral-600);
+  border-radius: var(--tek-borders-radius-full);
+  padding: 2px 8px;
+  letter-spacing: 1px;
+}
+
+/* ── Main layout ────────────────────────────────────────────────────────── */
+.ds-body {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 53px);
+}
+
+/* ── Sidebar nav ────────────────────────────────────────────────────────── */
+.ds-nav {
+  background: var(--tek-colors-neutral-800);
+  border-right: var(--tek-borders-width-02) solid var(--tek-colors-neutral-600);
+  padding: var(--tek-spacing-s13) 0;
+  position: sticky;
+  top: 53px;
+  height: calc(100vh - 53px);
+  overflow-y: auto;
+}
+
+.ds-nav-section {
+  margin-bottom: var(--tek-spacing-s09);
+}
+
+.ds-nav-heading {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--tek-colors-neutral-450);
+  padding: var(--tek-spacing-s05) var(--tek-spacing-s11) var(--tek-spacing-s03);
+}
+
+.ds-nav-link {
+  display: block;
+  padding: var(--tek-spacing-s04) var(--tek-spacing-s11);
+  font-size: 12px;
+  color: var(--tek-colors-neutral-300);
+  text-decoration: none;
+  transition: color 0.1s, background 0.1s;
+  border-left: 2px solid transparent;
+}
+
+.ds-nav-link:hover {
+  color: var(--tek-colors-neutral-white);
+  background: var(--tek-colors-neutral-700);
+  border-left-color: var(--tek-colors-brand-tek-blue);
+}
+
+/* ── Content ────────────────────────────────────────────────────────────── */
+.ds-content {
+  padding: var(--tek-spacing-s13);
+  max-width: 960px;
+}
+
+/* ── Section ────────────────────────────────────────────────────────────── */
+.ds-section {
+  margin-bottom: var(--tek-spacing-s20);
+}
+
+.ds-section-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--tek-spacing-s07);
+  margin-bottom: var(--tek-spacing-s13);
+  padding-bottom: var(--tek-spacing-s09);
+  border-bottom: var(--tek-borders-width-02) solid var(--tek-colors-neutral-700);
+}
+
+.ds-section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--tek-colors-neutral-white);
+}
+
+.ds-section-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--tek-colors-brand-tek-blue);
+}
+
+.ds-subsection {
+  margin-bottom: var(--tek-spacing-s15);
+}
+
+.ds-subsection-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--tek-colors-neutral-450);
+  margin-bottom: var(--tek-spacing-s09);
+}
+
+/* ── Component grid ─────────────────────────────────────────────────────── */
+.comp-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--tek-spacing-s11);
+}
+
+.comp-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tek-spacing-s09);
+}
+
+.comp-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tek-spacing-s03);
+}
+
+.comp-label {
+  font-size: 9px;
+  color: var(--tek-colors-neutral-450);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ── Canvas (dark background for components) ────────────────────────────── */
+.comp-canvas {
+  background: var(--tek-colors-neutral-800);
+  border: var(--tek-borders-width-02) solid var(--tek-colors-neutral-600);
+  border-radius: var(--tek-borders-radius-03);
+  padding: var(--tek-spacing-s13);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   COMPONENTS
+══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Checkbox ────────────────────────────────────────────────────────────── */
+.tek-checkbox {
+  width: 16px;
+  height: 16px;
+  background: var(--color-selector-bg-default);
+  border: var(--tek-borders-width-02) solid var(--color-selector-border-unchecked);
+  border-radius: var(--tek-borders-radius-02);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.tek-checkbox[data-checked] {
+  background: var(--color-selector-bg-checked);
+  border-color: var(--color-selector-border-checked);
+}
+
+.tek-checkbox[data-checked]::after {
+  content: '';
+  width: 8px;
+  height: 5px;
+  border-left: 1.5px solid var(--tek-colors-neutral-900);
+  border-bottom: 1.5px solid var(--tek-colors-neutral-900);
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+.tek-checkbox[data-error] {
+  border-color: var(--color-selector-border-error);
+}
+
+.tek-checkbox[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Radio ────────────────────────────────────────────────────────────────── */
+.tek-radio {
+  width: 16px;
+  height: 16px;
+  background: var(--color-selector-bg-default);
+  border: var(--tek-borders-width-02) solid var(--color-selector-border-unchecked);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.tek-radio[data-checked] {
+  border-color: var(--color-selector-border-checked);
+}
+
+.tek-radio[data-checked]::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--tek-colors-neutral-white);
+  border-radius: 50%;
+}
+
+.tek-radio[data-error] {
+  border-color: var(--color-selector-border-error);
+}
+
+/* ── Toggle ────────────────────────────────────────────────────────────────── */
+.tek-toggle {
+  width: 28px;
+  height: 14px;
+  background: var(--color-selector-bg-unchecked);
+  border-radius: var(--tek-borders-radius-full);
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.tek-toggle::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 10px;
+  height: 10px;
+  background: var(--tek-colors-neutral-white);
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.tek-toggle[data-checked] {
+  background: var(--color-selector-bg-checked);
+}
+
+.tek-toggle[data-checked]::after {
+  transform: translateX(14px);
+}
+
+.tek-toggle[data-error] {
+  background: var(--color-selector-border-error);
+}
+
+/* ── Selector Label ──────────────────────────────────────────────────────── */
+.tek-selector-label {
+  font-family: 'SF Compact', -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 457;
+  line-height: 12px;
+  color: var(--color-selector-label-unchecked);
+  transition: color 0.15s;
+}
+
+.tek-selector-label[data-checked] {
+  color: var(--color-selector-label-checked);
+}
+
+.tek-selector-label[data-error] {
+  color: var(--color-selector-label-error);
+}
+
+/* ── Selector (composite) ────────────────────────────────────────────────── */
+.tek-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tek-spacing-s05);
+  cursor: pointer;
+}
+
+/* ── Input ────────────────────────────────────────────────────────────────── */
+.tek-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tek-spacing-s02);
+  width: 258px;
+}
+
+.tek-input-label {
+  font-family: 'SF Compact', -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 457;
+  line-height: 12px;
+  color: var(--color-input-label);
+}
+
+.tek-input {
+  background: var(--color-input-bg);
+  border: var(--tek-borders-width-02) solid var(--color-input-border-default);
+  border-radius: var(--tek-borders-radius-02);
+  color: var(--color-input-text-default);
+  font-family: 'SF Compact', -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 457;
+  line-height: 15px;
+  padding: var(--tek-spacing-s05) var(--tek-spacing-s07);
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s, color 0.15s;
+  -webkit-appearance: none;
+}
+
+.tek-input::placeholder { color: var(--color-input-text-default); }
+
+.tek-input.is-focus {
+  border-color: var(--color-input-border-focus);
+  color: var(--color-input-text-focus);
+}
+
+.tek-input.is-filled {
+  border-color: var(--color-input-border-filled);
+  color: var(--color-input-text-filled);
+}
+
+.tek-input.is-disabled {
+  border-color: var(--color-input-border-disabled);
+  color: var(--color-input-text-disabled);
+  cursor: not-allowed;
+}
+
+.tek-input.is-error {
+  border-color: var(--color-input-border-error);
+}
+
+.tek-input.height-double { height: 48px; }
+.tek-input.height-triple { height: 64px; resize: none; }
+
+/* ── Button ────────────────────────────────────────────────────────────────── */
+.tek-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--tek-borders-radius-full);
+  font-family: 'Archivo', sans-serif;
+  font-size: 16px;
+  font-weight: 578;
+  line-height: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.tek-btn-primary {
+  background: var(--color-btn-bg);
+  border: var(--tek-borders-width-04) solid var(--color-btn-border);
+  color: var(--color-btn-text);
+  padding: var(--tek-spacing-s07) var(--tek-spacing-s11);
+  height: 42px;
+}
+
+.tek-btn-primary:hover {
+  background: var(--color-btn-bg-hover);
+  color: var(--color-btn-text-hover);
+}
+
+.tek-btn-primary.is-inactive {
+  background: var(--color-btn-bg-inactive);
+  border-color: var(--color-btn-border-inactive);
+  color: var(--color-btn-text-inactive);
+  cursor: not-allowed;
+  height: 38px;
+}
+
+.tek-btn-secondary {
+  background: transparent;
+  border: none;
+  color: var(--color-btn-text);
+  padding: var(--tek-spacing-s04) var(--tek-spacing-s07);
+  font-size: 12px;
+  height: 27px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.tek-btn-secondary:hover {
+  color: var(--color-btn-text-hover);
+}
+
+.tek-btn-secondary.is-inactive {
+  color: var(--color-btn-text-inactive);
+  cursor: not-allowed;
+}
+
+/* ── Text Link ───────────────────────────────────────────────────────────── */
+.tek-text-link {
+  font-family: 'SF Compact', -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 457;
+  color: var(--tek-colors-brand-tek-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.tek-text-link:hover { opacity: 0.8; }
+
+/* ── Character Count ────────────────────────────────────────────────────── */
+.tek-char-count {
+  font-family: 'SF Compact', -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 457;
+  line-height: 15px;
+  color: var(--color-input-label);
+}
+
+.tek-char-count.is-focus  { color: var(--tek-colors-neutral-white); }
+.tek-char-count.is-filled { color: var(--tek-colors-neutral-200); }
+.tek-char-count.is-error  { color: var(--tek-colors-ui-error-red); }
+.tek-char-count.is-warning { color: var(--tek-colors-ui-warning-yellow); }
+
+/* ── Modal ───────────────────────────────────────────────────────────────── */
+.tek-modal {
+  width: 320px;
+  background: var(--color-modal-bg);
+  border: var(--tek-borders-width-02) solid var(--color-modal-border);
+  border-radius: var(--tek-borders-radius-03);
+  padding: var(--tek-spacing-s11);
+  box-shadow: 0 2px 6px var(--tek-colors-ui-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--tek-spacing-s09);
+}
+
+.tek-modal-title {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--tek-colors-neutral-white);
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.tek-footer {
+  background: var(--color-footer-bg);
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 var(--tek-spacing-s09);
+  width: 100%;
+}
+
+.tek-footer-text {
+  font-family: 'SF Compact', -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 457;
+  color: var(--color-footer-text);
+}
+
+/* ── Token swatch ────────────────────────────────────────────────────────── */
+.token-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: var(--tek-spacing-s07);
+}
+
+.token-swatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tek-spacing-s02);
+}
+
+.token-swatch-color {
+  height: 40px;
+  border-radius: var(--tek-borders-radius-02);
+  border: var(--tek-borders-width-01) solid var(--tek-colors-neutral-600);
+}
+
+.token-swatch-name {
+  font-size: 9px;
+  color: var(--tek-colors-neutral-450);
+  letter-spacing: 0.5px;
+}
+
+.token-swatch-value {
+  font-size: 9px;
+  color: var(--tek-colors-neutral-500);
+  font-family: 'SF Compact Mono', monospace;
+}
+
+/* ── Footer strip ────────────────────────────────────────────────────────── */
+.ds-footer {
+  background: var(--color-footer-bg);
+  border-top: var(--tek-borders-width-02) solid var(--tek-colors-neutral-600);
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--tek-spacing-s13);
+}
+
+.ds-footer-text {
+  font-size: 11px;
+  color: var(--color-footer-text);
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="ds-header">
+  <div class="ds-header-left">
+    <span class="ds-wordmark">Tektronix</span>
+    <div class="ds-separator"></div>
+    <span class="ds-title">Design System — Component Library</span>
+  </div>
+  <span class="ds-version">v2.0</span>
+</header>
+
+<div class="ds-body">
+
+  <!-- Nav -->
+  <nav class="ds-nav">
+    <div class="ds-nav-section">
+      <div class="ds-nav-heading">Foundation</div>
+      <a href="#tokens" class="ds-nav-link">Tokens</a>
+    </div>
+    <div class="ds-nav-section">
+      <div class="ds-nav-heading">Primitives</div>
+      <a href="#checkbox" class="ds-nav-link">Checkbox</a>
+      <a href="#radio" class="ds-nav-link">Radio</a>
+      <a href="#toggle" class="ds-nav-link">Toggle</a>
+      <a href="#selector-label" class="ds-nav-link">Selector Label</a>
+      <a href="#selector" class="ds-nav-link">Selector</a>
+    </div>
+    <div class="ds-nav-section">
+      <div class="ds-nav-heading">Form</div>
+      <a href="#input" class="ds-nav-link">Input</a>
+      <a href="#button" class="ds-nav-link">Button</a>
+      <a href="#text-link" class="ds-nav-link">Text Link</a>
+      <a href="#char-count" class="ds-nav-link">Character Count</a>
+    </div>
+    <div class="ds-nav-section">
+      <div class="ds-nav-heading">Layout</div>
+      <a href="#modal" class="ds-nav-link">Modal</a>
+      <a href="#footer" class="ds-nav-link">Footer</a>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <main class="ds-content">
+
+    <!-- ── Tokens ───────────────────────────────────────────────────────── -->
+    <section class="ds-section" id="tokens">
+      <div class="ds-section-header">
+        <h2 class="ds-section-title">Tokens</h2>
+        <span class="ds-section-tag">Foundation</span>
+      </div>
+
+      <div class="ds-subsection">
+        <div class="ds-subsection-label">Color — Neutral</div>
+        <div class="token-grid">
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#000000"></div><div class="token-swatch-name">black</div><div class="token-swatch-value">#000000</div></div>
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#181818"></div><div class="token-swatch-name">900</div><div class="token-swatch-value">#181818</div></div>
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#1E1E1E"></div><div class="token-swatch-name">800</div><div class="token-swatch-value">#1E1E1E</div></div>
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#252525"></div><div class="token-swatch-name">700</div><div class="token-swatch-value">#252525</div></div>
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#333333"></div><div class="token-swatch-name">600</div><div class="token-swatch-value">#333333</div></div>
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#454545"></div><div class="token-swatch-name">500</div><div class="token-swatch-value">#454545</div></div>
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#7B7B7B"></div><div class="token-swatch-name">400</div><div class="token-swatch-value">#7B7B7B</div></div>
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#979797"></div><div class="token-swatch-name">300</div><div class="token-swatch-value">#979797</div></div>
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#AFAFAF"></div><div class="token-swatch-name">200</div><div class="token-swatch-value">#AFAFAF</div></div>
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#CCCCCC"></div><div class="token-swatch-name">100</div><div class="token-swatch-value">#CCCCCC</div></div>
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#FFFFFF;border-color:#333"></div><div class="token-swatch-name">white</div><div class="token-swatch-value">#FFFFFF</div></div>
+        </div>
+      </div>
+
+      <div class="ds-subsection">
+        <div class="ds-subsection-label">Color — Brand &amp; UI</div>
+        <div class="token-grid">
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#33BAEA"></div><div class="token-swatch-name">tek-blue</div><div class="token-swatch-value">#33BAEA</div></div>
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#E74848"></div><div class="token-swatch-name">error-red</div><div class="token-swatch-value">#E74848</div></div>
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#42B54C"></div><div class="token-swatch-name">success</div><div class="token-swatch-value">#42B54C</div></div>
+          <div class="token-swatch"><div class="token-swatch-color" style="background:#E0B732"></div><div class="token-swatch-name">warning</div><div class="token-swatch-value">#E0B732</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Checkbox ────────────────────────────────────────────────────── -->
+    <section class="ds-section" id="checkbox">
+      <div class="ds-section-header">
+        <h2 class="ds-section-title">Checkbox</h2>
+        <span class="ds-section-tag">Primitive</span>
+      </div>
+      <div class="comp-canvas">
+        <div class="comp-row">
+          <div class="comp-item">
+            <div class="comp-label">Unchecked</div>
+            <div class="tek-checkbox"></div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Checked</div>
+            <div class="tek-checkbox" data-checked></div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Error</div>
+            <div class="tek-checkbox" data-error></div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Disabled</div>
+            <div class="tek-checkbox" data-disabled></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Radio ──────────────────────────────────────────────────────── -->
+    <section class="ds-section" id="radio">
+      <div class="ds-section-header">
+        <h2 class="ds-section-title">Radio</h2>
+        <span class="ds-section-tag">Primitive</span>
+      </div>
+      <div class="comp-canvas">
+        <div class="comp-row">
+          <div class="comp-item">
+            <div class="comp-label">Unchecked</div>
+            <div class="tek-radio"></div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Checked</div>
+            <div class="tek-radio" data-checked></div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Error</div>
+            <div class="tek-radio" data-error></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Toggle ─────────────────────────────────────────────────────── -->
+    <section class="ds-section" id="toggle">
+      <div class="ds-section-header">
+        <h2 class="ds-section-title">Toggle</h2>
+        <span class="ds-section-tag">Primitive</span>
+      </div>
+      <div class="comp-canvas">
+        <div class="comp-row">
+          <div class="comp-item">
+            <div class="comp-label">Unchecked</div>
+            <div class="tek-toggle"></div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Checked</div>
+            <div class="tek-toggle" data-checked></div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Error</div>
+            <div class="tek-toggle" data-error></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Selector Label ─────────────────────────────────────────────── -->
+    <section class="ds-section" id="selector-label">
+      <div class="ds-section-header">
+        <h2 class="ds-section-title">Selector Label</h2>
+        <span class="ds-section-tag">Primitive</span>
+      </div>
+      <div class="comp-canvas">
+        <div class="comp-row">
+          <div class="comp-item">
+            <div class="comp-label">Unchecked</div>
+            <span class="tek-selector-label">Please select</span>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Checked</div>
+            <span class="tek-selector-label" data-checked>Please select</span>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Error</div>
+            <span class="tek-selector-label" data-error>Please select</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Selector ───────────────────────────────────────────────────── -->
+    <section class="ds-section" id="selector">
+      <div class="ds-section-header">
+        <h2 class="ds-section-title">Selector</h2>
+        <span class="ds-section-tag">Composite</span>
+      </div>
+      <div class="comp-canvas">
+        <div class="comp-col">
+          <div class="ds-subsection-label">Checkbox</div>
+          <div class="comp-row">
+            <label class="tek-selector" onclick="toggleSelector(this)">
+              <div class="tek-checkbox"></div>
+              <span class="tek-selector-label">Unchecked option</span>
+            </label>
+            <label class="tek-selector">
+              <div class="tek-checkbox" data-checked></div>
+              <span class="tek-selector-label" data-checked>Checked option</span>
+            </label>
+            <label class="tek-selector">
+              <div class="tek-checkbox" data-error></div>
+              <span class="tek-selector-label" data-error>Error state</span>
+            </label>
+          </div>
+
+          <div class="ds-subsection-label" style="margin-top: var(--tek-spacing-s09)">Radio</div>
+          <div class="comp-row">
+            <label class="tek-selector">
+              <div class="tek-radio"></div>
+              <span class="tek-selector-label">Option A</span>
+            </label>
+            <label class="tek-selector">
+              <div class="tek-radio" data-checked></div>
+              <span class="tek-selector-label" data-checked>Option B</span>
+            </label>
+          </div>
+
+          <div class="ds-subsection-label" style="margin-top: var(--tek-spacing-s09)">Toggle</div>
+          <div class="comp-row">
+            <label class="tek-selector">
+              <div class="tek-toggle"></div>
+              <span class="tek-selector-label">Disabled</span>
+            </label>
+            <label class="tek-selector">
+              <div class="tek-toggle" data-checked></div>
+              <span class="tek-selector-label" data-checked>Enabled</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Input ─────────────────────────────────────────────────────── -->
+    <section class="ds-section" id="input">
+      <div class="ds-section-header">
+        <h2 class="ds-section-title">Input</h2>
+        <span class="ds-section-tag">Form</span>
+      </div>
+      <div class="comp-canvas">
+        <div class="ds-subsection-label">Single line</div>
+        <div class="comp-col">
+          <div class="comp-row" style="flex-wrap: wrap; gap: var(--tek-spacing-s13)">
+
+            <div class="tek-input-wrap">
+              <label class="tek-input-label">Default</label>
+              <input class="tek-input" placeholder="Enter message here" />
+            </div>
+
+            <div class="tek-input-wrap">
+              <label class="tek-input-label">Focus</label>
+              <input class="tek-input is-focus" placeholder="Enter message here" />
+            </div>
+
+            <div class="tek-input-wrap">
+              <label class="tek-input-label">Filled</label>
+              <input class="tek-input is-filled" value="User has typed here" />
+            </div>
+
+            <div class="tek-input-wrap">
+              <label class="tek-input-label">Disabled</label>
+              <input class="tek-input is-disabled" placeholder="Enter message here" disabled />
+            </div>
+
+            <div class="tek-input-wrap">
+              <label class="tek-input-label">Error</label>
+              <input class="tek-input is-error" placeholder="Enter message here" />
+            </div>
+
+          </div>
+        </div>
+
+        <div class="ds-subsection-label" style="margin-top: var(--tek-spacing-s13)">Multi-line</div>
+        <div class="comp-row" style="align-items:flex-start; flex-wrap: wrap; gap: var(--tek-spacing-s13)">
+          <div class="tek-input-wrap">
+            <label class="tek-input-label">Double height</label>
+            <textarea class="tek-input height-double" placeholder="Enter message here"></textarea>
+          </div>
+          <div class="tek-input-wrap">
+            <label class="tek-input-label">Triple height</label>
+            <textarea class="tek-input height-triple" placeholder="Enter message here"></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Button ─────────────────────────────────────────────────────── -->
+    <section class="ds-section" id="button">
+      <div class="ds-section-header">
+        <h2 class="ds-section-title">Button</h2>
+        <span class="ds-section-tag">Form</span>
+      </div>
+      <div class="comp-canvas">
+        <div class="ds-subsection-label">Primary</div>
+        <div class="comp-row" style="align-items:center">
+          <div class="comp-item">
+            <div class="comp-label">Default</div>
+            <button class="tek-btn tek-btn-primary">Sign In</button>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Hover</div>
+            <button class="tek-btn tek-btn-primary" style="background:var(--color-btn-bg-hover);color:var(--color-btn-text-hover)">Sign In</button>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Inactive</div>
+            <button class="tek-btn tek-btn-primary is-inactive" disabled>Sign In</button>
+          </div>
+        </div>
+
+        <div class="ds-subsection-label" style="margin-top: var(--tek-spacing-s13)">Secondary</div>
+        <div class="comp-row" style="align-items:center">
+          <div class="comp-item">
+            <div class="comp-label">Default</div>
+            <button class="tek-btn tek-btn-secondary">Cancel</button>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Hover</div>
+            <button class="tek-btn tek-btn-secondary" style="color:var(--color-btn-text-hover)">Cancel</button>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Inactive</div>
+            <button class="tek-btn tek-btn-secondary is-inactive" disabled>Cancel</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Text Link ──────────────────────────────────────────────────── -->
+    <section class="ds-section" id="text-link">
+      <div class="ds-section-header">
+        <h2 class="ds-section-title">Text Link</h2>
+        <span class="ds-section-tag">Form</span>
+      </div>
+      <div class="comp-canvas">
+        <div class="comp-row">
+          <div class="comp-item">
+            <div class="comp-label">Default</div>
+            <a href="#" class="tek-text-link">Forgot password?</a>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Hover</div>
+            <a href="#" class="tek-text-link" style="opacity:0.8">Forgot password?</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Character Count ────────────────────────────────────────────── -->
+    <section class="ds-section" id="char-count">
+      <div class="ds-section-header">
+        <h2 class="ds-section-title">Character Count</h2>
+        <span class="ds-section-tag">Form</span>
+      </div>
+      <div class="comp-canvas">
+        <div class="comp-row">
+          <div class="comp-item">
+            <div class="comp-label">Default</div>
+            <span class="tek-char-count">0/52</span>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Focus</div>
+            <span class="tek-char-count is-focus">10/52</span>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Filled</div>
+            <span class="tek-char-count is-filled">40/52</span>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Error</div>
+            <span class="tek-char-count is-error">55/52</span>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label">Warning</div>
+            <span class="tek-char-count is-warning">48/52</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Modal ─────────────────────────────────────────────────────── -->
+    <section class="ds-section" id="modal">
+      <div class="ds-section-header">
+        <h2 class="ds-section-title">Modal</h2>
+        <span class="ds-section-tag">Layout</span>
+      </div>
+      <div class="comp-canvas">
+        <div class="tek-modal">
+          <h3 class="tek-modal-title">Sign In</h3>
+
+          <div class="tek-input-wrap" style="width:100%">
+            <label class="tek-input-label">Username</label>
+            <input class="tek-input" placeholder="Enter message here" style="width:100%" />
+          </div>
+
+          <div class="tek-input-wrap" style="width:100%">
+            <label class="tek-input-label">Password</label>
+            <input class="tek-input" type="password" placeholder="Enter message here" style="width:100%" />
+          </div>
+
+          <label class="tek-selector" style="cursor:pointer">
+            <div class="tek-checkbox"></div>
+            <span class="tek-selector-label">Stay signed in</span>
+          </label>
+
+          <button class="tek-btn tek-btn-primary" style="width:100%">Sign In</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Footer ────────────────────────────────────────────────────── -->
+    <section class="ds-section" id="footer">
+      <div class="ds-section-header">
+        <h2 class="ds-section-title">Footer</h2>
+        <span class="ds-section-tag">Layout</span>
+      </div>
+      <div class="comp-canvas" style="padding: 0; overflow: hidden; border-radius: var(--tek-borders-radius-03)">
+        <div class="tek-footer">
+          <span class="tek-footer-text">©2026 Tektronix. All Rights Reserved.</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Footer -->
+<div class="ds-footer">
+  <span class="ds-footer-text">Tek Design System · @bbkemp/tokens · @bbkemp/ui</span>
+  <span class="ds-footer-text">©2026 Tektronix</span>
+</div>
+
+<script>
+  // Interactive checkbox demo
+  document.querySelectorAll('.tek-selector[onclick]').forEach(sel => {
+    sel.removeAttribute('onclick');
+    sel.addEventListener('click', () => {
+      const box = sel.querySelector('.tek-checkbox');
+      const label = sel.querySelector('.tek-selector-label');
+      if (box.hasAttribute('data-checked')) {
+        box.removeAttribute('data-checked');
+        label.removeAttribute('data-checked');
+      } else {
+        box.setAttribute('data-checked', '');
+        label.setAttribute('data-checked', '');
+      }
+    });
+  });
+
+  // Interactive modal checkbox
+  document.querySelectorAll('.tek-modal .tek-selector').forEach(sel => {
+    sel.addEventListener('click', () => {
+      const box = sel.querySelector('.tek-checkbox');
+      const label = sel.querySelector('.tek-selector-label');
+      if (box.hasAttribute('data-checked')) {
+        box.removeAttribute('data-checked');
+        label.removeAttribute('data-checked');
+      } else {
+        box.setAttribute('data-checked', '');
+        label.setAttribute('data-checked', '');
+      }
+    });
+  });
+
+  // Highlight nav on scroll
+  const sections = document.querySelectorAll('.ds-section');
+  const navLinks = document.querySelectorAll('.ds-nav-link');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => link.style.color = '');
+        const active = document.querySelector(`.ds-nav-link[href="#${entry.target.id}"]`);
+        if (active) {
+          active.style.color = 'var(--tek-colors-brand-tek-blue)';
+          active.style.borderLeftColor = 'var(--tek-colors-brand-tek-blue)';
+        }
+      }
+    });
+  }, { threshold: 0.2 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

@@ -21,11 +21,12 @@ This document covers how to make changes to the Tek Design System — tokens, co
 ```
 Figma Variables
       │
-      │  Token Push plugin (one button)
+      │  Token Push plugin v5 (one button)
       ▼
 packages/tokens/src/          ← W3C DTCG token JSON
       │
       │  GitHub Actions fires automatically on commit
+      │  (serialized via concurrency group — no race conditions)
       ▼
 Style Dictionary build
       │
@@ -37,7 +38,7 @@ Style Dictionary build
 @bbkemp/tokens published to GitHub Packages
 ```
 
-Changes to token source files on `main` automatically trigger a build and publish. No manual publish steps.
+Changes to token source files on `main` automatically trigger a build and publish. No manual publish steps. `dist/` is gitignored — it is never committed to the repo.
 
 ---
 
@@ -66,13 +67,13 @@ npm update @bbkemp/tokens
 
 ## Adding new token groups
 
-Use this when adding an entirely new category of tokens — e.g. `typography`, `motion`, `form` spacing.
+Use this when adding an entirely new category of tokens — e.g. `typography`, `motion`, `dimension`.
 
 **Who:** Designer + optional dev review
 
 ### Adding a new Primitive group
 
-1. In Figma, add a new group inside the **Primitives** collection using the pattern `groupname/subgroup/tokenname`
+1. In Figma, add a new group inside the **Primitives** collection using the naming pattern `groupname/subgroup/tokenname`
    - Example: `typography/font-size/sm`, `typography/font-size/md`
 2. The plugin automatically creates `packages/tokens/src/primitives/{groupname}.json`
    - `typography` → `primitives/typography.json`
@@ -82,11 +83,13 @@ Use this when adding an entirely new category of tokens — e.g. `typography`, `
 4. Verify Actions passed
 5. New CSS custom properties are live: `--tek-typography-font-size-sm`
 
+**Note on Figma naming:** Collection names with emojis (e.g. 🧩 Primitives) are fully supported. The plugin strips emoji automatically when matching collection names. Variable group names with emojis are also handled.
+
 ### Adding new Semantic tokens
 
 1. In Figma, add tokens to the **Semantic** collection using the pattern `group/subgroup/variant`
    - Example: `form/padding/sm`, `form/padding/md`, `form/padding/lg`
-   - Set the value as an alias to a primitive: `{spacing.075}`
+   - Set the value as an alias to a primitive: `{spacing.s05}`
 2. Run Token Push plugin — semantic tokens always land in `semantic/tokens.json` automatically
 3. Verify Actions passed
 4. New CSS custom properties are live: `--tek-form-padding-sm`
@@ -144,6 +147,36 @@ Packages are versioned automatically using semantic versioning. The GitHub Actio
 | Token renamed/removed | minor or major | discuss first |
 
 If a change is breaking, bump the version manually in `package.json` before merging and document what changed in a comment on the PR.
+
+---
+
+## Updating local files
+
+When you receive updated plugin files from a collaborator:
+
+```bash
+# Pull latest from GitHub
+cd ~/kemp-sys/tek-design-system
+git pull origin main
+```
+
+When you make changes locally and want to push:
+
+```bash
+git add .
+git commit -m "chore: description of change"
+git push
+```
+
+For plugin updates specifically — after replacing files in `figma-token-push/`:
+
+```bash
+git add figma-token-push/
+git commit -m "chore: update token push plugin vX"
+git push
+```
+
+Then re-import the plugin in Figma Desktop from its existing path — no need to remove and re-add if the folder location hasn't changed.
 
 ---
 
