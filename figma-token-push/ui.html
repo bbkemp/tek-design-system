@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Token Push</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #1a1a1a;
+    --surface: #242424;
+    --border: #333;
+    --text: #f0f0f0;
+    --muted: #888;
+    --accent: #4f8ef7;
+    --accent-hover: #3a7ae8;
+    --success: #3ecf8e;
+    --error: #f87171;
+    --warn: #f0a830;
+    --radius: 6px;
+    --font: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    height: 360px;
+  }
+
+  .header { display: flex; align-items: center; gap: 8px; }
+  .header h1 { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .badge {
+    font-size: 10px; font-weight: 500;
+    background: #2a2a2a; border: 1px solid var(--border);
+    border-radius: 4px; padding: 2px 6px; color: var(--muted);
+  }
+
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  label { font-size: 11px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  .input-row { display: flex; gap: 6px; }
+  input[type="password"] {
+    flex: 1; background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text);
+    font-family: var(--font); font-size: 12px; padding: 7px 10px;
+    outline: none; transition: border-color 0.15s;
+  }
+  input:focus { border-color: var(--accent); }
+
+  .save-btn {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--muted);
+    cursor: pointer; font-size: 11px; font-weight: 500;
+    padding: 7px 10px; white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .save-btn:hover { color: var(--text); border-color: #555; }
+
+  .file-list {
+    display: flex; flex-direction: column; gap: 4px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 8px 10px;
+  }
+
+  .file-row {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11px; color: var(--muted);
+  }
+  .file-row .name { font-family: "SF Mono", "Fira Code", monospace; }
+  .file-row .state { font-size: 10px; }
+  .file-row.done .state  { color: var(--success); }
+  .file-row.error .state { color: var(--error); }
+  .file-row.active .state { color: var(--accent); }
+  .file-row.active .name  { color: var(--text); }
+
+  .push-btn {
+    background: var(--accent); border: none; border-radius: var(--radius);
+    color: #fff; cursor: pointer; font-family: var(--font);
+    font-size: 13px; font-weight: 600; padding: 10px;
+    text-align: center; transition: background 0.15s, opacity 0.15s;
+    width: 100%; margin-top: auto;
+  }
+  .push-btn:hover:not(:disabled) { background: var(--accent-hover); }
+  .push-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .status { font-size: 11px; text-align: center; min-height: 16px; color: var(--muted); }
+  .status.success { color: var(--success); }
+  .status.error   { color: var(--error); }
+  .status.working { color: var(--accent); }
+
+  .warnings {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .warning-row {
+    font-size: 10px;
+    color: var(--warn);
+    background: #2a2200;
+    border: 1px solid #4a3800;
+    border-radius: 4px;
+    padding: 5px 8px;
+    line-height: 1.5;
+  }
+
+  .actions-link {
+    font-size: 11px;
+    text-align: center;
+    color: var(--accent);
+    text-decoration: none;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .actions-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Token Push</h1>
+  <span class="badge">bbkemp/tek-design-system</span>
+</div>
+
+<div class="field">
+  <label>GitHub PAT</label>
+  <div class="input-row">
+    <input type="password" id="pat" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
+    <button class="save-btn" id="saveBtn">Save</button>
+  </div>
+</div>
+
+<div class="file-list" id="fileList">
+  <div class="file-row" id="placeholder-row">
+    <span class="name muted">Files will appear after push</span>
+    <span class="state">—</span>
+  </div>
+</div>
+
+<div class="warnings" id="warnings"></div>
+
+<div class="status" id="status"></div>
+
+<button class="push-btn" id="pushBtn">⬆ Push Tokens to GitHub</button>
+
+<script>
+const REPO   = "bbkemp/tek-design-system";
+const BRANCH = "main";
+const GH_API = `https://api.github.com/repos/${REPO}/contents/`;
+
+const patInput = document.getElementById("pat");
+const saveBtn  = document.getElementById("saveBtn");
+const pushBtn  = document.getElementById("pushBtn");
+const statusEl = document.getElementById("status");
+const fileList = document.getElementById("fileList");
+
+window.onmessage = async (event) => {
+  const msg = event.data.pluginMessage;
+  if (!msg) return;
+
+  if (msg.type === "LOAD_PAT") {
+    if (msg.value) patInput.value = msg.value;
+  }
+
+  if (msg.type === "TOKENS_READY") {
+    await commitAllFiles(msg.payload.files, msg.payload.warnings);
+  }
+
+  if (msg.type === "ERROR") {
+    setStatus("Plugin error: " + msg.message, "error");
+    pushBtn.disabled = false;
+  }
+};
+
+parent.postMessage({ pluginMessage: { type: "GET_PAT" } }, "*");
+
+saveBtn.addEventListener("click", () => {
+  const val = patInput.value.trim();
+  if (!val) return;
+  parent.postMessage({ pluginMessage: { type: "SAVE_PAT", value: val } }, "*");
+  setStatus("PAT saved.", "success");
+  setTimeout(() => setStatus(""), 2000);
+});
+
+pushBtn.addEventListener("click", () => {
+  const pat = patInput.value.trim();
+  if (!pat) { setStatus("Enter your GitHub PAT first.", "error"); return; }
+  pushBtn.disabled = true;
+  document.getElementById("warnings").innerHTML = "";
+  buildRows([]);  // clear list while reading
+  setStatus("Reading Figma variables…", "working");
+  parent.postMessage({ pluginMessage: { type: "EXPORT_TOKENS" } }, "*");
+});
+
+// Build file rows dynamically from the files array
+function buildRows(files) {
+  fileList.innerHTML = "";
+  if (files.length === 0) {
+    fileList.innerHTML = '<div class="file-row"><span class="name" style="color:var(--muted);font-style:italic;">Reading variables…</span><span class="state">—</span></div>';
+    return;
+  }
+  for (var i = 0; i < files.length; i++) {
+    var shortPath = files[i].path.replace("packages/tokens/src/", "");
+    var row = document.createElement("div");
+    row.className = "file-row";
+    row.id = "row-" + i;
+    row.innerHTML = '<span class="name">' + shortPath + '</span><span class="state">—</span>';
+    fileList.appendChild(row);
+  }
+}
+
+function setRowState(index, cls, stateText) {
+  const row = document.getElementById("row-" + index);
+  if (!row) return;
+  row.className = "file-row " + cls;
+  row.querySelector(".state").textContent = stateText;
+}
+
+async function commitAllFiles(files, warnings) {
+  buildRows(files);
+
+  // Show warnings before committing
+  if (warnings && warnings.length > 0) {
+    showWarnings(warnings);
+  }
+
+  const pat = patInput.value.trim();
+  const headers = {
+    "Authorization": `Bearer ${pat}`,
+    "Content-Type": "application/json",
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
+
+  let allOk = true;
+
+  for (let i = 0; i < files.length; i++) {
+    const { path, tokens } = files[i];
+    const shortPath = path.replace("packages/tokens/src/", "");
+
+    setRowState(i, "active", "pushing…");
+    setStatus(`Committing ${shortPath}…`, "working");
+
+    try {
+      let sha = null;
+      const getRes = await fetch(`${GH_API}${path}?ref=${BRANCH}`, { headers });
+      if (getRes.ok) {
+        const data = await getRes.json();
+        sha = data.sha;
+      } else if (getRes.status === 401) {
+        throw new Error("PAT_EXPIRED");
+      } else if (getRes.status !== 404) {
+        const err = await getRes.json();
+        throw new Error(err.message || `GET ${getRes.status}`);
+      }
+
+      const content = JSON.stringify(tokens, null, 2);
+      const encoded = btoa(unescape(encodeURIComponent(content)));
+      const now = new Date().toISOString().slice(0, 16).replace("T", " ");
+
+      const putRes = await fetch(`${GH_API}${path}`, {
+        method: "PUT",
+        headers,
+        body: JSON.stringify({
+          message: `chore: update ${shortPath} [${now}]`,
+          content: encoded,
+          branch: BRANCH,
+          ...(sha ? { sha } : {}),
+        }),
+      });
+
+      if (putRes.status === 401) throw new Error("PAT_EXPIRED");
+
+      if (!putRes.ok) {
+        const err = await putRes.json();
+        throw new Error(err.message || `PUT ${putRes.status}`);
+      }
+
+      setRowState(i, "done", "✓");
+
+    } catch (e) {
+      const msg = String(e);
+      if (msg === "Error: PAT_EXPIRED" || msg === "PAT_EXPIRED") {
+        // Surface a clear, actionable error for auth failures
+        setStatus("PAT invalid or expired — generate a new one at github.com/settings/tokens", "error");
+        for (let j = i; j < files.length; j++) setRowState(j, "error", "✗");
+        pushBtn.disabled = false;
+        parent.postMessage({ pluginMessage: { type: "NOTIFY", message: "PAT expired — update it in the plugin", error: true } }, "*");
+        return;
+      }
+      setRowState(i, "error", "✗ " + msg.slice(0, 40));
+      allOk = false;
+    }
+  }
+
+  if (allOk) {
+    setStatus("Files committed ✓ — check Actions to confirm build passed", "success");
+    showActionsLink();
+    parent.postMessage({ pluginMessage: { type: "NOTIFY", message: "Tokens pushed ✓ — check GitHub Actions" } }, "*");
+  } else {
+    setStatus("Some files failed — check above", "error");
+    parent.postMessage({ pluginMessage: { type: "NOTIFY", message: "Token push had errors", error: true } }, "*");
+  }
+
+  pushBtn.disabled = false;
+}
+
+function showWarnings(warnings) {
+  const el = document.getElementById("warnings");
+  el.innerHTML = "";
+  for (let i = 0; i < warnings.length; i++) {
+    const row = document.createElement("div");
+    row.className = "warning-row";
+    row.textContent = "⚠ " + warnings[i];
+    el.appendChild(row);
+  }
+}
+
+function showActionsLink() {
+  const el = document.getElementById("warnings");
+  const link = document.createElement("a");
+  link.className = "actions-link";
+  link.textContent = "→ View GitHub Actions";
+  link.href = "https://github.com/bbkemp/tek-design-system/actions";
+  link.target = "_blank";
+  el.appendChild(link);
+}
+
+function setStatus(msg, type = "") {
+  statusEl.textContent = msg;
+  statusEl.className = "status" + (type ? " " + type : "");
+}
+</script>
+</body>
+</html>

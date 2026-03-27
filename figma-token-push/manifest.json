@@ -1,0 +1,9 @@
+{
+  "name": "Token Push",
+  "id": "tek-token-push",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "permissions": ["currentuser"]
+}
