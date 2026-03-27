@@ -1,5 +1,5 @@
 // code.js — Token Push plugin (ES5 compatible)
-// v4 — sidebar group routing, flat variable names supported
+// v5 — emoji-safe collection name matching
 
 figma.showUI(__html__, { width: 420, height: 500, title: "Token Push" });
 
@@ -12,9 +12,7 @@ figma.ui.onmessage = async function(msg) {
       figma.ui.postMessage({ type: "ERROR", message: String(e) });
     }
   }
-  if (msg.type === "SAVE_PAT") {
-    await figma.clientStorage.setAsync("gh_pat", msg.value);
-  }
+  if (msg.type === "SAVE_PAT") { await figma.clientStorage.setAsync("gh_pat", msg.value); }
   if (msg.type === "GET_PAT") {
     var stored = await figma.clientStorage.getAsync("gh_pat");
     figma.ui.postMessage({ type: "LOAD_PAT", value: stored ? stored : "" });
@@ -29,6 +27,10 @@ var DIMENSION_GROUPS = {
   "animation": true, "elevation": true, "size": true, "sizing": true
 };
 
+function cleanName(str) {
+  return str.replace(/[^\x00-\x7F]/g, "").replace(/\s+/g, " ").trim();
+}
+
 async function collectTokenFiles() {
   var collections = await figma.variables.getLocalVariableCollectionsAsync();
   var allVars = await figma.variables.getLocalVariablesAsync();
@@ -39,71 +41,49 @@ async function collectTokenFiles() {
 
   for (var ci = 0; ci < collections.length; ci++) {
     var col = collections[ci];
-    if (col.name === "Figma Only") continue;
+    var colName = cleanName(col.name);
+
+    if (colName === "Figma Only") continue;
+
     var defaultModeId = col.defaultModeId;
 
     if (col.modes.length > 1) {
       var modeNames = [];
       for (var mn = 0; mn < col.modes.length; mn++) { modeNames.push(col.modes[mn].name); }
-      warnings.push("\"" + col.name + "\" has " + col.modes.length + " modes (" + modeNames.join(", ") + ") — only \"" + col.modes[0].name + "\" exported.");
-    }
-
-    var groupForVar = {};
-    if (col.variableGroupIds) {
-      var groupIds = Object.keys(col.variableGroupIds);
-      for (var gi = 0; gi < groupIds.length; gi++) {
-        var group = col.variableGroupIds[groupIds[gi]];
-        var groupName = stripEmoji(group.name).toLowerCase().trim();
-        if (group.variableIds) {
-          for (var gvi = 0; gvi < group.variableIds.length; gvi++) {
-            groupForVar[group.variableIds[gvi]] = groupName;
-          }
-        }
-      }
+      warnings.push("\"" + colName + "\" has " + col.modes.length + " modes (" + modeNames.join(", ") + ") — only \"" + col.modes[0].name + "\" exported.");
     }
 
     for (var vi = 0; vi < col.variableIds.length; vi++) {
       var v = varById[col.variableIds[vi]];
       if (!v) continue;
+
       var nameParts = v.name.split("/");
-      for (var ni = 0; ni < nameParts.length; ni++) { nameParts[ni] = nameParts[ni].trim(); }
-      if (!nameParts[0]) continue;
-
-      var routingGroup;
-      if (nameParts.length > 1) {
-        routingGroup = nameParts[0].toLowerCase();
-      } else if (groupForVar[v.id]) {
-        routingGroup = groupForVar[v.id];
-      } else {
-        routingGroup = nameParts[0].toLowerCase();
+      for (var ni = 0; ni < nameParts.length; ni++) {
+        nameParts[ni] = cleanName(nameParts[ni]).trim();
       }
-      routingGroup = stripEmoji(routingGroup).trim();
+      nameParts = nameParts.filter(function(p) { return p.length > 0; });
+      if (nameParts.length === 0) continue;
 
+      var routingGroup = nameParts[0].toLowerCase();
       var isDimension = (v.resolvedType === "FLOAT") && DIMENSION_GROUPS[routingGroup];
       var type = dtcgType(v.resolvedType, isDimension);
       if (!type) continue;
+
       var value = resolveValue(v, defaultModeId, varById, isDimension);
       if (value === null) continue;
 
       var token = { $value: value, $type: type };
       if (v.description) { token.$description = v.description; }
 
-      var keyPath;
-      if (nameParts.length === 1 && groupForVar[v.id]) {
-        keyPath = [groupForVar[v.id], nameParts[0]];
-      } else {
-        keyPath = nameParts;
-      }
-
-      if (col.name === "Primitives") {
+      if (colName === "Primitives") {
         var fileName = groupToFileName(routingGroup);
         var filePath = "packages/tokens/src/primitives/" + fileName + ".json";
         if (!buckets[filePath]) buckets[filePath] = {};
-        setNested(buckets[filePath], keyPath, token);
-      } else if (col.name === "Semantic") {
+        setNested(buckets[filePath], nameParts, token);
+      } else if (colName === "Semantic") {
         var semPath = "packages/tokens/src/semantic/tokens.json";
         if (!buckets[semPath]) buckets[semPath] = {};
-        setNested(buckets[semPath], keyPath, token);
+        setNested(buckets[semPath], nameParts, token);
       }
     }
   }
@@ -118,15 +98,12 @@ async function collectTokenFiles() {
   return { files: result, warnings: warnings };
 }
 
-function stripEmoji(str) {
-  return str.replace(/[^\x00-\x7F]/g, "").replace(/\s+/g, " ").trim();
-}
-
 function groupToFileName(group) {
   var aliases = {
     "colors": "color", "borders": "border", "border": "border",
-    "spacing": "spacing", "dimension": "dimension", "typography": "typography",
-    "type": "typography", "motion": "motion", "animation": "motion",
+    "spacing": "spacing", "dimension": "dimension",
+    "typography": "typography", "type": "typography",
+    "motion": "motion", "animation": "motion",
     "elevation": "elevation", "shadow": "elevation", "radius": "border"
   };
   return aliases[group] ? aliases[group] : group;
@@ -140,7 +117,8 @@ function resolveValue(variable, modeId, varById, isDimension) {
     if (!ref) return null;
     var parts = ref.name.split("/");
     var normalized = [];
-    for (var i = 0; i < parts.length; i++) { normalized.push(parts[i].trim()); }
+    for (var i = 0; i < parts.length; i++) { normalized.push(cleanName(parts[i]).trim()); }
+    normalized = normalized.filter(function(p) { return p.length > 0; });
     return "{" + normalized.join(".") + "}";
   }
   if (variable.resolvedType === "COLOR") return colorToHex(raw);
