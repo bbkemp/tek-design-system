@@ -1,27 +1,78 @@
 {
   "colors": {
     "brand": {
-      "tek-blue": { "$value": "#33BAEA", "$type": "color" }
+      "tek-blue": {
+        "$value": "#33baea",
+        "$type": "color"
+      }
     },
     "neutral": {
-      "black": { "$value": "#000000", "$type": "color" },
-      "900":   { "$value": "#181818", "$type": "color" },
-      "800":   { "$value": "#1E1E1E", "$type": "color" },
-      "700":   { "$value": "#252525", "$type": "color" },
-      "600":   { "$value": "#333333", "$type": "color" },
-      "500":   { "$value": "#454545", "$type": "color" },
-      "450":   { "$value": "#646464", "$type": "color" },
-      "400":   { "$value": "#7B7B7B", "$type": "color" },
-      "300":   { "$value": "#979797", "$type": "color" },
-      "200":   { "$value": "#AFAFAF", "$type": "color" },
-      "100":   { "$value": "#CCCCCC", "$type": "color" },
-      "white": { "$value": "#FFFFFF", "$type": "color" }
+      "100": {
+        "$value": "#cccccc",
+        "$type": "color"
+      },
+      "200": {
+        "$value": "#afafaf",
+        "$type": "color"
+      },
+      "300": {
+        "$value": "#979797",
+        "$type": "color"
+      },
+      "400": {
+        "$value": "#7b7b7b",
+        "$type": "color"
+      },
+      "450": {
+        "$value": "#646464",
+        "$type": "color"
+      },
+      "500": {
+        "$value": "#454545",
+        "$type": "color"
+      },
+      "600": {
+        "$value": "#333333",
+        "$type": "color"
+      },
+      "700": {
+        "$value": "#252525",
+        "$type": "color"
+      },
+      "800": {
+        "$value": "#1e1e1e",
+        "$type": "color"
+      },
+      "900": {
+        "$value": "#181818",
+        "$type": "color"
+      },
+      "black": {
+        "$value": "#000000",
+        "$type": "color"
+      },
+      "white": {
+        "$value": "#ffffff",
+        "$type": "color"
+      }
     },
     "ui": {
-      "error-red":      { "$value": "#E74848", "$type": "color" },
-      "success-green":  { "$value": "#42B54C", "$type": "color" },
-      "warning-yellow": { "$value": "#E0B732", "$type": "color" },
-      "shadow":         { "$value": "#00000033", "$type": "color" }
+      "error-red": {
+        "$value": "#e74848",
+        "$type": "color"
+      },
+      "success-green": {
+        "$value": "#42b54c",
+        "$type": "color"
+      },
+      "warning-yellow": {
+        "$value": "#e0b732",
+        "$type": "color"
+      },
+      "shadow": {
+        "$value": "#00000033",
+        "$type": "color"
+      }
     }
   }
 }
