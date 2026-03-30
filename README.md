@@ -13,13 +13,13 @@ tek-design-system/
 │   └── ui/                   @bbkemp/ui — Web Components
 ├── .github/
 │   └── workflows/
-│       ├── publish-tokens.yml    auto-publishes tokens on change (serialized)
+│       ├── publish-tokens.yml    auto-publishes tokens on change
 │       └── publish-ui.yml        auto-publishes UI on change
-├── figma-token-push/         Figma plugin v5 (local dev only, not published)
-├── component-library.html    component reference — original
-├── component-library-v2.html component reference — v2, fully token-driven
-├── signin.html               sign in page — original
-└── signin-v2.html            sign in page — v2, pixel-perfect to DS-v2
+├── figma-token-push/         Token Push Figma plugin (local dev, not published)
+├── component-library.html    interactive component reference
+├── signin.html               sign in page preview
+├── SETUP.md                  first-time setup guide
+└── CONTRIBUTING.md           how to make changes
 ```
 
 ---
@@ -29,11 +29,11 @@ tek-design-system/
 ```
 Figma Variables
       │
-      │  (Token Push plugin v5 — one button)
+      │  Token Push plugin — one button from inside Figma
       ▼
 GitHub: packages/tokens/src/
       │
-      │  (GitHub Actions: publish-tokens.yml fires automatically)
+      │  publish-tokens.yml fires automatically on commit
       ▼
 Style Dictionary build
       │
@@ -41,7 +41,7 @@ Style Dictionary build
       ├── dist/tek.primitives.css    CSS custom properties (primitives)
       └── dist/tek.tokens.js         JS/TS export
       │
-      │  (published to GitHub Packages — dist/ is NOT committed to repo)
+      │  published to GitHub Packages — dist/ is NOT committed to repo
       ▼
 @bbkemp/tokens   ←   consumed by any project via npm
 @bbkemp/ui       ←   Web Components built on top of tokens
@@ -60,7 +60,7 @@ Raw values — the palette. Not applied directly to components.
 | File | Contents |
 |---|---|
 | `color.json` | Full color palette: brand, neutral scale, UI states |
-| `spacing.json` | Spacing scale (`s00`–`s33`) mapped to px values |
+| `spacing.json` | Spacing scale mapped to px values |
 | `border.json` | Border radius and border width values |
 
 Example:
@@ -100,11 +100,11 @@ All token files follow the [W3C DTCG format](https://tr.designtokens.org/format/
 1. Make changes to variables in the **DS-v2 Figma file**
 2. Open **Plugins → Development → Token Push**
 3. Click **⬆ Push Tokens to GitHub**
-4. Done — token files commit to `main` automatically and the build pipeline fires
+4. Done — token files commit to `main` and the build pipeline fires automatically
 
-The plugin commits directly to GitHub via the API. No terminal, no Token Studio, no manual steps.
+The plugin commits directly to GitHub via the API. No terminal, no third-party tools, no manual steps.
 
-> Figma collection names with emojis (e.g. 🧩 Primitives, 🐮 Semantic) are fully supported.
+> Figma collection names with emojis are fully supported — the plugin strips them automatically.
 
 ---
 
@@ -113,23 +113,23 @@ The plugin commits directly to GitHub via the API. No terminal, no Token Studio,
 Workflows trigger two ways:
 
 - **Automatically** — when source files change on `main`
-- **Manually** — Actions tab → Run workflow
+- **Manually** — Actions tab → select workflow → Run workflow
 
 `publish-tokens` uses a `concurrency` group to serialize runs — multiple simultaneous commits queue instead of racing.
 
 ### `publish-tokens.yml`
-Triggers on `packages/tokens/src/**`. Runs Style Dictionary → bumps patch version → publishes `@bbkemp/tokens`.
+Triggers on changes to `packages/tokens/src/**`. Runs Style Dictionary → bumps patch version → publishes `@bbkemp/tokens`.
 
 ### `publish-ui.yml`
-Triggers on `packages/ui/src/**`. Runs Rollup → bumps patch version → publishes `@bbkemp/ui`.
+Triggers on changes to `packages/ui/src/**`. Runs Rollup → bumps patch version → publishes `@bbkemp/ui`.
 
-Both use `secrets.GITHUB_TOKEN`. `dist/` is gitignored — built output lives only in the published npm package.
+Both use `secrets.GITHUB_TOKEN`. `dist/` is gitignored — built output lives only in the published package.
 
 ---
 
 ## Installing the packages
 
-**1. Authenticate once per machine (required first):**
+**1. Authenticate once per machine:**
 
 Add to `~/.npmrc`:
 ```
@@ -137,8 +137,7 @@ Add to `~/.npmrc`:
 //npm.pkg.github.com/:_authToken=YOUR_GITHUB_PAT
 ```
 
-Generate a PAT at github.com → Settings → Developer settings → Personal access tokens.
-Required scope: `read:packages`
+Generate a PAT at github.com → Settings → Developer settings → Personal access tokens (classic). Required scope: `read:packages`
 
 **2. Install:**
 ```bash
@@ -177,9 +176,10 @@ console.log(tokens['tek-spacing-s05']); // "8px"
 import '@bbkemp/ui';
 ```
 
-Registers all custom elements globally:
+Registers all 11 custom elements globally:
 
 ```html
+<!-- Selectors -->
 <tek-checkbox></tek-checkbox>
 <tek-checkbox checked></tek-checkbox>
 <tek-checkbox error></tek-checkbox>
@@ -191,22 +191,43 @@ Registers all custom elements globally:
 <tek-toggle></tek-toggle>
 <tek-toggle checked></tek-toggle>
 
-<tek-selector>
-  <tek-checkbox></tek-checkbox>
-  <tek-selector-label>Enable feature</tek-selector-label>
-</tek-selector>
+<tek-selector type="checkbox" label="Enable feature"></tek-selector>
+<tek-selector type="radio" name="group" label="Channel A"></tek-selector>
+<tek-selector type="toggle" label="Live mode"></tek-selector>
 
-<tek-input label="Email" placeholder="you@example.com"></tek-input>
-<tek-input label="Email" error helper="Invalid email"></tek-input>
+<!-- Form -->
+<tek-input placeholder="Enter value"></tek-input>
+<tek-input state="error" value="bad input"></tek-input>
+<tek-input height="double" placeholder="Notes..."></tek-input>
+<tek-character-count count="72" max="140"></tek-character-count>
 
-<tek-button>Submit</tek-button>
+<!-- Actions -->
+<tek-button>Sign In</tek-button>
 <tek-button variant="secondary">Cancel</tek-button>
+<tek-button inactive>Unavailable</tek-button>
+<tek-text-link href="/forgot">Forgot password?</tek-text-link>
+
+<!-- Layout -->
+<tek-modal>
+  <span slot="header">Sign In</span>
+  <div slot="input-blocks">...</div>
+  <div slot="action-blocks">...</div>
+</tek-modal>
+<tek-footer>©2026 Tektronix. All rights reserved.</tek-footer>
 ```
 
 ### Events
 ```js
 document.querySelector('tek-checkbox').addEventListener('tek-change', (e) => {
   console.log(e.detail.checked); // true | false
+});
+
+document.querySelector('tek-input').addEventListener('tek-input', (e) => {
+  console.log(e.detail.value);
+});
+
+document.querySelector('tek-button').addEventListener('tek-click', () => {
+  console.log('clicked');
 });
 ```
 
@@ -215,46 +236,21 @@ document.querySelector('tek-checkbox').addEventListener('tek-change', (e) => {
 | Attribute | Type | Components | Description |
 |---|---|---|---|
 | `checked` | boolean | checkbox, radio, toggle, selector | Checked/on state |
-| `error` | boolean | all | Error state |
-| `disabled` | boolean | all | Disabled, 40% opacity |
-| `name` | string | radio | Radio group name |
-| `label` | string | input | Field label |
+| `error` | boolean | checkbox, radio, toggle, selector, input | Error state |
+| `disabled` | boolean | all interactive | Non-interactive, reduced opacity |
+| `name` | string | radio, selector | Radio group name |
+| `type` | string | selector | `checkbox`, `radio`, or `toggle` |
+| `label` | string | selector | Label text |
 | `placeholder` | string | input | Placeholder text |
-| `helper` | string | input | Helper/error message |
+| `value` | string | input | Field value |
+| `state` | string | input, character-count | `default`, `focus`, `filled`, `disabled`, `error` |
+| `height` | string | input | `single` (default), `double`, `triple` |
+| `count` | number | character-count | Current character count |
+| `max` | number | character-count | Maximum character count |
 | `variant` | string | button | `primary` (default) or `secondary` |
-
----
-
-## Framework usage
-
-### React
-```jsx
-import '@bbkemp/ui';
-
-function MyForm() {
-  return (
-    <tek-selector onTek-change={(e) => console.log(e.detail.checked)}>
-      <tek-checkbox></tek-checkbox>
-      <tek-selector-label>Enable feature</tek-selector-label>
-    </tek-selector>
-  );
-}
-```
-
-### Vue 3
-```vue
-<template>
-  <tek-selector @tek-change="handleChange">
-    <tek-toggle></tek-toggle>
-    <tek-selector-label>Dark mode</tek-selector-label>
-  </tek-selector>
-</template>
-
-<script setup>
-import '@bbkemp/ui';
-const handleChange = (e) => console.log(e.detail.checked);
-</script>
-```
+| `inactive` | boolean | button | Non-interactive, visually muted |
+| `href` | string | text-link | Link destination |
+| `target` | string | text-link | Link target (e.g. `_blank`) |
 
 ---
 
@@ -280,8 +276,15 @@ const handleChange = (e) => console.log(e.detail.checked);
 | Toggle | 780:10026 |
 | SelectorLabel | 780:9896 |
 | Selector | 7002:378 |
+| Input | 7003:495 |
+| CharacterCount | 7011:143 |
+| TextLink | 7011:150 |
+| Button | 202:2605 |
+| Modal | 7003:2158 |
+| Footer | 7003:2168 |
+| Sign In page | 3020:490 |
 
-Code Connect mappings are live in the Figma file — props surface automatically in Dev Mode.
+Code Connect mappings are live in the Figma file — component usage surfaces automatically in Dev Mode.
 
 ---
 
@@ -297,16 +300,14 @@ npm run build --workspace=packages/ui
 
 ## Token Push plugin
 
-Lives in `figma-token-push/`. Local Figma development plugin — not published to the Community.
-
-**Version:** v5 — emoji-safe collection matching, dynamic primitive routing, mode-aware export.
+Lives in `figma-token-push/`. A local Figma development plugin — not published to the Figma Community.
 
 **One-time setup:**
-1. Figma Desktop → Plugins → Development → Import from manifest → `figma-token-push/manifest.json`
-2. Generate a GitHub fine-grained PAT (Contents: Read and write on this repo)
-3. Open the plugin → paste PAT → Save
+1. Figma Desktop → Plugins → Development → Import plugin from manifest → select `figma-token-push/manifest.json`
+2. Go to github.com → Settings → Developer settings → Personal access tokens (classic) → generate token with `repo` scope
+3. Open the plugin in Figma → paste the PAT → Save
 
-**Usage:** Open plugin → Push Tokens to GitHub. Done.
+**Daily usage:** Open plugin → Push Tokens to GitHub. Watch the per-file status rows turn green.
 
 ---
 

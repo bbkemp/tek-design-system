@@ -21,11 +21,11 @@ This document covers how to make changes to the Tek Design System — tokens, co
 ```
 Figma Variables
       │
-      │  Token Push plugin v5 (one button)
+      │  Token Push plugin (one button from inside Figma)
       ▼
 packages/tokens/src/          ← W3C DTCG token JSON
       │
-      │  GitHub Actions fires automatically on commit
+      │  publish-tokens.yml fires automatically on commit
       │  (serialized via concurrency group — no race conditions)
       ▼
 Style Dictionary build
@@ -52,10 +52,10 @@ Use this when changing an existing token's value — e.g. adjusting a color, spa
 
 1. Make the change in Figma Variables (DS-v2 file)
 2. Get sign-off from the relevant stakeholder
-3. Open the Token Push plugin in Figma: **Plugins → Development → Token Push**
+3. Open the Token Push plugin: **Plugins → Development → Token Push**
 4. Click **⬆ Push Tokens to GitHub**
-5. Confirm all file rows show `✓`
-6. Check that `Publish @bbkemp/tokens` passes in [GitHub Actions](https://github.com/bbkemp/tek-design-system/actions)
+5. Confirm all file rows show ✓
+6. Verify `Publish @bbkemp/tokens` passes in [GitHub Actions](https://github.com/bbkemp/tek-design-system/actions)
 7. Notify consuming teams that a new version is available
 
 **Consuming teams update by running:**
@@ -77,20 +77,19 @@ Use this when adding an entirely new category of tokens — e.g. `typography`, `
    - Example: `typography/font-size/sm`, `typography/font-size/md`
 2. The plugin automatically creates `packages/tokens/src/primitives/{groupname}.json`
    - `typography` → `primitives/typography.json`
-   - `motion` → `primitives/motion.json`
    - No plugin configuration changes needed
-3. Run Token Push plugin
+3. Run Token Push
 4. Verify Actions passed
 5. New CSS custom properties are live: `--tek-typography-font-size-sm`
 
-**Note on Figma naming:** Collection names with emojis (e.g. 🧩 Primitives) are fully supported. The plugin strips emoji automatically when matching collection names. Variable group names with emojis are also handled.
+**Note:** Collection names with emojis (e.g. 🧩 Primitives) are fully supported — the plugin strips them automatically.
 
 ### Adding new Semantic tokens
 
 1. In Figma, add tokens to the **Semantic** collection using the pattern `group/subgroup/variant`
-   - Example: `form/padding/sm`, `form/padding/md`, `form/padding/lg`
+   - Example: `form/padding/sm`
    - Set the value as an alias to a primitive: `{spacing.s05}`
-2. Run Token Push plugin — semantic tokens always land in `semantic/tokens.json` automatically
+2. Run Token Push — semantic tokens always land in `semantic/tokens.json`
 3. Verify Actions passed
 4. New CSS custom properties are live: `--tek-form-padding-sm`
 
@@ -115,9 +114,9 @@ Use this when changing component structure, styles, or which tokens a component 
    ```
 3. Open a pull request against `main` with a clear description of what changed and why
 4. Get at least one review
-5. Merge — `Publish @bbkemp/ui` fires automatically
+5. Merge — `publish-ui.yml` fires automatically
 
-**If a component change also requires a token change**, do the token push first, confirm it published, then update the component to reference the new token.
+**If a component change also requires a token change**, do the token push first, confirm it published, then update the component.
 
 ---
 
@@ -138,7 +137,7 @@ Use this when changing component structure, styles, or which tokens a component 
 
 ## Versioning
 
-Packages are versioned automatically using semantic versioning. The GitHub Actions workflow bumps the patch version on every publish.
+Packages are versioned automatically. The GitHub Actions workflow bumps the patch version on every publish.
 
 | Change | Version bump | Example |
 |---|---|---|
@@ -150,29 +149,24 @@ If a change is breaking, bump the version manually in `package.json` before merg
 
 ---
 
-## Updating local files
-
-When you receive updated plugin files from a collaborator:
+## Working with the repo locally
 
 ```bash
-# Pull latest from GitHub
+# Pull latest
 cd ~/kemp-sys/tek-design-system
 git pull origin main
-```
 
-When you make changes locally and want to push:
-
-```bash
+# Make changes, then push
 git add .
 git commit -m "chore: description of change"
 git push
 ```
 
-For plugin updates specifically — after replacing files in `figma-token-push/`:
+For plugin updates — after replacing files in `figma-token-push/`:
 
 ```bash
 git add figma-token-push/
-git commit -m "chore: update token push plugin vX"
+git commit -m "chore: update token push plugin"
 git push
 ```
 

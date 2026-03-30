@@ -1,123 +1,96 @@
 # Tek Design System — Setup Guide
 
-This guide walks you through getting the design system live on GitHub
-with automatic token syncing from Figma. Follow the steps in order.
-No prior experience with GitHub or terminals required beyond what's here.
+Everything you need to get the design system running. The repo and packages already exist — this guide is for onboarding a new developer or setting up a new machine.
 
 ---
 
-## Step 1 — Create the GitHub Repository
+## Prerequisites
 
-1. Go to **github.com** and sign in
-2. Click the **+** icon top right → **New repository**
-3. Name it: `tek-design-system`
-4. Set it to **Private**
-5. Leave everything else unchecked
-6. Click **Create repository**
+- GitHub account with access to `bbkemp/tek-design-system`
+- Node.js 18+ (`node --version` to check)
+- Figma Desktop (for Token Push plugin)
 
 ---
 
-## Step 2 — Upload This Package
-
-1. On the new repo page, click **uploading an existing file**
-2. Drag the entire contents of this zip into the upload area
-3. At the bottom, write commit message: `Initial commit`
-4. Click **Commit changes**
-
----
-
-## Step 3 — Add Your Figma API Token
-
-This lets GitHub pull variables from your Figma file automatically.
-
-1. Go to **figma.com** → click your profile picture → **Settings**
-2. Scroll to **Personal access tokens** → click **Generate new token**
-3. Name it `GitHub Actions` → click **Generate token**
-4. **Copy the token** — you won't see it again
-
-Now add it to GitHub:
-1. In your GitHub repo, go to **Settings → Secrets and variables → Actions**
-2. Click **New repository secret**
-3. Name: `FIGMA_ACCESS_TOKEN`
-4. Value: paste your Figma token
-5. Click **Add secret**
-6. Add another secret:
-   - Name: `FIGMA_FILE_KEY`
-   - Value: `3wbYstse9TYKlPtCPpZH5X`
-   *(this is your DS-v2 file key from the Figma URL)*
-
----
-
-## Step 4 — Install Token Studio in Figma (push-button sync)
-
-Token Studio lets you push variables directly from Figma to GitHub.
-
-1. In Figma, open your DS-v2 file
-2. Go to **Plugins → Browse plugins** → search **Token Studio**
-3. Install it and open it
-4. Click **Sync → GitHub**
-5. Enter:
-   - Repository: `yourGitHubUsername/tek-design-system`
-   - Branch: `main`
-   - File path: `packages/tokens/src`
-   - Token: create a GitHub Personal Access Token at
-     **github.com/settings/tokens** with `repo` scope
-6. Click **Save**
-
-Now whenever you make changes to variables in Figma, open Token Studio
-and click **Push to GitHub**. The workflows will fire automatically.
-
----
-
-## Step 5 — Enable GitHub Packages publishing
-
-1. In your GitHub repo, go to **Settings → Actions → General**
-2. Scroll to **Workflow permissions**
-3. Select **Read and write permissions**
-4. Click **Save**
-
-This allows the Actions to publish `@tek/tokens` and `@tek/ui` automatically.
-
----
-
-## Step 6 — Install the packages in your project
-
-On any developer machine:
+## Step 1 — Clone the repo
 
 ```bash
-# Add to ~/.npmrc (one time per machine)
-echo "@tek:registry=https://npm.pkg.github.com" >> ~/.npmrc
-echo "//npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN" >> ~/.npmrc
-
-# Install
-npm install @tek/tokens @tek/ui
+git clone https://github.com/bbkemp/tek-design-system.git
+cd tek-design-system
+npm install
 ```
+
+---
+
+## Step 2 — Authenticate with GitHub Packages
+
+The `@bbkemp/tokens` and `@bbkemp/ui` packages are published to GitHub Packages. You need to authenticate once per machine.
+
+1. Go to **github.com → Settings → Developer settings → Personal access tokens (classic)**
+2. Generate a new token — name it `npm GitHub Packages`
+3. Check the `read:packages` scope
+4. Copy the token
+
+Add to `~/.npmrc` (create the file if it doesn't exist):
+
+```
+@bbkemp:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=YOUR_TOKEN_HERE
+```
+
+You can now install the packages in any project:
+
+```bash
+npm install @bbkemp/tokens @bbkemp/ui
+```
+
+---
+
+## Step 3 — Enable GitHub Actions publishing
+
+This is already configured in the repo. Verify it's active:
+
+1. Go to your repo → **Settings → Actions → General**
+2. Under **Workflow permissions**, confirm **Read and write permissions** is selected
+3. If not, select it and click **Save**
+
+---
+
+## Step 4 — Set up the Token Push Figma plugin
+
+This is how token changes flow from Figma into the repo.
+
+1. Open **Figma Desktop** and open the DS-v2 file
+2. Go to **Plugins → Development → Import plugin from manifest**
+3. Navigate to `figma-token-push/manifest.json` in your local clone
+4. The plugin now appears under **Plugins → Development → Token Push**
+
+**Authorize it with GitHub:**
+
+1. Generate a new GitHub PAT at **github.com → Settings → Developer settings → Personal access tokens (classic)**
+2. Name it `Token Push`, check `repo` scope, generate and copy it
+3. Open the Token Push plugin in Figma → paste the PAT → click **Save**
 
 ---
 
 ## How it works day-to-day
 
-### Designer changes a color in Figma:
-1. Open Token Studio plugin in Figma
-2. Click **Push to GitHub**
-3. GitHub automatically:
-   - Runs Style Dictionary build
-   - Bumps `@tek/tokens` version
-   - Publishes new version to GitHub Packages
-4. Developers run `npm update @tek/tokens` to get the new values
+### Designer updates a token value in Figma:
+1. Change the variable value in the DS-v2 Figma file
+2. Open **Plugins → Development → Token Push**
+3. Click **⬆ Push Tokens to GitHub**
+4. Confirm all file rows show ✓
+5. `publish-tokens.yml` fires automatically → `@bbkemp/tokens` publishes a new version
 
-### Developer changes a component:
+### Developer consumes updated tokens:
+```bash
+npm update @bbkemp/tokens
+```
+
+### Developer updates a component:
 1. Edit the TypeScript file in `packages/ui/src/`
-2. Push to GitHub main branch
-3. GitHub automatically:
-   - Builds the Web Components
-   - Bumps `@tek/ui` version
-   - Publishes new version to GitHub Packages
-
-### Automatic daily sync (optional, already configured):
-- Every day at 9am UTC, GitHub pulls the latest Figma variables
-- If anything changed, it commits the updated token JSON
-- The publish workflow fires automatically from that commit
+2. Commit and push to `main`
+3. `publish-ui.yml` fires automatically → `@bbkemp/ui` publishes a new version
 
 ---
 
@@ -125,39 +98,38 @@ npm install @tek/tokens @tek/ui
 
 ```
 tek-design-system/
-  packages/
-    tokens/           @tek/tokens — CSS custom properties
-    ui/               @tek/ui — Web Components
-  .github/
-    workflows/
-      sync-figma-tokens.yml   Figma → GitHub sync
-      publish-tokens.yml      Auto-publish tokens on change
-      publish-ui.yml          Auto-publish UI on change
-    scripts/
-      transform-figma-variables.js
-  signin.html         Sign In page preview
-  component-library.html  Full component reference
-  .npmrc              Registry config
+├── packages/
+│   ├── tokens/               @bbkemp/tokens
+│   │   ├── src/primitives/   raw value tokens (color, spacing, border)
+│   │   ├── src/semantic/     alias tokens (what components reference)
+│   │   └── build.js          Style Dictionary config
+│   └── ui/                   @bbkemp/ui
+│       └── src/              Web Component TypeScript source
+├── .github/workflows/
+│   ├── publish-tokens.yml    triggers on tokens/src/** changes
+│   └── publish-ui.yml        triggers on ui/src/** changes
+├── figma-token-push/         Token Push Figma plugin
+├── component-library.html    interactive component reference
+└── signin.html               sign in page preview
 ```
 
 ---
 
 ## Figma file reference
 
-DS-v2: https://www.figma.com/design/3wbYstse9TYKlPtCPpZH5X/DS-v2
+**DS-v2:** https://www.figma.com/design/3wbYstse9TYKlPtCPpZH5X/DS-v2
 
-| Component       | Node ID     |
-|-----------------|-------------|
-| Checkbox        | 730:16982   |
-| Radio           | 780:10148   |
-| Toggle          | 780:10026   |
-| SelectorLabel   | 780:9896    |
-| Selector        | 7002:378    |
-| Input           | 7003:495    |
-| Label           | 780:10209   |
-| CharacterCount  | 7011:143    |
-| TextLink        | 7011:150    |
-| Button          | 202:2605    |
-| Modal           | 7003:2158   |
-| Footer          | 7003:2168   |
-| Sign In page    | 3020:490    |
+| Component | Node ID |
+|---|---|
+| Checkbox | 730:16982 |
+| Radio | 780:10148 |
+| Toggle | 780:10026 |
+| SelectorLabel | 780:9896 |
+| Selector | 7002:378 |
+| Input | 7003:495 |
+| CharacterCount | 7011:143 |
+| TextLink | 7011:150 |
+| Button | 202:2605 |
+| Modal | 7003:2158 |
+| Footer | 7003:2168 |
+| Sign In page | 3020:490 |
