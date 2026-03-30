@@ -89,6 +89,9 @@
 
 /* ============================================================
    RESET
+   Note: the * selector matches custom elements in the light DOM.
+   Components with :host padding use !important to ensure
+   their shadow DOM styles are not overridden by this reset.
 ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -147,11 +150,7 @@ body {
   container-name: page;
 }
 
-/* ── Header ────────────────────────────────────────────────
-   No padding on the wrapper itself.
-   Mobile + tablet: centered. Desktop only: left-aligned.
-   Padding-top comes from the header, not the logo wrapper.
-──────────────────────────────────────────────────────────── */
+/* Header — mobile + tablet: centered. Desktop only: left-aligned. */
 .page-header {
   width: 100%;
   display: flex;
@@ -160,10 +159,7 @@ body {
   flex-shrink: 0;
 }
 
-/* ── Logo lockup ───────────────────────────────────────────
-   No padding on this wrapper.
-   align-items: center — icon and wordmark vertically centered.
-──────────────────────────────────────────────────────────── */
+/* Logo lockup — no padding, vertically centered */
 .logo-lockup {
   display: flex;
   align-items: center;
@@ -205,14 +201,11 @@ body {
 
 /* ============================================================
    CONTAINER QUERIES — mobile-first
-   All breakpoints use container, never viewport.
-
-   xs  = 384px  (mobile — base styles above)
-   sm  = 640px  (tablet — logo stays centered like mobile)
+   xs  = 384px  (mobile — base)
+   sm  = 640px  (tablet — logo stays centered)
    xl  = 1280px (desktop — logo goes left)
 ============================================================ */
 
-/* Tablet: logo stays centered, icon/type get slightly larger */
 @container page (min-width: 640px) {
   .page-header  { padding-top: 48px; }
   .logo-icon    { height: 80px; }
@@ -220,7 +213,6 @@ body {
   .page-main    { padding: 48px 48px 32px; gap: 56px; }
 }
 
-/* Desktop: logo moves left with 64px inset */
 @container page (min-width: 1280px) {
   .page-header  { justify-content: flex-start; padding: 64px 0 0 64px; }
   .logo-icon    { height: 96px; }
@@ -231,21 +223,14 @@ body {
 </head>
 <body>
 
-<!-- Background gradient (always rendered) -->
 <div class="bg-gradient" aria-hidden="true"></div>
 
-<!--
-  Background video — img/bg-mov.mp4
-  autoplay + muted + loop + playsinline required for
-  browser autoplay policies to permit silent video.
--->
 <video class="bg-video" autoplay muted loop playsinline aria-hidden="true">
   <source src="./img/bg-mov.mp4" type="video/mp4">
 </video>
 
 <div class="page-wrap">
 
-  <!-- HEADER: Logo -->
   <header class="page-header">
     <div class="logo-lockup" role="img" aria-label="TekCloud">
       <img class="logo-icon" src="./img/IconLogo.svg" alt="">
@@ -253,7 +238,6 @@ body {
     </div>
   </header>
 
-  <!-- MAIN: Sign In modal -->
   <main class="page-main">
     <tek-modal>
 
@@ -261,29 +245,16 @@ body {
 
       <div slot="input-blocks" style="display:flex;flex-direction:column;gap:10px;width:100%;">
 
-        <!-- Username field -->
         <div style="display:flex;flex-direction:column;gap:6px;padding-bottom:12px;">
           <div class="form-field-label">Username</div>
-          <tek-input
-            placeholder="Enter message here"
-            type="text"
-            autocomplete="username"
-            style="display:block"
-          ></tek-input>
+          <tek-input placeholder="Enter message here" type="text" autocomplete="username" style="display:block"></tek-input>
         </div>
 
-        <!-- Password field -->
         <div style="display:flex;flex-direction:column;gap:6px;padding-bottom:12px;">
           <div class="form-field-label">Password</div>
-          <tek-input
-            placeholder="Enter message here"
-            type="password"
-            autocomplete="current-password"
-            style="display:block"
-          ></tek-input>
+          <tek-input placeholder="Enter message here" type="password" autocomplete="current-password" style="display:block"></tek-input>
         </div>
 
-        <!-- Stay signed in -->
         <tek-selector type="checkbox" label="Stay signed in"></tek-selector>
 
       </div>
@@ -298,7 +269,6 @@ body {
     </tek-modal>
   </main>
 
-  <!-- FOOTER -->
   <tek-footer>©2026 Tektronix. All Rights Reserved.</tek-footer>
 
 </div>
@@ -306,6 +276,12 @@ body {
 <!-- ============================================================
   @bbkemp/ui — Web Components
   In production: import '@bbkemp/ui'
+
+  Note on !important in :host padding:
+  Chrome allows the page-level * { padding: 0 } reset to bleed
+  into custom element shadow DOM :host styles at equal specificity.
+  !important on :host padding declarations guarantees shadow DOM
+  wins. This is a known Chrome cascade quirk with custom elements.
 ============================================================ -->
 <script>
 const SDR = `*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }`;
@@ -442,7 +418,7 @@ customElements.define('tek-input', class extends HTMLElement {
     const bc=bcs[state]||bcs.default, tc=tcs[state]||tcs.default;
     const rows=height==='double'?2:height==='triple'?3:1;
     const field=height!=='single'?`<textarea rows="${rows}" placeholder="${ph}">${val}</textarea>`:`<input type="${type}" placeholder="${ph}" value="${val}" autocomplete="${type==='password'?'current-password':type==='email'?'email':'username'}">`;
-    this._s.innerHTML = `<style>${SDR}:host{display:block;}input,textarea{display:block;width:100%;background:var(--tek-color-input-background-default,#252525);border:0.5px solid ${bc};border-radius:5px;padding:8px 4px 8px 10px;font-family:'SF Compact',system-ui,sans-serif;font-size:12px;line-height:15px;color:${tc};outline:none;resize:vertical;pointer-events:${state==='disabled'?'none':'auto'};}
+    this._s.innerHTML = `<style>${SDR}:host{display:block;}input,textarea{display:block;width:100%;background:var(--tek-color-input-background-default,#252525);border:0.5px solid ${bc};border-radius:5px;padding:8px 4px 8px 10px !important;font-family:'SF Compact',system-ui,sans-serif;font-size:12px;line-height:15px;color:${tc};outline:none;resize:vertical;pointer-events:${state==='disabled'?'none':'auto'};}
 input::placeholder,textarea::placeholder{color:${tc};opacity:0.7;}</style>${field}`;
   }
 });
@@ -475,7 +451,7 @@ customElements.define('tek-button', class extends HTMLElement {
     const bg=inactive?'var(--tek-color-button-background-inactive,#181818)':'var(--tek-color-button-background-default,#1e1e1e)';
     const border=inactive?'var(--tek-color-button-border-inactive,#454545)':'var(--tek-color-button-border-default,#33baea)';
     const color=inactive?'var(--tek-color-button-text-inactive,#454545)':'var(--tek-color-button-text-default,#cccccc)';
-    this._s.innerHTML = `<style>${SDR}:host{display:inline-block;}button{background:${bg};border:1px solid ${border};border-radius:9999px;padding:12px 24px;font-family:'Archivo',sans-serif;font-size:16px;font-weight:578;font-variation-settings:'wdth' 106;line-height:18px;letter-spacing:0.32px;color:${color};cursor:${inactive?'not-allowed':'pointer'};transition:all 0.15s;white-space:nowrap;width:100%;}
+    this._s.innerHTML = `<style>${SDR}:host{display:inline-block;}button{background:${bg};border:1px solid ${border};border-radius:9999px;padding:12px 24px !important;font-family:'Archivo',sans-serif;font-size:16px;font-weight:578;font-variation-settings:'wdth' 106;line-height:18px;letter-spacing:0.32px;color:${color};cursor:${inactive?'not-allowed':'pointer'};transition:all 0.15s;white-space:nowrap;width:100%;}
 button:not(:disabled):hover{background:var(--tek-color-button-background-hover,#000000);color:var(--tek-color-button-text-hover,#ffffff);}
 button:focus-visible{outline:2px solid var(--tek-color-button-border-default,#33baea);outline-offset:2px;}</style>
 <button ${inactive?'disabled':''}><slot></slot></button>`;
@@ -485,7 +461,10 @@ button:focus-visible{outline:2px solid var(--tek-color-button-border-default,#33
 customElements.define('tek-modal', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
-    this._s.innerHTML = `<style>${SDR}:host{display:flex;flex-direction:column;gap:14px;background:var(--tek-color-modal-background-default,#181818);border:0.25px solid var(--tek-color-modal-border-default,#7b7b7b);border-radius:11px;padding:32px;width:100%;max-width:360px;box-shadow:0px 2px 6px 0px var(--tek-primitive-color-ui-shadow,rgba(0,0,0,0.2));}
+    /* padding: !important — required to beat the page * { padding: 0 } reset
+       which Chrome applies to custom elements in the light DOM and allows
+       to bleed into shadow :host at equal specificity. */
+    this._s.innerHTML = `<style>${SDR}:host{display:flex;flex-direction:column;gap:14px;background:var(--tek-color-modal-background-default,#181818);border:0.25px solid var(--tek-color-modal-border-default,#7b7b7b);border-radius:11px;padding:32px !important;width:100%;max-width:360px;box-shadow:0px 2px 6px 0px var(--tek-primitive-color-ui-shadow,rgba(0,0,0,0.2));}
 .hd{font-family:'Archivo',sans-serif;font-size:24px;font-weight:600;font-variation-settings:'wdth' 106;line-height:24px;color:var(--tek-color-modal-text-default,#ffffff);}
 .in,.ac{display:flex;flex-direction:column;gap:10px;width:100%;}</style>
 <div class="hd"><slot name="header"></slot></div>
@@ -497,8 +476,9 @@ customElements.define('tek-modal', class extends HTMLElement {
 customElements.define('tek-footer', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
-    /* padding: top right bottom left — no right padding per design spec */
-    this._s.innerHTML = `<style>${SDR}:host{display:flex;align-items:center;width:100%;height:36px;padding:12px 0 12px 16px;background:var(--tek-color-footer-background-default,#252525);}span{flex:1 0 0;font-family:'SF Compact',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-footer-text-default,#cccccc);text-align:right;}</style><span><slot></slot></span>`;
+    /* padding: !important — same reason as tek-modal above.
+       12px 16px matches Figma spec (px-16px, py-12px). */
+    this._s.innerHTML = `<style>${SDR}:host{display:flex;align-items:center;width:100%;height:36px;padding:12px 16px !important;background:var(--tek-color-footer-background-default,#252525);}span{flex:1 0 0;font-family:'SF Compact',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-footer-text-default,#cccccc);text-align:right;}</style><span><slot></slot></span>`;
   }
 });
 </script>
