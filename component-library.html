@@ -6,6 +6,19 @@
 <title>@bbkemp/ui — Component Library</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,100..900&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!--
+  AutoAnimate — ambient DOM transition library
+  Smooths child additions, removals, and reorders in light DOM containers.
+  Zero config. Does NOT cross shadow DOM — light DOM parents only.
+  CDN: https://auto-animate.formkit.com
+
+  Planned production motion library: Motion.dev (https://motion.dev)
+  Motion tokens will live in packages/tokens/src/primitives/motion.json
+  once defined in Figma Variables.
+-->
+<script src="https://cdn.jsdelivr.net/npm/@formkit/auto-animate@latest/index.umd.js"></script>
+
 <style>
 /* ── @bbkemp/tokens ────────────────────────────────────────────
    In production: @import '@bbkemp/tokens/css';
@@ -86,6 +99,7 @@ body{background:#111111;color:var(--tek-primitive-color-neutral-grey-100);font-f
 .sidebar-logo{padding:0 24px 24px;border-bottom:0.5px solid #1f1f1f;margin-bottom:16px;}
 .sidebar-logo-name{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:-0.03em;color:#fff;}
 .sidebar-logo-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--tek-primitive-color-neutral-grey-500);margin-top:2px;}
+.sidebar-nav{flex:1;display:flex;flex-direction:column;}
 .sidebar-section{padding:12px 24px 4px;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--tek-primitive-color-neutral-grey-500);}
 .sidebar-link{display:block;padding:6px 24px;font-size:13px;color:var(--tek-primitive-color-neutral-grey-400);text-decoration:none;cursor:pointer;transition:color 0.1s;}
 .sidebar-link:hover{color:var(--tek-primitive-color-neutral-grey-100);}
@@ -130,23 +144,25 @@ body{background:#111111;color:var(--tek-primitive-color-neutral-grey-100);font-f
       <div class="sidebar-logo-name">@bbkemp/ui</div>
       <div class="sidebar-logo-sub">component library · v0.2</div>
     </div>
-    <span class="sidebar-section">Selectors</span>
-    <a class="sidebar-link active" onclick="nav(event,'checkbox')">Checkbox</a>
-    <a class="sidebar-link" onclick="nav(event,'radio')">Radio</a>
-    <a class="sidebar-link" onclick="nav(event,'toggle')">Toggle</a>
-    <a class="sidebar-link" onclick="nav(event,'selector-label')">SelectorLabel</a>
-    <a class="sidebar-link" onclick="nav(event,'selector')">Selector</a>
-    <span class="sidebar-section">Forms</span>
-    <a class="sidebar-link" onclick="nav(event,'input')">Input</a>
-    <a class="sidebar-link" onclick="nav(event,'charcount')">CharacterCount</a>
-    <a class="sidebar-link" onclick="nav(event,'textlink')">TextLink</a>
-    <span class="sidebar-section">Actions</span>
-    <a class="sidebar-link" onclick="nav(event,'button')">Button</a>
-    <span class="sidebar-section">Layout</span>
-    <a class="sidebar-link" onclick="nav(event,'modal')">Modal</a>
-    <a class="sidebar-link" onclick="nav(event,'footer')">Footer</a>
-    <span class="sidebar-section">Reference</span>
-    <a class="sidebar-link" onclick="nav(event,'tokens')">Tokens</a>
+    <div class="sidebar-nav">
+      <span class="sidebar-section">Selectors</span>
+      <a class="sidebar-link active" onclick="nav(event,'checkbox')">Checkbox</a>
+      <a class="sidebar-link" onclick="nav(event,'radio')">Radio</a>
+      <a class="sidebar-link" onclick="nav(event,'toggle')">Toggle</a>
+      <a class="sidebar-link" onclick="nav(event,'selector-label')">SelectorLabel</a>
+      <a class="sidebar-link" onclick="nav(event,'selector')">Selector</a>
+      <span class="sidebar-section">Forms</span>
+      <a class="sidebar-link" onclick="nav(event,'input')">Input</a>
+      <a class="sidebar-link" onclick="nav(event,'charcount')">CharacterCount</a>
+      <a class="sidebar-link" onclick="nav(event,'textlink')">TextLink</a>
+      <span class="sidebar-section">Actions</span>
+      <a class="sidebar-link" onclick="nav(event,'button')">Button</a>
+      <span class="sidebar-section">Layout</span>
+      <a class="sidebar-link" onclick="nav(event,'modal')">Modal</a>
+      <a class="sidebar-link" onclick="nav(event,'footer')">Footer</a>
+      <span class="sidebar-section">Reference</span>
+      <a class="sidebar-link" onclick="nav(event,'tokens')">Tokens</a>
+    </div>
   </nav>
 
   <main class="main">
@@ -678,6 +694,7 @@ customElements.define('tek-footer', class extends HTMLElement {
 });
 
 // ── Page JS ──────────────────────────────────────────────────
+
 // Interactive demos
 document.getElementById('cb-interactive').addEventListener('tek-change', e => {
   document.getElementById('cb-lbl').textContent = e.detail.checked ? 'checked ✓' : 'click me';
@@ -691,6 +708,18 @@ function copy(id,btn){navigator.clipboard.writeText(document.getElementById(id).
 
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));const m=document.querySelector(`.sidebar-link[onclick*="'${e.target.id}'"]`);if(m)m.classList.add('active');}});},{rootMargin:'-40% 0px -55% 0px'});
 document.querySelectorAll('.section').forEach(s=>obs.observe(s));
+
+// ── AutoAnimate ───────────────────────────────────────────────
+// Smooths DOM mutations (add/remove/reorder children) in light DOM containers.
+// Applied after components are defined and registered.
+// Shadow DOM interiors are excluded by design — AutoAnimate is light DOM only.
+// When Motion.dev is adopted, replace or layer on top of these calls.
+if (typeof autoAnimate !== 'undefined') {
+  // Sidebar nav — smooths active state transitions as scroll spy fires
+  autoAnimate(document.querySelector('.sidebar-nav'));
+  // Demo canvases — ready for dynamic state additions (error injection, etc.)
+  document.querySelectorAll('.preview-canvas').forEach(el => autoAnimate(el));
+}
 </script>
 </body>
 </html>

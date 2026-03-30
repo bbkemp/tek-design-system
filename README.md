@@ -258,6 +258,60 @@ document.querySelector('tek-button').addEventListener('tek-click', () => {
 
 ---
 
+## Motion
+
+### Current: AutoAnimate
+
+[AutoAnimate](https://auto-animate.formkit.com) is installed for ambient DOM transitions — 2KB, zero config. It smooths child additions, removals, and reorders in light DOM containers automatically.
+
+**Constraint:** AutoAnimate only works on light DOM parent elements. It cannot cross shadow DOM boundaries. For animated content inside a Web Component's shadow root, call `autoAnimate()` on a ref inside `connectedCallback` rather than from outside.
+
+```js
+// Light DOM — works directly
+autoAnimate(document.querySelector('.my-list'));
+
+// Inside a Web Component shadow root
+class MyComponent extends HTMLElement {
+  connectedCallback() {
+    this._s = this.attachShadow({ mode: 'open' });
+    // ... render ...
+    autoAnimate(this._s.querySelector('.inner-list'));
+  }
+}
+```
+
+### Planned: Motion.dev
+
+[Motion.dev](https://motion.dev) is the planned production animation library for deliberate, choreographed motion. It is tree-shakeable, framework-agnostic, and works with Web Components. AutoAnimate and Motion.dev coexist — AutoAnimate handles ambient transitions, Motion.dev handles intentional animation sequences.
+
+**Adoption path:**
+
+1. Define motion tokens in Figma Variables as a `Motion` collection:
+   - `motion/duration/fast`, `motion/duration/base`, `motion/duration/slow`
+   - `motion/easing/standard`, `motion/easing/enter`, `motion/easing/exit`
+2. Token Push exports them to `packages/tokens/src/primitives/motion.json` automatically
+3. Style Dictionary outputs `--tek-motion-duration-fast`, `--tek-motion-easing-standard` etc.
+4. Devs reference those CSS vars inside Motion.dev calls:
+
+```js
+import { animate } from 'motion';
+
+animate(
+  element,
+  { opacity: [0, 1], y: [8, 0] },
+  {
+    duration: getComputedStyle(document.documentElement)
+      .getPropertyValue('--tek-motion-duration-base'),
+    easing: getComputedStyle(document.documentElement)
+      .getPropertyValue('--tek-motion-easing-enter'),
+  }
+);
+```
+
+**Figma Dev Mode:** Figma has no native Motion.dev export. Document motion intent via Code Connect instructions on each component — Dev Mode will surface the animation guidance alongside the component code.
+
+---
+
 ## Shadow DOM cascade — developer note
 
 Web Components use shadow DOM. Chrome allows the page-level `* { padding: 0 }` CSS reset to bleed into custom element `:host` styles at equal specificity. Any component that declares padding on `:host` must use `!important` to guarantee shadow DOM wins.
