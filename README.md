@@ -16,8 +16,12 @@ tek-design-system/
 │       ├── publish-tokens.yml    auto-publishes tokens on change
 │       └── publish-ui.yml        auto-publishes UI on change
 ├── figma-token-push/         Token Push Figma plugin (local dev, not published)
-├── component-library.html    interactive component reference
-├── signin.html               sign in page preview
+├── img/                      Static assets for preview pages
+│   ├── IconLogo.svg          Tek icon mark
+│   ├── TypeLogo.svg          TekCloud wordmark
+│   └── bg-mov.mp4            Background video
+├── component-library.html    interactive component reference (live web components)
+├── signin.html               sign in page (responsive, mobile-first, web components)
 ├── SETUP.md                  first-time setup guide
 └── CONTRIBUTING.md           how to make changes
 ```
@@ -61,7 +65,7 @@ Raw values — the palette. Not applied directly to components.
 |---|---|
 | `color.json` | Full color palette: brand, neutral scale, UI states |
 | `spacing.json` | Spacing scale mapped to px values |
-| `border.json` | Border radius and border width values |
+| `border.json` | Border radius and border width values (none → 01–16 → full) |
 
 Example:
 ```json
@@ -254,6 +258,45 @@ document.querySelector('tek-button').addEventListener('tek-click', () => {
 
 ---
 
+## Shadow DOM cascade — developer note
+
+Web Components use shadow DOM. Chrome allows the page-level `* { padding: 0 }` CSS reset to bleed into custom element `:host` styles at equal specificity. Any component that declares padding on `:host` must use `!important` to guarantee shadow DOM wins.
+
+This affects: `tek-modal`, `tek-footer`, `tek-button`, `tek-input`. The `!important` declarations in `packages/ui/src/` are intentional and correct — do not remove them.
+
+```css
+/* In shadow DOM component styles — required, not optional */
+:host { padding: 32px !important; }
+```
+
+---
+
+## Responsive layout — container queries
+
+Preview pages use CSS container queries, not viewport media queries. The page container establishes the containment context:
+
+```css
+.page-wrap {
+  container-type: inline-size;
+  container-name: page;
+}
+```
+
+Breakpoints match the Figma `Cxx` container variables:
+
+| Variable | Value | Viewport |
+|---|---|---|
+| `--tek-container-xs` | 384px | Mobile (base) |
+| `--tek-container-sm` | 640px | Tablet |
+| `--tek-container-xl` | 1280px | Desktop |
+
+```css
+@container page (min-width: 640px)  { /* tablet  */ }
+@container page (min-width: 1280px) { /* desktop */ }
+```
+
+---
+
 ## Overriding tokens
 
 ```css
@@ -282,7 +325,9 @@ document.querySelector('tek-button').addEventListener('tek-click', () => {
 | Button | 202:2605 |
 | Modal | 7003:2158 |
 | Footer | 7003:2168 |
-| Sign In page | 3020:490 |
+| Sign In — Mobile | 7134:600 |
+| Sign In — Tablet | 7135:638 |
+| Sign In — Desktop | 7134:598 |
 
 Code Connect mappings are live in the Figma file — component usage surfaces automatically in Dev Mode.
 
