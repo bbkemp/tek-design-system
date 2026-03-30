@@ -138,7 +138,10 @@ body {
   pointer-events: none;
 }
 
-/* Page container — establishes container query context */
+/* ── Page container ─────────────────────────────────────────
+   Establishes the container query context.
+   Direct children: .wrap (flex-1) + tek-footer.
+────────────────────────────────────────────────────────────── */
 .page-wrap {
   position: relative;
   z-index: 1;
@@ -150,16 +153,39 @@ body {
   container-name: page;
 }
 
-/* Header — mobile + tablet: centered. Desktop only: left-aligned. */
-.page-header {
-  width: 100%;
+/* ── Wrap ────────────────────────────────────────────────────
+   Matches Figma "Wrap" — the single flex container holding
+   both the logo header and the modal as direct siblings.
+   Logo and modal separated by gap (not justify-content).
+   Figma mobile: flex-1, flex-col, gap-48px, items-center,
+                 pt-48px, pb-24px, px-32px
+────────────────────────────────────────────────────────────── */
+.wrap {
+  flex: 1;
   display: flex;
-  justify-content: center;
-  padding-top: 32px;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  padding: 48px 32px 24px;
+  width: 100%;
+  min-height: 1px;
+}
+
+/* ── Logo header ─────────────────────────────────────────────
+   Figma mobile + tablet: items-center (logo centered).
+   Figma desktop: items-start (logo left).
+────────────────────────────────────────────────────────────── */
+.logo-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   flex-shrink: 0;
 }
 
-/* Logo lockup — no padding, vertically centered */
+/* ── Logo lockup ─────────────────────────────────────────────
+   IconLogo.svg + TypeLogo.svg, vertically centered.
+────────────────────────────────────────────────────────────── */
 .logo-lockup {
   display: flex;
   align-items: center;
@@ -167,26 +193,16 @@ body {
 }
 
 .logo-icon {
-  height: 64px;
+  /* Figma mobile + tablet: 90px tall */
+  height: 90px;
   width: auto;
   display: block;
 }
 
 .logo-type {
-  height: 28px;
+  height: 38px;
   width: auto;
   display: block;
-}
-
-/* Main */
-.page-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 32px 24px;
-  gap: 48px;
 }
 
 /* Form field label */
@@ -201,23 +217,26 @@ body {
 
 /* ============================================================
    CONTAINER QUERIES — mobile-first
-   xs  = 384px  (mobile — base)
-   sm  = 640px  (tablet — logo stays centered)
-   xl  = 1280px (desktop — logo goes left)
+   All breakpoints use container, never viewport.
+
+   Figma values confirmed per breakpoint:
+   Mobile  (base): pt-48 pb-24 px-32  gap-48  logo-center
+   Tablet  (640+): pt-48 pb-24 px-64  gap-48  logo-center
+   Desktop (1280+):pt-64 pb-32 px-64  gap-64  logo-left
 ============================================================ */
 
+/* Tablet (640px+) */
 @container page (min-width: 640px) {
-  .page-header  { padding-top: 48px; }
-  .logo-icon    { height: 80px; }
-  .logo-type    { height: 34px; }
-  .page-main    { padding: 48px 48px 32px; gap: 56px; }
+  .wrap       { padding: 48px 64px 24px; gap: 48px; }
+  /* logo stays centered — .logo-header already center */
 }
 
+/* Desktop (1280px+) */
 @container page (min-width: 1280px) {
-  .page-header  { justify-content: flex-start; padding: 64px 0 0 64px; }
-  .logo-icon    { height: 96px; }
-  .logo-type    { height: 40px; }
-  .page-main    { padding: 64px 64px 32px; gap: 64px; }
+  .wrap        { padding: 64px 64px 32px; gap: 64px; }
+  .logo-header { align-items: flex-start; }
+  .logo-icon   { height: 128px; }
+  .logo-type   { height: 52px;  }
 }
 </style>
 </head>
@@ -231,14 +250,20 @@ body {
 
 <div class="page-wrap">
 
-  <header class="page-header">
-    <div class="logo-lockup" role="img" aria-label="TekCloud">
-      <img class="logo-icon" src="./img/IconLogo.svg" alt="">
-      <img class="logo-type" src="./img/TypeLogo.svg" alt="TekCloud">
-    </div>
-  </header>
+  <!--
+    .wrap = Figma "Wrap" — single flex-col container.
+    Logo header and modal are siblings separated by gap-48px.
+    No justify-content:center — modal flows from top after logo.
+  -->
+  <div class="wrap">
 
-  <main class="page-main">
+    <header class="logo-header">
+      <div class="logo-lockup" role="img" aria-label="TekCloud">
+        <img class="logo-icon" src="./img/IconLogo.svg" alt="">
+        <img class="logo-type" src="./img/TypeLogo.svg" alt="TekCloud">
+      </div>
+    </header>
+
     <tek-modal>
 
       <span slot="header">Sign In</span>
@@ -267,7 +292,8 @@ body {
       </div>
 
     </tek-modal>
-  </main>
+
+  </div><!-- /wrap -->
 
   <tek-footer>©2026 Tektronix. All Rights Reserved.</tek-footer>
 
@@ -461,9 +487,6 @@ button:focus-visible{outline:2px solid var(--tek-color-button-border-default,#33
 customElements.define('tek-modal', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
-    /* padding: !important — required to beat the page * { padding: 0 } reset
-       which Chrome applies to custom elements in the light DOM and allows
-       to bleed into shadow :host at equal specificity. */
     this._s.innerHTML = `<style>${SDR}:host{display:flex;flex-direction:column;gap:14px;background:var(--tek-color-modal-background-default,#181818);border:0.25px solid var(--tek-color-modal-border-default,#7b7b7b);border-radius:11px;padding:32px !important;width:100%;max-width:360px;box-shadow:0px 2px 6px 0px var(--tek-primitive-color-ui-shadow,rgba(0,0,0,0.2));}
 .hd{font-family:'Archivo',sans-serif;font-size:24px;font-weight:600;font-variation-settings:'wdth' 106;line-height:24px;color:var(--tek-color-modal-text-default,#ffffff);}
 .in,.ac{display:flex;flex-direction:column;gap:10px;width:100%;}</style>
@@ -476,8 +499,6 @@ customElements.define('tek-modal', class extends HTMLElement {
 customElements.define('tek-footer', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
-    /* padding: !important — same reason as tek-modal above.
-       12px 16px matches Figma spec (px-16px, py-12px). */
     this._s.innerHTML = `<style>${SDR}:host{display:flex;align-items:center;width:100%;height:36px;padding:12px 16px !important;background:var(--tek-color-footer-background-default,#252525);}span{flex:1 0 0;font-family:'SF Compact',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-footer-text-default,#cccccc);text-align:right;}</style><span><slot></slot></span>`;
   }
 });
