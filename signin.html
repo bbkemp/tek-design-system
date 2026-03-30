@@ -81,9 +81,7 @@
   --tek-color-footer-text-default:      #cccccc;
   --tek-color-icons-default:            #ffffff;
 
-  /* container breakpoints — from Figma Cxx variables
-     Container queries reference these at the component level.
-     Viewport breakpoints are only used at the page/layout level. */
+  /* container breakpoints — from Figma Cxx variables */
   --tek-container-xs:  384px;  /* C00 mobile */
   --tek-container-sm:  640px;  /* C01 tablet */
   --tek-container-xl: 1280px;  /* C02 desktop */
@@ -95,9 +93,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* ============================================================
-   PAGE — video background, full viewport, flex column
-   Mobile-first: single column centered layout.
-   Container queries on .page-wrap handle responsive layout.
+   PAGE
 ============================================================ */
 html, body {
   height: 100%;
@@ -115,12 +111,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Background video ──────────────────────────────────────
-   ./img/bg.mp4 — add file to /img folder to activate.
-   Gradient fallback renders when video is absent or on
-   browsers/devices that don't autoplay.
-   Video is positioned behind all content via z-index.
-────────────────────────────────────────────────────────── */
+/* Background video */
 .bg-video {
   position: fixed;
   inset: 0;
@@ -131,7 +122,7 @@ body {
   pointer-events: none;
 }
 
-/* Gradient fallback — always visible; video layers on top */
+/* Gradient fallback — always rendered; video layers on top */
 .bg-gradient {
   position: fixed;
   inset: 0;
@@ -144,10 +135,7 @@ body {
   pointer-events: none;
 }
 
-/* ── Page container — everything above bg ──────────────────
-   container-type enables container queries on child elements.
-   This is the single containment context for the whole page.
-────────────────────────────────────────────────────────── */
+/* Page container — establishes container query context */
 .page-wrap {
   position: relative;
   z-index: 1;
@@ -159,44 +147,47 @@ body {
   container-name: page;
 }
 
-/* ── Header — logo ─────────────────────────────────────────
-   Mobile: centered
-   Tablet+: top-left aligned
-────────────────────────────────────────────────────────── */
+/* Header — mobile: centered */
 .page-header {
   width: 100%;
   display: flex;
-  justify-content: center;  /* mobile: center */
+  align-items: center;
+  justify-content: center;
   padding: 32px 32px 0;
   flex-shrink: 0;
 }
 
+/* Logo lockup — IconLogo.svg + TypeLogo.svg side by side */
 .logo-lockup {
-  /* Size from Figma mobile: 210×90px */
-  height: 90px;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.logo-icon {
+  height: 64px;
   width: auto;
   display: block;
 }
 
-/* ── Main — wraps and centers the modal ────────────────────
-   flex-1 so it fills remaining space between header and footer.
-────────────────────────────────────────────────────────── */
+.logo-type {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+
+/* Main */
 .page-main {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* Mobile padding from Figma: pt 48px, pb 24px, px 32px */
   padding: 48px 32px 24px;
   gap: 48px;
 }
 
-/* ── Sign In form label ─────────────────────────────────────
-   Separate from modal label token — page-level type.
-   SF Compact used here. Swap for Archivo or DM Sans when
-   type styles are finalized.
-────────────────────────────────────────────────────────── */
+/* Form field label */
 .form-field-label {
   font-family: 'SF Compact', system-ui, sans-serif;
   font-size: 12px;
@@ -207,48 +198,29 @@ body {
 }
 
 /* ============================================================
-   CONTAINER QUERIES
-   All responsive layout is driven by the page container,
-   not the viewport. Components adapt to their container.
+   CONTAINER QUERIES — mobile-first
+   All breakpoints use container, never viewport.
 
-   Breakpoints match Figma Cxx variables:
-     xs  = 384px  (mobile — base styles above)
-     sm  = 640px  (tablet)
-     xl  = 1280px (desktop)
+   xs  = 384px  (mobile — base styles above)
+   sm  = 640px  (tablet)
+   xl  = 1280px (desktop)
 ============================================================ */
 
-/* Tablet (640px+) */
 @container page (min-width: 640px) {
   .page-header {
-    justify-content: flex-start;  /* logo goes left */
+    justify-content: flex-start;
     padding: 48px 48px 0;
   }
-
-  .logo-lockup {
-    /* Figma desktop: 300×128px */
-    height: 110px;
-  }
-
-  .page-main {
-    padding: 48px 48px 32px;
-    gap: 56px;
-  }
+  .logo-icon { height: 80px; }
+  .logo-type { height: 34px; }
+  .page-main { padding: 48px 48px 32px; gap: 56px; }
 }
 
-/* Desktop (1280px+) */
 @container page (min-width: 1280px) {
-  .page-header {
-    padding: 64px 64px 0;
-  }
-
-  .logo-lockup {
-    height: 128px;
-  }
-
-  .page-main {
-    padding: 64px 64px 32px;
-    gap: 64px;
-  }
+  .page-header { padding: 64px 64px 0; }
+  .logo-icon { height: 96px; }
+  .logo-type { height: 40px; }
+  .page-main { padding: 64px 64px 32px; gap: 64px; }
 }
 </style>
 </head>
@@ -258,13 +230,12 @@ body {
 <div class="bg-gradient" aria-hidden="true"></div>
 
 <!--
-  Background video — add ./img/bg.mp4 to the /img folder.
+  Background video — img/bg-mov.mp4
   autoplay + muted + loop + playsinline required for
   browser autoplay policies to permit silent video.
 -->
 <video class="bg-video" autoplay muted loop playsinline aria-hidden="true">
-  <source src="./img/bg.mp4" type="video/mp4">
-  <!-- No fallback src needed — gradient shows beneath -->
+  <source src="./img/bg-mov.mp4" type="video/mp4">
 </video>
 
 <div class="page-wrap">
@@ -272,16 +243,13 @@ body {
   <!-- HEADER: Logo -->
   <header class="page-header">
     <!--
-      Logo lockup SVG — add ./img/logo-lockup.svg to the /img folder.
-      Alt text describes the full logo for accessibility.
+      Logo lockup: IconLogo.svg (icon mark) + TypeLogo.svg (wordmark)
+      Sizes scale at each container breakpoint above.
     -->
-    <img
-      class="logo-lockup"
-      src="./img/logo-lockup.svg"
-      alt="TekCloud"
-      width="300"
-      height="128"
-    >
+    <div class="logo-lockup" role="img" aria-label="TekCloud">
+      <img class="logo-icon" src="./img/IconLogo.svg" alt="">
+      <img class="logo-type" src="./img/TypeLogo.svg" alt="TekCloud">
+    </div>
   </header>
 
   <!-- MAIN: Sign In modal -->
@@ -332,18 +300,15 @@ body {
   <!-- FOOTER -->
   <tek-footer>©2026 Tektronix. All Rights Reserved.</tek-footer>
 
-</div><!-- /page-wrap -->
+</div>
 
 <!-- ============================================================
   @bbkemp/ui — Web Components
   In production: import '@bbkemp/ui'
-  These inline definitions are identical to packages/ui/src/
-  CSS custom properties cascade through shadow DOM boundaries.
 ============================================================ -->
 <script>
 const SDR = `*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }`;
 
-// ── tek-checkbox ─────────────────────────────────────────────
 customElements.define('tek-checkbox', class extends HTMLElement {
   static get observedAttributes() { return ['checked','error','disabled']; }
   connectedCallback() {
@@ -365,7 +330,6 @@ customElements.define('tek-checkbox', class extends HTMLElement {
   }
 });
 
-// ── tek-radio ────────────────────────────────────────────────
 customElements.define('tek-radio', class extends HTMLElement {
   static get observedAttributes() { return ['checked','error','disabled']; }
   connectedCallback() {
@@ -390,7 +354,6 @@ customElements.define('tek-radio', class extends HTMLElement {
   }
 });
 
-// ── tek-toggle ───────────────────────────────────────────────
 customElements.define('tek-toggle', class extends HTMLElement {
   static get observedAttributes() { return ['checked','error','disabled']; }
   connectedCallback() {
@@ -415,7 +378,6 @@ customElements.define('tek-toggle', class extends HTMLElement {
   }
 });
 
-// ── tek-selector-label ───────────────────────────────────────
 customElements.define('tek-selector-label', class extends HTMLElement {
   static get observedAttributes() { return ['checked','error']; }
   connectedCallback() { this._s = this.attachShadow({mode:'open'}); this._render(); }
@@ -427,7 +389,6 @@ customElements.define('tek-selector-label', class extends HTMLElement {
   }
 });
 
-// ── tek-selector ─────────────────────────────────────────────
 customElements.define('tek-selector', class extends HTMLElement {
   static get observedAttributes() { return ['type','label','checked','error','disabled','name']; }
   connectedCallback() {
@@ -444,7 +405,7 @@ customElements.define('tek-selector', class extends HTMLElement {
   _render() {
     const type=this.getAttribute('type')||'checkbox', label=this.getAttribute('label')||'';
     const checked=this.hasAttribute('checked')?'checked':'', error=this.hasAttribute('error')?'error':'';
-    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'';
+    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'' ;
     this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;gap:8px;cursor:${disabled?'not-allowed':'pointer'};user-select:none;}</style>
 <tek-${type} ${checked} ${error} ${disabled} ${name}></tek-${type}>
 <tek-selector-label ${checked} ${error}>${label}</tek-selector-label>`;
@@ -456,7 +417,6 @@ customElements.define('tek-selector', class extends HTMLElement {
   }
 });
 
-// ── tek-input ────────────────────────────────────────────────
 customElements.define('tek-input', class extends HTMLElement {
   static get observedAttributes() { return ['state','height','placeholder','value','type']; }
   connectedCallback() {
@@ -486,7 +446,6 @@ input::placeholder,textarea::placeholder{color:${tc};opacity:0.7;}</style>${fiel
   }
 });
 
-// ── tek-text-link ────────────────────────────────────────────
 customElements.define('tek-text-link', class extends HTMLElement {
   static get observedAttributes() { return ['href','target']; }
   connectedCallback() { this._s = this.attachShadow({mode:'open'}); this._render(); }
@@ -498,7 +457,6 @@ customElements.define('tek-text-link', class extends HTMLElement {
   }
 });
 
-// ── tek-button ───────────────────────────────────────────────
 customElements.define('tek-button', class extends HTMLElement {
   static get observedAttributes() { return ['variant','inactive','disabled']; }
   connectedCallback() {
@@ -523,7 +481,6 @@ button:focus-visible{outline:2px solid var(--tek-color-button-border-default,#33
   }
 });
 
-// ── tek-modal ────────────────────────────────────────────────
 customElements.define('tek-modal', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
@@ -536,7 +493,6 @@ customElements.define('tek-modal', class extends HTMLElement {
   }
 });
 
-// ── tek-footer ───────────────────────────────────────────────
 customElements.define('tek-footer', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
