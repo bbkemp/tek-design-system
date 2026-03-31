@@ -1,6 +1,6 @@
 # Contributing
 
-This document covers how to make changes to the Tek Design System — tokens, components, and the pipeline that connects them.
+How to make changes to the Tek Design System — tokens, components, and the pipeline connecting them.
 
 ---
 
@@ -10,167 +10,155 @@ This document covers how to make changes to the Tek Design System — tokens, co
 - [Updating token values](#updating-token-values)
 - [Adding new token groups](#adding-new-token-groups)
 - [Updating Web Components](#updating-web-components)
-- [Review and approval process](#review-and-approval-process)
+- [Review and approval](#review-and-approval)
 - [Versioning](#versioning)
-- [Who to talk to](#who-to-talk-to)
+- [Working locally](#working-locally)
 
 ---
 
 ## How the pipeline works
 
 ```
-Figma Variables
+Figma Variables (dark + light modes)
       │
-      │  Token Push plugin (one button from inside Figma)
+      │  Token Push plugin — exports ALL Semantic modes in one push
       ▼
-packages/tokens/src/          ← W3C DTCG token JSON
+packages/tokens/src/
+├── semantic/tokens.json         ← dark (mode index 0)
+└── semantic/tokens.light.json   ← light (mode index 1)
       │
-      │  publish-tokens.yml fires automatically on commit
-      │  (serialized via concurrency group — no race conditions)
+      │  publish-tokens.yml fires automatically
       ▼
-Style Dictionary build
-      │
-      ├── dist/tek.tokens.css       CSS custom properties (semantic)
-      ├── dist/tek.primitives.css   CSS custom properties (primitives)
-      └── dist/tek.tokens.js        JS/TS export
-      │
-      ▼
-@bbkemp/tokens published to GitHub Packages
+Style Dictionary → @bbkemp/tokens (GitHub Packages)
 ```
 
-Changes to token source files on `main` automatically trigger a build and publish. No manual publish steps. `dist/` is gitignored — it is never committed to the repo.
+`dist/` is gitignored. Never committed to the repo.
 
 ---
 
 ## Updating token values
 
-Use this when changing an existing token's value — e.g. adjusting a color, spacing value, or border radius.
-
 **Who:** Designer (no dev required)
 
-**Steps:**
-
-1. Make the change in Figma Variables (DS-v2 file)
-2. Get sign-off from the relevant stakeholder
-3. Open the Token Push plugin: **Plugins → Development → Token Push**
+1. Make the change in Figma Variables (DS-v2)
+2. Get design sign-off
+3. Open **Plugins → Development → Token Push**
 4. Click **⬆ Push Tokens to GitHub**
-5. Confirm all file rows show ✓
+5. All file rows turn green — `semantic/tokens.json` AND `semantic/tokens.light.json` both commit
 6. Verify `Publish @bbkemp/tokens` passes in [GitHub Actions](https://github.com/bbkemp/tek-design-system/actions)
-7. Notify consuming teams that a new version is available
+7. Notify consuming teams
 
-**Consuming teams update by running:**
 ```bash
-npm update @bbkemp/tokens
+npm update @bbkemp/tokens  # consuming project
 ```
 
 ---
 
 ## Adding new token groups
 
-Use this when adding an entirely new category of tokens — e.g. `typography`, `motion`, `dimension`.
+### New Primitive group
 
-**Who:** Designer + optional dev review
+1. Add variables to the **Primitives** collection in Figma using `groupname/subgroup/name` pattern
+2. Token Push auto-creates `src/primitives/{groupname}.json` — no plugin config changes needed
+3. Push and verify Actions passed
 
-### Adding a new Primitive group
+**Routing examples:**
+- `fonts/...` → `primitives/fonts.json`
+- `motion/...` → `primitives/motion.json`
+- `spacing/...` → `primitives/spacing.json`
 
-1. In Figma, add a new group inside the **Primitives** collection using the naming pattern `groupname/subgroup/tokenname`
-   - Example: `typography/font-size/sm`, `typography/font-size/md`
-2. The plugin automatically creates `packages/tokens/src/primitives/{groupname}.json`
-   - `typography` → `primitives/typography.json`
-   - No plugin configuration changes needed
-3. Run Token Push
-4. Verify Actions passed
-5. New CSS custom properties are live: `--tek-typography-font-size-sm`
+### New Semantic tokens
 
-**Note:** Collection names with emojis (e.g. 🧩 Primitives) are fully supported — the plugin strips them automatically.
+1. Add to the **Semantic** collection using `group/subgroup/variant` pattern
+2. Set values as aliases to primitives: `{colors.neutral.500}`
+3. Add to **both** dark and light modes in Figma before pushing
+4. Push — both `tokens.json` and `tokens.light.json` update in one operation
 
-### Adding new Semantic tokens
+### Adding a new Semantic mode
 
-1. In Figma, add tokens to the **Semantic** collection using the pattern `group/subgroup/variant`
-   - Example: `form/padding/sm`
-   - Set the value as an alias to a primitive: `{spacing.s05}`
-2. Run Token Push — semantic tokens always land in `semantic/tokens.json`
-3. Verify Actions passed
-4. New CSS custom properties are live: `--tek-form-padding-sm`
+The plugin auto-generates a file per mode using a slug derived from the mode name:
+- Mode name `🌚 dark` → `tokens.json` (index 0, always)
+- Mode name `🌝 light` → `tokens.light.json`
+- Any future mode `🔴 high-contrast` → `tokens.high-contrast.json`
 
-### ⚠ Adding a new Collection
+No plugin changes needed to add new modes.
 
-Adding a new top-level Figma Variables collection (beyond `Primitives` and `Semantic`) requires a plugin update. Open an issue or contact the maintainer before doing this.
+### ⚠️ Adding a new Collection
+
+Adding a new top-level Figma Variables collection beyond `Primitives` and `Semantic` requires a plugin update to `figma-token-push/code.js`. Open an issue or contact the maintainer.
 
 ---
 
 ## Updating Web Components
 
-Use this when changing component structure, styles, or which tokens a component references.
-
 **Who:** Developer
 
-**Steps:**
-
-1. Edit the relevant component in `packages/ui/src/`
-2. Test locally:
+1. Edit `packages/ui/src/`
+2. Build and test locally:
    ```bash
    npm run build --workspace=packages/ui
    ```
-3. Open a pull request against `main` with a clear description of what changed and why
-4. Get at least one review
+3. Also update the matching inline definition in `component-library.html` and `signin.html` (these should stay in sync with `packages/ui/src/`)
+4. Open a PR against `main`
 5. Merge — `publish-ui.yml` fires automatically
 
-**If a component change also requires a token change**, do the token push first, confirm it published, then update the component.
+**Token changes first:** If a component change also needs new tokens, push tokens first and confirm they published before updating the component.
+
+**Typography:** Components use CSS custom properties for all type values (`--tek-fonts-*`). Hardcoded px sizes or font strings in components are a bug.
 
 ---
 
-## Review and approval process
+## Review and approval
 
-| Change type | Review required | Who approves |
+| Change | Review | Approver |
 |---|---|---|
 | Token value update | Design sign-off | Design lead |
 | New primitive group | Design sign-off | Design lead |
 | New semantic tokens | Design sign-off | Design lead |
 | Web Component change | PR review | Developer |
-| New collection | Discussion first | Design lead + Developer |
-| Breaking change | PR review + stakeholder sign-off | Design lead + Developer |
+| New collection | Discussion first | Both |
+| Breaking change | PR + stakeholder sign-off | Both |
 
-**Breaking changes** are any changes that rename or remove existing token keys or CSS custom properties. These require advance notice to consuming teams before merging.
+Breaking changes = any rename or removal of existing token keys or CSS custom properties. Advance notice to consuming teams required.
 
 ---
 
 ## Versioning
 
-Packages are versioned automatically. The GitHub Actions workflow bumps the patch version on every publish.
+Patch version bumped automatically on every publish.
 
-| Change | Version bump | Example |
-|---|---|---|
-| Token value update | patch | `0.2.1` → `0.2.2` |
-| New tokens added | patch | `0.2.1` → `0.2.2` |
-| Token renamed/removed | minor or major | discuss first |
-
-If a change is breaking, bump the version manually in `package.json` before merging and document what changed in a comment on the PR.
+| Change | Bump |
+|---|---|
+| Token value update | patch |
+| New tokens added | patch |
+| Token renamed/removed | minor or major — discuss first |
 
 ---
 
-## Working with the repo locally
+## Working locally
 
 ```bash
-# Pull latest
-cd ~/kemp-sys/tek-design-system
 git pull origin main
 
-# Make changes, then push
+# Make changes
 git add .
-git commit -m "chore: description of change"
+git commit -m "type: description"
 git push
 ```
 
-For plugin updates — after replacing files in `figma-token-push/`:
+### Plugin updates
 
+After editing files in `figma-token-push/`:
 ```bash
 git add figma-token-push/
-git commit -m "chore: update token push plugin"
+git commit -m "chore: update Token Push plugin"
 git push
 ```
 
-Then re-import the plugin in Figma Desktop from its existing path — no need to remove and re-add if the folder location hasn't changed.
+Then **reload** in Figma Desktop:
+**Plugins → Development → Token Push → right-click → Reload**
+
+No re-import from manifest needed unless you’re setting up a new machine.
 
 ---
 
@@ -178,8 +166,8 @@ Then re-import the plugin in Figma Desktop from its existing path — no need to
 
 | Area | Contact |
 |---|---|
-| Figma variables + token structure | Design lead (Bryan) |
-| Token Push plugin | Design lead (Bryan) |
+| Figma variables + token structure | Bryan |
+| Token Push plugin | Bryan |
 | Web Components | Developer |
-| GitHub Actions / pipeline | Design lead (Bryan) |
+| GitHub Actions / pipeline | Bryan |
 | Breaking changes | Both |

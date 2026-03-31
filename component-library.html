@@ -4,45 +4,102 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>@bbkemp/ui — Component Library</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <!--
-  AutoAnimate — ambient DOM transition library (current)
-  Smooths child additions, removals, and reorders in light DOM containers.
-  Zero config. Does NOT cross shadow DOM — light DOM parents only.
-  CDN: https://auto-animate.formkit.com
-  npm: npm install @formkit/auto-animate
+  Fonts
+  Geist       — body / UI text      (npm: geist | Google Fonts CDN)
+  Geist Mono  — code / labels       (npm: geist | Google Fonts CDN)
+  Archivo     — headings / display  (Google Fonts CDN)
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
 
-  Planned production motion library: Motion.dev (https://motion.dev)
-  Motion tokens will live in packages/tokens/src/primitives/motion.json
-  once defined in Figma Variables.
+<!--
+  AutoAnimate — ambient DOM transitions, light DOM only
+  npm: @formkit/auto-animate
+  Planned production motion: Motion.dev (https://motion.dev)
 -->
 <script src="https://cdn.jsdelivr.net/npm/@formkit/auto-animate@latest/index.umd.js"></script>
 
 <style>
-/* ── @bbkemp/tokens ────────────────────────────────────────────
-   In production: @import '@bbkemp/tokens/css';
-   CSS custom properties cascade into shadow DOM — all web
-   components below consume these via var(--tek-*) fallbacks.
-──────────────────────────────────────────────────────────────── */
-:root {
-  --tek-primitive-color-neutral-grey-100: #cccccc;
-  --tek-primitive-color-neutral-grey-200: #afafaf;
-  --tek-primitive-color-neutral-grey-300: #979797;
-  --tek-primitive-color-neutral-grey-400: #7b7b7b;
-  --tek-primitive-color-neutral-grey-500: #454545;
-  --tek-primitive-color-neutral-grey-700: #252525;
-  --tek-primitive-color-neutral-grey-800: #1e1e1e;
-  --tek-primitive-color-neutral-grey-900: #181818;
-  --tek-primitive-color-core-tek-blue:    #33baea;
-  --tek-primitive-color-core-white:       #ffffff;
-  --tek-primitive-color-core-black:       #000000;
-  --tek-primitive-color-ui-alert-red:     #e74848;
-  --tek-primitive-color-ui-alert-amber:   #e0b732;
-  --tek-primitive-color-ui-shadow:        rgba(0,0,0,0.2);
+/* ============================================================
+   @bbkemp/tokens — in production: @import '@bbkemp/tokens/css'
 
-  /* semantic: selector */
+   Token naming follows the W3C DTCG path from src/ files:
+   color.input.border.default → --tek-color-input-border-default
+   fonts.text.size.md         → --tek-fonts-text-size-md
+
+   This page is dark-mode only (no theme toggle).
+   All --tek-color-* vars are the dark semantic defaults.
+============================================================ */
+:root {
+  /* ── Type scale — primitives/fonts.json ────────────────── */
+  --tek-fonts-family-geist:   'Geist', system-ui, sans-serif;
+  --tek-fonts-family-archivo: 'Archivo', sans-serif;
+  --tek-fonts-family-mono:    'Geist Mono', monospace;
+
+  --tek-fonts-text-size-xs:        10px;
+  --tek-fonts-text-size-sm:        12px;
+  --tek-fonts-text-size-md:        13px;
+  --tek-fonts-text-size-lg:        14px;
+  --tek-fonts-text-size-xl:        16px;
+  --tek-fonts-text-line-height-xs: 12px;
+  --tek-fonts-text-line-height-sm: 12px;
+  --tek-fonts-text-line-height-md: 16px;
+  --tek-fonts-text-line-height-lg: 20px;
+  --tek-fonts-text-line-height-xl: 24px;
+
+  --tek-fonts-heading-size-xs:        16px;
+  --tek-fonts-heading-size-md:        24px;
+  --tek-fonts-heading-line-height-xs: 24px;
+  --tek-fonts-heading-line-height-md: 32px;
+
+  /* ── Color primitives — primitives/color.json ────────────── */
+  --tek-primitive-color-neutral-100:    #cccccc;
+  --tek-primitive-color-neutral-200:    #afafaf;
+  --tek-primitive-color-neutral-300:    #979797;
+  --tek-primitive-color-neutral-400:    #7b7b7b;
+  --tek-primitive-color-neutral-450:    #646464;
+  --tek-primitive-color-neutral-500:    #454545;
+  --tek-primitive-color-neutral-600:    #333333;
+  --tek-primitive-color-neutral-700:    #252525;
+  --tek-primitive-color-neutral-800:    #1e1e1e;
+  --tek-primitive-color-neutral-900:    #181818;
+  --tek-primitive-color-neutral-black:  #000000;
+  --tek-primitive-color-neutral-white:  #ffffff;
+  --tek-primitive-color-brand-tek-blue: #33baea;
+  --tek-primitive-color-ui-error:       #e74848;
+  --tek-primitive-color-ui-warning:     #e0b732;
+  --tek-primitive-color-ui-success:     #42b54c;
+  --tek-primitive-color-ui-shadow:      #00000033;
+  --tek-primitive-color-backdrop-dark:  #181818cc;
+  --tek-primitive-color-backdrop-light: #cccccccc;
+
+  /* ── Semantic — dark defaults (semantic/tokens.json) ──────── */
+  --tek-color-modal-background-default: #181818cc;
+  --tek-color-modal-border-default:     #7b7b7b;
+  --tek-color-modal-text-default:       #ffffff;
+  --tek-color-modal-shadow-default:     #00000033;
+
+  --tek-color-input-background-default: #252525;
+  --tek-color-input-border-default:     #7b7b7b;
+  --tek-color-input-border-focus:       #ffffff;
+  --tek-color-input-border-filled:      #afafaf;
+  --tek-color-input-border-disabled:    #454545;
+  --tek-color-input-border-error:       #e74848;
+  --tek-color-input-text-default:       #979797;
+  --tek-color-input-text-focus:         #ffffff;
+  --tek-color-input-text-filled:        #cccccc;
+  --tek-color-input-text-disabled:      #454545;
+  --tek-color-input-text-error:         #ffffff;
+  --tek-color-input-label-default:      #cccccc;
+  --tek-color-input-character-count-default: #cccccc;
+  --tek-color-input-character-count-focus:   #ffffff;
+  --tek-color-input-character-count-filled:  #afafaf;
+  --tek-color-input-character-count-error:   #e74848;
+  --tek-color-input-character-count-warning: #e0b732;
+
   --tek-color-selector-background-default:   #252525;
   --tek-color-selector-background-unchecked: #454545;
   --tek-color-selector-background-checked:   #cccccc;
@@ -53,26 +110,6 @@
   --tek-color-selector-label-checked:        #ffffff;
   --tek-color-selector-label-error:          #ffffff;
 
-  /* semantic: input */
-  --tek-color-input-background-default:      #252525;
-  --tek-color-input-border-default:          #7b7b7b;
-  --tek-color-input-border-focus:            #ffffff;
-  --tek-color-input-border-filled:           #afafaf;
-  --tek-color-input-border-disabled:         #454545;
-  --tek-color-input-border-error:            #e74848;
-  --tek-color-input-text-default:            #979797;
-  --tek-color-input-text-focus:              #ffffff;
-  --tek-color-input-text-filled:             #cccccc;
-  --tek-color-input-text-disabled:           #454545;
-  --tek-color-input-text-error:              #ffffff;
-  --tek-color-input-label-default:           #cccccc;
-  --tek-color-input-character-count-default: #cccccc;
-  --tek-color-input-character-count-focus:   #ffffff;
-  --tek-color-input-character-count-filled:  #afafaf;
-  --tek-color-input-character-count-error:   #e74848;
-  --tek-color-input-character-count-warning: #e0b732;
-
-  /* semantic: button */
   --tek-color-button-background-default:  #1e1e1e;
   --tek-color-button-background-hover:    #000000;
   --tek-color-button-background-inactive: #181818;
@@ -82,59 +119,216 @@
   --tek-color-button-text-hover:          #ffffff;
   --tek-color-button-text-inactive:       #454545;
 
-  /* semantic: modal / footer / link / icons */
-  --tek-color-modal-background-default: #181818;
-  --tek-color-modal-border-default:     #7b7b7b;
-  --tek-color-modal-text-default:       #ffffff;
-  --tek-color-footer-background-default:#252525;
-  --tek-color-footer-text-default:      #cccccc;
-  --tek-color-text-link-default:        #33baea;
-  --tek-color-icons-default:            #ffffff;
+  --tek-color-footer-background-default:  #252525;
+  --tek-color-footer-text-default:        #cccccc;
+  --tek-color-text-link-default:          #33baea;
+  --tek-color-icons-default:              #ffffff;
+
+  /* ── Page chrome — doc-layer values intentionally darker than components */
+  /* These are not component tokens; they are specific to this reference page. */
+  --cl-chrome-bg:         var(--tek-primitive-color-neutral-900);  /* #181818 */
+  --cl-chrome-sidebar-bg: #0d0d0d;   /* intentionally below neutral-900 scale */
+  --cl-chrome-border:     #1f1f1f;
+  --cl-preview-bar-bg:    #161616;
+  --cl-preview-border:    #2a2a2a;
+  --cl-code-bg:           #0d0d0d;
+  --cl-divider:           #1a1a1a;
+  --cl-copy-btn-bg:       var(--tek-primitive-color-neutral-700);
+  --cl-copy-btn-border:   #3a3a3a;
+  --cl-token-row-hover:   #161616;
 }
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{background:#111111;color:var(--tek-primitive-color-neutral-grey-100);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.6;min-height:100vh;}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 
-.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
-.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;background:#0d0d0d;border-right:0.5px solid #1f1f1f;padding:32px 0;display:flex;flex-direction:column;}
-.sidebar-logo{padding:0 24px 24px;border-bottom:0.5px solid #1f1f1f;margin-bottom:16px;}
-.sidebar-logo-name{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:-0.03em;color:#fff;}
-.sidebar-logo-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--tek-primitive-color-neutral-grey-500);margin-top:2px;}
-.sidebar-nav{flex:1;display:flex;flex-direction:column;}
-.sidebar-section{padding:12px 24px 4px;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--tek-primitive-color-neutral-grey-500);}
-.sidebar-link{display:block;padding:6px 24px;font-size:13px;color:var(--tek-primitive-color-neutral-grey-400);text-decoration:none;cursor:pointer;transition:color 0.1s;}
-.sidebar-link:hover{color:var(--tek-primitive-color-neutral-grey-100);}
-.sidebar-link.active{color:var(--tek-primitive-color-core-tek-blue);font-weight:500;}
-.main{padding:48px 56px;max-width:900px;}
-.page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:42px;letter-spacing:-0.04em;line-height:1;color:#fff;margin-bottom:8px;}
-.page-sub{font-size:14px;color:var(--tek-primitive-color-neutral-grey-400);margin-bottom:56px;max-width:480px;}
-.section{margin-bottom:64px;scroll-margin-top:32px;}
-.section-header{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:0.5px solid #1f1f1f;}
-.section-title{font-family:'Syne',sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.03em;color:#fff;}
-.section-tag{font-family:'DM Mono',monospace;font-size:11px;color:var(--tek-primitive-color-core-tek-blue);padding:2px 8px;border:0.5px solid var(--tek-primitive-color-core-tek-blue);border-radius:3px;opacity:0.7;}
-.preview-block{background:var(--tek-primitive-color-neutral-grey-800);border:0.5px solid #2a2a2a;border-radius:8px 8px 0 0;overflow:hidden;}
-.preview-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:#161616;border-bottom:0.5px solid #2a2a2a;}
-.preview-bar-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--tek-primitive-color-neutral-grey-500);letter-spacing:0.04em;}
-.preview-canvas{padding:32px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;}
-.preview-canvas.col{flex-direction:column;align-items:flex-start;gap:16px;}
-.preview-item{display:flex;flex-direction:column;align-items:center;gap:8px;}
-.preview-item.left{align-items:flex-start;}
-.state-lbl{font-family:'DM Mono',monospace;font-size:10px;color:var(--tek-primitive-color-neutral-grey-500);}
-.code-wrap{position:relative;}
-.code-block{background:#0d0d0d;border:0.5px solid #1f1f1f;border-top:none;border-radius:0 0 8px 8px;padding:16px 20px;font-family:'DM Mono',monospace;font-size:12px;line-height:1.7;color:var(--tek-primitive-color-neutral-grey-300);overflow-x:auto;white-space:pre;}
-.kw{color:var(--tek-primitive-color-core-tek-blue);}.str{color:#a8d8a8;}.attr{color:#f0c674;}.cmt{color:var(--tek-primitive-color-neutral-grey-500);}
-.copy-btn{position:absolute;top:10px;right:12px;font-family:'DM Mono',monospace;font-size:10px;padding:4px 10px;background:var(--tek-primitive-color-neutral-grey-700);border:0.5px solid #3a3a3a;border-radius:4px;color:var(--tek-primitive-color-neutral-grey-300);cursor:pointer;transition:all 0.15s;}
-.copy-btn:hover{background:var(--tek-primitive-color-neutral-grey-500);color:#fff;}
-.copy-btn.copied{color:#a8d8a8;border-color:#a8d8a8;}
-.divider{border:none;border-top:0.5px solid #1a1a1a;margin:40px 0;}
-.row{display:flex;gap:24px;flex-wrap:wrap;align-items:center;}
-.token-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:16px;}
-.token-table th{text-align:left;padding:6px 12px;font-family:'DM Mono',monospace;font-size:10px;color:var(--tek-primitive-color-neutral-grey-500);border-bottom:0.5px solid #2a2a2a;font-weight:400;}
-.token-table td{padding:7px 12px;border-bottom:0.5px solid #1a1a1a;font-family:'DM Mono',monospace;color:var(--tek-primitive-color-neutral-grey-400);vertical-align:middle;}
-.token-table tr:hover td{background:#161616;}
-.swatch{display:inline-block;width:10px;height:10px;border-radius:2px;border:0.5px solid #3a3a3a;margin-right:6px;vertical-align:middle;}
-.token-name{color:var(--tek-primitive-color-neutral-grey-200);}
-.token-group td{color:#2f2f2f;padding:8px 12px;font-size:10px;letter-spacing:0.06em;}
+body {
+  background: var(--cl-chrome-bg);
+  color: var(--tek-primitive-color-neutral-100);
+  font-family: var(--tek-fonts-family-geist);
+  font-size: var(--tek-fonts-text-size-lg);      /* text/lg — 14px */
+  line-height: var(--tek-fonts-text-line-height-lg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Shell layout ──────────────────────────────────────────── */
+.shell { display:grid; grid-template-columns:220px 1fr; min-height:100vh; }
+
+/* ── Sidebar ────────────────────────────────────────────── */
+.sidebar {
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+  background: var(--cl-chrome-sidebar-bg);
+  border-right: 0.5px solid var(--cl-chrome-border);
+  padding: 32px 0;
+  display: flex; flex-direction: column;
+}
+.sidebar-logo { padding: 0 24px 24px; border-bottom: 0.5px solid var(--cl-chrome-border); margin-bottom:16px; }
+/* heading/xs — Archivo SemiBold 16px/24px */
+.sidebar-logo-name {
+  font-family: var(--tek-fonts-family-archivo);
+  font-weight: 600;
+  font-size: var(--tek-fonts-heading-size-xs);
+  line-height: var(--tek-fonts-heading-line-height-xs);
+  font-variation-settings: 'wdth' 120;
+  letter-spacing: -0.02em;
+  color: var(--tek-primitive-color-neutral-white);
+}
+/* text/xs mono — Geist Mono 10px */
+.sidebar-logo-sub {
+  font-family: var(--tek-fonts-family-mono);
+  font-size: var(--tek-fonts-text-size-xs);
+  color: var(--tek-primitive-color-neutral-500);
+  margin-top: 4px;
+}
+.sidebar-nav { flex:1; display:flex; flex-direction:column; }
+/* text/xs mono uppercase — section grouping */
+.sidebar-section {
+  padding: 12px 24px 4px;
+  font-family: var(--tek-fonts-family-mono);
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--tek-primitive-color-neutral-500);
+}
+/* text/md — Geist 13px/16px */
+.sidebar-link {
+  display:block; padding: 6px 24px;
+  font-family: var(--tek-fonts-family-geist);
+  font-size: var(--tek-fonts-text-size-md);
+  line-height: var(--tek-fonts-text-line-height-md);
+  color: var(--tek-primitive-color-neutral-400);
+  text-decoration: none; cursor:pointer;
+  transition: color 0.1s;
+}
+.sidebar-link:hover  { color: var(--tek-primitive-color-neutral-100); }
+.sidebar-link.active { color: var(--tek-primitive-color-brand-tek-blue); font-weight:500; }
+
+/* ── Main content ─────────────────────────────────────── */
+.main { padding: 48px 56px; max-width:900px; }
+
+/* Display heading — Archivo SemiBold at large scale */
+.page-title {
+  font-family: var(--tek-fonts-family-archivo);
+  font-weight: 600;
+  font-size: 42px;
+  line-height: 1;
+  font-variation-settings: 'wdth' 120;
+  letter-spacing: -0.03em;
+  color: var(--tek-primitive-color-neutral-white);
+  margin-bottom: 8px;
+}
+/* text/lg — Geist 14px/20px */
+.page-sub {
+  font-family: var(--tek-fonts-family-geist);
+  font-size: var(--tek-fonts-text-size-lg);
+  line-height: var(--tek-fonts-text-line-height-lg);
+  color: var(--tek-primitive-color-neutral-400);
+  margin-bottom: 56px;
+  max-width: 480px;
+}
+
+/* ── Sections ────────────────────────────────────────── */
+.section { margin-bottom:64px; scroll-margin-top:32px; }
+.section-header { display:flex; align-items:baseline; gap:12px; margin-bottom:16px; padding-bottom:12px; border-bottom: 0.5px solid var(--cl-chrome-border); }
+/* heading/sm equivalent — Archivo SemiBold ~22px */
+.section-title {
+  font-family: var(--tek-fonts-family-archivo);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 28px;
+  font-variation-settings: 'wdth' 120;
+  letter-spacing: -0.02em;
+  color: var(--tek-primitive-color-neutral-white);
+}
+/* text/xs mono — component tag badge */
+.section-tag {
+  font-family: var(--tek-fonts-family-mono);
+  font-size: var(--tek-fonts-text-size-xs);
+  color: var(--tek-primitive-color-brand-tek-blue);
+  padding: 2px 8px;
+  border: 0.5px solid var(--tek-primitive-color-brand-tek-blue);
+  border-radius: 3px;
+  opacity: 0.7;
+}
+
+/* ── Preview blocks ──────────────────────────────────── */
+.preview-block { background: var(--tek-primitive-color-neutral-800); border: 0.5px solid var(--cl-preview-border); border-radius:8px 8px 0 0; overflow:hidden; }
+.preview-bar { display:flex; align-items:center; justify-content:space-between; padding:8px 16px; background: var(--cl-preview-bar-bg); border-bottom: 0.5px solid var(--cl-preview-border); }
+/* text/xs mono */
+.preview-bar-label { font-family: var(--tek-fonts-family-mono); font-size: var(--tek-fonts-text-size-xs); color: var(--tek-primitive-color-neutral-500); letter-spacing:0.04em; }
+.preview-canvas { padding:32px; display:flex; align-items:center; gap:32px; flex-wrap:wrap; }
+.preview-canvas.col { flex-direction:column; align-items:flex-start; gap:16px; }
+.preview-item { display:flex; flex-direction:column; align-items:center; gap:8px; }
+.preview-item.left { align-items:flex-start; min-width:260px; }  /* min-width gives inputs a natural demo size */
+/* text/xs mono — state label below component */
+.state-lbl { font-family: var(--tek-fonts-family-mono); font-size: var(--tek-fonts-text-size-xs); color: var(--tek-primitive-color-neutral-500); }
+
+/* ── Code blocks ──────────────────────────────────────── */
+.code-wrap { position:relative; }
+.code-block {
+  background: var(--cl-code-bg);
+  border: 0.5px solid var(--cl-chrome-border);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 16px 20px;
+  font-family: var(--tek-fonts-family-mono);
+  font-size: var(--tek-fonts-text-size-sm);    /* text/sm — 12px */
+  line-height: 1.7;
+  color: var(--tek-primitive-color-neutral-300);
+  overflow-x: auto;
+  white-space: pre;
+}
+.kw   { color: var(--tek-primitive-color-brand-tek-blue); }
+.str  { color: #a8d8a8; }
+.attr { color: #f0c674; }
+.cmt  { color: var(--tek-primitive-color-neutral-500); }
+.copy-btn {
+  position:absolute; top:10px; right:12px;
+  font-family: var(--tek-fonts-family-mono);
+  font-size: var(--tek-fonts-text-size-xs);
+  padding: 4px 10px;
+  background: var(--cl-copy-btn-bg);
+  border: 0.5px solid var(--cl-copy-btn-border);
+  border-radius: 4px;
+  color: var(--tek-primitive-color-neutral-300);
+  cursor:pointer; transition:all 0.15s;
+}
+.copy-btn:hover  { background: var(--tek-primitive-color-neutral-500); color: var(--tek-primitive-color-neutral-white); }
+.copy-btn.copied { color: #a8d8a8; border-color: #a8d8a8; }
+
+/* ── Misc ─────────────────────────────────────────────── */
+.divider { border:none; border-top: 0.5px solid var(--cl-divider); margin:40px 0; }
+.row { display:flex; gap:24px; flex-wrap:wrap; align-items:center; }
+
+/* ── Token table ──────────────────────────────────────── */
+.token-table { width:100%; border-collapse:collapse; margin-top:16px; }
+.token-table th {
+  text-align:left; padding:6px 12px;
+  font-family: var(--tek-fonts-family-mono);
+  font-size: var(--tek-fonts-text-size-xs);
+  color: var(--tek-primitive-color-neutral-500);
+  border-bottom: 0.5px solid var(--cl-preview-border);
+  font-weight:400;
+}
+.token-table td {
+  padding:7px 12px;
+  border-bottom: 0.5px solid var(--cl-divider);
+  font-family: var(--tek-fonts-family-mono);
+  font-size: var(--tek-fonts-text-size-xs);
+  color: var(--tek-primitive-color-neutral-400);
+  vertical-align:middle;
+}
+.token-table tr:hover td { background: var(--cl-token-row-hover); }
+.swatch { display:inline-block; width:10px; height:10px; border-radius:2px; border: 0.5px solid var(--cl-copy-btn-border); margin-right:6px; vertical-align:middle; }
+.token-name  { color: var(--tek-primitive-color-neutral-200); }
+.token-group td { color: var(--tek-primitive-color-neutral-700); padding:8px 12px; font-size:9px; letter-spacing:0.08em; text-transform:uppercase; }
+
+/* inline code in prose */
+code {
+  font-family: var(--tek-fonts-family-mono);
+  font-size: var(--tek-fonts-text-size-sm);
+  color: var(--tek-primitive-color-brand-tek-blue);
+}
 </style>
 </head>
 <body>
@@ -168,7 +362,7 @@ body{background:#111111;color:var(--tek-primitive-color-neutral-grey-100);font-f
 
   <main class="main">
     <h1 class="page-title">Component Library</h1>
-    <p class="page-sub">Live <code style="font-family:'DM Mono',monospace;font-size:12px;color:var(--tek-primitive-color-core-tek-blue)">&lt;tek-*&gt;</code> web components. Every demo is the real custom element — not a CSS mock. All values reference <code style="font-family:'DM Mono',monospace;font-size:12px;color:var(--tek-primitive-color-core-tek-blue)">--tek-*</code> semantic tokens.</p>
+    <p class="page-sub">Live <code>&lt;tek-*&gt;</code> web components. Every demo is the real custom element — not a CSS mock. All values reference <code>--tek-*</code> semantic tokens.</p>
 
     <!-- CHECKBOX -->
     <section class="section" id="checkbox">
@@ -191,7 +385,7 @@ body{background:#111111;color:var(--tek-primitive-color-neutral-grey-100);font-f
 <span class="attr">&lt;tek-checkbox</span> <span class="kw">disabled</span><span class="attr">&gt;&lt;/tek-checkbox&gt;</span>
 
 <span class="cmt">// event</span>
-el.addEventListener(<span class="str">'tek-change'</span>, e =&gt; console.log(e.detail.checked));</pre><button class="copy-btn" onclick="copy('code-cb',this)">Copy</button></div>
+el.addEventListener(<span class="str">'tek-change'</span>, e <span class="kw">=&gt;</span> console.log(e.detail.checked));</pre><button class="copy-btn" onclick="copy('code-cb',this)">Copy</button></div>
     </section>
 
     <!-- RADIO -->
@@ -300,13 +494,13 @@ el.addEventListener(<span class="str">'tek-change'</span>, e =&gt; console.log(e
       <div class="code-wrap"><pre class="code-block" id="code-input"><span class="kw">import</span> <span class="str">'@bbkemp/ui'</span>
 
 <span class="attr">&lt;tek-input</span> <span class="kw">placeholder</span>=<span class="str">"Email"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
-<span class="attr">&lt;tek-input</span> <span class="kw">height</span>=<span class="str">"double"</span>   <span class="kw">placeholder</span>=<span class="str">"Notes"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
-<span class="attr">&lt;tek-input</span> <span class="kw">height</span>=<span class="str">"triple"</span>   <span class="kw">placeholder</span>=<span class="str">"Message"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
+<span class="attr">&lt;tek-input</span> <span class="kw">height</span>=<span class="str">"double"</span> <span class="kw">placeholder</span>=<span class="str">"Notes"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
+<span class="attr">&lt;tek-input</span> <span class="kw">height</span>=<span class="str">"triple"</span> <span class="kw">placeholder</span>=<span class="str">"Message"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
 <span class="attr">&lt;tek-input</span> <span class="kw">state</span>=<span class="str">"error"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
 <span class="attr">&lt;tek-input</span> <span class="kw">state</span>=<span class="str">"disabled"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
 
 <span class="cmt">// event</span>
-el.addEventListener(<span class="str">'tek-input'</span>, e =&gt; console.log(e.detail.value));</pre><button class="copy-btn" onclick="copy('code-input',this)">Copy</button></div>
+el.addEventListener(<span class="str">'tek-input'</span>, e <span class="kw">=&gt;</span> console.log(e.detail.value));</pre><button class="copy-btn" onclick="copy('code-input',this)">Copy</button></div>
     </section>
 
     <!-- CHARACTER COUNT -->
@@ -324,9 +518,9 @@ el.addEventListener(<span class="str">'tek-input'</span>, e =&gt; console.log(e.
       </div>
       <div class="code-wrap"><pre class="code-block" id="code-charcount"><span class="kw">import</span> <span class="str">'@bbkemp/ui'</span>
 
-<span class="attr">&lt;tek-character-count</span> <span class="kw">count</span>=<span class="str">"10"</span>  <span class="kw">max</span>=<span class="str">"52"</span><span class="attr">&gt;&lt;/tek-character-count&gt;</span>
-<span class="attr">&lt;tek-character-count</span> <span class="kw">count</span>=<span class="str">"48"</span>  <span class="kw">max</span>=<span class="str">"52"</span> <span class="kw">state</span>=<span class="str">"warning"</span><span class="attr">&gt;&lt;/tek-character-count&gt;</span>
-<span class="attr">&lt;tek-character-count</span> <span class="kw">count</span>=<span class="str">"54"</span>  <span class="kw">max</span>=<span class="str">"52"</span> <span class="kw">state</span>=<span class="str">"error"</span><span class="attr">&gt;&lt;/tek-character-count&gt;</span></pre><button class="copy-btn" onclick="copy('code-charcount',this)">Copy</button></div>
+<span class="attr">&lt;tek-character-count</span> <span class="kw">count</span>=<span class="str">"10"</span> <span class="kw">max</span>=<span class="str">"52"</span><span class="attr">&gt;&lt;/tek-character-count&gt;</span>
+<span class="attr">&lt;tek-character-count</span> <span class="kw">count</span>=<span class="str">"48"</span> <span class="kw">max</span>=<span class="str">"52"</span> <span class="kw">state</span>=<span class="str">"warning"</span><span class="attr">&gt;&lt;/tek-character-count&gt;</span>
+<span class="attr">&lt;tek-character-count</span> <span class="kw">count</span>=<span class="str">"54"</span> <span class="kw">max</span>=<span class="str">"52"</span> <span class="kw">state</span>=<span class="str">"error"</span><span class="attr">&gt;&lt;/tek-character-count&gt;</span></pre><button class="copy-btn" onclick="copy('code-charcount',this)">Copy</button></div>
     </section>
 
     <!-- TEXT LINK -->
@@ -349,26 +543,19 @@ el.addEventListener(<span class="str">'tek-input'</span>, e =&gt; console.log(e.
     <section class="section" id="button">
       <div class="section-header"><h2 class="section-title">Button</h2><span class="section-tag">tek-button</span></div>
       <div class="preview-block">
-        <div class="preview-bar"><span class="preview-bar-label">primary · secondary — default / hover / inactive</span></div>
-        <div class="preview-canvas col">
-          <div class="row">
-            <div class="preview-item"><tek-button>Sign In</tek-button><div class="state-lbl">Primary</div></div>
-            <div class="preview-item"><tek-button inactive>Sign In</tek-button><div class="state-lbl">Inactive</div></div>
-          </div>
-          <div class="row">
-            <div class="preview-item"><tek-button variant="secondary">Cancel</tek-button><div class="state-lbl">Secondary</div></div>
-            <div class="preview-item"><tek-button variant="secondary" inactive>Cancel</tek-button><div class="state-lbl">Inactive</div></div>
-          </div>
+        <div class="preview-bar"><span class="preview-bar-label">primary · inactive</span></div>
+        <div class="preview-canvas">
+          <div class="preview-item"><tek-button>Sign In</tek-button><div class="state-lbl">Primary</div></div>
+          <div class="preview-item"><tek-button inactive>Sign In</tek-button><div class="state-lbl">Inactive</div></div>
         </div>
       </div>
       <div class="code-wrap"><pre class="code-block" id="code-btn"><span class="kw">import</span> <span class="str">'@bbkemp/ui'</span>
 
 <span class="attr">&lt;tek-button&gt;</span>Sign In<span class="attr">&lt;/tek-button&gt;</span>
-<span class="attr">&lt;tek-button</span> <span class="kw">variant</span>=<span class="str">"secondary"</span><span class="attr">&gt;</span>Cancel<span class="attr">&lt;/tek-button&gt;</span>
 <span class="attr">&lt;tek-button</span> <span class="kw">inactive</span><span class="attr">&gt;</span>Sign In<span class="attr">&lt;/tek-button&gt;</span>
 
 <span class="cmt">// event</span>
-el.addEventListener(<span class="str">'tek-click'</span>, () =&gt; console.log(<span class="str">'clicked'</span>));</pre><button class="copy-btn" onclick="copy('code-btn',this)">Copy</button></div>
+el.addEventListener(<span class="str">'tek-click'</span>, () <span class="kw">=&gt;</span> console.log(<span class="str">'clicked'</span>));</pre><button class="copy-btn" onclick="copy('code-btn',this)">Copy</button></div>
     </section>
 
     <hr class="divider">
@@ -378,23 +565,25 @@ el.addEventListener(<span class="str">'tek-click'</span>, () =&gt; console.log(<
       <div class="section-header"><h2 class="section-title">Modal</h2><span class="section-tag">tek-modal</span></div>
       <div class="preview-block">
         <div class="preview-bar"><span class="preview-bar-label">sign in — as designed in Figma</span></div>
-        <div class="preview-canvas" style="background:#1e1e1e;justify-content:center;">
+        <div class="preview-canvas" style="background:var(--tek-primitive-color-neutral-800);justify-content:center;">
           <tek-modal>
             <span slot="header">Sign In</span>
             <div slot="input-blocks" style="display:flex;flex-direction:column;gap:10px;width:100%;">
-              <div style="display:flex;flex-direction:column;gap:6px;">
-                <div style="font-family:'Geist',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-input-label-default)">Username</div>
-                <tek-input placeholder="Enter message here" style="display:block"></tek-input>
+              <div style="display:flex;flex-direction:column;gap:6px;padding-bottom:12px;">
+                <div style="font-family:var(--tek-fonts-family-geist);font-size:var(--tek-fonts-text-size-md);line-height:var(--tek-fonts-text-line-height-md);color:var(--tek-color-input-label-default)">Email</div>
+                <tek-input placeholder="Enter message here" type="email" style="display:block"></tek-input>
               </div>
-              <div style="display:flex;flex-direction:column;gap:6px;">
-                <div style="font-family:'Geist',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-input-label-default)">Password</div>
+              <div style="display:flex;flex-direction:column;gap:6px;padding-bottom:12px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <span style="font-family:var(--tek-fonts-family-geist);font-size:var(--tek-fonts-text-size-md);line-height:var(--tek-fonts-text-line-height-md);color:var(--tek-color-input-label-default)">Password</span>
+                  <tek-text-link href="#">Forgot password?</tek-text-link>
+                </div>
                 <tek-input type="password" placeholder="Enter message here" style="display:block"></tek-input>
               </div>
               <tek-selector type="checkbox" label="Stay signed in"></tek-selector>
             </div>
             <div slot="action-blocks" style="width:100%;">
               <tek-button style="width:100%;display:block">Sign In</tek-button>
-              <div style="text-align:right;margin-top:8px;"><tek-text-link href="#">Forgot password?</tek-text-link></div>
             </div>
           </tek-modal>
         </div>
@@ -403,12 +592,12 @@ el.addEventListener(<span class="str">'tek-click'</span>, () =&gt; console.log(<
 
 <span class="attr">&lt;tek-modal&gt;</span>
   <span class="attr">&lt;span</span> <span class="kw">slot</span>=<span class="str">"header"</span><span class="attr">&gt;</span>Sign In<span class="attr">&lt;/span&gt;</span>
-  <span class="attr">&lt;div</span>  <span class="kw">slot</span>=<span class="str">"input-blocks"</span><span class="attr">&gt;</span>
-    <span class="attr">&lt;tek-input</span> <span class="kw">placeholder</span>=<span class="str">"Username"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
+  <span class="attr">&lt;div</span> <span class="kw">slot</span>=<span class="str">"input-blocks"</span><span class="attr">&gt;</span>
+    <span class="attr">&lt;tek-input</span> <span class="kw">placeholder</span>=<span class="str">"Email"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
     <span class="attr">&lt;tek-input</span> <span class="kw">type</span>=<span class="str">"password"</span> <span class="kw">placeholder</span>=<span class="str">"Password"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
     <span class="attr">&lt;tek-selector</span> <span class="kw">type</span>=<span class="str">"checkbox"</span> <span class="kw">label</span>=<span class="str">"Stay signed in"</span><span class="attr">&gt;&lt;/tek-selector&gt;</span>
   <span class="attr">&lt;/div&gt;</span>
-  <span class="attr">&lt;div</span>  <span class="kw">slot</span>=<span class="str">"action-blocks"</span><span class="attr">&gt;</span>
+  <span class="attr">&lt;div</span> <span class="kw">slot</span>=<span class="str">"action-blocks"</span><span class="attr">&gt;</span>
     <span class="attr">&lt;tek-button&gt;</span>Sign In<span class="attr">&lt;/tek-button&gt;</span>
   <span class="attr">&lt;/div&gt;</span>
 <span class="attr">&lt;/tek-modal&gt;</span></pre><button class="copy-btn" onclick="copy('code-modal',this)">Copy</button></div>
@@ -418,52 +607,82 @@ el.addEventListener(<span class="str">'tek-click'</span>, () =&gt; console.log(<
     <section class="section" id="footer">
       <div class="section-header"><h2 class="section-title">Footer</h2><span class="section-tag">tek-footer</span></div>
       <div class="preview-block">
-        <div class="preview-bar"><span class="preview-bar-label">default</span></div>
+        <div class="preview-bar"><span class="preview-bar-label">with dark/light toggle in left slot</span></div>
         <div class="preview-canvas" style="padding:0;">
-          <tek-footer style="width:100%">©2026 Tektronix. All Rights Reserved.</tek-footer>
+          <tek-footer style="width:100%">
+            <div slot="left" style="display:flex;align-items:center;gap:4px;">
+              <span style="font-size:16px;line-height:1">🌚</span>
+              <tek-toggle></tek-toggle>
+              <span style="font-size:16px;line-height:1">🌝</span>
+            </div>
+            ©2026 Tektronix. All Rights Reserved.
+          </tek-footer>
         </div>
       </div>
       <div class="code-wrap"><pre class="code-block" id="code-footer"><span class="kw">import</span> <span class="str">'@bbkemp/ui'</span>
 
-<span class="attr">&lt;tek-footer&gt;</span>©2026 Tektronix. All Rights Reserved.<span class="attr">&lt;/tek-footer&gt;</span></pre><button class="copy-btn" onclick="copy('code-footer',this)">Copy</button></div>
+<span class="attr">&lt;tek-footer&gt;</span>
+  <span class="attr">&lt;div</span> <span class="kw">slot</span>=<span class="str">"left"</span><span class="attr">&gt;</span>
+    🌚 <span class="attr">&lt;tek-toggle</span> <span class="kw">id</span>=<span class="str">"theme-toggle"</span><span class="attr">&gt;&lt;/tek-toggle&gt;</span> 🌝
+  <span class="attr">&lt;/div&gt;</span>
+  ©2026 Tektronix. All Rights Reserved.
+<span class="attr">&lt;/tek-footer&gt;</span></pre><button class="copy-btn" onclick="copy('code-footer',this)">Copy</button></div>
     </section>
 
     <hr class="divider">
 
     <!-- TOKEN REFERENCE -->
     <section class="section" id="tokens">
-      <div class="section-header"><h2 class="section-title">Token reference</h2><span class="section-tag">@bbkemp/tokens v0.2</span></div>
+      <div class="section-header"><h2 class="section-title">Token reference</h2><span class="section-tag">@bbkemp/tokens</span></div>
       <table class="token-table">
-        <thead><tr><th>CSS custom property</th><th>Resolves to</th><th>Value</th></tr></thead>
+        <thead><tr><th>CSS custom property</th><th>Primitive ref</th><th>Dark value</th></tr></thead>
         <tbody>
           <tr class="token-group"><td colspan="3">SELECTOR / BACKGROUND</td></tr>
-          <tr><td class="token-name">--tek-color-selector-background-default</td><td>neutral/grey-700</td><td><span class="swatch" style="background:#252525"></span>#252525</td></tr>
-          <tr><td class="token-name">--tek-color-selector-background-unchecked</td><td>neutral/grey-500</td><td><span class="swatch" style="background:#454545"></span>#454545</td></tr>
-          <tr><td class="token-name">--tek-color-selector-background-checked</td><td>neutral/grey-100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+          <tr><td class="token-name">--tek-color-selector-background-default</td><td>neutral.700</td><td><span class="swatch" style="background:#252525"></span>#252525</td></tr>
+          <tr><td class="token-name">--tek-color-selector-background-unchecked</td><td>neutral.500</td><td><span class="swatch" style="background:#454545"></span>#454545</td></tr>
+          <tr><td class="token-name">--tek-color-selector-background-checked</td><td>neutral.100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
           <tr class="token-group"><td colspan="3">SELECTOR / BORDER</td></tr>
-          <tr><td class="token-name">--tek-color-selector-border-unchecked</td><td>neutral/grey-400</td><td><span class="swatch" style="background:#7b7b7b"></span>#7b7b7b</td></tr>
-          <tr><td class="token-name">--tek-color-selector-border-checked</td><td>neutral/grey-300</td><td><span class="swatch" style="background:#979797"></span>#979797</td></tr>
-          <tr><td class="token-name">--tek-color-selector-border-error</td><td>ui/alert-red</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
-          <tr class="token-group"><td colspan="3">INPUT / BORDER</td></tr>
-          <tr><td class="token-name">--tek-color-input-border-default</td><td>neutral/grey-400</td><td><span class="swatch" style="background:#7b7b7b"></span>#7b7b7b</td></tr>
-          <tr><td class="token-name">--tek-color-input-border-focus</td><td>core/white</td><td><span class="swatch" style="background:#fff;border-color:#444"></span>#ffffff</td></tr>
-          <tr><td class="token-name">--tek-color-input-border-filled</td><td>neutral/grey-200</td><td><span class="swatch" style="background:#afafaf"></span>#afafaf</td></tr>
-          <tr><td class="token-name">--tek-color-input-border-disabled</td><td>neutral/grey-500</td><td><span class="swatch" style="background:#454545"></span>#454545</td></tr>
-          <tr><td class="token-name">--tek-color-input-border-error</td><td>ui/alert-red</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
+          <tr><td class="token-name">--tek-color-selector-border-unchecked</td><td>neutral.400</td><td><span class="swatch" style="background:#7b7b7b"></span>#7b7b7b</td></tr>
+          <tr><td class="token-name">--tek-color-selector-border-checked</td><td>neutral.300</td><td><span class="swatch" style="background:#979797"></span>#979797</td></tr>
+          <tr><td class="token-name">--tek-color-selector-border-error</td><td>ui.error-red</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
+          <tr class="token-group"><td colspan="3">INPUT / BACKGROUND + BORDER</td></tr>
+          <tr><td class="token-name">--tek-color-input-background-default</td><td>neutral.700</td><td><span class="swatch" style="background:#252525"></span>#252525</td></tr>
+          <tr><td class="token-name">--tek-color-input-border-default</td><td>neutral.400</td><td><span class="swatch" style="background:#7b7b7b"></span>#7b7b7b</td></tr>
+          <tr><td class="token-name">--tek-color-input-border-focus</td><td>neutral.white</td><td><span class="swatch" style="background:#fff;border-color:#555"></span>#ffffff</td></tr>
+          <tr><td class="token-name">--tek-color-input-border-filled</td><td>neutral.200</td><td><span class="swatch" style="background:#afafaf"></span>#afafaf</td></tr>
+          <tr><td class="token-name">--tek-color-input-border-disabled</td><td>neutral.500</td><td><span class="swatch" style="background:#454545"></span>#454545</td></tr>
+          <tr><td class="token-name">--tek-color-input-border-error</td><td>ui.error-red</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
+          <tr class="token-group"><td colspan="3">INPUT / TEXT + LABEL</td></tr>
+          <tr><td class="token-name">--tek-color-input-text-default</td><td>neutral.300</td><td><span class="swatch" style="background:#979797"></span>#979797</td></tr>
+          <tr><td class="token-name">--tek-color-input-text-focus</td><td>neutral.white</td><td><span class="swatch" style="background:#fff;border-color:#555"></span>#ffffff</td></tr>
+          <tr><td class="token-name">--tek-color-input-text-filled</td><td>neutral.100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+          <tr><td class="token-name">--tek-color-input-label-default</td><td>neutral.100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
           <tr class="token-group"><td colspan="3">BUTTON</td></tr>
-          <tr><td class="token-name">--tek-color-button-background-default</td><td>neutral/grey-800</td><td><span class="swatch" style="background:#1e1e1e"></span>#1e1e1e</td></tr>
-          <tr><td class="token-name">--tek-color-button-background-hover</td><td>core/black</td><td><span class="swatch" style="background:#000"></span>#000000</td></tr>
-          <tr><td class="token-name">--tek-color-button-border-default</td><td>core/tek-blue</td><td><span class="swatch" style="background:#33baea"></span>#33baea</td></tr>
-          <tr><td class="token-name">--tek-color-button-text-default</td><td>neutral/grey-100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
-          <tr class="token-group"><td colspan="3">MODAL · FOOTER · LINK</td></tr>
-          <tr><td class="token-name">--tek-color-modal-background-default</td><td>neutral/grey-900</td><td><span class="swatch" style="background:#181818"></span>#181818</td></tr>
-          <tr><td class="token-name">--tek-color-modal-border-default</td><td>neutral/grey-400</td><td><span class="swatch" style="background:#7b7b7b"></span>#7b7b7b</td></tr>
-          <tr><td class="token-name">--tek-color-footer-background-default</td><td>neutral/grey-700</td><td><span class="swatch" style="background:#252525"></span>#252525</td></tr>
-          <tr><td class="token-name">--tek-color-text-link-default</td><td>core/tek-blue</td><td><span class="swatch" style="background:#33baea"></span>#33baea</td></tr>
+          <tr><td class="token-name">--tek-color-button-background-default</td><td>neutral.800</td><td><span class="swatch" style="background:#1e1e1e"></span>#1e1e1e</td></tr>
+          <tr><td class="token-name">--tek-color-button-background-hover</td><td>neutral.black</td><td><span class="swatch" style="background:#000"></span>#000000</td></tr>
+          <tr><td class="token-name">--tek-color-button-border-default</td><td>brand.tek-blue</td><td><span class="swatch" style="background:#33baea"></span>#33baea</td></tr>
+          <tr><td class="token-name">--tek-color-button-text-default</td><td>neutral.100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+          <tr class="token-group"><td colspan="3">MODAL</td></tr>
+          <tr><td class="token-name">--tek-color-modal-background-default</td><td>ui.backdrop-dark</td><td><span class="swatch" style="background:#181818cc"></span>#181818cc</td></tr>
+          <tr><td class="token-name">--tek-color-modal-border-default</td><td>neutral.400</td><td><span class="swatch" style="background:#7b7b7b"></span>#7b7b7b</td></tr>
+          <tr><td class="token-name">--tek-color-modal-text-default</td><td>neutral.white</td><td><span class="swatch" style="background:#fff;border-color:#555"></span>#ffffff</td></tr>
+          <tr><td class="token-name">--tek-color-modal-shadow-default</td><td>ui.shadow</td><td><span class="swatch" style="background:#00000033;border-color:#555"></span>#00000033</td></tr>
+          <tr class="token-group"><td colspan="3">FOOTER</td></tr>
+          <tr><td class="token-name">--tek-color-footer-background-default</td><td>neutral.700</td><td><span class="swatch" style="background:#252525"></span>#252525</td></tr>
+          <tr><td class="token-name">--tek-color-footer-text-default</td><td>neutral.100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+          <tr><td class="token-name">--tek-color-text-link-default</td><td>brand.tek-blue</td><td><span class="swatch" style="background:#33baea"></span>#33baea</td></tr>
           <tr class="token-group"><td colspan="3">CHARACTER COUNT</td></tr>
-          <tr><td class="token-name">--tek-color-input-character-count-default</td><td>neutral/grey-100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
-          <tr><td class="token-name">--tek-color-input-character-count-warning</td><td>ui/alert-amber</td><td><span class="swatch" style="background:#e0b732"></span>#e0b732</td></tr>
-          <tr><td class="token-name">--tek-color-input-character-count-error</td><td>ui/alert-red</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
+          <tr><td class="token-name">--tek-color-input-character-count-default</td><td>neutral.100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+          <tr><td class="token-name">--tek-color-input-character-count-warning</td><td>ui.warning-yellow</td><td><span class="swatch" style="background:#e0b732"></span>#e0b732</td></tr>
+          <tr><td class="token-name">--tek-color-input-character-count-error</td><td>ui.error-red</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
+          <tr class="token-group"><td colspan="3">TYPE SCALE</td></tr>
+          <tr><td class="token-name">--tek-fonts-text-size-xs / line-height-xs</td><td>fonts.text.size.xs / lh.xs</td><td>10px / 12px</td></tr>
+          <tr><td class="token-name">--tek-fonts-text-size-sm / line-height-sm</td><td>fonts.text.size.sm / lh.sm</td><td>12px / 12px</td></tr>
+          <tr><td class="token-name">--tek-fonts-text-size-md / line-height-md</td><td>fonts.text.size.md / lh.md</td><td>13px / 16px</td></tr>
+          <tr><td class="token-name">--tek-fonts-text-size-lg / line-height-lg</td><td>fonts.text.size.lg / lh.lg</td><td>14px / 20px</td></tr>
+          <tr><td class="token-name">--tek-fonts-text-size-xl / line-height-xl</td><td>fonts.text.size.xl / lh.xl</td><td>16px / 24px</td></tr>
+          <tr><td class="token-name">--tek-fonts-heading-size-xs / line-height-xs</td><td>fonts.heading.size.xs / lh.xs</td><td>16px / 24px · Archivo wdth 120</td></tr>
+          <tr><td class="token-name">--tek-fonts-heading-size-md / line-height-md</td><td>fonts.heading.size.md / lh.md</td><td>24px / 32px · Archivo wdth 120</td></tr>
         </tbody>
       </table>
     </section>
@@ -474,7 +693,7 @@ el.addEventListener(<span class="str">'tek-click'</span>, () =&gt; console.log(<
 <!-- ============================================================
   @bbkemp/ui — Web Components
   In production: import '@bbkemp/ui'
-  These inline definitions are identical to packages/ui/src/
+  Inline definitions here are identical to packages/ui/src/.
   CSS custom properties cascade through shadow DOM boundaries.
 ============================================================ -->
 <script>
@@ -494,10 +713,12 @@ customElements.define('tek-checkbox', class extends HTMLElement {
   attributeChangedCallback() { if (this._s) this._render(); }
   _render() {
     const checked=this.hasAttribute('checked'), error=this.hasAttribute('error'), disabled=this.hasAttribute('disabled');
-    const bc = error ? 'var(--tek-color-selector-border-error,#e74848)' : checked ? 'var(--tek-color-selector-border-checked,#979797)' : 'var(--tek-color-selector-border-unchecked,#7b7b7b)';
+    const bc = error ? 'var(--tek-color-selector-border-error,#e74848)'
+               : checked ? 'var(--tek-color-selector-border-checked,#979797)'
+               : 'var(--tek-color-selector-border-unchecked,#7b7b7b)';
     this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;flex-shrink:0;cursor:${disabled?'not-allowed':'pointer'};opacity:${disabled?'0.4':'1'};}
 .box{width:16px;height:16px;border-radius:3px;background:var(--tek-color-selector-background-default,#252525);border:0.5px solid ${bc};display:flex;align-items:center;justify-content:center;}</style>
-<div class="box">${checked?`<svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="var(--tek-color-icons-default,#ffffff)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}</div>`;
+<div class="box">${checked?`<svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="var(--tek-color-icons-default,#fff)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}</div>`;
   }
 });
 
@@ -517,7 +738,9 @@ customElements.define('tek-radio', class extends HTMLElement {
   attributeChangedCallback() { if (this._s) this._render(); }
   _render() {
     const checked=this.hasAttribute('checked'), error=this.hasAttribute('error'), disabled=this.hasAttribute('disabled');
-    const bc = error ? 'var(--tek-color-selector-border-error,#e74848)' : checked ? 'var(--tek-color-selector-border-checked,#979797)' : 'var(--tek-color-selector-border-unchecked,#7b7b7b)';
+    const bc = error ? 'var(--tek-color-selector-border-error,#e74848)'
+               : checked ? 'var(--tek-color-selector-border-checked,#979797)'
+               : 'var(--tek-color-selector-border-unchecked,#7b7b7b)';
     this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;flex-shrink:0;cursor:${disabled?'not-allowed':'pointer'};opacity:${disabled?'0.4':'1'};}
 .ring{width:16px;height:16px;border-radius:50%;background:var(--tek-color-selector-background-default,#252525);border:0.5px solid ${bc};display:flex;align-items:center;justify-content:center;}
 .dot{width:10px;height:10px;border-radius:50%;background:var(--tek-color-selector-background-checked,#cccccc);}</style>
@@ -539,9 +762,12 @@ customElements.define('tek-toggle', class extends HTMLElement {
   attributeChangedCallback() { if (this._s) this._render(); }
   _render() {
     const checked=this.hasAttribute('checked'), error=this.hasAttribute('error'), disabled=this.hasAttribute('disabled');
-    const tbc = error ? 'var(--tek-color-selector-border-error,#e74848)' : checked ? 'var(--tek-color-selector-border-checked,#979797)' : 'var(--tek-color-selector-border-unchecked,#7b7b7b)';
-    const thumbBg = checked ? 'var(--tek-color-selector-background-checked,#cccccc)' : 'var(--tek-color-selector-background-unchecked,#454545)';
-    const thumbBorder = (error || !checked) ? `0.5px solid ${error?'var(--tek-color-selector-border-error,#e74848)':'var(--tek-color-selector-border-unchecked,#7b7b7b)'}` : 'none';
+    const tbc = error ? 'var(--tek-color-selector-border-error,#e74848)'
+                : checked ? 'var(--tek-color-selector-border-checked,#979797)'
+                : 'var(--tek-color-selector-border-unchecked,#7b7b7b)';
+    const thumbBg = checked ? 'var(--tek-color-selector-background-checked,#cccccc)'
+                            : 'var(--tek-color-selector-background-unchecked,#454545)';
+    const thumbBorder = (error||!checked) ? `0.5px solid ${error?'var(--tek-color-selector-border-error,#e74848)':'var(--tek-color-selector-border-unchecked,#7b7b7b)'}` : 'none';
     this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;cursor:${disabled?'not-allowed':'pointer'};opacity:${disabled?'0.4':'1'};}
 .track{width:28px;height:14px;border-radius:9999px;background:var(--tek-color-selector-background-default,#252525);border:0.5px solid ${tbc};position:relative;}
 .thumb{position:absolute;top:0;left:${checked?'14px':'0px'};width:14px;height:14px;border-radius:50%;background:${thumbBg};border:${thumbBorder};transition:left 0.15s,background 0.15s;}</style>
@@ -555,8 +781,11 @@ customElements.define('tek-selector-label', class extends HTMLElement {
   attributeChangedCallback() { if (this._s) this._render(); }
   _render() {
     const checked=this.hasAttribute('checked'), error=this.hasAttribute('error');
-    const color = error ? 'var(--tek-color-selector-label-error,#ffffff)' : checked ? 'var(--tek-color-selector-label-checked,#ffffff)' : 'var(--tek-color-selector-label-unchecked,#cccccc)';
-    this._s.innerHTML = `<style>${SDR}:host{display:inline;}span{font-family:'Geist',system-ui,sans-serif;font-size:12px;font-weight:400;line-height:12px;color:${color};transition:color 0.15s;}</style><span><slot></slot></span>`;
+    const color = error ? 'var(--tek-color-selector-label-error,#ffffff)'
+                 : checked ? 'var(--tek-color-selector-label-checked,#ffffff)'
+                 : 'var(--tek-color-selector-label-unchecked,#cccccc)';
+    /* text/sm — Geist 12px/12px */
+    this._s.innerHTML = `<style>${SDR}:host{display:inline;}span{font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-sm,12px);line-height:var(--tek-fonts-text-line-height-sm,12px);letter-spacing:0.01em;font-weight:400;color:${color};transition:color 0.15s;}</style><span><slot></slot></span>`;
   }
 });
 
@@ -576,7 +805,7 @@ customElements.define('tek-selector', class extends HTMLElement {
   _render() {
     const type=this.getAttribute('type')||'checkbox', label=this.getAttribute('label')||'';
     const checked=this.hasAttribute('checked')?'checked':'', error=this.hasAttribute('error')?'error':'';
-    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'' ;
+    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'';
     this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;gap:8px;cursor:${disabled?'not-allowed':'pointer'};user-select:none;}</style>
 <tek-${type} ${checked} ${error} ${disabled} ${name}></tek-${type}>
 <tek-selector-label ${checked} ${error}>${label}</tek-selector-label>`;
@@ -588,7 +817,9 @@ customElements.define('tek-selector', class extends HTMLElement {
   }
 });
 
-// tek-input: same _render/_applyStyle fix as signin.html — focus/blur never re-render
+/* tek-input: _render()/_applyStyle() split
+   _render()     — structural changes only (height/placeholder/value/type)
+   _applyStyle() — style-only changes; never touches <input>, preserving focus+value */
 customElements.define('tek-input', class extends HTMLElement {
   static get observedAttributes() { return ['state','height','placeholder','value','type']; }
   connectedCallback() {
@@ -615,15 +846,17 @@ customElements.define('tek-input', class extends HTMLElement {
     if (name === 'state') { this._st = val || 'default'; this._applyStyle(); }
     else this._render();
   }
-  _bc(s){return ({default:'var(--tek-color-input-border-default,#7b7b7b)',focus:'var(--tek-color-input-border-focus,#ffffff)',filled:'var(--tek-color-input-border-filled,#afafaf)',disabled:'var(--tek-color-input-border-disabled,#454545)',error:'var(--tek-color-input-border-error,#e74848)'})[s]||'var(--tek-color-input-border-default,#7b7b7b)';}
-  _tc(s){return ({default:'var(--tek-color-input-text-default,#979797)',focus:'var(--tek-color-input-text-focus,#ffffff)',filled:'var(--tek-color-input-text-filled,#cccccc)',disabled:'var(--tek-color-input-text-disabled,#454545)',error:'var(--tek-color-input-text-error,#ffffff)'})[s]||'var(--tek-color-input-text-default,#979797)';}
-  _css(s){return `${SDR}:host{display:block;}input,textarea{display:block;width:258px;background:var(--tek-color-input-background-default,#252525);border:0.5px solid ${this._bc(s)};border-radius:5px;padding:8px 4px 8px 10px;font-family:'Geist',system-ui,sans-serif;font-size:12px;line-height:15px;color:${this._tc(s)};outline:none;resize:vertical;pointer-events:${s==='disabled'?'none':'auto'};}input::placeholder,textarea::placeholder{color:${this._tc(s)};opacity:0.7;}`;}
+  _bc(s){return ({default:'var(--tek-color-input-border-default,#7b7b7b)',focus:'var(--tek-color-input-border-focus,#fff)',filled:'var(--tek-color-input-border-filled,#afafaf)',disabled:'var(--tek-color-input-border-disabled,#454545)',error:'var(--tek-color-input-border-error,#e74848)'})[s]||'var(--tek-color-input-border-default,#7b7b7b)';}
+  _tc(s){return ({default:'var(--tek-color-input-text-default,#979797)',focus:'var(--tek-color-input-text-focus,#fff)',filled:'var(--tek-color-input-text-filled,#cccccc)',disabled:'var(--tek-color-input-text-disabled,#454545)',error:'var(--tek-color-input-text-error,#fff)'})[s]||'var(--tek-color-input-text-default,#979797)';}
+  /* text/lg — Geist 14px/20px */
+  _css(s){return `${SDR}:host{display:block;}input,textarea{display:block;width:100%;background:var(--tek-color-input-background-default,#252525);border:0.5px solid ${this._bc(s)};border-radius:5px;padding:8px 4px 8px 10px !important;font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-lg,14px);line-height:var(--tek-fonts-text-line-height-lg,20px);letter-spacing:0.01em;color:${this._tc(s)};outline:none;resize:vertical;pointer-events:${s==='disabled'?'none':'auto'};}input::placeholder,textarea::placeholder{color:${this._tc(s)};opacity:0.7;}`;}
   _applyStyle(){const sEl=this._s.querySelector('style');if(sEl)sEl.textContent=this._css(this._st||'default');}
   _render(){
     const s=this._st||'default', h=this.getAttribute('height')||'single';
     const ph=this.getAttribute('placeholder')||'', val=this.getAttribute('value')||'', type=this.getAttribute('type')||'text';
     const rows=h==='double'?2:h==='triple'?3:1;
-    const field=h!=='single'?`<textarea rows="${rows}" placeholder="${ph}">${val}</textarea>`:`<input type="${type}" placeholder="${ph}" value="${val}">`;
+    const ac=type==='password'?'current-password':type==='email'?'email':'off';
+    const field=h!=='single'?`<textarea rows="${rows}" placeholder="${ph}">${val}</textarea>`:`<input type="${type}" placeholder="${ph}" value="${val}" autocomplete="${ac}">`;
     this._s.innerHTML=`<style>${this._css(s)}</style>${field}`;
   }
 });
@@ -636,7 +869,8 @@ customElements.define('tek-character-count', class extends HTMLElement {
     const count=parseInt(this.getAttribute('count')||'0'), max=parseInt(this.getAttribute('max')||'52'), state=this.getAttribute('state')||'default';
     const colors={default:'var(--tek-color-input-character-count-default,#cccccc)',focus:'var(--tek-color-input-character-count-focus,#ffffff)',filled:'var(--tek-color-input-character-count-filled,#afafaf)',warning:'var(--tek-color-input-character-count-warning,#e0b732)',error:'var(--tek-color-input-character-count-error,#e74848)'};
     const color=(state==='error'||count>max)?colors.error:state==='warning'?colors.warning:colors[state]||colors.default;
-    this._s.innerHTML = `<style>${SDR}:host{display:inline-block;}span{font-family:'Geist',system-ui,sans-serif;font-size:10px;line-height:15px;color:${color};}</style><span>${count}/${max}</span>`;
+    /* text/xs — Geist 10px/12px */
+    this._s.innerHTML = `<style>${SDR}:host{display:inline-block;}span{font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-xs,10px);line-height:var(--tek-fonts-text-line-height-xs,12px);letter-spacing:0.01em;color:${color};}</style><span>${count}/${max}</span>`;
   }
 });
 
@@ -646,13 +880,14 @@ customElements.define('tek-text-link', class extends HTMLElement {
   attributeChangedCallback() { if (this._s) this._render(); }
   _render() {
     const href=this.getAttribute('href')||'#', target=this.getAttribute('target')||'';
-    this._s.innerHTML = `<style>${SDR}:host{display:inline;}a{font-family:'Geist',system-ui,sans-serif;font-size:10px;line-height:15px;color:var(--tek-color-text-link-default,#33baea);text-decoration:none;}a:hover{text-decoration:underline;text-underline-offset:2px;}</style>
+    /* text/xs — Geist 10px/12px */
+    this._s.innerHTML = `<style>${SDR}:host{display:inline;}a{font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-xs,10px);line-height:var(--tek-fonts-text-line-height-xs,12px);letter-spacing:0.01em;color:var(--tek-color-text-link-default,#33baea);text-decoration:none;}a:hover{text-decoration:underline;text-underline-offset:2px;}</style>
 <a href="${href}"${target?` target="${target}"`:''} ><slot></slot></a>`;
   }
 });
 
 customElements.define('tek-button', class extends HTMLElement {
-  static get observedAttributes() { return ['variant','inactive','disabled']; }
+  static get observedAttributes() { return ['inactive','disabled']; }
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
     this.setAttribute('role','button');
@@ -664,13 +899,14 @@ customElements.define('tek-button', class extends HTMLElement {
   }
   attributeChangedCallback() { if (this._s) this._render(); }
   _render() {
-    const inactive=this.hasAttribute('inactive')||this.hasAttribute('disabled'), secondary=this.getAttribute('variant')==='secondary';
+    const inactive=this.hasAttribute('inactive')||this.hasAttribute('disabled');
     const bg=inactive?'var(--tek-color-button-background-inactive,#181818)':'var(--tek-color-button-background-default,#1e1e1e)';
     const border=inactive?'var(--tek-color-button-border-inactive,#454545)':'var(--tek-color-button-border-default,#33baea)';
     const color=inactive?'var(--tek-color-button-text-inactive,#454545)':'var(--tek-color-button-text-default,#cccccc)';
-    const pad=secondary?'6px 14px':'12px 24px', fs=secondary?'13px':'16px', fw=secondary?'534':'578', lh=secondary?'15px':'18px';
-    this._s.innerHTML = `<style>${SDR}:host{display:inline-block;}button{background:${bg};border:1px solid ${border};border-radius:9999px;padding:${pad};font-family:'Archivo',sans-serif;font-size:${fs};font-weight:${fw};font-variation-settings:'wdth' 106;line-height:${lh};color:${color};cursor:${inactive?'not-allowed':'pointer'};transition:all 0.15s;white-space:nowrap;width:100%;}
-button:not(:disabled):hover{background:var(--tek-color-button-background-hover,#000000);color:var(--tek-color-button-text-hover,#ffffff);}</style>
+    /* heading/xs — Archivo SemiBold 16px/24px, wdth 120, py 10px */
+    this._s.innerHTML = `<style>${SDR}:host{display:inline-block;}button{background:${bg};border:1px solid ${border};border-radius:9999px;padding:10px 24px !important;font-family:var(--tek-fonts-family-archivo,'Archivo',sans-serif);font-size:var(--tek-fonts-heading-size-xs,16px);line-height:var(--tek-fonts-heading-line-height-xs,24px);font-weight:600;font-variation-settings:'wdth' 120;letter-spacing:0.01em;color:${color};cursor:${inactive?'not-allowed':'pointer'};transition:all 0.15s;white-space:nowrap;width:100%;}
+button:not(:disabled):hover{background:var(--tek-color-button-background-hover,#000);color:var(--tek-color-button-text-hover,#fff);}
+button:focus-visible{outline:2px solid var(--tek-color-button-border-default,#33baea);outline-offset:2px;}</style>
 <button ${inactive?'disabled':''}><slot></slot></button>`;
   }
 });
@@ -678,8 +914,9 @@ button:not(:disabled):hover{background:var(--tek-color-button-background-hover,#
 customElements.define('tek-modal', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
-    this._s.innerHTML = `<style>${SDR}:host{display:flex;flex-direction:column;gap:14px;background:var(--tek-color-modal-background-default,#181818);border:0.25px solid var(--tek-color-modal-border-default,#7b7b7b);border-radius:11px;padding:32px;width:320px;max-width:100%;box-shadow:0px 2px 6px 0px var(--tek-primitive-color-ui-shadow,rgba(0,0,0,0.2));}
-.hd{font-family:'Archivo',sans-serif;font-size:24px;font-weight:600;font-variation-settings:'wdth' 106;line-height:24px;color:var(--tek-color-modal-text-default,#ffffff);}
+    /* heading/md — Archivo SemiBold 24px/32px, wdth 120; frosted glass backdrop */
+    this._s.innerHTML = `<style>${SDR}:host{display:flex;flex-direction:column;gap:14px;background:var(--tek-color-modal-background-default,#181818cc);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:0.25px solid var(--tek-color-modal-border-default,#7b7b7b);border-radius:11px;padding:32px !important;width:100%;max-width:360px;box-shadow:0px 2px 6px 0px var(--tek-color-modal-shadow-default,#00000033);}
+.hd{font-family:var(--tek-fonts-family-archivo,'Archivo',sans-serif);font-size:var(--tek-fonts-heading-size-md,24px);line-height:var(--tek-fonts-heading-line-height-md,32px);font-weight:600;font-variation-settings:'wdth' 120;letter-spacing:0.01em;color:var(--tek-color-modal-text-default,#fff);}
 .in,.ac{display:flex;flex-direction:column;gap:10px;width:100%;}</style>
 <div class="hd"><slot name="header"></slot></div>
 <div class="in"><slot name="input-blocks"></slot></div>
@@ -690,7 +927,12 @@ customElements.define('tek-modal', class extends HTMLElement {
 customElements.define('tek-footer', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
-    this._s.innerHTML = `<style>${SDR}:host{display:flex;align-items:center;width:100%;height:36px;padding:12px 16px;background:var(--tek-color-footer-background-default,#252525);}span{flex:1 0 0;font-family:'Geist',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-footer-text-default,#cccccc);text-align:right;}</style><span><slot></slot></span>`;
+    /* text/md — Geist 13px/16px */
+    this._s.innerHTML = `<style>${SDR}:host{display:flex;align-items:center;width:100%;height:36px;padding:12px 16px !important;background:var(--tek-color-footer-background-default,#252525);gap:8px;}
+.left{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.right{flex:1 0 0;font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-md,13px);line-height:var(--tek-fonts-text-line-height-md,16px);letter-spacing:0.01em;color:var(--tek-color-footer-text-default,#cccccc);text-align:right;}</style>
+<div class="left"><slot name="left"></slot></div>
+<div class="right"><slot></slot></div>`;
   }
 });
 
@@ -702,13 +944,31 @@ document.getElementById('toggle-interactive').addEventListener('tek-change', e =
   document.getElementById('toggle-lbl').textContent = e.detail.checked ? 'on ✓' : 'click me';
 });
 
-function nav(e,id){document.getElementById(id).scrollIntoView({behavior:'smooth'});document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));e.target.classList.add('active');}
-function copy(id,btn){navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>{btn.textContent='Copied';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});}
+function nav(e,id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
+  e.target.classList.add('active');
+}
+function copy(id,btn){
+  navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>{
+    btn.textContent='Copied'; btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);
+  });
+}
 
-const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));const m=document.querySelector(`.sidebar-link[onclick*="'${e.target.id}'"]`);if(m)m.classList.add('active');}});},{rootMargin:'-40% 0px -55% 0px'});
+// Scroll spy
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
+      const m = document.querySelector(`.sidebar-link[onclick*="'${e.target.id}'"]`);
+      if (m) m.classList.add('active');
+    }
+  });
+}, {rootMargin:'-40% 0px -55% 0px'});
 document.querySelectorAll('.section').forEach(s=>obs.observe(s));
 
-// AutoAnimate — ambient DOM transitions, light DOM only
+// AutoAnimate — light DOM only
 if (typeof autoAnimate !== 'undefined') {
   autoAnimate(document.querySelector('.sidebar-nav'));
   document.querySelectorAll('.preview-canvas').forEach(el => autoAnimate(el));
