@@ -18,24 +18,16 @@
 <style>
 /* ============================================================
    @bbkemp/tokens — in production: @import '@bbkemp/tokens/css'
-
-   TOKEN NAMING:
-   CSS vars follow the W3C DTCG token path from src/ files.
-   e.g. color.modal.background.default → --tek-color-modal-background-default
-        fonts.text.size.md            → --tek-fonts-text-size-md
-
-   DARK/LIGHT MODES:
-   Dark = default (:root). Light = [data-theme="light"] overrides.
-   Both modes use the same CSS var NAMES; only values change.
+   Token naming: W3C DTCG path e.g. color.modal.background.default
+               → --tek-color-modal-background-default
+   Dark = :root default. Light = [data-theme="light"] overrides.
    CSS custom properties cascade into shadow DOM automatically.
-   Source: semantic/tokens.json (dark) + semantic/tokens.light.json (light)
 ============================================================ */
 :root {
-  /* ── Type scale — from primitives/fonts.json ──────────────── */
+  /* ── Type scale — primitives/fonts.json ────────────────── */
   --tek-fonts-family-geist:   'Geist', system-ui, sans-serif;
   --tek-fonts-family-archivo: 'Archivo', sans-serif;
 
-  /* text scale */
   --tek-fonts-text-size-xs:        10px;
   --tek-fonts-text-size-sm:        12px;
   --tek-fonts-text-size-md:        13px;
@@ -47,13 +39,12 @@
   --tek-fonts-text-line-height-lg: 20px;
   --tek-fonts-text-line-height-xl: 24px;
 
-  /* heading scale */
   --tek-fonts-heading-size-xs:        16px;
   --tek-fonts-heading-size-md:        24px;
   --tek-fonts-heading-line-height-xs: 24px;
   --tek-fonts-heading-line-height-md: 32px;
 
-  /* ── Color primitives — from primitives/color.json ────────── */
+  /* ── Color primitives — primitives/color.json ────────────── */
   --tek-primitive-color-neutral-100:   #cccccc;
   --tek-primitive-color-neutral-200:   #afafaf;
   --tek-primitive-color-neutral-300:   #979797;
@@ -74,7 +65,7 @@
   --tek-primitive-color-backdrop-dark: #181818cc;
   --tek-primitive-color-backdrop-light:#cccccccc;
 
-  /* ── Semantic — DARK MODE defaults (from semantic/tokens.json) ─ */
+  /* ── Semantic — DARK MODE defaults (semantic/tokens.json) ───── */
   --tek-color-modal-background-default: #181818cc;
   --tek-color-modal-border-default:     #7b7b7b;
   --tek-color-modal-text-default:       #ffffff;
@@ -129,65 +120,54 @@
 
 /* ============================================================
    LIGHT MODE — resolved from semantic/tokens.light.json
-   Primitive refs resolved: neutral.450=#646464, neutral.900=#181818 etc.
-   Source of truth: figma-token-push exports this file automatically.
+   Auto-exported by Token Push. Source of truth is Figma.
 ============================================================ */
 [data-theme="light"] {
-  /* modal */
-  --tek-color-modal-background-default: #cccccccc;  /* backdrop-light */
-  --tek-color-modal-border-default:     #333333;    /* neutral.600 */
-  --tek-color-modal-text-default:       #000000;    /* neutral.black */
+  --tek-color-modal-background-default: #cccccccc;
+  --tek-color-modal-border-default:     #333333;
+  --tek-color-modal-text-default:       #000000;
 
-  /* input */
-  --tek-color-input-background-default: #ffffff;    /* neutral.white */
-  --tek-color-input-border-default:     #333333;    /* neutral.600 */
-  --tek-color-input-border-focus:       #000000;    /* neutral.black */
-  --tek-color-input-border-filled:      #1e1e1e;    /* neutral.800 */
-  --tek-color-input-border-disabled:    #646464;    /* neutral.450 */
-  --tek-color-input-text-default:       #252525;    /* neutral.700 */
-  --tek-color-input-text-focus:         #000000;    /* neutral.black */
-  --tek-color-input-text-filled:        #181818;    /* neutral.900 */
-  --tek-color-input-text-disabled:      #646464;    /* neutral.450 */
-  --tek-color-input-text-error:         #000000;    /* neutral.black */
-  --tek-color-input-label-default:      #181818;    /* neutral.900 */
+  --tek-color-input-background-default: #ffffff;
+  --tek-color-input-border-default:     #333333;
+  --tek-color-input-border-focus:       #000000;
+  --tek-color-input-border-filled:      #1e1e1e;
+  --tek-color-input-border-disabled:    #646464;
+  --tek-color-input-text-default:       #252525;
+  --tek-color-input-text-focus:         #000000;
+  --tek-color-input-text-filled:        #181818;
+  --tek-color-input-text-disabled:      #646464;
+  --tek-color-input-text-error:         #000000;
+  --tek-color-input-label-default:      #181818;
 
-  /* selector */
-  --tek-color-selector-background-default:   #ffffff;  /* neutral.white */
-  --tek-color-selector-background-unchecked: #646464;  /* neutral.450 */
-  --tek-color-selector-background-checked:   #181818;  /* neutral.900 */
-  --tek-color-selector-border-unchecked:     #333333;  /* neutral.600 */
-  --tek-color-selector-border-checked:       #252525;  /* neutral.700 */
-  --tek-color-selector-label-unchecked:      #000000;  /* neutral.black */
-  --tek-color-selector-label-checked:        #000000;  /* neutral.black */
-  --tek-color-selector-label-error:          #000000;  /* neutral.black */
+  --tek-color-selector-background-default:   #ffffff;
+  --tek-color-selector-background-unchecked: #646464;
+  --tek-color-selector-background-checked:   #181818;
+  --tek-color-selector-border-unchecked:     #333333;
+  --tek-color-selector-border-checked:       #252525;
+  --tek-color-selector-label-unchecked:      #000000;
+  --tek-color-selector-label-checked:        #000000;
+  --tek-color-selector-label-error:          #000000;
 
-  /* button */
-  --tek-color-button-background-default:  #ffffff;  /* neutral.white */
-  --tek-color-button-background-hover:    #33baea;  /* brand.tek-blue */
-  --tek-color-button-background-inactive: #afafaf;  /* neutral.200 */
-  --tek-color-button-border-inactive:     #646464;  /* neutral.450 */
-  --tek-color-button-text-default:        #000000;  /* neutral.black */
-  --tek-color-button-text-hover:          #000000;  /* neutral.black */
-  --tek-color-button-text-inactive:       #646464;  /* neutral.450 */
+  --tek-color-button-background-default:  #ffffff;
+  --tek-color-button-background-hover:    #33baea;
+  --tek-color-button-background-inactive: #afafaf;
+  --tek-color-button-border-inactive:     #646464;
+  --tek-color-button-text-default:        #000000;
+  --tek-color-button-text-hover:          #000000;
+  --tek-color-button-text-inactive:       #646464;
 
-  /* footer */
-  --tek-color-footer-background-default:  #afafaf;  /* neutral.200 */
-  --tek-color-footer-text-default:        #181818;  /* neutral.900 */
-
-  /* icons */
-  --tek-color-icons-default: #000000;               /* neutral.black */
+  --tek-color-footer-background-default:  #afafaf;
+  --tek-color-footer-text-default:        #181818;
+  --tek-color-icons-default:              #000000;
 }
 
 /* ============================================================
    RESET
-   !important on :host padding: Chrome bleeds * { padding:0 }
-   into shadow DOM :host at equal specificity. Required.
+   !important on :host padding defeats the * { padding:0 } bleed
+   into shadow DOM :host. Intentional — do not remove.
 ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ============================================================
-   PAGE
-============================================================ */
 html, body {
   height: 100%;
   -webkit-font-smoothing: antialiased;
@@ -340,6 +320,13 @@ body {
 
 <!-- ============================================================
   @bbkemp/ui — Web Components — in production: import '@bbkemp/ui'
+
+  Shadow DOM notes:
+  - !important on :host padding defeats Chrome's * {padding:0} bleed.
+  - tek-input: _render() for structural changes, _applyStyle() for state.
+    Focus/blur never call setAttribute('state') to avoid re-render loops.
+  - tek-selector-label: display:inline-flex so it aligns correctly
+    as a flex child inside tek-selector's shadow DOM.
 ============================================================ -->
 <script>
 const SDR = `*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }`;
@@ -429,7 +416,8 @@ customElements.define('tek-selector-label', class extends HTMLElement {
     const color = error ? 'var(--tek-color-selector-label-error,#ffffff)'
                  : checked ? 'var(--tek-color-selector-label-checked,#ffffff)'
                  : 'var(--tek-color-selector-label-unchecked,#cccccc)';
-    this._s.innerHTML = `<style>${SDR}:host{display:inline;}span{font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-sm,12px);line-height:var(--tek-fonts-text-line-height-sm,12px);letter-spacing:0.01em;font-weight:400;color:${color};transition:color 0.15s;}</style><span><slot></slot></span>`;
+    /* display:inline-flex so this aligns correctly as a flex child in tek-selector */
+    this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;}span{font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-sm,12px);line-height:var(--tek-fonts-text-line-height-sm,12px);letter-spacing:0.01em;font-weight:400;color:${color};transition:color 0.15s;}</style><span><slot></slot></span>`;
   }
 });
 
@@ -449,7 +437,7 @@ customElements.define('tek-selector', class extends HTMLElement {
   _render() {
     const type=this.getAttribute('type')||'checkbox', label=this.getAttribute('label')||'';
     const checked=this.hasAttribute('checked')?'checked':'', error=this.hasAttribute('error')?'error':'';
-    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'' ;
+    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'';
     this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;gap:8px;cursor:${disabled?'not-allowed':'pointer'};user-select:none;}</style>
 <tek-${type} ${checked} ${error} ${disabled} ${name}></tek-${type}>
 <tek-selector-label ${checked} ${error}>${label}</tek-selector-label>`;
@@ -461,6 +449,8 @@ customElements.define('tek-selector', class extends HTMLElement {
   }
 });
 
+/* tek-input: _render()/_applyStyle() split preserves focus+value on state change.
+   cursor:not-allowed on :host when disabled so it shows outside the input bounds too. */
 customElements.define('tek-input', class extends HTMLElement {
   static get observedAttributes() { return ['state','height','placeholder','value','type']; }
   connectedCallback() {
@@ -489,7 +479,7 @@ customElements.define('tek-input', class extends HTMLElement {
   }
   _bc(s){return ({default:'var(--tek-color-input-border-default,#7b7b7b)',focus:'var(--tek-color-input-border-focus,#fff)',filled:'var(--tek-color-input-border-filled,#afafaf)',disabled:'var(--tek-color-input-border-disabled,#454545)',error:'var(--tek-color-input-border-error,#e74848)'})[s]||'var(--tek-color-input-border-default,#7b7b7b)';}
   _tc(s){return ({default:'var(--tek-color-input-text-default,#979797)',focus:'var(--tek-color-input-text-focus,#fff)',filled:'var(--tek-color-input-text-filled,#cccccc)',disabled:'var(--tek-color-input-text-disabled,#454545)',error:'var(--tek-color-input-text-error,#fff)'})[s]||'var(--tek-color-input-text-default,#979797)';}
-  _css(s){return `${SDR}:host{display:block;}input,textarea{display:block;width:100%;background:var(--tek-color-input-background-default,#252525);border:0.5px solid ${this._bc(s)};border-radius:5px;padding:8px 4px 8px 10px !important;font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-lg,14px);line-height:var(--tek-fonts-text-line-height-lg,20px);letter-spacing:0.01em;color:${this._tc(s)};outline:none;resize:vertical;pointer-events:${s==='disabled'?'none':'auto'};}input::placeholder,textarea::placeholder{color:${this._tc(s)};opacity:0.7;}`;}
+  _css(s){return `${SDR}:host{display:block;cursor:${s==='disabled'?'not-allowed':'text'};}input,textarea{display:block;width:100%;background:var(--tek-color-input-background-default,#252525);border:0.5px solid ${this._bc(s)};border-radius:5px;padding:8px 4px 8px 10px !important;font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-lg,14px);line-height:var(--tek-fonts-text-line-height-lg,20px);letter-spacing:0.01em;color:${this._tc(s)};outline:none;resize:vertical;pointer-events:${s==='disabled'?'none':'auto'};}input::placeholder,textarea::placeholder{color:${this._tc(s)};opacity:0.7;}`;}
   _applyStyle(){const sEl=this._s.querySelector('style');if(sEl)sEl.textContent=this._css(this._st||'default');}
   _render(){
     const s=this._st||'default', h=this.getAttribute('height')||'single';

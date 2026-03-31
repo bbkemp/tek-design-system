@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,31 +7,28 @@
 
 <!--
   Fonts
-  Geist       — body / UI text      (npm: geist | Google Fonts CDN)
-  Geist Mono  — code / labels       (npm: geist | Google Fonts CDN)
-  Archivo     — headings / display  (Google Fonts CDN)
+  Geist       — body / UI text      (npm: geist)
+  Geist Mono  — code / labels       (npm: geist)
+  Archivo     — headings / display  (Google Fonts)
+  Mono type scale: same size tokens as text scale, font-family:mono
+    text/mono/xs  → --tek-fonts-family-mono + --tek-fonts-text-size-xs (10px)
+    text/mono/sm  → --tek-fonts-family-mono + --tek-fonts-text-size-sm (12px)
+    text/mono/md  → --tek-fonts-family-mono + --tek-fonts-text-size-md (13px)
+    text/mono/lg  → --tek-fonts-family-mono + --tek-fonts-text-size-lg (14px)
+    text/mono/xl  → --tek-fonts-family-mono + --tek-fonts-text-size-xl (16px)
+    text/mono/2xl → --tek-fonts-family-mono + 20px (text.size.2xl)
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
 
-<!--
-  AutoAnimate — ambient DOM transitions, light DOM only
-  npm: @formkit/auto-animate
-  Planned production motion: Motion.dev (https://motion.dev)
--->
 <script src="https://cdn.jsdelivr.net/npm/@formkit/auto-animate@latest/index.umd.js"></script>
 
 <style>
 /* ============================================================
    @bbkemp/tokens — in production: @import '@bbkemp/tokens/css'
-
-   Token naming follows the W3C DTCG path from src/ files:
-   color.input.border.default → --tek-color-input-border-default
-   fonts.text.size.md         → --tek-fonts-text-size-md
-
-   This page is dark-mode only (no theme toggle).
-   All --tek-color-* vars are the dark semantic defaults.
+   Dark = default (:root). Light = [data-theme="light"] overrides.
+   All --tek-* vars cascade into shadow DOM.
 ============================================================ */
 :root {
   /* ── Type scale — primitives/fonts.json ────────────────── */
@@ -124,10 +121,9 @@
   --tek-color-text-link-default:          #33baea;
   --tek-color-icons-default:              #ffffff;
 
-  /* ── Page chrome — doc-layer values intentionally darker than components */
-  /* These are not component tokens; they are specific to this reference page. */
-  --cl-chrome-bg:         var(--tek-primitive-color-neutral-900);  /* #181818 */
-  --cl-chrome-sidebar-bg: #0d0d0d;   /* intentionally below neutral-900 scale */
+  /* ── Page chrome — doc-layer values, not component tokens ───── */
+  --cl-chrome-bg:         var(--tek-primitive-color-neutral-900);
+  --cl-chrome-sidebar-bg: #0d0d0d;
   --cl-chrome-border:     #1f1f1f;
   --cl-preview-bar-bg:    #161616;
   --cl-preview-border:    #2a2a2a;
@@ -138,22 +134,63 @@
   --cl-token-row-hover:   #161616;
 }
 
+/* ============================================================
+   LIGHT MODE — resolved from semantic/tokens.light.json
+   Toggle via footer 🌚/🌝 toggle. Chrome vars stay dark intentionally.
+============================================================ */
+[data-theme="light"] {
+  --tek-color-modal-background-default: #cccccccc;
+  --tek-color-modal-border-default:     #333333;
+  --tek-color-modal-text-default:       #000000;
+
+  --tek-color-input-background-default: #ffffff;
+  --tek-color-input-border-default:     #333333;
+  --tek-color-input-border-focus:       #000000;
+  --tek-color-input-border-filled:      #1e1e1e;
+  --tek-color-input-border-disabled:    #646464;
+  --tek-color-input-text-default:       #252525;
+  --tek-color-input-text-focus:         #000000;
+  --tek-color-input-text-filled:        #181818;
+  --tek-color-input-text-disabled:      #646464;
+  --tek-color-input-text-error:         #000000;
+  --tek-color-input-label-default:      #181818;
+
+  --tek-color-selector-background-default:   #ffffff;
+  --tek-color-selector-background-unchecked: #646464;
+  --tek-color-selector-background-checked:   #181818;
+  --tek-color-selector-border-unchecked:     #333333;
+  --tek-color-selector-border-checked:       #252525;
+  --tek-color-selector-label-unchecked:      #000000;
+  --tek-color-selector-label-checked:        #000000;
+  --tek-color-selector-label-error:          #000000;
+
+  --tek-color-button-background-default:  #ffffff;
+  --tek-color-button-background-hover:    #33baea;
+  --tek-color-button-background-inactive: #afafaf;
+  --tek-color-button-border-inactive:     #646464;
+  --tek-color-button-text-default:        #000000;
+  --tek-color-button-text-hover:          #000000;
+  --tek-color-button-text-inactive:       #646464;
+
+  --tek-color-footer-background-default:  #afafaf;
+  --tek-color-footer-text-default:        #181818;
+  --tek-color-icons-default:              #000000;
+}
+
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 
 body {
   background: var(--cl-chrome-bg);
   color: var(--tek-primitive-color-neutral-100);
   font-family: var(--tek-fonts-family-geist);
-  font-size: var(--tek-fonts-text-size-lg);      /* text/lg — 14px */
+  font-size: var(--tek-fonts-text-size-lg);
   line-height: var(--tek-fonts-text-line-height-lg);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Shell layout ──────────────────────────────────────────── */
 .shell { display:grid; grid-template-columns:220px 1fr; min-height:100vh; }
 
-/* ── Sidebar ────────────────────────────────────────────── */
 .sidebar {
   position:sticky; top:0; height:100vh; overflow-y:auto;
   background: var(--cl-chrome-sidebar-bg);
@@ -161,8 +198,11 @@ body {
   padding: 32px 0;
   display: flex; flex-direction: column;
 }
-.sidebar-logo { padding: 0 24px 24px; border-bottom: 0.5px solid var(--cl-chrome-border); margin-bottom:16px; }
-/* heading/xs — Archivo SemiBold 16px/24px */
+.sidebar-logo {
+  padding: 0 24px 24px;
+  border-bottom: 0.5px solid var(--cl-chrome-border);
+  margin-bottom: 16px;
+}
 .sidebar-logo-name {
   font-family: var(--tek-fonts-family-archivo);
   font-weight: 600;
@@ -172,15 +212,25 @@ body {
   letter-spacing: -0.02em;
   color: var(--tek-primitive-color-neutral-white);
 }
-/* text/xs mono — Geist Mono 10px */
 .sidebar-logo-sub {
   font-family: var(--tek-fonts-family-mono);
   font-size: var(--tek-fonts-text-size-xs);
+  line-height: var(--tek-fonts-text-line-height-xs);
   color: var(--tek-primitive-color-neutral-500);
   margin-top: 4px;
 }
+/* theme toggle in sidebar header */
+.sidebar-theme {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+}
+.sidebar-theme span {
+  font-size: 14px;
+  line-height: 1;
+}
 .sidebar-nav { flex:1; display:flex; flex-direction:column; }
-/* text/xs mono uppercase — section grouping */
 .sidebar-section {
   padding: 12px 24px 4px;
   font-family: var(--tek-fonts-family-mono);
@@ -190,7 +240,6 @@ body {
   letter-spacing: 0.1em;
   color: var(--tek-primitive-color-neutral-500);
 }
-/* text/md — Geist 13px/16px */
 .sidebar-link {
   display:block; padding: 6px 24px;
   font-family: var(--tek-fonts-family-geist);
@@ -203,10 +252,7 @@ body {
 .sidebar-link:hover  { color: var(--tek-primitive-color-neutral-100); }
 .sidebar-link.active { color: var(--tek-primitive-color-brand-tek-blue); font-weight:500; }
 
-/* ── Main content ─────────────────────────────────────── */
 .main { padding: 48px 56px; max-width:900px; }
-
-/* Display heading — Archivo SemiBold at large scale */
 .page-title {
   font-family: var(--tek-fonts-family-archivo);
   font-weight: 600;
@@ -217,7 +263,6 @@ body {
   color: var(--tek-primitive-color-neutral-white);
   margin-bottom: 8px;
 }
-/* text/lg — Geist 14px/20px */
 .page-sub {
   font-family: var(--tek-fonts-family-geist);
   font-size: var(--tek-fonts-text-size-lg);
@@ -227,10 +272,8 @@ body {
   max-width: 480px;
 }
 
-/* ── Sections ────────────────────────────────────────── */
 .section { margin-bottom:64px; scroll-margin-top:32px; }
 .section-header { display:flex; align-items:baseline; gap:12px; margin-bottom:16px; padding-bottom:12px; border-bottom: 0.5px solid var(--cl-chrome-border); }
-/* heading/sm equivalent — Archivo SemiBold ~22px */
 .section-title {
   font-family: var(--tek-fonts-family-archivo);
   font-weight: 600;
@@ -240,10 +283,10 @@ body {
   letter-spacing: -0.02em;
   color: var(--tek-primitive-color-neutral-white);
 }
-/* text/xs mono — component tag badge */
 .section-tag {
   font-family: var(--tek-fonts-family-mono);
   font-size: var(--tek-fonts-text-size-xs);
+  line-height: var(--tek-fonts-text-line-height-xs);
   color: var(--tek-primitive-color-brand-tek-blue);
   padding: 2px 8px;
   border: 0.5px solid var(--tek-primitive-color-brand-tek-blue);
@@ -251,19 +294,15 @@ body {
   opacity: 0.7;
 }
 
-/* ── Preview blocks ──────────────────────────────────── */
 .preview-block { background: var(--tek-primitive-color-neutral-800); border: 0.5px solid var(--cl-preview-border); border-radius:8px 8px 0 0; overflow:hidden; }
 .preview-bar { display:flex; align-items:center; justify-content:space-between; padding:8px 16px; background: var(--cl-preview-bar-bg); border-bottom: 0.5px solid var(--cl-preview-border); }
-/* text/xs mono */
 .preview-bar-label { font-family: var(--tek-fonts-family-mono); font-size: var(--tek-fonts-text-size-xs); color: var(--tek-primitive-color-neutral-500); letter-spacing:0.04em; }
 .preview-canvas { padding:32px; display:flex; align-items:center; gap:32px; flex-wrap:wrap; }
 .preview-canvas.col { flex-direction:column; align-items:flex-start; gap:16px; }
 .preview-item { display:flex; flex-direction:column; align-items:center; gap:8px; }
-.preview-item.left { align-items:flex-start; min-width:260px; }  /* min-width gives inputs a natural demo size */
-/* text/xs mono — state label below component */
+.preview-item.left { align-items:flex-start; min-width:260px; }
 .state-lbl { font-family: var(--tek-fonts-family-mono); font-size: var(--tek-fonts-text-size-xs); color: var(--tek-primitive-color-neutral-500); }
 
-/* ── Code blocks ──────────────────────────────────────── */
 .code-wrap { position:relative; }
 .code-block {
   background: var(--cl-code-bg);
@@ -272,7 +311,7 @@ body {
   border-radius: 0 0 8px 8px;
   padding: 16px 20px;
   font-family: var(--tek-fonts-family-mono);
-  font-size: var(--tek-fonts-text-size-sm);    /* text/sm — 12px */
+  font-size: var(--tek-fonts-text-size-sm);
   line-height: 1.7;
   color: var(--tek-primitive-color-neutral-300);
   overflow-x: auto;
@@ -296,11 +335,9 @@ body {
 .copy-btn:hover  { background: var(--tek-primitive-color-neutral-500); color: var(--tek-primitive-color-neutral-white); }
 .copy-btn.copied { color: #a8d8a8; border-color: #a8d8a8; }
 
-/* ── Misc ─────────────────────────────────────────────── */
 .divider { border:none; border-top: 0.5px solid var(--cl-divider); margin:40px 0; }
 .row { display:flex; gap:24px; flex-wrap:wrap; align-items:center; }
 
-/* ── Token table ──────────────────────────────────────── */
 .token-table { width:100%; border-collapse:collapse; margin-top:16px; }
 .token-table th {
   text-align:left; padding:6px 12px;
@@ -323,7 +360,6 @@ body {
 .token-name  { color: var(--tek-primitive-color-neutral-200); }
 .token-group td { color: var(--tek-primitive-color-neutral-700); padding:8px 12px; font-size:9px; letter-spacing:0.08em; text-transform:uppercase; }
 
-/* inline code in prose */
 code {
   font-family: var(--tek-fonts-family-mono);
   font-size: var(--tek-fonts-text-size-sm);
@@ -338,6 +374,12 @@ code {
     <div class="sidebar-logo">
       <div class="sidebar-logo-name">@bbkemp/ui</div>
       <div class="sidebar-logo-sub">component library · v0.2</div>
+      <!-- theme toggle — switches [data-theme] on <html> -->
+      <div class="sidebar-theme">
+        <span>🌚</span>
+        <tek-toggle id="cl-theme-toggle"></tek-toggle>
+        <span>🌝</span>
+      </div>
     </div>
     <div class="sidebar-nav">
       <span class="sidebar-section">Selectors</span>
@@ -482,7 +524,7 @@ el.addEventListener(<span class="str">'tek-change'</span>, e <span class="kw">=&
     <section class="section" id="input">
       <div class="section-header"><h2 class="section-title">Input</h2><span class="section-tag">tek-input</span></div>
       <div class="preview-block">
-        <div class="preview-bar"><span class="preview-bar-label">all states — single height · click default to see focus</span></div>
+        <div class="preview-bar"><span class="preview-bar-label">all states — click default to see focus</span></div>
         <div class="preview-canvas col">
           <div class="preview-item left"><tek-input placeholder="Enter message here"></tek-input><div class="state-lbl">Default</div></div>
           <div class="preview-item left"><tek-input state="focus" placeholder="Enter message here"></tek-input><div class="state-lbl">Focus</div></div>
@@ -637,52 +679,83 @@ el.addEventListener(<span class="str">'tek-click'</span>, () <span class="kw">=&
       <table class="token-table">
         <thead><tr><th>CSS custom property</th><th>Primitive ref</th><th>Dark value</th></tr></thead>
         <tbody>
+
           <tr class="token-group"><td colspan="3">SELECTOR / BACKGROUND</td></tr>
           <tr><td class="token-name">--tek-color-selector-background-default</td><td>neutral.700</td><td><span class="swatch" style="background:#252525"></span>#252525</td></tr>
           <tr><td class="token-name">--tek-color-selector-background-unchecked</td><td>neutral.500</td><td><span class="swatch" style="background:#454545"></span>#454545</td></tr>
           <tr><td class="token-name">--tek-color-selector-background-checked</td><td>neutral.100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+
           <tr class="token-group"><td colspan="3">SELECTOR / BORDER</td></tr>
           <tr><td class="token-name">--tek-color-selector-border-unchecked</td><td>neutral.400</td><td><span class="swatch" style="background:#7b7b7b"></span>#7b7b7b</td></tr>
           <tr><td class="token-name">--tek-color-selector-border-checked</td><td>neutral.300</td><td><span class="swatch" style="background:#979797"></span>#979797</td></tr>
-          <tr><td class="token-name">--tek-color-selector-border-error</td><td>ui.error-red</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
+          <tr><td class="token-name">--tek-color-selector-border-error</td><td>ui.error</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
+
+          <tr class="token-group"><td colspan="3">SELECTOR / LABEL</td></tr>
+          <tr><td class="token-name">--tek-color-selector-label-unchecked</td><td>neutral.100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+          <tr><td class="token-name">--tek-color-selector-label-checked</td><td>neutral.white</td><td><span class="swatch" style="background:#fff;border-color:#555"></span>#ffffff</td></tr>
+          <tr><td class="token-name">--tek-color-selector-label-error</td><td>neutral.white</td><td><span class="swatch" style="background:#fff;border-color:#555"></span>#ffffff</td></tr>
+
           <tr class="token-group"><td colspan="3">INPUT / BACKGROUND + BORDER</td></tr>
           <tr><td class="token-name">--tek-color-input-background-default</td><td>neutral.700</td><td><span class="swatch" style="background:#252525"></span>#252525</td></tr>
           <tr><td class="token-name">--tek-color-input-border-default</td><td>neutral.400</td><td><span class="swatch" style="background:#7b7b7b"></span>#7b7b7b</td></tr>
           <tr><td class="token-name">--tek-color-input-border-focus</td><td>neutral.white</td><td><span class="swatch" style="background:#fff;border-color:#555"></span>#ffffff</td></tr>
           <tr><td class="token-name">--tek-color-input-border-filled</td><td>neutral.200</td><td><span class="swatch" style="background:#afafaf"></span>#afafaf</td></tr>
           <tr><td class="token-name">--tek-color-input-border-disabled</td><td>neutral.500</td><td><span class="swatch" style="background:#454545"></span>#454545</td></tr>
-          <tr><td class="token-name">--tek-color-input-border-error</td><td>ui.error-red</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
+          <tr><td class="token-name">--tek-color-input-border-error</td><td>ui.error</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
+
           <tr class="token-group"><td colspan="3">INPUT / TEXT + LABEL</td></tr>
           <tr><td class="token-name">--tek-color-input-text-default</td><td>neutral.300</td><td><span class="swatch" style="background:#979797"></span>#979797</td></tr>
           <tr><td class="token-name">--tek-color-input-text-focus</td><td>neutral.white</td><td><span class="swatch" style="background:#fff;border-color:#555"></span>#ffffff</td></tr>
           <tr><td class="token-name">--tek-color-input-text-filled</td><td>neutral.100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+          <tr><td class="token-name">--tek-color-input-text-disabled</td><td>neutral.500</td><td><span class="swatch" style="background:#454545"></span>#454545</td></tr>
+          <tr><td class="token-name">--tek-color-input-text-error</td><td>neutral.white</td><td><span class="swatch" style="background:#fff;border-color:#555"></span>#ffffff</td></tr>
           <tr><td class="token-name">--tek-color-input-label-default</td><td>neutral.100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+
+          <tr class="token-group"><td colspan="3">INPUT / CHARACTER COUNT</td></tr>
+          <tr><td class="token-name">--tek-color-input-character-count-default</td><td>neutral.100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+          <tr><td class="token-name">--tek-color-input-character-count-focus</td><td>neutral.white</td><td><span class="swatch" style="background:#fff;border-color:#555"></span>#ffffff</td></tr>
+          <tr><td class="token-name">--tek-color-input-character-count-filled</td><td>neutral.200</td><td><span class="swatch" style="background:#afafaf"></span>#afafaf</td></tr>
+          <tr><td class="token-name">--tek-color-input-character-count-warning</td><td>ui.warning</td><td><span class="swatch" style="background:#e0b732"></span>#e0b732</td></tr>
+          <tr><td class="token-name">--tek-color-input-character-count-error</td><td>ui.error</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
+
           <tr class="token-group"><td colspan="3">BUTTON</td></tr>
           <tr><td class="token-name">--tek-color-button-background-default</td><td>neutral.800</td><td><span class="swatch" style="background:#1e1e1e"></span>#1e1e1e</td></tr>
           <tr><td class="token-name">--tek-color-button-background-hover</td><td>neutral.black</td><td><span class="swatch" style="background:#000"></span>#000000</td></tr>
+          <tr><td class="token-name">--tek-color-button-background-inactive</td><td>neutral.900</td><td><span class="swatch" style="background:#181818"></span>#181818</td></tr>
           <tr><td class="token-name">--tek-color-button-border-default</td><td>brand.tek-blue</td><td><span class="swatch" style="background:#33baea"></span>#33baea</td></tr>
+          <tr><td class="token-name">--tek-color-button-border-inactive</td><td>neutral.500</td><td><span class="swatch" style="background:#454545"></span>#454545</td></tr>
           <tr><td class="token-name">--tek-color-button-text-default</td><td>neutral.100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
+          <tr><td class="token-name">--tek-color-button-text-hover</td><td>neutral.white</td><td><span class="swatch" style="background:#fff;border-color:#555"></span>#ffffff</td></tr>
+          <tr><td class="token-name">--tek-color-button-text-inactive</td><td>neutral.500</td><td><span class="swatch" style="background:#454545"></span>#454545</td></tr>
+
           <tr class="token-group"><td colspan="3">MODAL</td></tr>
           <tr><td class="token-name">--tek-color-modal-background-default</td><td>ui.backdrop-dark</td><td><span class="swatch" style="background:#181818cc"></span>#181818cc</td></tr>
           <tr><td class="token-name">--tek-color-modal-border-default</td><td>neutral.400</td><td><span class="swatch" style="background:#7b7b7b"></span>#7b7b7b</td></tr>
           <tr><td class="token-name">--tek-color-modal-text-default</td><td>neutral.white</td><td><span class="swatch" style="background:#fff;border-color:#555"></span>#ffffff</td></tr>
           <tr><td class="token-name">--tek-color-modal-shadow-default</td><td>ui.shadow</td><td><span class="swatch" style="background:#00000033;border-color:#555"></span>#00000033</td></tr>
+
           <tr class="token-group"><td colspan="3">FOOTER</td></tr>
           <tr><td class="token-name">--tek-color-footer-background-default</td><td>neutral.700</td><td><span class="swatch" style="background:#252525"></span>#252525</td></tr>
           <tr><td class="token-name">--tek-color-footer-text-default</td><td>neutral.100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
           <tr><td class="token-name">--tek-color-text-link-default</td><td>brand.tek-blue</td><td><span class="swatch" style="background:#33baea"></span>#33baea</td></tr>
-          <tr class="token-group"><td colspan="3">CHARACTER COUNT</td></tr>
-          <tr><td class="token-name">--tek-color-input-character-count-default</td><td>neutral.100</td><td><span class="swatch" style="background:#cccccc"></span>#cccccc</td></tr>
-          <tr><td class="token-name">--tek-color-input-character-count-warning</td><td>ui.warning-yellow</td><td><span class="swatch" style="background:#e0b732"></span>#e0b732</td></tr>
-          <tr><td class="token-name">--tek-color-input-character-count-error</td><td>ui.error-red</td><td><span class="swatch" style="background:#e74848"></span>#e74848</td></tr>
-          <tr class="token-group"><td colspan="3">TYPE SCALE</td></tr>
-          <tr><td class="token-name">--tek-fonts-text-size-xs / line-height-xs</td><td>fonts.text.size.xs / lh.xs</td><td>10px / 12px</td></tr>
-          <tr><td class="token-name">--tek-fonts-text-size-sm / line-height-sm</td><td>fonts.text.size.sm / lh.sm</td><td>12px / 12px</td></tr>
-          <tr><td class="token-name">--tek-fonts-text-size-md / line-height-md</td><td>fonts.text.size.md / lh.md</td><td>13px / 16px</td></tr>
-          <tr><td class="token-name">--tek-fonts-text-size-lg / line-height-lg</td><td>fonts.text.size.lg / lh.lg</td><td>14px / 20px</td></tr>
-          <tr><td class="token-name">--tek-fonts-text-size-xl / line-height-xl</td><td>fonts.text.size.xl / lh.xl</td><td>16px / 24px</td></tr>
-          <tr><td class="token-name">--tek-fonts-heading-size-xs / line-height-xs</td><td>fonts.heading.size.xs / lh.xs</td><td>16px / 24px · Archivo wdth 120</td></tr>
-          <tr><td class="token-name">--tek-fonts-heading-size-md / line-height-md</td><td>fonts.heading.size.md / lh.md</td><td>24px / 32px · Archivo wdth 120</td></tr>
+
+          <tr class="token-group"><td colspan="3">ICONS</td></tr>
+          <tr><td class="token-name">--tek-color-icons-default</td><td>neutral.white</td><td><span class="swatch" style="background:#fff;border-color:#555"></span>#ffffff</td></tr>
+
+          <tr class="token-group"><td colspan="3">TYPE SCALE — Geist (text) + same sizes with Geist Mono (text/mono)</td></tr>
+          <tr><td class="token-name">--tek-fonts-text-size-xs / line-height-xs</td><td>fonts.text.size.xs</td><td>10px / 12px · text/mono/xs uses same + mono family</td></tr>
+          <tr><td class="token-name">--tek-fonts-text-size-sm / line-height-sm</td><td>fonts.text.size.sm</td><td>12px / 12px · text/mono/sm uses same + mono family</td></tr>
+          <tr><td class="token-name">--tek-fonts-text-size-md / line-height-md</td><td>fonts.text.size.md</td><td>13px / 16px · text/mono/md uses same + mono family</td></tr>
+          <tr><td class="token-name">--tek-fonts-text-size-lg / line-height-lg</td><td>fonts.text.size.lg</td><td>14px / 20px · text/mono/lg uses same + mono family</td></tr>
+          <tr><td class="token-name">--tek-fonts-text-size-xl / line-height-xl</td><td>fonts.text.size.xl</td><td>16px / 24px · text/mono/xl uses same + mono family</td></tr>
+          <tr><td class="token-name">--tek-fonts-heading-size-xs / line-height-xs</td><td>fonts.heading.size.xs</td><td>16px / 24px · Archivo SemiBold wdth 120</td></tr>
+          <tr><td class="token-name">--tek-fonts-heading-size-md / line-height-md</td><td>fonts.heading.size.md</td><td>24px / 32px · Archivo SemiBold wdth 120</td></tr>
+
+          <tr class="token-group"><td colspan="3">FONT FAMILIES</td></tr>
+          <tr><td class="token-name">--tek-fonts-family-geist</td><td>fonts.family.Geist</td><td>'Geist', system-ui, sans-serif</td></tr>
+          <tr><td class="token-name">--tek-fonts-family-mono</td><td>fonts.family.Mono</td><td>'Geist Mono', monospace</td></tr>
+          <tr><td class="token-name">--tek-fonts-family-archivo</td><td>fonts.family.Archivo</td><td>'Archivo', sans-serif</td></tr>
+
         </tbody>
       </table>
     </section>
@@ -691,9 +764,8 @@ el.addEventListener(<span class="str">'tek-click'</span>, () <span class="kw">=&
 </div>
 
 <!-- ============================================================
-  @bbkemp/ui — Web Components
-  In production: import '@bbkemp/ui'
-  Inline definitions here are identical to packages/ui/src/.
+  @bbkemp/ui — Web Components — in production: import '@bbkemp/ui'
+  Inline definitions identical to packages/ui/src/.
   CSS custom properties cascade through shadow DOM boundaries.
 ============================================================ -->
 <script>
@@ -784,8 +856,8 @@ customElements.define('tek-selector-label', class extends HTMLElement {
     const color = error ? 'var(--tek-color-selector-label-error,#ffffff)'
                  : checked ? 'var(--tek-color-selector-label-checked,#ffffff)'
                  : 'var(--tek-color-selector-label-unchecked,#cccccc)';
-    /* text/sm — Geist 12px/12px */
-    this._s.innerHTML = `<style>${SDR}:host{display:inline;}span{font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-sm,12px);line-height:var(--tek-fonts-text-line-height-sm,12px);letter-spacing:0.01em;font-weight:400;color:${color};transition:color 0.15s;}</style><span><slot></slot></span>`;
+    /* display:inline-flex so this aligns correctly as a flex child in tek-selector */
+    this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;}span{font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-sm,12px);line-height:var(--tek-fonts-text-line-height-sm,12px);letter-spacing:0.01em;font-weight:400;color:${color};transition:color 0.15s;}</style><span><slot></slot></span>`;
   }
 });
 
@@ -817,9 +889,6 @@ customElements.define('tek-selector', class extends HTMLElement {
   }
 });
 
-/* tek-input: _render()/_applyStyle() split
-   _render()     — structural changes only (height/placeholder/value/type)
-   _applyStyle() — style-only changes; never touches <input>, preserving focus+value */
 customElements.define('tek-input', class extends HTMLElement {
   static get observedAttributes() { return ['state','height','placeholder','value','type']; }
   connectedCallback() {
@@ -848,8 +917,7 @@ customElements.define('tek-input', class extends HTMLElement {
   }
   _bc(s){return ({default:'var(--tek-color-input-border-default,#7b7b7b)',focus:'var(--tek-color-input-border-focus,#fff)',filled:'var(--tek-color-input-border-filled,#afafaf)',disabled:'var(--tek-color-input-border-disabled,#454545)',error:'var(--tek-color-input-border-error,#e74848)'})[s]||'var(--tek-color-input-border-default,#7b7b7b)';}
   _tc(s){return ({default:'var(--tek-color-input-text-default,#979797)',focus:'var(--tek-color-input-text-focus,#fff)',filled:'var(--tek-color-input-text-filled,#cccccc)',disabled:'var(--tek-color-input-text-disabled,#454545)',error:'var(--tek-color-input-text-error,#fff)'})[s]||'var(--tek-color-input-text-default,#979797)';}
-  /* text/lg — Geist 14px/20px */
-  _css(s){return `${SDR}:host{display:block;}input,textarea{display:block;width:100%;background:var(--tek-color-input-background-default,#252525);border:0.5px solid ${this._bc(s)};border-radius:5px;padding:8px 4px 8px 10px !important;font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-lg,14px);line-height:var(--tek-fonts-text-line-height-lg,20px);letter-spacing:0.01em;color:${this._tc(s)};outline:none;resize:vertical;pointer-events:${s==='disabled'?'none':'auto'};}input::placeholder,textarea::placeholder{color:${this._tc(s)};opacity:0.7;}`;}
+  _css(s){return `${SDR}:host{display:block;cursor:${s==='disabled'?'not-allowed':'text'};}input,textarea{display:block;width:100%;background:var(--tek-color-input-background-default,#252525);border:0.5px solid ${this._bc(s)};border-radius:5px;padding:8px 4px 8px 10px !important;font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-lg,14px);line-height:var(--tek-fonts-text-line-height-lg,20px);letter-spacing:0.01em;color:${this._tc(s)};outline:none;resize:vertical;pointer-events:${s==='disabled'?'none':'auto'};}input::placeholder,textarea::placeholder{color:${this._tc(s)};opacity:0.7;}`;}
   _applyStyle(){const sEl=this._s.querySelector('style');if(sEl)sEl.textContent=this._css(this._st||'default');}
   _render(){
     const s=this._st||'default', h=this.getAttribute('height')||'single';
@@ -869,7 +937,6 @@ customElements.define('tek-character-count', class extends HTMLElement {
     const count=parseInt(this.getAttribute('count')||'0'), max=parseInt(this.getAttribute('max')||'52'), state=this.getAttribute('state')||'default';
     const colors={default:'var(--tek-color-input-character-count-default,#cccccc)',focus:'var(--tek-color-input-character-count-focus,#ffffff)',filled:'var(--tek-color-input-character-count-filled,#afafaf)',warning:'var(--tek-color-input-character-count-warning,#e0b732)',error:'var(--tek-color-input-character-count-error,#e74848)'};
     const color=(state==='error'||count>max)?colors.error:state==='warning'?colors.warning:colors[state]||colors.default;
-    /* text/xs — Geist 10px/12px */
     this._s.innerHTML = `<style>${SDR}:host{display:inline-block;}span{font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-xs,10px);line-height:var(--tek-fonts-text-line-height-xs,12px);letter-spacing:0.01em;color:${color};}</style><span>${count}/${max}</span>`;
   }
 });
@@ -880,7 +947,6 @@ customElements.define('tek-text-link', class extends HTMLElement {
   attributeChangedCallback() { if (this._s) this._render(); }
   _render() {
     const href=this.getAttribute('href')||'#', target=this.getAttribute('target')||'';
-    /* text/xs — Geist 10px/12px */
     this._s.innerHTML = `<style>${SDR}:host{display:inline;}a{font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-xs,10px);line-height:var(--tek-fonts-text-line-height-xs,12px);letter-spacing:0.01em;color:var(--tek-color-text-link-default,#33baea);text-decoration:none;}a:hover{text-decoration:underline;text-underline-offset:2px;}</style>
 <a href="${href}"${target?` target="${target}"`:''} ><slot></slot></a>`;
   }
@@ -903,7 +969,6 @@ customElements.define('tek-button', class extends HTMLElement {
     const bg=inactive?'var(--tek-color-button-background-inactive,#181818)':'var(--tek-color-button-background-default,#1e1e1e)';
     const border=inactive?'var(--tek-color-button-border-inactive,#454545)':'var(--tek-color-button-border-default,#33baea)';
     const color=inactive?'var(--tek-color-button-text-inactive,#454545)':'var(--tek-color-button-text-default,#cccccc)';
-    /* heading/xs — Archivo SemiBold 16px/24px, wdth 120, py 10px */
     this._s.innerHTML = `<style>${SDR}:host{display:inline-block;}button{background:${bg};border:1px solid ${border};border-radius:9999px;padding:10px 24px !important;font-family:var(--tek-fonts-family-archivo,'Archivo',sans-serif);font-size:var(--tek-fonts-heading-size-xs,16px);line-height:var(--tek-fonts-heading-line-height-xs,24px);font-weight:600;font-variation-settings:'wdth' 120;letter-spacing:0.01em;color:${color};cursor:${inactive?'not-allowed':'pointer'};transition:all 0.15s;white-space:nowrap;width:100%;}
 button:not(:disabled):hover{background:var(--tek-color-button-background-hover,#000);color:var(--tek-color-button-text-hover,#fff);}
 button:focus-visible{outline:2px solid var(--tek-color-button-border-default,#33baea);outline-offset:2px;}</style>
@@ -914,7 +979,6 @@ button:focus-visible{outline:2px solid var(--tek-color-button-border-default,#33
 customElements.define('tek-modal', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
-    /* heading/md — Archivo SemiBold 24px/32px, wdth 120; frosted glass backdrop */
     this._s.innerHTML = `<style>${SDR}:host{display:flex;flex-direction:column;gap:14px;background:var(--tek-color-modal-background-default,#181818cc);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:0.25px solid var(--tek-color-modal-border-default,#7b7b7b);border-radius:11px;padding:32px !important;width:100%;max-width:360px;box-shadow:0px 2px 6px 0px var(--tek-color-modal-shadow-default,#00000033);}
 .hd{font-family:var(--tek-fonts-family-archivo,'Archivo',sans-serif);font-size:var(--tek-fonts-heading-size-md,24px);line-height:var(--tek-fonts-heading-line-height-md,32px);font-weight:600;font-variation-settings:'wdth' 120;letter-spacing:0.01em;color:var(--tek-color-modal-text-default,#fff);}
 .in,.ac{display:flex;flex-direction:column;gap:10px;width:100%;}</style>
@@ -927,7 +991,6 @@ customElements.define('tek-modal', class extends HTMLElement {
 customElements.define('tek-footer', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
-    /* text/md — Geist 13px/16px */
     this._s.innerHTML = `<style>${SDR}:host{display:flex;align-items:center;width:100%;height:36px;padding:12px 16px !important;background:var(--tek-color-footer-background-default,#252525);gap:8px;}
 .left{display:flex;align-items:center;gap:4px;flex-shrink:0;}
 .right{flex:1 0 0;font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-md,13px);line-height:var(--tek-fonts-text-line-height-md,16px);letter-spacing:0.01em;color:var(--tek-color-footer-text-default,#cccccc);text-align:right;}</style>
@@ -944,6 +1007,11 @@ document.getElementById('toggle-interactive').addEventListener('tek-change', e =
   document.getElementById('toggle-lbl').textContent = e.detail.checked ? 'on ✓' : 'click me';
 });
 
+// Theme toggle in sidebar — unchecked = dark, checked = light
+document.getElementById('cl-theme-toggle').addEventListener('tek-change', e => {
+  document.documentElement.setAttribute('data-theme', e.detail.checked ? 'light' : 'dark');
+});
+
 function nav(e,id){
   document.getElementById(id).scrollIntoView({behavior:'smooth'});
   document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
@@ -956,7 +1024,6 @@ function copy(id,btn){
   });
 }
 
-// Scroll spy
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -968,7 +1035,6 @@ const obs = new IntersectionObserver(entries => {
 }, {rootMargin:'-40% 0px -55% 0px'});
 document.querySelectorAll('.section').forEach(s=>obs.observe(s));
 
-// AutoAnimate — light DOM only
 if (typeof autoAnimate !== 'undefined') {
   autoAnimate(document.querySelector('.sidebar-nav'));
   document.querySelectorAll('.preview-canvas').forEach(el => autoAnimate(el));
