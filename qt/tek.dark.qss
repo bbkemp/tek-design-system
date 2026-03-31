@@ -1,0 +1,204 @@
+/* ============================================================
+   tek.dark.qss — Tek Design System v1.0
+   Dark mode semantic stylesheet for Qt/QSS.
+
+   Source of truth: packages/tokens/src/semantic/tokens.json
+   Do not edit manually. Regenerate when tokens change.
+
+   Qt alpha note: QSS rgba() uses alpha 0-255 (not 0.0-1.0).
+   CSS #181818cc (RRGGBBAA) = rgba(24, 24, 24, 204) in QSS.
+
+   Usage:
+     qApp->setStyleSheet(loadFile("tek.dark.qss"));
+   Or apply per-widget:
+     widget->setStyleSheet(loadFile("tek.dark.qss"));
+
+   Limitations:
+   - QSS has no variable system. Values are hardcoded.
+   - backdrop-filter (frosted glass) is not supported in QSS.
+     Use QGraphicsBlurEffect or a custom QWidget paintEvent instead.
+   - Hover/pressed states use QSS pseudo-selectors.
+   - For theme switching, swap between tek.dark.qss / tek.light.qss.
+============================================================ */
+
+/* ── Input / QLineEdit ─────────────────────────────────────── */
+QLineEdit {
+  background-color: #252525;
+  border: 0.5px solid #7b7b7b;
+  border-radius: 5px;
+  padding: 8px 4px 8px 10px;
+  font-family: "Geist";
+  font-size: 14px;
+  color: #979797;
+  selection-background-color: #33baea;
+  selection-color: #ffffff;
+}
+QLineEdit:focus {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+QLineEdit:disabled {
+  border-color: #454545;
+  color: #454545;
+  background-color: #252525;
+}
+QLineEdit[state="error"] {
+  border-color: #e74848;
+  color: #ffffff;
+}
+
+/* ── QTextEdit / QPlainTextEdit ─────────────────────────────── */
+QTextEdit, QPlainTextEdit {
+  background-color: #252525;
+  border: 0.5px solid #7b7b7b;
+  border-radius: 5px;
+  padding: 8px 4px 8px 10px;
+  font-family: "Geist";
+  font-size: 14px;
+  color: #979797;
+}
+QTextEdit:focus, QPlainTextEdit:focus {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+QTextEdit:disabled, QPlainTextEdit:disabled {
+  border-color: #454545;
+  color: #454545;
+}
+
+/* ── QPushButton (primary) ──────────────────────────────────── */
+QPushButton {
+  background-color: #1e1e1e;
+  border: 1px solid #33baea;
+  border-radius: 9999px;
+  padding: 10px 24px;
+  font-family: "Archivo";
+  font-size: 16px;
+  font-weight: 600;
+  color: #cccccc;
+}
+QPushButton:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+QPushButton:pressed {
+  background-color: #000000;
+  color: #ffffff;
+}
+QPushButton:disabled {
+  background-color: #181818;
+  border-color: #454545;
+  color: #454545;
+}
+
+/* ── QCheckBox ─────────────────────────────────────────────── */
+QCheckBox {
+  font-family: "Geist";
+  font-size: 12px;
+  color: #cccccc;
+  spacing: 8px;
+}
+QCheckBox::indicator {
+  width: 16px;
+  height: 16px;
+  border: 0.5px solid #7b7b7b;
+  border-radius: 3px;
+  background-color: #252525;
+}
+QCheckBox::indicator:checked {
+  background-color: #cccccc;
+  border-color: #979797;
+  /* image: url(:/icons/check.svg); */
+}
+QCheckBox::indicator:disabled {
+  border-color: #454545;
+  opacity: 0.4;
+}
+QCheckBox:disabled {
+  color: #454545;
+}
+
+/* ── QRadioButton ──────────────────────────────────────────── */
+QRadioButton {
+  font-family: "Geist";
+  font-size: 12px;
+  color: #cccccc;
+  spacing: 8px;
+}
+QRadioButton::indicator {
+  width: 16px;
+  height: 16px;
+  border: 0.5px solid #7b7b7b;
+  border-radius: 8px;
+  background-color: #252525;
+}
+QRadioButton::indicator:checked {
+  background-color: #252525;
+  border-color: #979797;
+  /* Inner dot via image recommended — QSS can't draw nested circles natively */
+  /* image: url(:/icons/radio-dot.svg); */
+}
+QRadioButton::indicator:disabled {
+  border-color: #454545;
+  opacity: 0.4;
+}
+QRadioButton:disabled {
+  color: #454545;
+}
+
+/* ── QLabel ────────────────────────────────────────────────── */
+QLabel {
+  font-family: "Geist";
+  font-size: 13px;
+  color: #cccccc;
+  background: transparent;
+}
+QLabel[role="input-label"] {
+  font-size: 13px;
+  color: #cccccc;
+}
+QLabel[role="heading"] {
+  font-family: "Archivo";
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* ── QFrame (modal equivalent) ─────────────────────────────── */
+QFrame[role="modal"] {
+  background-color: rgba(24, 24, 24, 204); /* #181818cc — pair with QGraphicsBlurEffect for frosted glass */
+  border: 1px solid #7b7b7b;
+  border-radius: 11px;
+}
+
+/* ── QStatusBar / footer ────────────────────────────────────── */
+QStatusBar {
+  background-color: #252525;
+  font-family: "Geist";
+  font-size: 13px;
+  color: #cccccc;
+}
+
+/* ── QWidget base ───────────────────────────────────────────── */
+QWidget {
+  background-color: #1e1e1e;
+  color: #cccccc;
+  font-family: "Geist";
+  font-size: 14px;
+}
+
+/* ── QScrollBar ─────────────────────────────────────────────── */
+QScrollBar:vertical {
+  background: #252525;
+  width: 6px;
+  border-radius: 3px;
+}
+QScrollBar::handle:vertical {
+  background: #454545;
+  border-radius: 3px;
+  min-height: 24px;
+}
+QScrollBar::handle:vertical:hover {
+  background: #7b7b7b;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }
