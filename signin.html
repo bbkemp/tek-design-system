@@ -75,7 +75,7 @@
   --tek-primitive-color-backdrop-light:#cccccccc;
 
   /* ── Semantic — DARK MODE defaults (from semantic/tokens.json) ─ */
-  --tek-color-modal-background-default: #181818cc;  /* backdrop-dark */
+  --tek-color-modal-background-default: #181818cc;
   --tek-color-modal-border-default:     #7b7b7b;
   --tek-color-modal-text-default:       #ffffff;
   --tek-color-modal-shadow-default:     #00000033;
@@ -122,53 +122,60 @@
   --tek-color-text-link-default:          #33baea;
   --tek-color-icons-default:              #ffffff;
 
-  /* container breakpoints — Figma Cxx variables */
   --tek-container-xs:  384px;
   --tek-container-sm:  640px;
   --tek-container-xl: 1280px;
 }
 
 /* ============================================================
-   LIGHT MODE — from semantic/tokens.light.json
-   Only semantic color properties override here.
-   Type scale, spacing, border tokens remain unchanged.
+   LIGHT MODE — resolved from semantic/tokens.light.json
+   Primitive refs resolved: neutral.450=#646464, neutral.900=#181818 etc.
+   Source of truth: figma-token-push exports this file automatically.
 ============================================================ */
 [data-theme="light"] {
+  /* modal */
   --tek-color-modal-background-default: #cccccccc;  /* backdrop-light */
-  --tek-color-modal-border-default:     #333333;
-  --tek-color-modal-text-default:       #000000;
+  --tek-color-modal-border-default:     #333333;    /* neutral.600 */
+  --tek-color-modal-text-default:       #000000;    /* neutral.black */
 
-  --tek-color-input-background-default: #ffffff;
-  --tek-color-input-border-default:     #333333;
-  --tek-color-input-border-focus:       #000000;
-  --tek-color-input-border-filled:      #454545;
-  --tek-color-input-border-disabled:    #979797;
-  --tek-color-input-text-default:       #7b7b7b;
-  --tek-color-input-text-focus:         #000000;
-  --tek-color-input-text-filled:        #181818;
-  --tek-color-input-text-disabled:      #979797;
-  --tek-color-input-label-default:      #181818;
+  /* input */
+  --tek-color-input-background-default: #ffffff;    /* neutral.white */
+  --tek-color-input-border-default:     #333333;    /* neutral.600 */
+  --tek-color-input-border-focus:       #000000;    /* neutral.black */
+  --tek-color-input-border-filled:      #1e1e1e;    /* neutral.800 */
+  --tek-color-input-border-disabled:    #646464;    /* neutral.450 */
+  --tek-color-input-text-default:       #252525;    /* neutral.700 */
+  --tek-color-input-text-focus:         #000000;    /* neutral.black */
+  --tek-color-input-text-filled:        #181818;    /* neutral.900 */
+  --tek-color-input-text-disabled:      #646464;    /* neutral.450 */
+  --tek-color-input-text-error:         #000000;    /* neutral.black */
+  --tek-color-input-label-default:      #181818;    /* neutral.900 */
 
-  --tek-color-selector-background-default:   #ffffff;
-  --tek-color-selector-background-unchecked: #afafaf;
-  --tek-color-selector-background-checked:   #1e1e1e;
-  --tek-color-selector-border-unchecked:     #333333;
-  --tek-color-selector-border-checked:       #252525;
-  --tek-color-selector-label-unchecked:      #000000;
-  --tek-color-selector-label-checked:        #000000;
-  --tek-color-selector-label-error:          #e74848;
+  /* selector */
+  --tek-color-selector-background-default:   #ffffff;  /* neutral.white */
+  --tek-color-selector-background-unchecked: #646464;  /* neutral.450 */
+  --tek-color-selector-background-checked:   #181818;  /* neutral.900 */
+  --tek-color-selector-border-unchecked:     #333333;  /* neutral.600 */
+  --tek-color-selector-border-checked:       #252525;  /* neutral.700 */
+  --tek-color-selector-label-unchecked:      #000000;  /* neutral.black */
+  --tek-color-selector-label-checked:        #000000;  /* neutral.black */
+  --tek-color-selector-label-error:          #000000;  /* neutral.black */
 
-  --tek-color-button-background-default:  #ffffff;
-  --tek-color-button-background-hover:    #cccccc;
-  --tek-color-button-background-inactive: #afafaf;
-  --tek-color-button-border-inactive:     #979797;
-  --tek-color-button-text-default:        #181818;
-  --tek-color-button-text-hover:          #000000;
-  --tek-color-button-text-inactive:       #979797;
+  /* button */
+  --tek-color-button-background-default:  #ffffff;  /* neutral.white */
+  --tek-color-button-background-hover:    #33baea;  /* brand.tek-blue */
+  --tek-color-button-background-inactive: #afafaf;  /* neutral.200 */
+  --tek-color-button-border-inactive:     #646464;  /* neutral.450 */
+  --tek-color-button-text-default:        #000000;  /* neutral.black */
+  --tek-color-button-text-hover:          #000000;  /* neutral.black */
+  --tek-color-button-text-inactive:       #646464;  /* neutral.450 */
 
-  --tek-color-footer-background-default:  #afafaf;
-  --tek-color-footer-text-default:        #252525;
-  --tek-color-icons-default:              #000000;
+  /* footer */
+  --tek-color-footer-background-default:  #afafaf;  /* neutral.200 */
+  --tek-color-footer-text-default:        #181818;  /* neutral.900 */
+
+  /* icons */
+  --tek-color-icons-default: #000000;               /* neutral.black */
 }
 
 /* ============================================================
@@ -219,7 +226,6 @@ body {
   container-name: page;
 }
 
-/* Figma “Wrap” — logo + modal as siblings, gap-separated */
 .wrap {
   flex: 1;
   display: flex; flex-direction: column;
@@ -239,7 +245,6 @@ body {
 .logo-icon   { height: 90px; width: auto; display: block; }
 .logo-type   { height: 38px; width: auto; display: block; }
 
-/* Form field label — text/md: 13px/16px */
 .form-field-label {
   font-family: var(--tek-fonts-family-geist);
   font-size: var(--tek-fonts-text-size-md);
@@ -250,7 +255,6 @@ body {
   margin-bottom: 2px;
 }
 
-/* Password label row — label left, Forgot password? right */
 .form-label-row {
   display: flex;
   align-items: center;
@@ -259,12 +263,6 @@ body {
   margin-bottom: 2px;
 }
 
-/* ============================================================
-   CONTAINER QUERIES — mobile-first
-   Mobile  (base): pt-48 pb-24 px-32 gap-48 logo-center
-   Tablet  (640+): pt-48 pb-24 px-64 gap-48 logo-center
-   Desktop (1280+):pt-64 pb-32 px-64 gap-64 logo-left
-============================================================ */
 @container page (min-width: 640px) {
   .wrap { padding: 48px 64px 24px; gap: 48px; }
 }
@@ -301,14 +299,12 @@ body {
       <div id="signin-input-blocks" slot="input-blocks"
            style="display:flex;flex-direction:column;gap:10px;width:100%;">
 
-        <!-- Email field -->
         <div style="display:flex;flex-direction:column;gap:6px;padding-bottom:12px;">
           <div class="form-field-label">Email</div>
           <tek-input placeholder="Enter message here" type="email"
                      autocomplete="email" style="display:block"></tek-input>
         </div>
 
-        <!-- Password field — label row has Forgot password? inline right -->
         <div style="display:flex;flex-direction:column;gap:6px;padding-bottom:12px;">
           <div class="form-label-row">
             <span class="form-field-label" style="margin-bottom:0">Password</span>
@@ -329,16 +325,11 @@ body {
 
     </tek-modal>
 
-  </div><!-- /wrap -->
+  </div>
 
   <tek-footer>
-    <!--
-      Dark/Light toggle — Figma: footer left side
-      🌚 = dark  |  tek-toggle  |  🌝 = light
-      Toggle unchecked = dark mode, checked = light mode
-    -->
     <div slot="left" style="display:flex;align-items:center;gap:4px;">
-      <span style="font-size:16px;line-height:1;🌚">🌚</span>
+      <span style="font-size:16px;line-height:1;">🌚</span>
       <tek-toggle id="theme-toggle"></tek-toggle>
       <span style="font-size:16px;line-height:1;">🌝</span>
     </div>
@@ -348,16 +339,7 @@ body {
 </div>
 
 <!-- ============================================================
-  @bbkemp/ui — Web Components
-  In production: import '@bbkemp/ui'
-
-  Shadow DOM cascade notes:
-  - CSS custom properties (--tek-*) cascade through shadow boundaries.
-    The [data-theme="light"] block on :root overrides values that
-    all components inherit automatically.
-  - !important on :host padding defeats the page * { padding:0 } reset.
-  - tek-input uses _render()/_applyStyle() split to preserve focus/value
-    during state transitions (no innerHTML replacement on focus/blur).
+  @bbkemp/ui — Web Components — in production: import '@bbkemp/ui'
 ============================================================ -->
 <script>
 const SDR = `*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }`;
@@ -447,7 +429,6 @@ customElements.define('tek-selector-label', class extends HTMLElement {
     const color = error ? 'var(--tek-color-selector-label-error,#ffffff)'
                  : checked ? 'var(--tek-color-selector-label-checked,#ffffff)'
                  : 'var(--tek-color-selector-label-unchecked,#cccccc)';
-    /* text/sm — 12px/12px */
     this._s.innerHTML = `<style>${SDR}:host{display:inline;}span{font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-sm,12px);line-height:var(--tek-fonts-text-line-height-sm,12px);letter-spacing:0.01em;font-weight:400;color:${color};transition:color 0.15s;}</style><span><slot></slot></span>`;
   }
 });
@@ -468,7 +449,7 @@ customElements.define('tek-selector', class extends HTMLElement {
   _render() {
     const type=this.getAttribute('type')||'checkbox', label=this.getAttribute('label')||'';
     const checked=this.hasAttribute('checked')?'checked':'', error=this.hasAttribute('error')?'error':'';
-    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'';
+    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'' ;
     this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;gap:8px;cursor:${disabled?'not-allowed':'pointer'};user-select:none;}</style>
 <tek-${type} ${checked} ${error} ${disabled} ${name}></tek-${type}>
 <tek-selector-label ${checked} ${error}>${label}</tek-selector-label>`;
@@ -480,7 +461,6 @@ customElements.define('tek-selector', class extends HTMLElement {
   }
 });
 
-/* tek-input: _render()/_applyStyle() split preserves focus+value on state change */
 customElements.define('tek-input', class extends HTMLElement {
   static get observedAttributes() { return ['state','height','placeholder','value','type']; }
   connectedCallback() {
@@ -509,17 +489,14 @@ customElements.define('tek-input', class extends HTMLElement {
   }
   _bc(s){return ({default:'var(--tek-color-input-border-default,#7b7b7b)',focus:'var(--tek-color-input-border-focus,#fff)',filled:'var(--tek-color-input-border-filled,#afafaf)',disabled:'var(--tek-color-input-border-disabled,#454545)',error:'var(--tek-color-input-border-error,#e74848)'})[s]||'var(--tek-color-input-border-default,#7b7b7b)';}
   _tc(s){return ({default:'var(--tek-color-input-text-default,#979797)',focus:'var(--tek-color-input-text-focus,#fff)',filled:'var(--tek-color-input-text-filled,#cccccc)',disabled:'var(--tek-color-input-text-disabled,#454545)',error:'var(--tek-color-input-text-error,#fff)'})[s]||'var(--tek-color-input-text-default,#979797)';}
-  /* text/lg — 14px/20px */
   _css(s){return `${SDR}:host{display:block;}input,textarea{display:block;width:100%;background:var(--tek-color-input-background-default,#252525);border:0.5px solid ${this._bc(s)};border-radius:5px;padding:8px 4px 8px 10px !important;font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-lg,14px);line-height:var(--tek-fonts-text-line-height-lg,20px);letter-spacing:0.01em;color:${this._tc(s)};outline:none;resize:vertical;pointer-events:${s==='disabled'?'none':'auto'};}input::placeholder,textarea::placeholder{color:${this._tc(s)};opacity:0.7;}`;}
   _applyStyle(){const sEl=this._s.querySelector('style');if(sEl)sEl.textContent=this._css(this._st||'default');}
   _render(){
     const s=this._st||'default', h=this.getAttribute('height')||'single';
     const ph=this.getAttribute('placeholder')||'', val=this.getAttribute('value')||'', type=this.getAttribute('type')||'text';
     const rows=h==='double'?2:h==='triple'?3:1;
-    const ac = type==='password'?'current-password':type==='email'?'email':'username';
-    const field = h!=='single'
-      ? `<textarea rows="${rows}" placeholder="${ph}">${val}</textarea>`
-      : `<input type="${type}" placeholder="${ph}" value="${val}" autocomplete="${ac}">`;
+    const ac=type==='password'?'current-password':type==='email'?'email':'username';
+    const field=h!=='single'?`<textarea rows="${rows}" placeholder="${ph}">${val}</textarea>`:`<input type="${type}" placeholder="${ph}" value="${val}" autocomplete="${ac}">`;
     this._s.innerHTML=`<style>${this._css(s)}</style>${field}`;
   }
 });
@@ -530,7 +507,6 @@ customElements.define('tek-text-link', class extends HTMLElement {
   attributeChangedCallback() { if (this._s) this._render(); }
   _render() {
     const href=this.getAttribute('href')||'#', target=this.getAttribute('target')||'';
-    /* text/xs — 10px/12px */
     this._s.innerHTML = `<style>${SDR}:host{display:inline;}a{font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-xs,10px);line-height:var(--tek-fonts-text-line-height-xs,12px);letter-spacing:0.01em;color:var(--tek-color-text-link-default,#33baea);text-decoration:none;}a:hover{text-decoration:underline;text-underline-offset:2px;}</style>
 <a href="${href}"${target?` target="${target}"`:''} ><slot></slot></a>`;
   }
@@ -553,7 +529,6 @@ customElements.define('tek-button', class extends HTMLElement {
     const bg=inactive?'var(--tek-color-button-background-inactive,#181818)':'var(--tek-color-button-background-default,#1e1e1e)';
     const border=inactive?'var(--tek-color-button-border-inactive,#454545)':'var(--tek-color-button-border-default,#33baea)';
     const color=inactive?'var(--tek-color-button-text-inactive,#454545)':'var(--tek-color-button-text-default,#cccccc)';
-    /* heading/xs — Archivo SemiBold 16px/24px, wdth 120, py 10px (Figma) */
     this._s.innerHTML = `<style>${SDR}:host{display:inline-block;}button{background:${bg};border:1px solid ${border};border-radius:9999px;padding:10px 24px !important;font-family:var(--tek-fonts-family-archivo,'Archivo',sans-serif);font-size:var(--tek-fonts-heading-size-xs,16px);line-height:var(--tek-fonts-heading-line-height-xs,24px);font-weight:600;font-variation-settings:'wdth' 120;letter-spacing:0.01em;color:${color};cursor:${inactive?'not-allowed':'pointer'};transition:all 0.15s;white-space:nowrap;width:100%;}
 button:not(:disabled):hover{background:var(--tek-color-button-background-hover,#000);color:var(--tek-color-button-text-hover,#fff);}
 button:focus-visible{outline:2px solid var(--tek-color-button-border-default,#33baea);outline-offset:2px;}</style>
@@ -564,8 +539,6 @@ button:focus-visible{outline:2px solid var(--tek-color-button-border-default,#33
 customElements.define('tek-modal', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
-    /* heading/md — Archivo SemiBold 24px/32px, wdth 120 */
-    /* backdrop-filter adds frosted glass effect matching the alpha bg token */
     this._s.innerHTML = `<style>${SDR}:host{display:flex;flex-direction:column;gap:14px;background:var(--tek-color-modal-background-default,#181818cc);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:0.25px solid var(--tek-color-modal-border-default,#7b7b7b);border-radius:11px;padding:32px !important;width:100%;max-width:360px;box-shadow:0px 2px 6px 0px var(--tek-color-modal-shadow-default,#00000033);}
 .hd{font-family:var(--tek-fonts-family-archivo,'Archivo',sans-serif);font-size:var(--tek-fonts-heading-size-md,24px);line-height:var(--tek-fonts-heading-line-height-md,32px);font-weight:600;font-variation-settings:'wdth' 120;letter-spacing:0.01em;color:var(--tek-color-modal-text-default,#fff);}
 .in,.ac{display:flex;flex-direction:column;gap:10px;width:100%;}</style>
@@ -578,7 +551,6 @@ customElements.define('tek-modal', class extends HTMLElement {
 customElements.define('tek-footer', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
-    /* text/md — 13px/16px for copyright */
     this._s.innerHTML = `<style>${SDR}:host{display:flex;align-items:center;width:100%;height:36px;padding:12px 16px !important;background:var(--tek-color-footer-background-default,#252525);gap:8px;}
 .left{display:flex;align-items:center;gap:4px;flex-shrink:0;}
 .right{flex:1 0 0;font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-md,13px);line-height:var(--tek-fonts-text-line-height-md,16px);letter-spacing:0.01em;color:var(--tek-color-footer-text-default,#cccccc);text-align:right;}</style>
@@ -587,13 +559,12 @@ customElements.define('tek-footer', class extends HTMLElement {
   }
 });
 
-/* ── Theme toggle ────────────────────────────────────────────── */
-/* toggle unchecked = dark (🌚), checked = light (🌝)           */
+/* theme toggle — unchecked = dark 🌚, checked = light 🌝 */
 document.getElementById('theme-toggle').addEventListener('tek-change', e => {
   document.documentElement.setAttribute('data-theme', e.detail.checked ? 'light' : 'dark');
 });
 
-/* ── AutoAnimate ───────────────────────────────────────────── */
+/* AutoAnimate */
 if (typeof autoAnimate !== 'undefined') {
   autoAnimate(document.querySelector('.wrap'));
   autoAnimate(document.getElementById('signin-input-blocks'));
