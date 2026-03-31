@@ -1,5 +1,8 @@
 // code.js — Token Push plugin (ES5 compatible)
-// v5 — emoji-safe collection name matching
+// v6 — multi-mode Semantic export: each mode gets its own file
+//       dark (default) → semantic/tokens.json
+//       light          → semantic/tokens.light.json
+//       any future mode → semantic/tokens.{modename}.json
 
 figma.showUI(__html__, { width: 420, height: 500, title: "Token Push" });
 
@@ -31,6 +34,12 @@ function cleanName(str) {
   return str.replace(/[^\x00-\x7F]/g, "").replace(/\s+/g, " ").trim();
 }
 
+// Convert a Figma mode name to a safe filename segment.
+// e.g. "🌚 dark" → "dark",  "🌝 light" → "light"
+function modeToSlug(modeName) {
+  return cleanName(modeName).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+}
+
 async function collectTokenFiles() {
   var collections = await figma.variables.getLocalVariableCollectionsAsync();
   var allVars = await figma.variables.getLocalVariablesAsync();
@@ -45,9 +54,11 @@ async function collectTokenFiles() {
 
     if (colName === "Figma Only") continue;
 
-    var defaultModeId = col.defaultModeId;
+    var isSemantic = (colName === "Semantic");
 
-    if (col.modes.length > 1) {
+    // Warn about multi-mode only for non-Semantic collections
+    // (Semantic multi-mode is fully handled below)
+    if (!isSemantic && col.modes.length > 1) {
       var modeNames = [];
       for (var mn = 0; mn < col.modes.length; mn++) { modeNames.push(col.modes[mn].name); }
       warnings.push("\"" + colName + "\" has " + col.modes.length + " modes (" + modeNames.join(", ") + ") — only \"" + col.modes[0].name + "\" exported.");
@@ -69,21 +80,39 @@ async function collectTokenFiles() {
       var type = dtcgType(v.resolvedType, isDimension);
       if (!type) continue;
 
-      var value = resolveValue(v, defaultModeId, varById, isDimension);
-      if (value === null) continue;
-
-      var token = { $value: value, $type: type };
-      if (v.description) { token.$description = v.description; }
-
       if (colName === "Primitives") {
+        // Primitives: single mode, use defaultModeId
+        var value = resolveValue(v, col.defaultModeId, varById, isDimension);
+        if (value === null) continue;
+        var token = { $value: value, $type: type };
+        if (v.description) { token.$description = v.description; }
         var fileName = groupToFileName(routingGroup);
         var filePath = "packages/tokens/src/primitives/" + fileName + ".json";
         if (!buckets[filePath]) buckets[filePath] = {};
         setNested(buckets[filePath], nameParts, token);
-      } else if (colName === "Semantic") {
-        var semPath = "packages/tokens/src/semantic/tokens.json";
-        if (!buckets[semPath]) buckets[semPath] = {};
-        setNested(buckets[semPath], nameParts, token);
+
+      } else if (isSemantic) {
+        // Semantic: export every mode to its own file.
+        // Default mode (index 0) → tokens.json
+        // Other modes           → tokens.{slug}.json
+        for (var mi = 0; mi < col.modes.length; mi++) {
+          var mode = col.modes[mi];
+          var modeValue = resolveValue(v, mode.modeId, varById, isDimension);
+          if (modeValue === null) continue;
+          var modeToken = { $value: modeValue, $type: type };
+          if (v.description) { modeToken.$description = v.description; }
+
+          var semPath;
+          if (mi === 0) {
+            semPath = "packages/tokens/src/semantic/tokens.json";
+          } else {
+            var slug = modeToSlug(mode.name);
+            semPath = "packages/tokens/src/semantic/tokens." + slug + ".json";
+          }
+
+          if (!buckets[semPath]) buckets[semPath] = {};
+          setNested(buckets[semPath], nameParts, modeToken);
+        }
       }
     }
   }
@@ -104,7 +133,8 @@ function groupToFileName(group) {
     "spacing": "spacing", "dimension": "dimension",
     "typography": "typography", "type": "typography",
     "motion": "motion", "animation": "motion",
-    "elevation": "elevation", "shadow": "elevation", "radius": "border"
+    "elevation": "elevation", "shadow": "elevation", "radius": "border",
+    "fonts": "fonts"
   };
   return aliases[group] ? aliases[group] : group;
 }
