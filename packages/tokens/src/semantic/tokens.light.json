@@ -1,98 +1,229 @@
 {
-  "_description": "Light mode semantic token overrides. Dark mode is the default in tokens.json. This file is manually maintained until Token Push supports multi-mode export.",
   "color": {
-    "modal": {
+    "button": {
       "background": {
-        "default": { "$value": "{colors.ui.backdrop-light}", "$type": "color" }
+        "default": {
+          "$value": "{colors.neutral.white}",
+          "$type": "color"
+        },
+        "hover": {
+          "$value": "{colors.brand.tek-blue}",
+          "$type": "color"
+        },
+        "inactive": {
+          "$value": "{colors.neutral.200}",
+          "$type": "color"
+        }
       },
       "border": {
-        "default": { "$value": "{colors.neutral.600}", "$type": "color" }
+        "default": {
+          "$value": "{colors.brand.tek-blue}",
+          "$type": "color"
+        },
+        "hover": {
+          "$value": "{colors.brand.tek-blue}",
+          "$type": "color"
+        },
+        "inactive": {
+          "$value": "{colors.neutral.450}",
+          "$type": "color"
+        }
       },
       "text": {
-        "default": { "$value": "{colors.neutral.black}", "$type": "color" }
-      },
-      "shadow": {
-        "default": { "$value": "{colors.ui.shadow}", "$type": "color" }
-      }
-    },
-    "input": {
-      "label": {
-        "default": { "$value": "{colors.neutral.900}", "$type": "color" }
-      },
-      "helper": {
-        "default": { "$value": "{colors.neutral.600}", "$type": "color" }
-      },
-      "border": {
-        "default":  { "$value": "{colors.neutral.600}", "$type": "color" },
-        "focus":    { "$value": "{colors.neutral.black}", "$type": "color" },
-        "filled":   { "$value": "{colors.neutral.500}", "$type": "color" },
-        "disabled": { "$value": "{colors.neutral.300}", "$type": "color" },
-        "error":    { "$value": "{colors.ui.error-red}", "$type": "color" }
-      },
-      "text": {
-        "default":  { "$value": "{colors.neutral.400}", "$type": "color" },
-        "focus":    { "$value": "{colors.neutral.black}", "$type": "color" },
-        "filled":   { "$value": "{colors.neutral.900}", "$type": "color" },
-        "disabled": { "$value": "{colors.neutral.300}", "$type": "color" },
-        "error":    { "$value": "{colors.ui.error-red}", "$type": "color" }
-      },
-      "background": {
-        "default": { "$value": "{colors.neutral.white}", "$type": "color" }
-      },
-      "character-count": {
-        "default": { "$value": "{colors.neutral.700}", "$type": "color" },
-        "focus":   { "$value": "{colors.neutral.black}", "$type": "color" },
-        "filled":  { "$value": "{colors.neutral.600}", "$type": "color" },
-        "error":   { "$value": "{colors.ui.error-red}", "$type": "color" },
-        "warning": { "$value": "{colors.ui.warning-yellow}", "$type": "color" }
+        "default": {
+          "$value": "{colors.neutral.black}",
+          "$type": "color"
+        },
+        "hover": {
+          "$value": "{colors.neutral.black}",
+          "$type": "color"
+        },
+        "inactive": {
+          "$value": "{colors.neutral.450}",
+          "$type": "color"
+        }
       }
     },
     "selector": {
       "background": {
-        "default":   { "$value": "{colors.neutral.white}", "$type": "color" },
-        "unchecked": { "$value": "{colors.neutral.200}", "$type": "color" },
-        "checked":   { "$value": "{colors.neutral.800}", "$type": "color" }
+        "default": {
+          "$value": "{colors.neutral.white}",
+          "$type": "color"
+        },
+        "unchecked": {
+          "$value": "{colors.neutral.450}",
+          "$type": "color"
+        },
+        "checked": {
+          "$value": "{colors.neutral.900}",
+          "$type": "color"
+        }
       },
       "border": {
-        "unchecked": { "$value": "{colors.neutral.600}", "$type": "color" },
-        "checked":   { "$value": "{colors.neutral.700}", "$type": "color" },
-        "error":     { "$value": "{colors.ui.error-red}", "$type": "color" }
+        "unchecked": {
+          "$value": "{colors.neutral.600}",
+          "$type": "color"
+        },
+        "checked": {
+          "$value": "{colors.neutral.700}",
+          "$type": "color"
+        },
+        "error": {
+          "$value": "{colors.ui.error-red}",
+          "$type": "color"
+        }
       },
       "label": {
-        "unchecked": { "$value": "{colors.neutral.black}", "$type": "color" },
-        "checked":   { "$value": "{colors.neutral.black}", "$type": "color" },
-        "error":     { "$value": "{colors.ui.error-red}", "$type": "color" }
+        "unchecked": {
+          "$value": "{colors.neutral.black}",
+          "$type": "color"
+        },
+        "checked": {
+          "$value": "{colors.neutral.black}",
+          "$type": "color"
+        },
+        "error": {
+          "$value": "{colors.neutral.black}",
+          "$type": "color"
+        }
       }
     },
-    "button": {
-      "background": {
-        "default":  { "$value": "{colors.neutral.white}", "$type": "color" },
-        "hover":    { "$value": "{colors.neutral.100}", "$type": "color" },
-        "inactive": { "$value": "{colors.neutral.200}", "$type": "color" }
+    "input": {
+      "label": {
+        "default": {
+          "$value": "{colors.neutral.900}",
+          "$type": "color"
+        }
+      },
+      "helper": {
+        "default": {
+          "$value": "{colors.neutral.900}",
+          "$type": "color"
+        }
       },
       "border": {
-        "default":  { "$value": "{colors.brand.tek-blue}", "$type": "color" },
-        "hover":    { "$value": "{colors.brand.tek-blue}", "$type": "color" },
-        "inactive": { "$value": "{colors.neutral.300}", "$type": "color" }
+        "default": {
+          "$value": "{colors.neutral.600}",
+          "$type": "color"
+        },
+        "focus": {
+          "$value": "{colors.neutral.black}",
+          "$type": "color"
+        },
+        "filled": {
+          "$value": "{colors.neutral.800}",
+          "$type": "color"
+        },
+        "disabled": {
+          "$value": "{colors.neutral.450}",
+          "$type": "color"
+        },
+        "error": {
+          "$value": "{colors.ui.error-red}",
+          "$type": "color"
+        }
       },
       "text": {
-        "default":  { "$value": "{colors.neutral.900}", "$type": "color" },
-        "hover":    { "$value": "{colors.neutral.black}", "$type": "color" },
-        "inactive": { "$value": "{colors.neutral.300}", "$type": "color" }
+        "default": {
+          "$value": "{colors.neutral.700}",
+          "$type": "color"
+        },
+        "focus": {
+          "$value": "{colors.neutral.black}",
+          "$type": "color"
+        },
+        "filled": {
+          "$value": "{colors.neutral.900}",
+          "$type": "color"
+        },
+        "disabled": {
+          "$value": "{colors.neutral.450}",
+          "$type": "color"
+        },
+        "error": {
+          "$value": "{colors.neutral.black}",
+          "$type": "color"
+        }
+      },
+      "background": {
+        "default": {
+          "$value": "{colors.neutral.white}",
+          "$type": "color"
+        }
+      },
+      "character-count": {
+        "default": {
+          "$value": "{colors.neutral.900}",
+          "$type": "color"
+        },
+        "focus": {
+          "$value": "{colors.neutral.black}",
+          "$type": "color"
+        },
+        "filled": {
+          "$value": "{colors.neutral.800}",
+          "$type": "color"
+        },
+        "error": {
+          "$value": "{colors.ui.error-red}",
+          "$type": "color"
+        },
+        "warning": {
+          "$value": "{colors.ui.warning-yellow}",
+          "$type": "color"
+        }
       }
     },
     "icons": {
-      "default": { "$value": "{colors.neutral.black}", "$type": "color" }
+      "default": {
+        "$value": "{colors.neutral.black}",
+        "$type": "color"
+      }
     },
     "text-link": {
-      "default": { "$value": "{colors.brand.tek-blue}", "$type": "color" }
+      "default": {
+        "$value": "{colors.brand.tek-blue}",
+        "$type": "color"
+      }
+    },
+    "modal": {
+      "background": {
+        "default": {
+          "$value": "{colors.ui.backdrop-light}",
+          "$type": "color"
+        }
+      },
+      "border": {
+        "default": {
+          "$value": "{colors.neutral.600}",
+          "$type": "color"
+        }
+      },
+      "text": {
+        "default": {
+          "$value": "{colors.neutral.black}",
+          "$type": "color"
+        }
+      },
+      "shadow": {
+        "default": {
+          "$value": "{colors.ui.shadow}",
+          "$type": "color"
+        }
+      }
     },
     "footer": {
       "background": {
-        "default": { "$value": "{colors.neutral.200}", "$type": "color" }
+        "default": {
+          "$value": "{colors.neutral.200}",
+          "$type": "color"
+        }
       },
       "text": {
-        "default": { "$value": "{colors.neutral.700}", "$type": "color" }
+        "default": {
+          "$value": "{colors.neutral.900}",
+          "$type": "color"
+        }
       }
     }
   }
