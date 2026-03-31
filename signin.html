@@ -16,6 +16,23 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
 
+<!--
+  AutoAnimate — ambient DOM transition library (current motion solution)
+  Smooths child additions, removals, and reorders in light DOM containers.
+  Zero config. Does NOT cross shadow DOM — light DOM parents only.
+  CDN: https://auto-animate.formkit.com
+  npm: npm install @formkit/auto-animate
+
+  Applied to: .wrap (page-level container) and input-blocks slot wrapper.
+  Will activate when validation errors, success states, or new fields
+  are dynamically added/removed. Dormant on static render.
+
+  Planned production motion library: Motion.dev (https://motion.dev)
+  Motion tokens will live in packages/tokens/src/primitives/motion.json
+  once defined in Figma Variables.
+-->
+<script src="https://cdn.jsdelivr.net/npm/@formkit/auto-animate@latest/index.umd.js"></script>
+
 <style>
 /* ============================================================
    @bbkemp/tokens
@@ -150,7 +167,7 @@ body {
   container-name: page;
 }
 
-/* Matches Figma “Wrap” — logo + modal as siblings, separated by gap */
+/* Matches Figma "Wrap" — logo + modal as siblings, separated by gap */
 .wrap {
   flex: 1;
   display: flex;
@@ -242,7 +259,7 @@ body {
 
       <span slot="header">Sign In</span>
 
-      <div slot="input-blocks" style="display:flex;flex-direction:column;gap:10px;width:100%;">
+      <div id="signin-input-blocks" slot="input-blocks" style="display:flex;flex-direction:column;gap:10px;width:100%;">
 
         <div style="display:flex;flex-direction:column;gap:6px;padding-bottom:12px;">
           <div class="form-field-label">Username</div>
@@ -258,7 +275,7 @@ body {
 
       </div>
 
-      <div slot="action-blocks" style="width:100%;display:flex;flex-direction:column;gap:10px;">
+      <div id="signin-action-blocks" slot="action-blocks" style="width:100%;display:flex;flex-direction:column;gap:10px;">
         <tek-button style="width:100%;display:block">Sign In</tek-button>
         <div style="text-align:right;">
           <tek-text-link href="#">Forgot password?</tek-text-link>
@@ -282,13 +299,8 @@ body {
 
   tek-input re-render strategy:
   _render()      — full innerHTML replacement, structural changes only
-                   (height, placeholder, value, type attributes)
-  _applyStyle()  — updates <style> text content only, never touches the
-                   <input> element. Preserves focus, cursor, and typed value.
-  focus/blur     — update this._st (internal) + call _applyStyle() directly.
-                   Never call setAttribute('state', ...) from focus/blur
-                   as that would trigger attributeChangedCallback → _render()
-                   → new input element → focus lost and value destroyed.
+  _applyStyle()  — updates <style> text only, never touches the <input>.
+                   Preserves focus, cursor, and typed value on state changes.
 ============================================================ -->
 <script>
 const SDR = `*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }`;
@@ -389,7 +401,7 @@ customElements.define('tek-selector', class extends HTMLElement {
   _render() {
     const type=this.getAttribute('type')||'checkbox', label=this.getAttribute('label')||'';
     const checked=this.hasAttribute('checked')?'checked':'', error=this.hasAttribute('error')?'error':'';
-    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'';
+    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'' ;
     this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;gap:8px;cursor:${disabled?'not-allowed':'pointer'};user-select:none;}</style>
 <tek-${type} ${checked} ${error} ${disabled} ${name}></tek-${type}>
 <tek-selector-label ${checked} ${error}>${label}</tek-selector-label>`;
@@ -401,16 +413,6 @@ customElements.define('tek-selector', class extends HTMLElement {
   }
 });
 
-// ── tek-input ────────────────────────────────────────────────
-// State management is split into two paths:
-//   _render()     — structural changes (height/placeholder/value/type) only.
-//                   Replaces full shadow DOM. Called by attributeChangedCallback
-//                   for those attrs and once on connectedCallback.
-//   _applyStyle() — visual-only state changes (default/focus/filled/error).
-//                   Only rewrites the <style> element’s text. The <input> element
-//                   is untouched, so focus, cursor position and typed value survive.
-// Focus/blur update this._st directly then call _applyStyle() — they never
-// call setAttribute(’state’, …) which would loop back into a destructive re-render.
 customElements.define('tek-input', class extends HTMLElement {
   static get observedAttributes() { return ['state','height','placeholder','value','type']; }
   connectedCallback() {
@@ -513,6 +515,18 @@ customElements.define('tek-footer', class extends HTMLElement {
     this._s.innerHTML = `<style>${SDR}:host{display:flex;align-items:center;width:100%;height:36px;padding:12px 16px !important;background:var(--tek-color-footer-background-default,#252525);}span{flex:1 0 0;font-family:'Geist',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-footer-text-default,#cccccc);text-align:right;}</style><span><slot></slot></span>`;
   }
 });
+
+// ── AutoAnimate ───────────────────────────────────────────────
+// Applied to light DOM containers after all components are defined.
+// .wrap        — animates if the modal or logo header is added/removed
+// input-blocks — animates when validation errors or new fields appear
+// action-blocks — animates when button states change to different elements
+// Shadow DOM interiors are excluded by design — AutoAnimate is light DOM only.
+if (typeof autoAnimate !== 'undefined') {
+  autoAnimate(document.querySelector('.wrap'));
+  autoAnimate(document.getElementById('signin-input-blocks'));
+  autoAnimate(document.getElementById('signin-action-blocks'));
+}
 </script>
 
 </body>
