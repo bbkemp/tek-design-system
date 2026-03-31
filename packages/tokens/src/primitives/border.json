@@ -1,6 +1,34 @@
 {
   "borders": {
     "width": {
+      "10": {
+        "$value": "8px",
+        "$type": "dimension"
+      },
+      "11": {
+        "$value": "9px",
+        "$type": "dimension"
+      },
+      "12": {
+        "$value": "10px",
+        "$type": "dimension"
+      },
+      "13": {
+        "$value": "11px",
+        "$type": "dimension"
+      },
+      "14": {
+        "$value": "12px",
+        "$type": "dimension"
+      },
+      "15": {
+        "$value": "13px",
+        "$type": "dimension"
+      },
+      "16": {
+        "$value": "14px",
+        "$type": "dimension"
+      },
       "none": {
         "$value": "0px",
         "$type": "dimension"
@@ -40,37 +68,37 @@
       "09": {
         "$value": "7px",
         "$type": "dimension"
-      },
-      "10": {
-        "$value": "8px",
-        "$type": "dimension"
-      },
-      "11": {
-        "$value": "9px",
-        "$type": "dimension"
-      },
-      "12": {
-        "$value": "10px",
-        "$type": "dimension"
-      },
-      "13": {
-        "$value": "11px",
-        "$type": "dimension"
-      },
-      "14": {
-        "$value": "12px",
-        "$type": "dimension"
-      },
-      "15": {
-        "$value": "13px",
-        "$type": "dimension"
-      },
-      "16": {
-        "$value": "14px",
-        "$type": "dimension"
       }
     },
     "radius": {
+      "10": {
+        "$value": "21px",
+        "$type": "dimension"
+      },
+      "11": {
+        "$value": "25px",
+        "$type": "dimension"
+      },
+      "12": {
+        "$value": "25px",
+        "$type": "dimension"
+      },
+      "13": {
+        "$value": "33px",
+        "$type": "dimension"
+      },
+      "14": {
+        "$value": "41px",
+        "$type": "dimension"
+      },
+      "15": {
+        "$value": "49px",
+        "$type": "dimension"
+      },
+      "16": {
+        "$value": "57px",
+        "$type": "dimension"
+      },
       "none": {
         "$value": "0px",
         "$type": "dimension"
@@ -109,34 +137,6 @@
       },
       "09": {
         "$value": "17px",
-        "$type": "dimension"
-      },
-      "10": {
-        "$value": "21px",
-        "$type": "dimension"
-      },
-      "11": {
-        "$value": "25px",
-        "$type": "dimension"
-      },
-      "12": {
-        "$value": "25px",
-        "$type": "dimension"
-      },
-      "13": {
-        "$value": "33px",
-        "$type": "dimension"
-      },
-      "14": {
-        "$value": "41px",
-        "$type": "dimension"
-      },
-      "15": {
-        "$value": "49px",
-        "$type": "dimension"
-      },
-      "16": {
-        "$value": "57px",
         "$type": "dimension"
       },
       "full": {
