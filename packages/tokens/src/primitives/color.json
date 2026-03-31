@@ -72,6 +72,14 @@
       "shadow": {
         "$value": "#00000033",
         "$type": "color"
+      },
+      "backdrop-dark": {
+        "$value": "#181818cc",
+        "$type": "color"
+      },
+      "backdrop-light": {
+        "$value": "#cccccccc",
+        "$type": "color"
       }
     }
   }
