@@ -136,7 +136,7 @@
 
 /* ============================================================
    LIGHT MODE — resolved from semantic/tokens.light.json
-   Toggle via footer 🌚/🌝 toggle. Chrome vars stay dark intentionally.
+   Toggle via sidebar 🌚/🌝 toggle. Chrome vars stay dark intentionally.
 ============================================================ */
 [data-theme="light"] {
   --tek-color-modal-background-default: #cccccccc;
@@ -373,7 +373,7 @@ code {
   <nav class="sidebar">
     <div class="sidebar-logo">
       <div class="sidebar-logo-name">@bbkemp/ui</div>
-      <div class="sidebar-logo-sub">component library · v0.2</div>
+      <div class="sidebar-logo-sub">component library · v1.0</div>
       <!-- theme toggle — switches [data-theme] on <html> -->
       <div class="sidebar-theme">
         <span>🌚</span>
@@ -675,7 +675,7 @@ el.addEventListener(<span class="str">'tek-click'</span>, () <span class="kw">=&
 
     <!-- TOKEN REFERENCE -->
     <section class="section" id="tokens">
-      <div class="section-header"><h2 class="section-title">Token reference</h2><span class="section-tag">@bbkemp/tokens</span></div>
+      <div class="section-header"><h2 class="section-title">Token reference</h2><span class="section-tag">@bbkemp/tokens v1.0</span></div>
       <table class="token-table">
         <thead><tr><th>CSS custom property</th><th>Primitive ref</th><th>Dark value</th></tr></thead>
         <tbody>
@@ -877,7 +877,7 @@ customElements.define('tek-selector', class extends HTMLElement {
   _render() {
     const type=this.getAttribute('type')||'checkbox', label=this.getAttribute('label')||'';
     const checked=this.hasAttribute('checked')?'checked':'', error=this.hasAttribute('error')?'error':'';
-    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'';
+    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'' ;
     this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;gap:8px;cursor:${disabled?'not-allowed':'pointer'};user-select:none;}</style>
 <tek-${type} ${checked} ${error} ${disabled} ${name}></tek-${type}>
 <tek-selector-label ${checked} ${error}>${label}</tek-selector-label>`;
