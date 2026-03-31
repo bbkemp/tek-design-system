@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>@bbkemp/ui — Component Library</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,100..900&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <!--
-  AutoAnimate — ambient DOM transition library
+  AutoAnimate — ambient DOM transition library (current)
   Smooths child additions, removals, and reorders in light DOM containers.
   Zero config. Does NOT cross shadow DOM — light DOM parents only.
   CDN: https://auto-animate.formkit.com
+  npm: npm install @formkit/auto-animate
 
   Planned production motion library: Motion.dev (https://motion.dev)
   Motion tokens will live in packages/tokens/src/primitives/motion.json
@@ -382,11 +383,11 @@ el.addEventListener(<span class="str">'tek-click'</span>, () =&gt; console.log(<
             <span slot="header">Sign In</span>
             <div slot="input-blocks" style="display:flex;flex-direction:column;gap:10px;width:100%;">
               <div style="display:flex;flex-direction:column;gap:6px;">
-                <div style="font-family:'SF Compact',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-input-label-default)">Username</div>
+                <div style="font-family:'Geist',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-input-label-default)">Username</div>
                 <tek-input placeholder="Enter message here" style="display:block"></tek-input>
               </div>
               <div style="display:flex;flex-direction:column;gap:6px;">
-                <div style="font-family:'SF Compact',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-input-label-default)">Password</div>
+                <div style="font-family:'Geist',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-input-label-default)">Password</div>
                 <tek-input type="password" placeholder="Enter message here" style="display:block"></tek-input>
               </div>
               <tek-selector type="checkbox" label="Stay signed in"></tek-selector>
@@ -479,7 +480,6 @@ el.addEventListener(<span class="str">'tek-click'</span>, () =&gt; console.log(<
 <script>
 const SDR = `*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }`;
 
-// ── tek-checkbox ─────────────────────────────────────────────
 customElements.define('tek-checkbox', class extends HTMLElement {
   static get observedAttributes() { return ['checked','error','disabled']; }
   connectedCallback() {
@@ -501,7 +501,6 @@ customElements.define('tek-checkbox', class extends HTMLElement {
   }
 });
 
-// ── tek-radio ────────────────────────────────────────────────
 customElements.define('tek-radio', class extends HTMLElement {
   static get observedAttributes() { return ['checked','error','disabled']; }
   connectedCallback() {
@@ -526,7 +525,6 @@ customElements.define('tek-radio', class extends HTMLElement {
   }
 });
 
-// ── tek-toggle ───────────────────────────────────────────────
 customElements.define('tek-toggle', class extends HTMLElement {
   static get observedAttributes() { return ['checked','error','disabled']; }
   connectedCallback() {
@@ -551,7 +549,6 @@ customElements.define('tek-toggle', class extends HTMLElement {
   }
 });
 
-// ── tek-selector-label ───────────────────────────────────────
 customElements.define('tek-selector-label', class extends HTMLElement {
   static get observedAttributes() { return ['checked','error']; }
   connectedCallback() { this._s = this.attachShadow({mode:'open'}); this._render(); }
@@ -559,11 +556,10 @@ customElements.define('tek-selector-label', class extends HTMLElement {
   _render() {
     const checked=this.hasAttribute('checked'), error=this.hasAttribute('error');
     const color = error ? 'var(--tek-color-selector-label-error,#ffffff)' : checked ? 'var(--tek-color-selector-label-checked,#ffffff)' : 'var(--tek-color-selector-label-unchecked,#cccccc)';
-    this._s.innerHTML = `<style>${SDR}:host{display:inline;}span{font-family:'SF Compact',system-ui,sans-serif;font-size:12px;font-weight:400;line-height:12px;color:${color};transition:color 0.15s;}</style><span><slot></slot></span>`;
+    this._s.innerHTML = `<style>${SDR}:host{display:inline;}span{font-family:'Geist',system-ui,sans-serif;font-size:12px;font-weight:400;line-height:12px;color:${color};transition:color 0.15s;}</style><span><slot></slot></span>`;
   }
 });
 
-// ── tek-selector ─────────────────────────────────────────────
 customElements.define('tek-selector', class extends HTMLElement {
   static get observedAttributes() { return ['type','label','checked','error','disabled','name']; }
   connectedCallback() {
@@ -592,37 +588,46 @@ customElements.define('tek-selector', class extends HTMLElement {
   }
 });
 
-// ── tek-input ────────────────────────────────────────────────
+// tek-input: same _render/_applyStyle fix as signin.html — focus/blur never re-render
 customElements.define('tek-input', class extends HTMLElement {
   static get observedAttributes() { return ['state','height','placeholder','value','type']; }
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
+    this._st = this.getAttribute('state') || 'default';
     this._render();
-    this._s.addEventListener('focus', () => { if (this.getAttribute('state')==='default') this.setAttribute('state','focus'); }, true);
+    this._s.addEventListener('focus', () => {
+      if (this._st === 'default') { this._st = 'focus'; this._applyStyle(); }
+    }, true);
     this._s.addEventListener('blur', () => {
-      const st=this.getAttribute('state');
-      if (st!=='error'&&st!=='disabled') { const el=this._s.querySelector('input,textarea'); this.setAttribute('state', el?.value?'filled':'default'); }
+      if (this._st !== 'error' && this._st !== 'disabled') {
+        const el = this._s.querySelector('input,textarea');
+        this._st = el?.value ? 'filled' : 'default';
+        this._applyStyle();
+      }
     }, true);
     this._s.addEventListener('input', () => {
-      const el=this._s.querySelector('input,textarea');
+      const el = this._s.querySelector('input,textarea');
       this.dispatchEvent(new CustomEvent('tek-input',{bubbles:true,composed:true,detail:{value:el?.value||''}}));
     });
   }
-  attributeChangedCallback() { if (this._s) this._render(); }
-  _render() {
-    const state=this.getAttribute('state')||'default', height=this.getAttribute('height')||'single';
+  attributeChangedCallback(name, _, val) {
+    if (!this._s) return;
+    if (name === 'state') { this._st = val || 'default'; this._applyStyle(); }
+    else this._render();
+  }
+  _bc(s){return ({default:'var(--tek-color-input-border-default,#7b7b7b)',focus:'var(--tek-color-input-border-focus,#ffffff)',filled:'var(--tek-color-input-border-filled,#afafaf)',disabled:'var(--tek-color-input-border-disabled,#454545)',error:'var(--tek-color-input-border-error,#e74848)'})[s]||'var(--tek-color-input-border-default,#7b7b7b)';}
+  _tc(s){return ({default:'var(--tek-color-input-text-default,#979797)',focus:'var(--tek-color-input-text-focus,#ffffff)',filled:'var(--tek-color-input-text-filled,#cccccc)',disabled:'var(--tek-color-input-text-disabled,#454545)',error:'var(--tek-color-input-text-error,#ffffff)'})[s]||'var(--tek-color-input-text-default,#979797)';}
+  _css(s){return `${SDR}:host{display:block;}input,textarea{display:block;width:258px;background:var(--tek-color-input-background-default,#252525);border:0.5px solid ${this._bc(s)};border-radius:5px;padding:8px 4px 8px 10px;font-family:'Geist',system-ui,sans-serif;font-size:12px;line-height:15px;color:${this._tc(s)};outline:none;resize:vertical;pointer-events:${s==='disabled'?'none':'auto'};}input::placeholder,textarea::placeholder{color:${this._tc(s)};opacity:0.7;}`;}
+  _applyStyle(){const sEl=this._s.querySelector('style');if(sEl)sEl.textContent=this._css(this._st||'default');}
+  _render(){
+    const s=this._st||'default', h=this.getAttribute('height')||'single';
     const ph=this.getAttribute('placeholder')||'', val=this.getAttribute('value')||'', type=this.getAttribute('type')||'text';
-    const bcs={default:'var(--tek-color-input-border-default,#7b7b7b)',focus:'var(--tek-color-input-border-focus,#ffffff)',filled:'var(--tek-color-input-border-filled,#afafaf)',disabled:'var(--tek-color-input-border-disabled,#454545)',error:'var(--tek-color-input-border-error,#e74848)'};
-    const tcs={default:'var(--tek-color-input-text-default,#979797)',focus:'var(--tek-color-input-text-focus,#ffffff)',filled:'var(--tek-color-input-text-filled,#cccccc)',disabled:'var(--tek-color-input-text-disabled,#454545)',error:'var(--tek-color-input-text-error,#ffffff)'};
-    const bc=bcs[state]||bcs.default, tc=tcs[state]||tcs.default;
-    const rows=height==='double'?2:height==='triple'?3:1;
-    const field=height!=='single'?`<textarea rows="${rows}" placeholder="${ph}">${val}</textarea>`:`<input type="${type}" placeholder="${ph}" value="${val}">`;
-    this._s.innerHTML = `<style>${SDR}:host{display:block;}input,textarea{display:block;width:258px;background:var(--tek-color-input-background-default,#252525);border:0.5px solid ${bc};border-radius:5px;padding:8px 4px 8px 10px;font-family:'SF Compact',system-ui,sans-serif;font-size:12px;line-height:15px;color:${tc};outline:none;resize:vertical;pointer-events:${state==='disabled'?'none':'auto'};}
-input::placeholder,textarea::placeholder{color:${tc};opacity:0.7;}</style>${field}`;
+    const rows=h==='double'?2:h==='triple'?3:1;
+    const field=h!=='single'?`<textarea rows="${rows}" placeholder="${ph}">${val}</textarea>`:`<input type="${type}" placeholder="${ph}" value="${val}">`;
+    this._s.innerHTML=`<style>${this._css(s)}</style>${field}`;
   }
 });
 
-// ── tek-character-count ──────────────────────────────────────
 customElements.define('tek-character-count', class extends HTMLElement {
   static get observedAttributes() { return ['count','max','state']; }
   connectedCallback() { this._s = this.attachShadow({mode:'open'}); this._render(); }
@@ -631,23 +636,21 @@ customElements.define('tek-character-count', class extends HTMLElement {
     const count=parseInt(this.getAttribute('count')||'0'), max=parseInt(this.getAttribute('max')||'52'), state=this.getAttribute('state')||'default';
     const colors={default:'var(--tek-color-input-character-count-default,#cccccc)',focus:'var(--tek-color-input-character-count-focus,#ffffff)',filled:'var(--tek-color-input-character-count-filled,#afafaf)',warning:'var(--tek-color-input-character-count-warning,#e0b732)',error:'var(--tek-color-input-character-count-error,#e74848)'};
     const color=(state==='error'||count>max)?colors.error:state==='warning'?colors.warning:colors[state]||colors.default;
-    this._s.innerHTML = `<style>${SDR}:host{display:inline-block;}span{font-family:'SF Compact',system-ui,sans-serif;font-size:10px;line-height:15px;color:${color};}</style><span>${count}/${max}</span>`;
+    this._s.innerHTML = `<style>${SDR}:host{display:inline-block;}span{font-family:'Geist',system-ui,sans-serif;font-size:10px;line-height:15px;color:${color};}</style><span>${count}/${max}</span>`;
   }
 });
 
-// ── tek-text-link ────────────────────────────────────────────
 customElements.define('tek-text-link', class extends HTMLElement {
   static get observedAttributes() { return ['href','target']; }
   connectedCallback() { this._s = this.attachShadow({mode:'open'}); this._render(); }
   attributeChangedCallback() { if (this._s) this._render(); }
   _render() {
     const href=this.getAttribute('href')||'#', target=this.getAttribute('target')||'';
-    this._s.innerHTML = `<style>${SDR}:host{display:inline;}a{font-family:'SF Compact',system-ui,sans-serif;font-size:10px;line-height:15px;color:var(--tek-color-text-link-default,#33baea);text-decoration:none;}a:hover{text-decoration:underline;text-underline-offset:2px;}</style>
-<a href="${href}"${target?` target="${target}"`:''}><slot></slot></a>`;
+    this._s.innerHTML = `<style>${SDR}:host{display:inline;}a{font-family:'Geist',system-ui,sans-serif;font-size:10px;line-height:15px;color:var(--tek-color-text-link-default,#33baea);text-decoration:none;}a:hover{text-decoration:underline;text-underline-offset:2px;}</style>
+<a href="${href}"${target?` target="${target}"`:''} ><slot></slot></a>`;
   }
 });
 
-// ── tek-button ───────────────────────────────────────────────
 customElements.define('tek-button', class extends HTMLElement {
   static get observedAttributes() { return ['variant','inactive','disabled']; }
   connectedCallback() {
@@ -672,7 +675,6 @@ button:not(:disabled):hover{background:var(--tek-color-button-background-hover,#
   }
 });
 
-// ── tek-modal ────────────────────────────────────────────────
 customElements.define('tek-modal', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
@@ -685,15 +687,12 @@ customElements.define('tek-modal', class extends HTMLElement {
   }
 });
 
-// ── tek-footer ───────────────────────────────────────────────
 customElements.define('tek-footer', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
-    this._s.innerHTML = `<style>${SDR}:host{display:flex;align-items:center;width:100%;height:36px;padding:12px 16px;background:var(--tek-color-footer-background-default,#252525);}span{flex:1 0 0;font-family:'SF Compact',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-footer-text-default,#cccccc);text-align:right;}</style><span><slot></slot></span>`;
+    this._s.innerHTML = `<style>${SDR}:host{display:flex;align-items:center;width:100%;height:36px;padding:12px 16px;background:var(--tek-color-footer-background-default,#252525);}span{flex:1 0 0;font-family:'Geist',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-footer-text-default,#cccccc);text-align:right;}</style><span><slot></slot></span>`;
   }
 });
-
-// ── Page JS ──────────────────────────────────────────────────
 
 // Interactive demos
 document.getElementById('cb-interactive').addEventListener('tek-change', e => {
@@ -709,15 +708,9 @@ function copy(id,btn){navigator.clipboard.writeText(document.getElementById(id).
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));const m=document.querySelector(`.sidebar-link[onclick*="'${e.target.id}'"]`);if(m)m.classList.add('active');}});},{rootMargin:'-40% 0px -55% 0px'});
 document.querySelectorAll('.section').forEach(s=>obs.observe(s));
 
-// ── AutoAnimate ───────────────────────────────────────────────
-// Smooths DOM mutations (add/remove/reorder children) in light DOM containers.
-// Applied after components are defined and registered.
-// Shadow DOM interiors are excluded by design — AutoAnimate is light DOM only.
-// When Motion.dev is adopted, replace or layer on top of these calls.
+// AutoAnimate — ambient DOM transitions, light DOM only
 if (typeof autoAnimate !== 'undefined') {
-  // Sidebar nav — smooths active state transitions as scroll spy fires
   autoAnimate(document.querySelector('.sidebar-nav'));
-  // Demo canvases — ready for dynamic state additions (error injection, etc.)
   document.querySelectorAll('.preview-canvas').forEach(el => autoAnimate(el));
 }
 </script>

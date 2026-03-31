@@ -7,14 +7,14 @@
 
 <!--
   Fonts
+  Geist: Vercel's open-source font. Variable weight axis.
+    Production: npm install geist  then  @import 'geist/font'
+    Preview CDN: Google Fonts (added 2024)
   Archivo: variable webfont — used for headings and button labels
-  SF Compact: Apple system font — referenced in stack but not hosted.
-              Falls back to system-ui on non-Apple platforms.
-              Replace with a licensed webfont before production.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
 
 <style>
 /* ============================================================
@@ -107,7 +107,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: 'SF Compact', system-ui, sans-serif;
+  font-family: 'Geist', system-ui, sans-serif;
   color: var(--tek-primitive-color-neutral-grey-100);
   background-color: var(--tek-primitive-color-neutral-grey-800);
   position: relative;
@@ -138,10 +138,7 @@ body {
   pointer-events: none;
 }
 
-/* ── Page container ─────────────────────────────────────────
-   Establishes the container query context.
-   Direct children: .wrap (flex-1) + tek-footer.
-────────────────────────────────────────────────────────────── */
+/* Page container — establishes container query context */
 .page-wrap {
   position: relative;
   z-index: 1;
@@ -153,13 +150,7 @@ body {
   container-name: page;
 }
 
-/* ── Wrap ────────────────────────────────────────────────────
-   Matches Figma "Wrap" — the single flex container holding
-   both the logo header and the modal as direct siblings.
-   Logo and modal separated by gap (not justify-content).
-   Figma mobile: flex-1, flex-col, gap-48px, items-center,
-                 pt-48px, pb-24px, px-32px
-────────────────────────────────────────────────────────────── */
+/* Matches Figma “Wrap” — logo + modal as siblings, separated by gap */
 .wrap {
   flex: 1;
   display: flex;
@@ -171,10 +162,7 @@ body {
   min-height: 1px;
 }
 
-/* ── Logo header ─────────────────────────────────────────────
-   Figma mobile + tablet: items-center (logo centered).
-   Figma desktop: items-start (logo left).
-────────────────────────────────────────────────────────────── */
+/* Logo header — mobile + tablet: centered, desktop: left */
 .logo-header {
   display: flex;
   flex-direction: column;
@@ -183,9 +171,6 @@ body {
   flex-shrink: 0;
 }
 
-/* ── Logo lockup ─────────────────────────────────────────────
-   IconLogo.svg + TypeLogo.svg, vertically centered.
-────────────────────────────────────────────────────────────── */
 .logo-lockup {
   display: flex;
   align-items: center;
@@ -193,7 +178,6 @@ body {
 }
 
 .logo-icon {
-  /* Figma mobile + tablet: 90px tall */
   height: 90px;
   width: auto;
   display: block;
@@ -207,7 +191,7 @@ body {
 
 /* Form field label */
 .form-field-label {
-  font-family: 'SF Compact', system-ui, sans-serif;
+  font-family: 'Geist', system-ui, sans-serif;
   font-size: 12px;
   font-weight: 400;
   line-height: 12px;
@@ -217,26 +201,21 @@ body {
 
 /* ============================================================
    CONTAINER QUERIES — mobile-first
-   All breakpoints use container, never viewport.
-
-   Figma values confirmed per breakpoint:
-   Mobile  (base): pt-48 pb-24 px-32  gap-48  logo-center
-   Tablet  (640+): pt-48 pb-24 px-64  gap-48  logo-center
-   Desktop (1280+):pt-64 pb-32 px-64  gap-64  logo-left
+   Figma confirmed per breakpoint:
+   Mobile  (base): pt-48 pb-24 px-32 gap-48 logo-center
+   Tablet  (640+): pt-48 pb-24 px-64 gap-48 logo-center
+   Desktop (1280+):pt-64 pb-32 px-64 gap-64 logo-left
 ============================================================ */
 
-/* Tablet (640px+) */
 @container page (min-width: 640px) {
   .wrap       { padding: 48px 64px 24px; gap: 48px; }
-  /* logo stays centered — .logo-header already center */
 }
 
-/* Desktop (1280px+) */
 @container page (min-width: 1280px) {
   .wrap        { padding: 64px 64px 32px; gap: 64px; }
   .logo-header { align-items: flex-start; }
   .logo-icon   { height: 128px; }
-  .logo-type   { height: 52px;  }
+  .logo-type   { height: 52px; }
 }
 </style>
 </head>
@@ -250,11 +229,6 @@ body {
 
 <div class="page-wrap">
 
-  <!--
-    .wrap = Figma "Wrap" — single flex-col container.
-    Logo header and modal are siblings separated by gap-48px.
-    No justify-content:center — modal flows from top after logo.
-  -->
   <div class="wrap">
 
     <header class="logo-header">
@@ -293,7 +267,7 @@ body {
 
     </tek-modal>
 
-  </div><!-- /wrap -->
+  </div>
 
   <tek-footer>©2026 Tektronix. All Rights Reserved.</tek-footer>
 
@@ -303,11 +277,18 @@ body {
   @bbkemp/ui — Web Components
   In production: import '@bbkemp/ui'
 
-  Note on !important in :host padding:
-  Chrome allows the page-level * { padding: 0 } reset to bleed
-  into custom element shadow DOM :host styles at equal specificity.
-  !important on :host padding declarations guarantees shadow DOM
-  wins. This is a known Chrome cascade quirk with custom elements.
+  !important on :host padding: Chrome bleeds the page * { padding:0 } reset
+  into shadow DOM :host at equal specificity. !important wins. Intentional.
+
+  tek-input re-render strategy:
+  _render()      — full innerHTML replacement, structural changes only
+                   (height, placeholder, value, type attributes)
+  _applyStyle()  — updates <style> text content only, never touches the
+                   <input> element. Preserves focus, cursor, and typed value.
+  focus/blur     — update this._st (internal) + call _applyStyle() directly.
+                   Never call setAttribute('state', ...) from focus/blur
+                   as that would trigger attributeChangedCallback → _render()
+                   → new input element → focus lost and value destroyed.
 ============================================================ -->
 <script>
 const SDR = `*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }`;
@@ -388,7 +369,7 @@ customElements.define('tek-selector-label', class extends HTMLElement {
   _render() {
     const checked=this.hasAttribute('checked'), error=this.hasAttribute('error');
     const color = error ? 'var(--tek-color-selector-label-error,#ffffff)' : checked ? 'var(--tek-color-selector-label-checked,#ffffff)' : 'var(--tek-color-selector-label-unchecked,#cccccc)';
-    this._s.innerHTML = `<style>${SDR}:host{display:inline;}span{font-family:'SF Compact',system-ui,sans-serif;font-size:12px;font-weight:400;line-height:12px;color:${color};transition:color 0.15s;}</style><span><slot></slot></span>`;
+    this._s.innerHTML = `<style>${SDR}:host{display:inline;}span{font-family:'Geist',system-ui,sans-serif;font-size:12px;font-weight:400;line-height:12px;color:${color};transition:color 0.15s;}</style><span><slot></slot></span>`;
   }
 });
 
@@ -408,7 +389,7 @@ customElements.define('tek-selector', class extends HTMLElement {
   _render() {
     const type=this.getAttribute('type')||'checkbox', label=this.getAttribute('label')||'';
     const checked=this.hasAttribute('checked')?'checked':'', error=this.hasAttribute('error')?'error':'';
-    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'' ;
+    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'';
     this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;gap:8px;cursor:${disabled?'not-allowed':'pointer'};user-select:none;}</style>
 <tek-${type} ${checked} ${error} ${disabled} ${name}></tek-${type}>
 <tek-selector-label ${checked} ${error}>${label}</tek-selector-label>`;
@@ -420,32 +401,62 @@ customElements.define('tek-selector', class extends HTMLElement {
   }
 });
 
+// ── tek-input ────────────────────────────────────────────────
+// State management is split into two paths:
+//   _render()     — structural changes (height/placeholder/value/type) only.
+//                   Replaces full shadow DOM. Called by attributeChangedCallback
+//                   for those attrs and once on connectedCallback.
+//   _applyStyle() — visual-only state changes (default/focus/filled/error).
+//                   Only rewrites the <style> element’s text. The <input> element
+//                   is untouched, so focus, cursor position and typed value survive.
+// Focus/blur update this._st directly then call _applyStyle() — they never
+// call setAttribute(’state’, …) which would loop back into a destructive re-render.
 customElements.define('tek-input', class extends HTMLElement {
   static get observedAttributes() { return ['state','height','placeholder','value','type']; }
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
+    this._st = this.getAttribute('state') || 'default';
     this._render();
-    this._s.addEventListener('focus', () => { if (this.getAttribute('state')==='default') this.setAttribute('state','focus'); }, true);
+    this._s.addEventListener('focus', () => {
+      if (this._st === 'default') { this._st = 'focus'; this._applyStyle(); }
+    }, true);
     this._s.addEventListener('blur', () => {
-      const st=this.getAttribute('state');
-      if (st!=='error'&&st!=='disabled') { const el=this._s.querySelector('input,textarea'); this.setAttribute('state', el?.value?'filled':'default'); }
+      if (this._st !== 'error' && this._st !== 'disabled') {
+        const el = this._s.querySelector('input,textarea');
+        this._st = el?.value ? 'filled' : 'default';
+        this._applyStyle();
+      }
     }, true);
     this._s.addEventListener('input', () => {
-      const el=this._s.querySelector('input,textarea');
+      const el = this._s.querySelector('input,textarea');
       this.dispatchEvent(new CustomEvent('tek-input',{bubbles:true,composed:true,detail:{value:el?.value||''}}));
     });
   }
-  attributeChangedCallback() { if (this._s) this._render(); }
+  attributeChangedCallback(name, _, val) {
+    if (!this._s) return;
+    if (name === 'state') { this._st = val || 'default'; this._applyStyle(); }
+    else this._render();
+  }
+  _bc(s) { return ({default:'var(--tek-color-input-border-default,#7b7b7b)',focus:'var(--tek-color-input-border-focus,#ffffff)',filled:'var(--tek-color-input-border-filled,#afafaf)',disabled:'var(--tek-color-input-border-disabled,#454545)',error:'var(--tek-color-input-border-error,#e74848)'})[s]||'var(--tek-color-input-border-default,#7b7b7b)'; }
+  _tc(s) { return ({default:'var(--tek-color-input-text-default,#979797)',focus:'var(--tek-color-input-text-focus,#ffffff)',filled:'var(--tek-color-input-text-filled,#cccccc)',disabled:'var(--tek-color-input-text-disabled,#454545)',error:'var(--tek-color-input-text-error,#ffffff)'})[s]||'var(--tek-color-input-text-default,#979797)'; }
+  _css(s) {
+    return `${SDR}:host{display:block;}input,textarea{display:block;width:100%;background:var(--tek-color-input-background-default,#252525);border:0.5px solid ${this._bc(s)};border-radius:5px;padding:8px 4px 8px 10px !important;font-family:'Geist',system-ui,sans-serif;font-size:12px;line-height:15px;color:${this._tc(s)};outline:none;resize:vertical;pointer-events:${s==='disabled'?'none':'auto'};}input::placeholder,textarea::placeholder{color:${this._tc(s)};opacity:0.7;}`;
+  }
+  _applyStyle() {
+    const sEl = this._s.querySelector('style');
+    if (sEl) sEl.textContent = this._css(this._st || 'default');
+  }
   _render() {
-    const state=this.getAttribute('state')||'default', height=this.getAttribute('height')||'single';
-    const ph=this.getAttribute('placeholder')||'', val=this.getAttribute('value')||'', type=this.getAttribute('type')||'text';
-    const bcs={default:'var(--tek-color-input-border-default,#7b7b7b)',focus:'var(--tek-color-input-border-focus,#ffffff)',filled:'var(--tek-color-input-border-filled,#afafaf)',disabled:'var(--tek-color-input-border-disabled,#454545)',error:'var(--tek-color-input-border-error,#e74848)'};
-    const tcs={default:'var(--tek-color-input-text-default,#979797)',focus:'var(--tek-color-input-text-focus,#ffffff)',filled:'var(--tek-color-input-text-filled,#cccccc)',disabled:'var(--tek-color-input-text-disabled,#454545)',error:'var(--tek-color-input-text-error,#ffffff)'};
-    const bc=bcs[state]||bcs.default, tc=tcs[state]||tcs.default;
-    const rows=height==='double'?2:height==='triple'?3:1;
-    const field=height!=='single'?`<textarea rows="${rows}" placeholder="${ph}">${val}</textarea>`:`<input type="${type}" placeholder="${ph}" value="${val}" autocomplete="${type==='password'?'current-password':type==='email'?'email':'username'}">`;
-    this._s.innerHTML = `<style>${SDR}:host{display:block;}input,textarea{display:block;width:100%;background:var(--tek-color-input-background-default,#252525);border:0.5px solid ${bc};border-radius:5px;padding:8px 4px 8px 10px !important;font-family:'SF Compact',system-ui,sans-serif;font-size:12px;line-height:15px;color:${tc};outline:none;resize:vertical;pointer-events:${state==='disabled'?'none':'auto'};}
-input::placeholder,textarea::placeholder{color:${tc};opacity:0.7;}</style>${field}`;
+    const s = this._st || 'default';
+    const h = this.getAttribute('height') || 'single';
+    const ph = this.getAttribute('placeholder') || '';
+    const val = this.getAttribute('value') || '';
+    const type = this.getAttribute('type') || 'text';
+    const rows = h==='double'?2:h==='triple'?3:1;
+    const field = h !== 'single'
+      ? `<textarea rows="${rows}" placeholder="${ph}">${val}</textarea>`
+      : `<input type="${type}" placeholder="${ph}" value="${val}" autocomplete="${type==='password'?'current-password':type==='email'?'email':'username'}">`;
+    this._s.innerHTML = `<style>${this._css(s)}</style>${field}`;
   }
 });
 
@@ -455,8 +466,8 @@ customElements.define('tek-text-link', class extends HTMLElement {
   attributeChangedCallback() { if (this._s) this._render(); }
   _render() {
     const href=this.getAttribute('href')||'#', target=this.getAttribute('target')||'';
-    this._s.innerHTML = `<style>${SDR}:host{display:inline;}a{font-family:'SF Compact',system-ui,sans-serif;font-size:10px;line-height:15px;color:var(--tek-color-text-link-default,#33baea);text-decoration:none;}a:hover{text-decoration:underline;text-underline-offset:2px;}</style>
-<a href="${href}"${target?` target="${target}"`:''}><slot></slot></a>`;
+    this._s.innerHTML = `<style>${SDR}:host{display:inline;}a{font-family:'Geist',system-ui,sans-serif;font-size:10px;line-height:15px;color:var(--tek-color-text-link-default,#33baea);text-decoration:none;}a:hover{text-decoration:underline;text-underline-offset:2px;}</style>
+<a href="${href}"${target?` target="${target}"`:''} ><slot></slot></a>`;
   }
 });
 
@@ -499,7 +510,7 @@ customElements.define('tek-modal', class extends HTMLElement {
 customElements.define('tek-footer', class extends HTMLElement {
   connectedCallback() {
     this._s = this.attachShadow({mode:'open'});
-    this._s.innerHTML = `<style>${SDR}:host{display:flex;align-items:center;width:100%;height:36px;padding:12px 16px !important;background:var(--tek-color-footer-background-default,#252525);}span{flex:1 0 0;font-family:'SF Compact',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-footer-text-default,#cccccc);text-align:right;}</style><span><slot></slot></span>`;
+    this._s.innerHTML = `<style>${SDR}:host{display:flex;align-items:center;width:100%;height:36px;padding:12px 16px !important;background:var(--tek-color-footer-background-default,#252525);}span{flex:1 0 0;font-family:'Geist',system-ui,sans-serif;font-size:12px;line-height:12px;color:var(--tek-color-footer-text-default,#cccccc);text-align:right;}</style><span><slot></slot></span>`;
   }
 });
 </script>

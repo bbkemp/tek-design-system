@@ -31,7 +31,7 @@ tek-design-system/
 ## Architecture
 
 ```
-Figma Variables
+Figma Variables + Text Styles
       │
       │  Token Push plugin — one button from inside Figma
       ▼
@@ -66,6 +66,7 @@ Raw values — the palette. Not applied directly to components.
 | `color.json` | Full color palette: brand, neutral scale, UI states |
 | `spacing.json` | Spacing scale mapped to px values |
 | `border.json` | Border radius and border width values (none → 01–16 → full) |
+| `typography.json` | *(planned)* Font size, weight, line-height, letter-spacing from Figma text styles |
 
 Example:
 ```json
@@ -109,6 +110,74 @@ All token files follow the [W3C DTCG format](https://tr.designtokens.org/format/
 The plugin commits directly to GitHub via the API. No terminal, no third-party tools, no manual steps.
 
 > Figma collection names with emojis are fully supported — the plugin strips them automatically.
+
+---
+
+## Typography tokens — text styles via Token Push
+
+Figma Variables store colors, spacing, and border values. But Figma **text styles** hold typography properties that Variables cannot: `fontSize`, `fontWeight`, `lineHeight`, `letterSpacing`, `fontFamily`, `textCase`, `paragraphSpacing`. These are the values you care about when you finalize type decisions.
+
+**The plan:** extend Token Push's `code.js` to also call `figma.getLocalTextStyles()` alongside the existing `figma.variables` read. On the same single Push button press, it will:
+
+1. Read Variables as before → `color.json`, `spacing.json`, `border.json`
+2. Read Text Styles (new) → `packages/tokens/src/primitives/typography.json`
+
+Each named text style (e.g. "H1/SemiBold", "Body/Regular", "Label/Small") maps to a W3C DTCG token:
+
+```json
+{
+  "typography": {
+    "h1": {
+      "semi-bold": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "Geist",
+          "fontSize": "42px",
+          "fontWeight": "600",
+          "lineHeight": "48px",
+          "letterSpacing": "-0.04em"
+        }
+      }
+    }
+  }
+}
+```
+
+Style Dictionary then outputs `--tek-typography-h1-semi-bold-font-size`, `--tek-typography-h1-semi-bold-letter-spacing` etc. as CSS custom properties — same pipeline, same flow, one button.
+
+**This is phase 2 of the typography work.** Token Push will be extended once font decisions are finalised in Figma. Letter-spacing, line-height, and any other non-variable type properties will all be covered.
+
+---
+
+## Fonts
+
+### Geist (body / UI text)
+
+[Geist](https://vercel.com/font) is Vercel's open-source typeface. Variable weight axis (100–900).
+
+```bash
+# Production: npm package
+npm install geist
+```
+
+```css
+/* Production CSS import */
+@import 'geist/font';
+
+/* Preview pages: Google Fonts CDN (Geist added 2024) */
+/* https://fonts.googleapis.com/css2?family=Geist:wght@100..900 */
+
+font-family: 'Geist', system-ui, sans-serif;
+```
+
+### Archivo (headings / button labels)
+
+Archivist-class variable font, already loaded in all preview pages via Google Fonts. Used for `tek-modal` header, `tek-button` label text.
+
+```css
+font-family: 'Archivo', sans-serif;
+font-variation-settings: 'wdth' 106;
+```
 
 ---
 
@@ -264,7 +333,7 @@ document.querySelector('tek-button').addEventListener('tek-click', () => {
 
 [AutoAnimate](https://auto-animate.formkit.com) is installed for ambient DOM transitions — 2KB, zero config. It smooths child additions, removals, and reorders in light DOM containers automatically.
 
-**Constraint:** AutoAnimate only works on light DOM parent elements. It cannot cross shadow DOM boundaries. For animated content inside a Web Component's shadow root, call `autoAnimate()` on a ref inside `connectedCallback` rather than from outside.
+**Constraint:** AutoAnimate only works on light DOM parent elements. It cannot cross shadow DOM boundaries. For animated content inside a Web Component’s shadow root, call `autoAnimate()` on a ref inside `connectedCallback`.
 
 ```js
 // Light DOM — works directly
@@ -322,6 +391,19 @@ This affects: `tek-modal`, `tek-footer`, `tek-button`, `tek-input`. The `!import
 /* In shadow DOM component styles — required, not optional */
 :host { padding: 32px !important; }
 ```
+
+---
+
+## tek-input state management — developer note
+
+`tek-input` splits re-render into two paths to prevent focus and typed value being destroyed on state changes:
+
+- **`_render()`** — full `innerHTML` replacement. Only called for structural attribute changes (`height`, `placeholder`, `value`, `type`) and on `connectedCallback`.
+- **`_applyStyle()`** — updates the `<style>` element’s text content only. The `<input>` element is never touched, so focus, cursor position, and typed value survive state transitions.
+
+Focus and blur listeners update the internal `_st` property directly and call `_applyStyle()`. They never call `setAttribute('state', …)` — that would trigger `attributeChangedCallback` → `_render()` → new input element → focus and value destroyed.
+
+This pattern should be applied to any future component that has both interactive state and user-editable content.
 
 ---
 
