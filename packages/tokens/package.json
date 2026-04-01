@@ -1,6 +1,6 @@
 {
   "name": "@bbkemp/tokens",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Design tokens for the Tek design system",
   "main": "dist/tek.tokens.js",
   "exports": {
@@ -9,8 +9,8 @@
     "./primitives/css": "./dist/tek.primitives.css",
     "./primitives/js": "./dist/tek.primitives.js",
     "./json": "./src/semantic/tokens.json",
-    "./css/light":   "./dist/tek.tokens.light.css",
-"./json/light":  "./src/semantic/tokens.light.json"
+    "./css/light": "./dist/tek.tokens.light.css",
+    "./json/light": "./src/semantic/tokens.light.json"
   },
   "files": [
     "dist",
