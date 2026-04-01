@@ -1,4 +1,5 @@
 const StyleDictionary = require('style-dictionary');
+const fs              = require('fs');
 
 // ── W3C DTCG parser ─────────────────────────────────────────────────────────
 // Style Dictionary 3 expects `value` and `type` (no $).
@@ -141,5 +142,88 @@ StyleDictionary.extend({
     }
   }
 }).buildAllPlatforms();
+
+// ── Combined: dark + light + prefers-color-scheme ────────────────────────────
+// Post-build step: reads the two individual CSS files and assembles a single
+// combined file with all four blocks in the correct cascade order.
+//
+// Cascade order (lowest → highest specificity/priority):
+//   1. :root                              — dark defaults, always applied
+//   2. @media (prefers-color-scheme:light) — OS preference, no JS required
+//   3. [data-theme="light"]               — JS override: force light
+//   4. [data-theme="dark"]                — JS override: force dark
+//                                           (needed for light-OS users who
+//                                            manually select dark mode)
+//
+// Usage (single import, recommended):
+//   @import '@bbkemp/tokens/css/combined';
+//
+// The [data-theme] attribute is set on <html> by the theme toggle:
+//   document.documentElement.setAttribute('data-theme', 'light' | 'dark');
+//
+// Output: tek.tokens.combined.css
+
+const extractVars = (css) => {
+  // Pulls the variable declarations out of the first { } block in a CSS string.
+  // Input:  "/* comment */\n\n:root {\n  --x: y;\n  --z: w;\n}\n"
+  // Output: "  --x: y;\n  --z: w;"
+  const match = css.match(/\{([^}]+)\}/s);
+  return match ? match[1].replace(/^\n/, '').replace(/\n$/, '') : '';
+};
+
+const darkCSS  = fs.readFileSync('dist/tek.tokens.css',       'utf8');
+const lightCSS = fs.readFileSync('dist/tek.tokens.light.css', 'utf8');
+
+const darkVars  = extractVars(darkCSS);
+const lightVars = extractVars(lightCSS);
+
+// Indent light vars one extra level for the nested @media { :root { } } block
+const lightVarsIndented = lightVars.split('\n').map(l => l ? '  ' + l : l).join('\n');
+
+const combined = `/* @bbkemp/tokens — combined dark + light — auto-generated. Do not edit.
+ *
+ * Single-import file. Handles:
+ *   - Dark mode as the default
+ *   - Light mode via OS preference (prefers-color-scheme) — no JS required
+ *   - Explicit theme lock via [data-theme="light"] or [data-theme="dark"] on <html>
+ *
+ * Usage:
+ *   @import '@bbkemp/tokens/css/combined';
+ */
+
+/* ── 1. Dark defaults (:root) ─────────────────────────────────────────────── */
+/* Applied to all pages. Dark is the default. */
+:root {
+${darkVars}
+}
+
+/* ── 2. Light via OS preference (prefers-color-scheme) ─────────────────────── */
+/* Applied automatically when the OS is set to light mode, before any JS runs. */
+/* Prevents a flash of dark UI on light-OS devices. */
+/* Overridden by [data-theme] if present (higher specificity). */
+@media (prefers-color-scheme: light) {
+  :root {
+${lightVarsIndented}
+  }
+}
+
+/* ── 3. Explicit light override [data-theme="light"] ───────────────────────── */
+/* Set by JS: document.documentElement.setAttribute('data-theme', 'light') */
+/* Higher specificity than :root — beats the media query above. */
+[data-theme="light"] {
+${lightVars}
+}
+
+/* ── 4. Explicit dark override [data-theme="dark"] ────────────────────────── */
+/* Set by JS: document.documentElement.setAttribute('data-theme', 'dark') */
+/* Needed for users on a light-OS who manually select dark mode. */
+/* Without this block, prefers-color-scheme: light would override :root dark. */
+[data-theme="dark"] {
+${darkVars}
+}
+`;
+
+fs.writeFileSync('dist/tek.tokens.combined.css', combined);
+console.log('✓ tek.tokens.combined.css written');
 
 console.log('\n✓ @bbkemp/tokens built\n');
