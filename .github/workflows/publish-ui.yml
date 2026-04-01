@@ -8,14 +8,15 @@ on:
       - 'packages/ui/src/**'
       - 'packages/ui/package.json'
       - 'packages/ui/rollup.config.js'
-
+concurrency:
+  group: publish-ui
+  cancel-in-progress: false
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
       contents: write
       packages: write
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
