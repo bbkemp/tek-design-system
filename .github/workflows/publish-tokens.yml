@@ -7,7 +7,6 @@ on:
     paths:
       - 'packages/tokens/src/**'
       - 'packages/tokens/build.js'
-      - 'packages/tokens/package.json'
 
 concurrency:
   group: publish-tokens
@@ -47,7 +46,7 @@ jobs:
       - name: Commit version bump
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'chore(tokens): bump version'
+          commit_message: 'chore(tokens): bump version [skip ci]'
           file_pattern: 'packages/tokens/package.json'
 
       - name: Publish to GitHub Packages
