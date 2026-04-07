@@ -40,7 +40,7 @@ const STYLES = `
   }
 
   .header {
-    font-family: 'Archivo', sans-serif;
+    font-family: var(--tek-fonts-family-archivo, sans-serif);
     font-size: 24px;
     font-weight: 600;
     font-variation-settings: 'wdth' 106;
