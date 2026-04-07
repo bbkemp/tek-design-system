@@ -20,16 +20,18 @@ cd tek-design-system
 npm install
 ```
 
+This installs dev dependencies (`style-dictionary`, `rollup`) from the public npm registry — no authentication needed for this step.
+
 ---
 
 ## Step 2 — Authenticate with GitHub Packages
 
-The `@bbkemp/tokens` and `@bbkemp/ui` packages live on GitHub Packages. One-time auth per machine.
+The `@bbkemp/tokens` and `@bbkemp/ui` packages live on GitHub Packages. One-time auth per machine — required when installing these packages in a **consuming project**.
 
 1. **github.com → Settings → Developer settings → Personal access tokens (classic)**
 2. Generate a new token — name it `npm GitHub Packages`, check `read:packages`
 3. Copy the token
-4. Add to `~/.npmrc` (create if it doesn’t exist):
+4. Add to `~/.npmrc` (create if it doesn't exist):
 
 ```
 @bbkemp:registry=https://npm.pkg.github.com
@@ -49,7 +51,7 @@ npm install @bbkemp/tokens @bbkemp/ui
 2. Under **Workflow permissions**, confirm **Read and write permissions** is selected
 3. Save if needed
 
-This is already configured — just verify it’s active.
+This is already configured — just verify it's active.
 
 ---
 
@@ -104,6 +106,17 @@ npm update @bbkemp/tokens
 
 ---
 
+## Viewing the preview pages
+
+Open `component-library.html` or `signin.html` directly in your browser — no server needed. Both pages are self-contained: tokens and components are inlined, so they work from `file://`.
+
+```bash
+open component-library.html   # macOS
+start component-library.html  # Windows
+```
+
+---
+
 ## File reference
 
 ```
@@ -119,6 +132,7 @@ tek-design-system/
 │   ├── publish-tokens.yml  triggers on tokens/src/** changes
 │   └── publish-ui.yml      triggers on ui/src/** changes
 ├── figma-token-push/   Token Push plugin source
+├── qt/                 Qt/QSS translation layer (not required for web)
 ├── component-library.html
 └── signin.html
 ```

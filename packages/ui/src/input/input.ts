@@ -32,7 +32,7 @@ const STYLES = `
     background: transparent;
     border: none;
     outline: none;
-    font-family: 'SF Compact', system-ui, sans-serif;
+    font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
     font-size: 12px;
     line-height: 15px;
     color: var(--tek-color-input-text-default, #979797);

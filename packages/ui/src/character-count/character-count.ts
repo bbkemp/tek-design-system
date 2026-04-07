@@ -2,7 +2,7 @@
  * tek-character-count
  * Figma: DS-v2 → CharacterCount (node 7011:143)
  * States: Default | Focus | Filled | Error | Warning
- * Font: SF Compact Regular 10px, lh 15px
+ * Font: Geist Regular 10px, lh 15px
  *
  * Tokens:
  *   --tek-color-input-character-count-default|focus|filled|error|warning
@@ -17,7 +17,7 @@ const STYLES = `
     display: inline-block;
   }
   .count {
-    font-family: 'SF Compact', system-ui, sans-serif;
+    font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
     font-size: 10px;
     font-weight: 400;
     font-style: normal;
