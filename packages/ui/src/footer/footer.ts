@@ -2,14 +2,22 @@
  * tek-footer
  * Figma: DS-v2 → Footer (node 7003:2168)
  * Dimensions: h 36px, px 16px, py 12px
- * Font: SF Compact Regular 12px, lh 12px, text-right
+ * Font: Geist Regular — var(--tek-fonts-family-geist)
  *
  * Tokens:
  *   --tek-color-footer-background-default
  *   --tek-color-footer-text-default
  *
+ * Slots:
+ *   left      — left-aligned content (e.g. theme toggle)
+ *   (default) — right-aligned content (e.g. copyright)
+ *
  * Usage:
  *   <tek-footer>©2026 Tektronix. All Rights Reserved.</tek-footer>
+ *   <tek-footer>
+ *     <div slot="left"><tek-toggle id="theme-toggle"></tek-toggle></div>
+ *     ©2026 Tektronix. All Rights Reserved.
+ *   </tek-footer>
  */
 const STYLES = `
   :host {
@@ -22,18 +30,16 @@ const STYLES = `
     background: var(--tek-color-footer-background-default, #252525);
   }
 
-  .content {
+  .left {
     display: flex;
-    flex: 1 0 0;
     align-items: center;
-    justify-content: center;
-    min-height: 1px;
-    min-width: 1px;
+    gap: 8px;
+    flex-shrink: 0;
   }
 
-  .text {
+  .right {
     flex: 1 0 0;
-    font-family: 'SF Compact', system-ui, sans-serif;
+    font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
     font-size: 12px;
     font-weight: 400;
     font-style: normal;
@@ -53,9 +59,8 @@ export class TekFooter extends HTMLElement {
   private _render() {
     this._shadow.innerHTML = `
       <style>${STYLES}</style>
-      <div class="content" part="content">
-        <div class="text" part="text"><slot></slot></div>
-      </div>
+      <div class="left" part="left"><slot name="left"></slot></div>
+      <div class="right" part="right"><slot></slot></div>
     `;
   }
 }

@@ -2,7 +2,7 @@
  * tek-text-link
  * Figma: DS-v2 → TextLink (node 7011:150)
  * States: Default | Hover
- * Font: SF Compact Regular 10px, lh 15px
+ * Font: Geist Regular 10px, lh 15px
  *
  * Tokens:
  *   --tek-color-text-link-default
@@ -15,7 +15,7 @@ const STYLES = `
     display: inline;
   }
   a {
-    font-family: 'SF Compact', system-ui, sans-serif;
+    font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
     font-size: 10px;
     font-weight: 400;
     font-style: normal;

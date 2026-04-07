@@ -6,10 +6,11 @@
   "exports": {
     ".": "./dist/tek.tokens.js",
     "./css": "./dist/tek.tokens.css",
+    "./css/combined": "./dist/tek.tokens.combined.css",
+    "./css/light": "./dist/tek.tokens.light.css",
     "./primitives/css": "./dist/tek.primitives.css",
     "./primitives/js": "./dist/tek.primitives.js",
     "./json": "./src/semantic/tokens.json",
-    "./css/light": "./dist/tek.tokens.light.css",
     "./json/light": "./src/semantic/tokens.light.json"
   },
   "files": [

@@ -18,6 +18,7 @@ tek-design-system/
 │       ├── publish-tokens.yml    auto-publishes tokens on change
 │       └── publish-ui.yml        auto-publishes UI on change
 ├── figma-token-push/         Token Push Figma plugin (local dev, not published)
+├── qt/                       Qt/QSS translation layer (TekTokens.h, .qss files)
 ├── img/                      Static assets for preview pages
 │   ├── IconLogo.svg
 │   ├── TypeLogo.svg
@@ -189,8 +190,8 @@ See [CHANGELOG.md](./CHANGELOG.md) for full release history.
 
 | Bump | When | Who |
 |---|---|---|
-| `patch` | Token value changes, bug fixes | CI auto-bumps |
-| `minor` | New tokens, new components, new features | Manual |
+| `patch` | Token value changes, new tokens, bug fixes | CI auto-bumps |
+| `minor` | New components, new features | Manual |
 | `major` | Renamed/removed tokens or components (breaking) | Manual + advance notice |
 
 ---
@@ -397,5 +398,7 @@ npm install
 npm run build --workspace=packages/tokens
 npm run build --workspace=packages/ui
 ```
+
+Open `component-library.html` or `signin.html` directly in your browser to see the components — no server needed.
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) and [CHANGELOG.md](./CHANGELOG.md).

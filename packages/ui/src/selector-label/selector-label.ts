@@ -1,7 +1,7 @@
 const STYLES = `
   :host { display:inline-flex; gap:0; align-items:center; padding:0; width:106px; cursor:pointer; }
   :host([disabled]) { cursor:not-allowed; opacity:0.4; }
-  .text { display:flex; flex:1 0 0; flex-direction:column; font-family:'SF Compact',system-ui,sans-serif; font-size:12px; font-weight:400; font-style:normal; justify-content:center; line-height:12px; min-height:1px; min-width:1px; color:var(--tek-color-selector-label-unchecked,#cccccc); }
+  .text { display:flex; flex:1 0 0; flex-direction:column; font-family:var(--tek-fonts-family-geist,system-ui,sans-serif); font-size:12px; font-weight:400; font-style:normal; justify-content:center; line-height:12px; min-height:1px; min-width:1px; color:var(--tek-color-selector-label-unchecked,#cccccc); }
   :host([checked]) .text { color:var(--tek-color-selector-label-checked,#ffffff); }
   :host([error])   .text { color:var(--tek-color-selector-label-error,#ffffff); }
 `;

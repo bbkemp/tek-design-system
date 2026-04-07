@@ -2,7 +2,7 @@
  * tek-label
  *
  * Figma: DS-v2 → Label (node 780:10209)
- * Font: SF Compact Regular 12px lh 12px
+ * Font: Geist Regular 12px lh 12px
  * Width: 258px
  * Variants: Optional | CharacterCount | HelperText | Link
  *
@@ -38,7 +38,7 @@ const STYLES = `
     display: flex;
     flex: 1 0 0;
     flex-direction: column;
-    font-family: 'SF Compact', system-ui, sans-serif;
+    font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
@@ -50,7 +50,7 @@ const STYLES = `
   }
 
   .optional {
-    font-family: 'SF Compact', system-ui, sans-serif;
+    font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
     font-size: 12px;
     font-weight: 400;
     color: var(--tek-color-neutral-grey-400, #7b7b7b);
@@ -58,7 +58,7 @@ const STYLES = `
   }
 
   .char-count {
-    font-family: 'SF Compact', system-ui, sans-serif;
+    font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
     font-size: 10px;
     font-weight: 400;
     line-height: 15px;
@@ -67,7 +67,7 @@ const STYLES = `
   }
 
   .helper {
-    font-family: 'SF Compact', system-ui, sans-serif;
+    font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
     font-size: 10px;
     font-weight: 400;
     line-height: 15px;

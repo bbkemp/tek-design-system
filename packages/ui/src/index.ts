@@ -1,11 +1,11 @@
 /**
- * @tek/ui — Web Components
+ * @bbkemp/ui — Web Components
  * Import this module to register all custom elements.
  *
- *   import '@tek/ui'
+ *   import '@bbkemp/ui'
  *
  * Or import individually:
- *   import { TekButton } from '@tek/ui'
+ *   import { TekButton } from '@bbkemp/ui'
  */
 export { TekBaseSelector }       from './base-selector.js';
 export { TekCheckbox }           from './checkbox/checkbox.js';
