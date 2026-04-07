@@ -41,7 +41,8 @@
    Custom elements (tek-*) define their own padding via :host in shadow DOM.
    Putting padding:0 in * kills those styles because light DOM always beats :host. */
 body, h1, h2, h3, h4, h5, h6, p, ul, ol, li,
-blockquote, figure, figcaption, dl, dt, dd, pre { margin: 0; padding: 0; }
+blockquote, figure, figcaption, dl, dt, dd, pre,
+input, button, textarea, select { margin: 0; padding: 0; border: 0; }
 
 html, body {
   height: 100%;
@@ -122,10 +123,19 @@ tek-modal { flex-shrink: 0; }
   .wrap { padding: var(--tek-spacing-s17, 48px) var(--tek-spacing-s19, 64px) var(--tek-spacing-s11, 24px); }
 }
 @container page (min-width: 1280px) {
-  .wrap        { padding: var(--tek-spacing-s19, 64px) var(--tek-spacing-s19, 64px) var(--tek-spacing-s13, 32px); }
-  .logo-header { align-items: flex-start; }
-  .logo-icon   { height: 128px; }
-  .logo-type   { height: 52px; }
+  .wrap {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--tek-spacing-s19, 64px);
+  }
+  .logo-header {
+    align-items: flex-start;
+    align-self: flex-start;
+    flex: 1;
+  }
+  .logo-icon { height: 128px; }
+  .logo-type { height: 52px; }
 }
 </style>
 </head>
