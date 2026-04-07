@@ -332,10 +332,9 @@ Affects: `tek-modal`, `tek-footer`, `tek-button`, `tek-input`.
 
 ## tek-input state management — developer note
 
-- **`_render()`** — full `innerHTML` replacement. Structural attrs only: `height`, `placeholder`, `value`, `type`.
-- **`_applyStyle()`** — rewrites `<style>` text only. The `<input>` is never touched; focus, cursor, and typed value survive.
+- **`_render()`** — full `innerHTML` replacement. Called on `connectedCallback` and `attributeChangedCallback`.
 
-Focus/blur update `this._st` directly and call `_applyStyle()`. They never call `setAttribute('state', …)`.
+Focus/blur listeners are attached after each render. They never call `setAttribute('state', …)` — state is tracked internally via `_st` and a full `_render()` is triggered only when structural attributes change.
 
 ---
 

@@ -6,7 +6,10 @@
  * Width: 258px
  * Variants: Optional | CharacterCount | HelperText | Link
  *
- * Token: --color-input-label-default
+ * Tokens:
+ *   --tek-color-input-label-default
+ *   --tek-color-input-character-count-default
+ *   --tek-color-input-helper-default
  *
  * Usage:
  *   <tek-label>Email</tek-label>
@@ -46,14 +49,14 @@ const STYLES = `
     line-height: 12px;
     min-height: 1px;
     min-width: 1px;
-    color: var(--color-input-label-default, #cccccc);
+    color: var(--tek-color-input-label-default, #cccccc);
   }
 
   .optional {
     font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
     font-size: 12px;
     font-weight: 400;
-    color: var(--tek-color-neutral-grey-400, #7b7b7b);
+    color: var(--tek-color-input-helper-default, #7b7b7b);
     font-style: italic;
   }
 
@@ -62,7 +65,7 @@ const STYLES = `
     font-size: 10px;
     font-weight: 400;
     line-height: 15px;
-    color: var(--color-input-character-count-default, #cccccc);
+    color: var(--tek-color-input-character-count-default, #cccccc);
     margin-left: auto;
   }
 
@@ -71,7 +74,7 @@ const STYLES = `
     font-size: 10px;
     font-weight: 400;
     line-height: 15px;
-    color: var(--tek-color-neutral-grey-400, #7b7b7b);
+    color: var(--tek-color-input-helper-default, #7b7b7b);
     flex-shrink: 0;
     width: 100%;
   }

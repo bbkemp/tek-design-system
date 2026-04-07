@@ -25,6 +25,19 @@ export class TekRadio extends TekBaseSelector {
     super.attributeChangedCallback(n,o,v);
     if (n === 'checked') this.setAttribute('aria-checked', String(this.checked));
   }
+  protected override _click = () => {
+    if (this.disabled || this.error) return;
+    const name = this.getAttribute('name');
+    if (name) {
+      document.querySelectorAll<TekRadio>(`tek-radio[name="${name}"]`).forEach(r => {
+        if (r !== this) r.checked = false;
+      });
+    }
+    this.checked = true;
+    this.dispatchEvent(new CustomEvent('tek-change', {
+      bubbles: true, composed: true, detail: { checked: true }
+    }));
+  };
   protected render() {
     this._shadow.innerHTML = `<style>${STYLES}</style><div class="dot" part="dot"></div>`;
   }
