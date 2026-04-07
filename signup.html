@@ -32,7 +32,13 @@
    colors, fonts, or sizes that belong in the token system.
 ============================================================ */
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* box-sizing safe to apply globally — does NOT affect shadow DOM :host padding */
+*, *::before, *::after { box-sizing: border-box; }
+/* margin/padding reset scoped to standard HTML elements only.
+   Custom elements (tek-*) define their own padding via :host in shadow DOM.
+   Putting padding:0 in * kills those styles because light DOM always beats :host. */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li,
+blockquote, figure, figcaption, dl, dt, dd, pre { margin: 0; padding: 0; }
 
 html, body {
   height: 100%;
