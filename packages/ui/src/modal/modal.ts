@@ -35,7 +35,7 @@ const STYLES = `
     display: flex;
     flex-direction: column;
     gap: var(--tek-spacing-s08, 14px);
-    overflow: hidden;
+    overflow: clip;
     box-shadow: 0px 2px 6px 0px var(--tek-color-ui-shadow, rgba(0,0,0,0.2));
   }
 

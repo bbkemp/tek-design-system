@@ -21,10 +21,10 @@ const STYLES = `
   :host {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--tek-spacing-s02, 2px);
     align-items: flex-start;
     padding: 0;
-    width: 258px;
+    width: 100%;
     box-sizing: border-box;
   }
 
