@@ -141,6 +141,41 @@ confirm they published before updating the component.
 - Border radius: `var(--tek-borders-radius-*)` — never hardcoded px
 - Fallback values are required: `var(--tek-spacing-s05, 8px)` — for resilience when primitives aren't loaded
 
+**Shadow DOM `:host` padding:** Components define their padding via `:host { padding: ... }` in the shadow DOM stylesheet. This works correctly — **unless** the consuming page uses a broad CSS reset like `* { padding: 0 }`. Light DOM `*` styles targeting a custom element host always override shadow DOM `:host` rules. See the CSS reset section in README for the correct pattern.
+
+**`tek-modal` in flex containers:** `tek-modal` has a fixed intrinsic width (320px) and grows to fit its content. When placed inside a flex column container, always add `flex-shrink: 0` so the modal doesn't compress on short viewports — `overflow: clip` on the host will otherwise hide action buttons:
+
+```css
+tek-modal { flex-shrink: 0; }
+```
+
+**`width: 100%` on components inside `tek-modal`:** `tek-input`, `tek-label`, and slotted divs should have `style="display:block;width:100%"` or use a flex column wrapper at full width so they fill the modal's 256px content area rather than using their component's default fixed widths.
+
+---
+
+## Figma Code Connect
+
+Code Connect links Figma component instances to their source files so designers see real code in the Dev Panel.
+
+**Current mappings** (managed via Figma MCP in Claude Code):
+
+| Figma component | Source file | Label |
+|---|---|---|
+| Button | `packages/ui/src/button/button.ts` | Web Components |
+| CharacterCount | `packages/ui/src/character-count/character-count.ts` | Web Components |
+| Checkbox | `packages/ui/src/checkbox/checkbox.ts` | Web Components |
+| Form / Input | `packages/ui/src/input/input.ts` | Web Components |
+| Sign In (all viewports) | `signin.html` | Web Components |
+
+**Adding or updating a mapping:**
+
+1. Open the Figma file and navigate to the component node
+2. In Claude Code, provide the Figma URL and ask to set up Code Connect
+3. The MCP will suggest matches — confirm or correct them
+4. Mappings are stored in Figma's system (not in the repo)
+
+**Naming convention for new mappings:** Use the component's TypeScript class name or page filename as `componentName`. Always use `"Web Components"` as the label.
+
 ---
 
 ## Review and approval

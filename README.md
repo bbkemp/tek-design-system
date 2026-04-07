@@ -25,6 +25,7 @@ tek-design-system/
 │   └── bg-mov.mp4
 ├── component-library.html    live component reference (fully token-driven)
 ├── signin.html               sign in page (responsive, dark/light mode)
+├── signup.html               create account page (responsive, dark/light mode)
 ├── CHANGELOG.md
 ├── SETUP.md
 └── CONTRIBUTING.md
@@ -369,11 +370,26 @@ Once defined in Figma Variables, Token Push will export them automatically. Comp
 
 ---
 
-## Shadow DOM cascade — developer note
+## Shadow DOM cascade — CSS reset gotcha
 
-Chrome bleeds the page `* { padding: 0 }` reset into shadow DOM `:host` at equal specificity. Any component with `:host` padding uses `!important`. Intentional — do not remove.
+**Do not use `* { padding: 0; margin: 0 }` as a global reset in pages that consume `@bbkemp/ui`.**
 
-Affects: `tek-modal`, `tek-footer`, `tek-button`, `tek-input`.
+Light DOM styles targeting a custom element host (via `*`) **always override** the component's own shadow DOM `:host` rules. This means `* { padding: 0 }` silently zeroes out the padding on `tek-modal`, `tek-input`, `tek-button`, and every other component — even though the tokens resolve correctly.
+
+The symptom is invisible in code: tokens load, the component is in the DOM, but everything looks flat and borderless.
+
+**Correct pattern:**
+
+```css
+/* Safe — box-sizing does not interfere with :host padding */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Scope margin/padding reset to standard HTML elements only */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li,
+blockquote, figure, figcaption, dl, dt, dd, pre { margin: 0; padding: 0; }
+```
+
+**Why `gap` works but `padding` doesn't:** Common resets zero `padding` and `margin` but not `gap` — so component gaps appear correct while all padding is missing.
 
 ---
 
@@ -401,25 +417,28 @@ Breakpoints from Figma `Cxx` variables: xs=384px, sm=640px, xl=1280px.
 
 **File:** DS-v2 · **Key:** `3wbYstse9TYKlPtCPpZH5X`
 
-| Component | Figma node |
-|---|---|
-| Checkbox | 730:16982 |
-| Radio | 780:10148 |
-| Toggle | 780:10026 |
-| SelectorLabel | 780:9896 |
-| Selector | 7002:378 |
-| Input | 7003:495 |
-| CharacterCount | 7011:143 |
-| TextLink | 7011:150 |
-| Button | 202:2605 |
-| Modal | 7003:2158 |
-| Footer | 7003:2168 |
-| Sign In — Mobile (dark) | 7134:600 |
-| Sign In — Tablet (dark) | 7135:638 |
-| Sign In — Desktop (dark) | 7134:598 |
-| Sign In — Mobile (light) | 7148:1177 |
-| Sign In — Tablet (light) | 7148:1185 |
-| Sign In — Desktop (light) | 7148:1193 |
+| Component | Figma node | Code Connect |
+|---|---|---|
+| Checkbox | 730:16982 | `packages/ui/src/checkbox/checkbox.ts` |
+| Radio | 780:10148 | — |
+| Toggle | 780:10026 | — |
+| SelectorLabel | 780:9896 | — |
+| Selector | 7002:378 | — |
+| Label | 780:10209 | `packages/ui/src/label/label.ts` |
+| Input / Form | 7003:495 / 7003:722 | `packages/ui/src/input/input.ts` |
+| CharacterCount | 7011:143 | `packages/ui/src/character-count/character-count.ts` |
+| TextLink | 7011:150 | — |
+| Button | 202:2605 | `packages/ui/src/button/button.ts` |
+| Modal | 7003:2158 | `packages/ui/src/modal/modal.ts` |
+| Footer | 7003:2168 | — |
+| Sign In — Mobile (dark) | 7134:600 | `signin.html` |
+| Sign In — Tablet (dark) | 7135:638 | `signin.html` |
+| Sign In — Desktop (dark) | 7134:598 | `signin.html` |
+| Sign In — Mobile (light) | 7148:1177 | — |
+| Sign In — Tablet (light) | 7148:1185 | — |
+| Sign In — Desktop (light) | 7148:1193 | — |
+
+Code Connect mappings are managed via the Figma MCP in Claude Code. To update or add mappings, open the Figma node and run the Code Connect workflow.
 
 ---
 
