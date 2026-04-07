@@ -7,6 +7,7 @@
     ".": "./dist/tek.tokens.js",
     "./css": "./dist/tek.tokens.css",
     "./css/combined": "./dist/tek.tokens.combined.css",
+    "./css/complete": "./dist/tek.complete.css",
     "./css/light": "./dist/tek.tokens.light.css",
     "./primitives/css": "./dist/tek.primitives.css",
     "./primitives/js": "./dist/tek.primitives.js",

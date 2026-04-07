@@ -226,4 +226,70 @@ ${darkVars}
 fs.writeFileSync('dist/tek.tokens.combined.css', combined);
 console.log('✓ tek.tokens.combined.css written');
 
+// ── Complete: primitives + combined semantic ─────────────────────────────────
+// The single file a consuming project needs — fonts, spacing, border, colors,
+// all modes. Replaces the need for two separate imports.
+//
+// Import order inside the file:
+//   1. Primitives (:root) — raw values: fonts, spacing, border, palette
+//   2–5. Semantic dark/light blocks (same structure as combined above)
+//
+// Usage (recommended for all new projects):
+//   @import '@bbkemp/tokens/css/complete';
+//
+// Output: tek.complete.css
+
+const primitivesCSS = fs.readFileSync('dist/tek.primitives.css', 'utf8');
+// Strip the file header comment from primitives so the complete file has one clean header
+const primitivesVars = extractVars(primitivesCSS);
+
+const complete = `/* @bbkemp/tokens — complete (primitives + dark/light semantic) — auto-generated. Do not edit.
+ *
+ * Single-import file. Includes everything:
+ *   - All primitives: fonts, spacing, border, color palette
+ *   - Dark semantic tokens (default)
+ *   - Light semantic tokens via OS preference and [data-theme] override
+ *
+ * Usage:
+ *   @import '@bbkemp/tokens/css/complete';
+ *
+ * For fine-grained control:
+ *   @import '@bbkemp/tokens/primitives/css';   — primitives only
+ *   @import '@bbkemp/tokens/css/combined';     — semantic only (dark + light)
+ */
+
+/* ── 1. Primitives (:root) ───────────────────────────────────────────────── */
+/* Raw values — fonts, spacing, border radius/width, color palette.          */
+/* These do not change between dark and light mode.                           */
+:root {
+${primitivesVars}
+}
+
+/* ── 2. Semantic dark defaults (:root) ──────────────────────────────────── */
+/* Alias tokens for components. Dark is the default.                         */
+:root {
+${darkVars}
+}
+
+/* ── 3. Semantic light via OS preference ────────────────────────────────── */
+@media (prefers-color-scheme: light) {
+  :root {
+${lightVarsIndented}
+  }
+}
+
+/* ── 4. Explicit light override [data-theme="light"] ───────────────────── */
+[data-theme="light"] {
+${lightVars}
+}
+
+/* ── 5. Explicit dark override [data-theme="dark"] ─────────────────────── */
+[data-theme="dark"] {
+${darkVars}
+}
+`;
+
+fs.writeFileSync('dist/tek.complete.css', complete);
+console.log('✓ tek.complete.css written');
+
 console.log('\n✓ @bbkemp/tokens built\n');

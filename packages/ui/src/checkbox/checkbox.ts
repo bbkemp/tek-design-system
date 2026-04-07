@@ -3,7 +3,7 @@ import { TekBaseSelector } from '../base-selector.js';
 const STYLES = `
   :host { display:inline-block; position:relative; width:16px; height:16px; flex-shrink:0; cursor:pointer; outline:none; }
   :host([disabled]) { cursor:not-allowed; opacity:0.4; }
-  .box { position:absolute; inset:0; background:var(--tek-color-selector-background-default,#252525); border:0.5px solid var(--tek-color-selector-border-unchecked,#7b7b7b); border-radius:3px; transition:border-color 0.1s; }
+  .box { position:absolute; inset:0; background:var(--tek-color-selector-background-default,#252525); border:0.5px solid var(--tek-color-selector-border-unchecked,#7b7b7b); border-radius:var(--tek-borders-radius-02,3px); transition:border-color 0.1s; }
   :host([checked]) .box { border-color:var(--tek-color-selector-border-checked,#979797); }
   :host([error])   .box { border-color:var(--tek-color-selector-border-error,#e74848); }
   .icon { position:absolute; inset:0; overflow:hidden; display:none; }
