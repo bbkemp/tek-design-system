@@ -21,10 +21,10 @@ const STYLES = `
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 9999px;
+    border-radius: var(--tek-borders-radius-full, 9999px);
     border: 1px solid var(--tek-color-button-border-default, #33baea);
     background: var(--tek-color-button-background-default, #1e1e1e);
-    padding: 12px 24px;
+    padding: var(--tek-spacing-s07, 12px) var(--tek-spacing-s11, 24px);
     cursor: pointer;
     outline: none;
     transition: background 0.15s, border-color 0.15s, color 0.15s;
@@ -33,12 +33,12 @@ const STYLES = `
   }
 
   :host([variant="secondary"]) {
-    padding: 6px 14px;
+    padding: var(--tek-spacing-s04, 6px) var(--tek-spacing-s08, 14px);
   }
 
   .label {
-    font-family: 'Archivo', sans-serif;
-    font-size: 16px;
+    font-family: var(--tek-fonts-family-archivo, sans-serif);
+    font-size: var(--tek-fonts-heading-size-xs, 16px);
     font-weight: 578;
     font-style: normal;
     font-variation-settings: 'wdth' 106;
@@ -51,7 +51,7 @@ const STYLES = `
   }
 
   :host([variant="secondary"]) .label {
-    font-size: 13px;
+    font-size: var(--tek-fonts-text-size-md, 13px);
     font-weight: 534;
     line-height: 15px;
     letter-spacing: 0.13px;

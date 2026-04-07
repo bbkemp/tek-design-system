@@ -216,14 +216,49 @@ npm install @bbkemp/tokens @bbkemp/ui
 
 ## Using tokens
 
+The token package has two layers. **Most projects need both.**
+
+### Quick start — single import (recommended)
+
 ```css
+@import '@bbkemp/tokens/css/complete';
+```
+
+`css/complete` includes everything in one file:
+- All primitives: font families, type scale, spacing, border radius/width, color palette
+- Semantic dark tokens (`:root` default)
+- Semantic light tokens (`@media prefers-color-scheme` + `[data-theme="light"]` override)
+
+### Fine-grained imports
+
+```css
+/* Primitives only — raw values, no mode switching */
+@import '@bbkemp/tokens/primitives/css';
+
+/* Semantic only — dark + light, no primitives */
+@import '@bbkemp/tokens/css/combined';
+
+/* Semantic dark only */
 @import '@bbkemp/tokens/css';
 
+/* Semantic light only */
+@import '@bbkemp/tokens/css/light';
+```
+
+> **Why two layers?** Primitives (`--tek-spacing-s05`, `--tek-borders-radius-full`) are raw
+> values that never change between modes. Semantic tokens (`--tek-color-input-border-focus`)
+> are aliases that swap between dark and light. `css/complete` wraps both in the right order.
+
+### Example
+
+```css
 .my-component {
-  color: var(--tek-color-input-text-default);
-  border-color: var(--tek-color-input-border-focus);
+  padding: var(--tek-spacing-s05, 8px);
+  border-radius: var(--tek-borders-radius-03, 5px);
+  border: 1px solid var(--tek-color-input-border-default);
   font-family: var(--tek-fonts-family-geist);
   font-size: var(--tek-fonts-text-size-md);
+  color: var(--tek-color-input-text-default);
 }
 ```
 
@@ -235,7 +270,15 @@ npm install @bbkemp/tokens @bbkemp/ui
 import '@bbkemp/ui';
 ```
 
+Registers all custom elements: `tek-checkbox`, `tek-radio`, `tek-toggle`, `tek-selector`,
+`tek-selector-label`, `tek-input`, `tek-label`, `tek-button`, `tek-text-link`,
+`tek-character-count`, `tek-modal`, `tek-footer`.
+
 ```html
+<tek-label>Email</tek-label>
+<tek-label optional>Name</tek-label>
+<tek-label helper-text="Must be 8+ characters">Password</tek-label>
+<tek-label char-count="10/52">Message</tek-label>
 <tek-checkbox></tek-checkbox>
 <tek-checkbox checked></tek-checkbox>
 <tek-radio name="group"></tek-radio>
@@ -278,9 +321,12 @@ el.addEventListener('tek-click',  () => {});                            // butto
 | `checked` | boolean | checkbox, radio, toggle, selector | |
 | `error` | boolean | checkbox, radio, toggle, selector, input | |
 | `disabled` | boolean | all interactive | |
-| `name` | string | radio, selector | Radio group name |
+| `name` | string | radio, selector | Radio group — clicking one deselects others |
 | `type` | string | selector | `checkbox`, `radio`, `toggle` |
 | `label` | string | selector | |
+| `optional` | boolean | label | Appends "(optional)" in muted italic |
+| `helper-text` | string | label | Renders helper line below label text |
+| `char-count` | string | label | Renders count aligned to the right of label |
 | `placeholder` | string | input | |
 | `value` | string | input | |
 | `state` | string | input, character-count | `default`, `focus`, `filled`, `disabled`, `error` |
@@ -288,6 +334,7 @@ el.addEventListener('tek-click',  () => {});                            // butto
 | `count` | number | character-count | |
 | `max` | number | character-count | |
 | `inactive` | boolean | button | |
+| `variant` | string | button | `primary` (default), `secondary` |
 | `href` | string | text-link | |
 | `target` | string | text-link | |
 
@@ -394,10 +441,21 @@ Plugins → Development → Token Push → right-click → **Reload**
 
 ```bash
 npm install
-npm run build --workspace=packages/tokens
-npm run build --workspace=packages/ui
+npm run build --workspace=packages/tokens   # generates dist/ including tek.complete.css
+npm run build --workspace=packages/ui        # generates dist/tek-ui.js
 ```
 
-Open `component-library.html` or `signin.html` directly in your browser to see the components — no server needed.
+Then open any preview page via a local server (required for ES module imports):
+
+```bash
+python3 -m http.server 3000
+# open http://localhost:3000/signin.html
+# open http://localhost:3000/signup.html
+# open http://localhost:3000/component-library.html
+```
+
+The preview pages import directly from `./packages/tokens/dist/` and `./packages/ui/dist/` —
+they consume the real built packages, not inline reimplementations. This means they function
+as integration tests: if a token or component is broken, the pages break too.
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) and [CHANGELOG.md](./CHANGELOG.md).

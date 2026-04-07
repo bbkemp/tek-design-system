@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TekCloud — Sign In</title>
+<title>TekCloud — Create Account</title>
 
 <!-- Fonts — Geist (body/UI) + Archivo (headings/buttons) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,9 +23,6 @@
   Requires: npm run build --workspace=packages/ui
 -->
 <script type="module" src="./packages/ui/dist/tek-ui.js"></script>
-
-<!-- AutoAnimate — ambient DOM transitions (light DOM only) -->
-<script src="https://cdn.jsdelivr.net/npm/@formkit/auto-animate@latest/index.umd.js"></script>
 
 <style>
 /* ============================================================
@@ -94,22 +91,33 @@ body {
 .logo-icon   { height: 90px; width: auto; display: block; }
 .logo-type   { height: 38px; width: auto; display: block; }
 
-.form-field-label {
-  font-family: var(--tek-fonts-family-geist);
-  font-size: var(--tek-fonts-text-size-md);
-  line-height: var(--tek-fonts-text-line-height-md);
-  letter-spacing: 0.01em;
-  font-weight: 400;
-  color: var(--tek-color-input-label-default);
-  margin-bottom: var(--tek-spacing-s02, 2px);
+/* Field wrapper: label stacked above input */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tek-spacing-s02, 4px);
+  width: 100%;
 }
 
-.form-label-row {
+/* Two inputs side by side (given names) */
+.field-row {
+  display: flex;
+  gap: var(--tek-spacing-s05, 8px);
+  width: 100%;
+}
+
+.field-row .field { flex: 1 1 0; min-width: 0; }
+
+/* Sign-in link below the button */
+.signin-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: var(--tek-spacing-s02, 2px);
+  justify-content: center;
+  gap: var(--tek-spacing-s02, 4px);
+  font-family: var(--tek-fonts-family-geist);
+  font-size: var(--tek-fonts-text-size-xs);
+  line-height: var(--tek-fonts-text-line-height-xs);
+  color: var(--tek-color-input-helper-default);
 }
 
 @container page (min-width: 640px) {
@@ -143,33 +151,59 @@ body {
 
     <tek-modal>
 
-      <span slot="header">Sign In</span>
+      <span slot="header">Create Account</span>
 
-      <div id="signin-input-blocks" slot="input-blocks"
+      <div id="signup-input-blocks" slot="input-blocks"
            style="display:flex;flex-direction:column;gap:10px;width:100%;">
 
-        <div style="display:flex;flex-direction:column;gap:6px;padding-bottom:12px;">
-          <div class="form-field-label">Email</div>
-          <tek-input placeholder="Enter email" type="email"
-                     autocomplete="email" style="display:block;width:100%"></tek-input>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:6px;padding-bottom:12px;">
-          <div class="form-label-row">
-            <span class="form-field-label" style="margin-bottom:0">Password</span>
-            <tek-text-link href="#">Forgot password?</tek-text-link>
+        <div class="field-row">
+          <div class="field">
+            <tek-label>First name</tek-label>
+            <tek-input placeholder="First" type="text" autocomplete="given-name"
+                       style="display:block;width:100%"></tek-input>
           </div>
-          <tek-input placeholder="Enter password" type="password"
-                     autocomplete="current-password" style="display:block;width:100%"></tek-input>
+          <div class="field">
+            <tek-label>Last name</tek-label>
+            <tek-input placeholder="Last" type="text" autocomplete="family-name"
+                       style="display:block;width:100%"></tek-input>
+          </div>
         </div>
 
-        <tek-selector type="checkbox" label="Stay signed in"></tek-selector>
+        <div class="field">
+          <tek-label>Email</tek-label>
+          <tek-input placeholder="you@example.com" type="email" autocomplete="email"
+                     style="display:block;width:100%"></tek-input>
+        </div>
+
+        <div class="field">
+          <tek-label helper-text="Must be at least 8 characters">Password</tek-label>
+          <tek-input placeholder="Create a password" type="password" autocomplete="new-password"
+                     style="display:block;width:100%"></tek-input>
+        </div>
+
+        <div class="field" style="padding-bottom:4px;">
+          <tek-label>Confirm password</tek-label>
+          <tek-input placeholder="Re-enter password" type="password" autocomplete="new-password"
+                     style="display:block;width:100%"></tek-input>
+        </div>
+
+        <tek-selector id="terms-selector" type="checkbox"
+          label="I agree to the terms of service"></tek-selector>
 
       </div>
 
-      <div id="signin-action-blocks" slot="action-blocks"
-           style="width:100%;display:flex;flex-direction:column;gap:10px;">
-        <tek-button style="width:100%;display:block">Sign In</tek-button>
+      <div id="signup-action-blocks" slot="action-blocks"
+           style="width:100%;display:flex;flex-direction:column;gap:12px;">
+
+        <tek-button id="create-btn" inactive style="width:100%;display:block">
+          Create Account
+        </tek-button>
+
+        <div class="signin-row">
+          <span>Already have an account?</span>
+          <tek-text-link href="signin.html">Sign in</tek-text-link>
+        </div>
+
       </div>
 
     </tek-modal>
@@ -193,12 +227,11 @@ document.getElementById('theme-toggle').addEventListener('tek-change', e => {
   document.documentElement.setAttribute('data-theme', e.detail.checked ? 'light' : 'dark');
 });
 
-/* AutoAnimate */
-if (typeof autoAnimate !== 'undefined') {
-  autoAnimate(document.querySelector('.wrap'));
-  autoAnimate(document.getElementById('signin-input-blocks'));
-  autoAnimate(document.getElementById('signin-action-blocks'));
-}
+/* Terms checkbox gates the Create Account button */
+document.getElementById('terms-selector').addEventListener('tek-change', e => {
+  const btn = document.getElementById('create-btn');
+  e.detail.checked ? btn.removeAttribute('inactive') : btn.setAttribute('inactive', '');
+});
 </script>
 
 </body>

@@ -24,15 +24,39 @@ Figma Variables (dark + light modes)
       │  Token Push plugin — exports ALL Semantic modes in one push
       ▼
 packages/tokens/src/
-├── semantic/tokens.json         ← dark (mode index 0)
-└── semantic/tokens.light.json   ← light (mode index 1)
+├── primitives/          ← raw values (fonts, spacing, border, color)
+│   ├── color.json           managed by Token Push
+│   ├── fonts.json           managed by Token Push
+│   ├── spacing.json         managed by Token Push
+│   └── border.json          managed by Token Push
+└── semantic/            ← alias tokens (what components use)
+    ├── tokens.json          dark mode — managed by Token Push
+    └── tokens.light.json    light mode — managed by Token Push
       │
       │  publish-tokens.yml fires automatically
       ▼
-Style Dictionary → @bbkemp/tokens (GitHub Packages)
+Style Dictionary builds:
+  tek.primitives.css        — raw values only (:root)
+  tek.tokens.css            — dark semantic (:root)
+  tek.tokens.light.css      — light semantic ([data-theme="light"])
+  tek.tokens.combined.css   — dark + light semantic (all mode blocks)
+  tek.complete.css          — primitives + dark + light (recommended single import)
+      │
+      ▼
+@bbkemp/tokens (GitHub Packages)
 ```
 
 `dist/` is gitignored. Never committed to the repo.
+
+### Token layers
+
+| Layer | Files | What's in it | Import path |
+|---|---|---|---|
+| Primitives | `primitives/*.json` | Raw values — scale, palette, families | `@bbkemp/tokens/primitives/css` |
+| Semantic | `semantic/tokens*.json` | Alias tokens, mode-aware | `@bbkemp/tokens/css/combined` |
+| **Complete** | _(post-build)_ | **Both layers in one file** | **`@bbkemp/tokens/css/complete`** |
+
+Use `css/complete` unless you have a specific reason to split them.
 
 ---
 
@@ -94,17 +118,28 @@ Adding a new top-level Figma Variables collection beyond `Primitives` and `Seman
 **Who:** Developer
 
 1. Edit `packages/ui/src/`
-2. Build and test locally:
+2. Build and verify locally:
    ```bash
+   npm run build --workspace=packages/tokens   # if tokens also changed
    npm run build --workspace=packages/ui
+   python3 -m http.server 3000                 # then open signin.html / component-library.html
    ```
-3. Also update the matching inline definition in `component-library.html` and `signin.html` (these should stay in sync with `packages/ui/src/`)
-4. Open a PR against `main`
-5. Merge — `publish-ui.yml` fires automatically
+3. Open a PR against `main`
+4. Merge — `publish-ui.yml` fires automatically
 
-**Token changes first:** If a component change also needs new tokens, push tokens first and confirm they published before updating the component.
+The preview pages (`signin.html`, `signup.html`, `component-library.html`) import from
+`packages/*/dist/` directly — no inline component definitions to keep in sync. If your
+component change breaks a page, you'll see it immediately during local testing.
 
-**Typography:** Components use CSS custom properties for all type values (`--tek-fonts-*`). Hardcoded px sizes or font strings in components are a bug.
+**Token changes first:** If a component change also needs new tokens, push tokens first and
+confirm they published before updating the component.
+
+**Token adherence:** Components must use CSS custom properties for all design values:
+- Colors: `var(--tek-color-*)` — never hardcoded hex
+- Typography: `var(--tek-fonts-family-*)`, `var(--tek-fonts-text-size-*)` — never hardcoded strings or px
+- Spacing: `var(--tek-spacing-*)` — never hardcoded px in padding/gap/margin
+- Border radius: `var(--tek-borders-radius-*)` — never hardcoded px
+- Fallback values are required: `var(--tek-spacing-s05, 8px)` — for resilience when primitives aren't loaded
 
 ---
 

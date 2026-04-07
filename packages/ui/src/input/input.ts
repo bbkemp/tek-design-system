@@ -14,8 +14,8 @@ const STYLES = `
     display: block;
     background: var(--tek-color-input-background-default, #252525);
     border: 0.5px solid var(--tek-color-input-border-default, #7b7b7b);
-    border-radius: 5px;
-    padding: 8px 4px 8px 10px;
+    border-radius: var(--tek-borders-radius-03, 5px);
+    padding: var(--tek-spacing-s05, 8px) var(--tek-spacing-s02, 4px) var(--tek-spacing-s05, 8px) var(--tek-spacing-s06, 10px);
     width: 258px;
     box-sizing: border-box;
     transition: border-color 0.1s;

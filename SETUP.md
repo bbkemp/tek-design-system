@@ -45,7 +45,35 @@ npm install @bbkemp/tokens @bbkemp/ui
 
 ---
 
-## Step 3 — Verify GitHub Actions publishing is enabled
+## Step 3 — Add the imports to your project
+
+After installing, add these two lines to your app's entry point:
+
+**CSS (one import covers everything):**
+```css
+@import '@bbkemp/tokens/css/complete';
+```
+
+This gives you all primitive tokens (fonts, spacing, border) and semantic tokens (colors, dark + light mode). No second import needed.
+
+**JS:**
+```js
+import '@bbkemp/ui';  // registers all tek-* custom elements
+```
+
+**Fonts** — load Geist and Archivo from Google Fonts (or install the `geist` npm package):
+```html
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
+```
+
+**Theme toggle** — set `data-theme` on `<html>` to switch modes:
+```js
+document.documentElement.setAttribute('data-theme', 'light'); // or 'dark'
+```
+
+---
+
+## Step 5 — Verify GitHub Actions publishing is enabled
 
 1. Repo → **Settings → Actions → General**
 2. Under **Workflow permissions**, confirm **Read and write permissions** is selected
@@ -55,7 +83,7 @@ This is already configured — just verify it's active.
 
 ---
 
-## Step 4 — Set up the Token Push plugin
+## Step 6 — Set up the Token Push plugin
 
 Token Push is how Figma variable changes flow into the repo without touching a terminal.
 
@@ -108,11 +136,20 @@ npm update @bbkemp/tokens
 
 ## Viewing the preview pages
 
-Open `component-library.html` or `signin.html` directly in your browser — no server needed. Both pages are self-contained: tokens and components are inlined, so they work from `file://`.
+The preview pages import from the built package files in `dist/`. You must build first, then serve over HTTP (ES module imports require a server — `file://` won't work).
 
 ```bash
-open component-library.html   # macOS
-start component-library.html  # Windows
+# 1. Build packages
+npm run build --workspace=packages/tokens
+npm run build --workspace=packages/ui
+
+# 2. Serve
+python3 -m http.server 3000
+
+# 3. Open in browser
+# http://localhost:3000/signin.html
+# http://localhost:3000/signup.html
+# http://localhost:3000/component-library.html
 ```
 
 ---

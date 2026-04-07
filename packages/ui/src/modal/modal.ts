@@ -28,23 +28,23 @@ const STYLES = `
     display: block;
     background: var(--tek-color-modal-background-default, #181818);
     border: 0.25px solid var(--tek-color-modal-border-default, #7b7b7b);
-    border-radius: 11px;
-    padding: 32px;
+    border-radius: var(--tek-borders-radius-05, 11px);
+    padding: var(--tek-spacing-s13, 32px);
     width: 320px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: var(--tek-spacing-s08, 14px);
     overflow: hidden;
     box-shadow: 0px 2px 6px 0px var(--tek-color-ui-shadow, rgba(0,0,0,0.2));
   }
 
   .header {
     font-family: var(--tek-fonts-family-archivo, sans-serif);
-    font-size: 24px;
+    font-size: var(--tek-fonts-heading-size-md, 24px);
     font-weight: 600;
     font-variation-settings: 'wdth' 106;
-    line-height: 24px;
+    line-height: var(--tek-fonts-heading-line-height-md, 32px);
     letter-spacing: 0;
     color: var(--tek-color-modal-text-default, #ffffff);
   }
@@ -52,7 +52,7 @@ const STYLES = `
   .input-blocks {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--tek-spacing-s06, 10px);
     width: 256px;
   }
 
