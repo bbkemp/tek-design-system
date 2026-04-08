@@ -22,7 +22,7 @@
   In production: import '@bbkemp/ui'
   Requires: npm run build --workspace=packages/ui
 -->
-<script type="module" src="./packages/ui/dist/tek-ui.js?v=2"></script>
+<script type="module" src="./packages/ui/dist/tek-ui.js?v=3"></script>
 
 <!-- AutoAnimate — ambient DOM transitions (light DOM only) -->
 <script src="https://cdn.jsdelivr.net/npm/@formkit/auto-animate@latest/index.umd.js"></script>
@@ -132,8 +132,8 @@ tek-modal { flex-shrink: 0; }
   }
   .logo-header {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: var(--tek-spacing-s19, 64px);
+    left: var(--tek-spacing-s19, 64px);
     align-items: flex-start;
   }
   tek-modal {
