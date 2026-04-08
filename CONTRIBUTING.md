@@ -122,14 +122,15 @@ Adding a new top-level Figma Variables collection beyond `Primitives` and `Seman
    ```bash
    npm run build --workspace=packages/tokens   # if tokens also changed
    npm run build --workspace=packages/ui
-   python3 -m http.server 3000                 # then open signin.html / component-library.html
+   # VS Code Live Server (recommended) or: python3 -m http.server 3000
+   # then open signin.html / signup.html / component-library.html
    ```
 3. Open a PR against `main`
 4. Merge — `publish-ui.yml` fires automatically
 
-The preview pages (`signin.html`, `signup.html`, `component-library.html`) import from
-`packages/*/dist/` directly — no inline component definitions to keep in sync. If your
-component change breaks a page, you'll see it immediately during local testing.
+`signin.html` and `signup.html` import from `packages/*/dist/` directly — if your component
+change breaks those pages, you'll see it immediately during local testing.
+`component-library.html` currently uses inline component definitions for demo flexibility.
 
 **Token changes first:** If a component change also needs new tokens, push tokens first and
 confirm they published before updating the component.
@@ -207,25 +208,36 @@ Patch version bumped automatically on every publish.
 
 ## Working locally
 
-```bash
-git pull origin main
+All code changes go through branches and pull requests — never commit directly to `main`.
 
-# Make changes
-git add .
+```bash
+git checkout main && git pull origin main
+git checkout -b feat/your-change-name
+
+# Make changes, then:
+git add <specific files>
 git commit -m "type: description"
-git push
+git push -u origin feat/your-change-name
+```
+
+Then open a pull request on GitHub. After review, merge from the GitHub UI.
+
+After merging, update your local main:
+```bash
+git checkout main && git pull origin main
 ```
 
 ### Plugin updates
 
 After editing files in `figma-token-push/`:
 ```bash
+git checkout -b chore/update-token-push
 git add figma-token-push/
 git commit -m "chore: update Token Push plugin"
-git push
+git push -u origin chore/update-token-push
 ```
 
-Then **reload** in Figma Desktop:
+Open a PR, merge, then **reload** in Figma Desktop:
 **Plugins → Development → Token Push → right-click → Reload**
 
 No re-import from manifest needed unless you’re setting up a new machine.

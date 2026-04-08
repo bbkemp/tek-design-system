@@ -73,7 +73,7 @@ document.documentElement.setAttribute('data-theme', 'light'); // or 'dark'
 
 ---
 
-## Step 5 — Verify GitHub Actions publishing is enabled
+## Step 4 — Verify GitHub Actions publishing is enabled
 
 1. Repo → **Settings → Actions → General**
 2. Under **Workflow permissions**, confirm **Read and write permissions** is selected
@@ -83,7 +83,7 @@ This is already configured — just verify it's active.
 
 ---
 
-## Step 6 — Set up the Token Push plugin
+## Step 5 — Set up the Token Push plugin
 
 Token Push is how Figma variable changes flow into the repo without touching a terminal.
 
@@ -143,13 +143,15 @@ The preview pages import from the built package files in `dist/`. You must build
 npm run build --workspace=packages/tokens
 npm run build --workspace=packages/ui
 
-# 2. Serve
+# 2. Serve (pick one)
+# VS Code Live Server (recommended) — right-click any .html → "Open with Live Server"
+# Or Python:
 python3 -m http.server 3000
 
 # 3. Open in browser
-# http://localhost:3000/signin.html
-# http://localhost:3000/signup.html
-# http://localhost:3000/component-library.html
+# http://localhost:5500/signin.html        (Live Server)
+# http://localhost:5500/signup.html
+# http://localhost:5500/component-library.html
 ```
 
 ---
@@ -170,8 +172,10 @@ tek-design-system/
 │   └── publish-ui.yml      triggers on ui/src/** changes
 ├── figma-token-push/   Token Push plugin source
 ├── qt/                 Qt/QSS translation layer (not required for web)
+├── img/                Static assets (logos, background video)
 ├── component-library.html
-└── signin.html
+├── signin.html
+└── signup.html
 ```
 
 ---
