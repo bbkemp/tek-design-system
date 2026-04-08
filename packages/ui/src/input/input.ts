@@ -60,7 +60,12 @@ export class TekInput extends HTMLElement {
   private _shadow = this.attachShadow({ mode: 'open' });
 
   connectedCallback()    { this._render(); }
-  attributeChangedCallback() { this._render(); }
+  attributeChangedCallback(name: string) {
+    // 'state' changes are handled entirely by CSS (:host([state=...]) selectors).
+    // Re-rendering on state change destroys the focused <input> element, making
+    // typing impossible. Only re-render for structural attribute changes.
+    if (name !== 'state') this._render();
+  }
 
   private _render() {
     const isMulti = this.height === 'double' || this.height === 'triple';
