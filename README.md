@@ -1,6 +1,6 @@
 # Tek Design System
 
-![tokens](https://img.shields.io/badge/@bbkemp%2Ftokens-v1.0.0-33baea?style=flat-square) ![ui](https://img.shields.io/badge/@bbkemp%2Fui-v1.0.10-33baea?style=flat-square) ![status](https://img.shields.io/badge/status-stable-42b54c?style=flat-square)
+![tokens](https://img.shields.io/badge/@bbkemp%2Ftokens-stable-33baea?style=flat-square) ![ui](https://img.shields.io/badge/@bbkemp%2Fui-stable-33baea?style=flat-square) ![status](https://img.shields.io/badge/status-stable-42b54c?style=flat-square)
 
 A token-driven, framework-agnostic design system for Tektronix. Built on Figma Variables → W3C design tokens → Web Components, with a fully automated publish pipeline.
 
@@ -468,14 +468,18 @@ npm run build --workspace=packages/ui        # generates dist/tek-ui.js
 Then open any preview page via a local server (required for ES module imports):
 
 ```bash
+# VS Code Live Server (recommended — auto-reloads on save, port 5500)
+# Right-click any .html file → "Open with Live Server"
+
+# Or use Python's built-in server:
 python3 -m http.server 3000
 # open http://localhost:3000/signin.html
 # open http://localhost:3000/signup.html
 # open http://localhost:3000/component-library.html
 ```
 
-The preview pages import directly from `./packages/tokens/dist/` and `./packages/ui/dist/` —
-they consume the real built packages, not inline reimplementations. This means they function
-as integration tests: if a token or component is broken, the pages break too.
+`signin.html` and `signup.html` import from `./packages/tokens/dist/` and `./packages/ui/dist/` —
+they consume the real built packages and function as integration tests. `component-library.html`
+currently uses inline component definitions for demo flexibility.
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) and [CHANGELOG.md](./CHANGELOG.md).
