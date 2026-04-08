@@ -31,7 +31,7 @@ const STYLES = `
     background: var(--tek-color-modal-background-default, #181818);
     border: 0.25px solid var(--tek-color-modal-border-default, #7b7b7b);
     border-radius: var(--tek-borders-radius-05, 11px);
-    padding: var(--tek-spacing-s13, 32px);
+    padding: var(--tek-modal-padding, var(--tek-spacing-s13, 32px));
     width: 100%;
     max-width: 360px;
     box-sizing: border-box;

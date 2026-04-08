@@ -97,6 +97,7 @@ export class TekButton extends HTMLElement {
   connectedCallback() {
     this.setAttribute('role', 'button');
     this.setAttribute('tabindex', (this.inactive || this.disabled) ? '-1' : '0');
+    if (this.inactive || this.disabled) this.setAttribute('aria-disabled', 'true');
     this.addEventListener('keydown', (e: KeyboardEvent) => {
       if (e.key === ' ' || e.key === 'Enter') {
         e.preventDefault();
@@ -113,7 +114,16 @@ export class TekButton extends HTMLElement {
     this._render();
   }
 
-  attributeChangedCallback() { this._render(); }
+  attributeChangedCallback() {
+    this._render();
+    const isDisabled = this.inactive || this.disabled;
+    this.setAttribute('tabindex', isDisabled ? '-1' : '0');
+    if (isDisabled) {
+      this.setAttribute('aria-disabled', 'true');
+    } else {
+      this.removeAttribute('aria-disabled');
+    }
+  }
 
   private _render() {
     this._shadow.innerHTML = `
