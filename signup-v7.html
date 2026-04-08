@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TekCloud — Create Account</title>
+
+<!-- Fonts — Geist (body/UI) + Archivo (headings/buttons) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
+
+<!--
+  @bbkemp/tokens — complete build (primitives + dark/light semantic)
+  In production: @import '@bbkemp/tokens/css/complete'
+  Requires: npm run build --workspace=packages/tokens
+-->
+<link rel="stylesheet" href="./packages/tokens/dist/tek.complete.css">
+
+<!-- Shared page layout — reset, body, background, page-wrap, container queries -->
+<link rel="stylesheet" href="./page-layout.css">
+
+<!--
+  @bbkemp/ui — Web Components
+  In production: import '@bbkemp/ui'
+  Requires: npm run build --workspace=packages/ui
+-->
+<script type="module" src="./packages/ui/dist/tek-ui.js?v=3"></script>
+
+<!-- AutoAnimate — ambient DOM transitions (light DOM only) -->
+<script src="https://cdn.jsdelivr.net/npm/@formkit/auto-animate@latest/index.umd.js"></script>
+
+<style>
+/* ============================================================
+   PAGE-SPECIFIC OVERRIDES ONLY
+   Shared layout lives in page-layout.css.
+   This block is signup-specific additions only.
+============================================================ */
+
+/* Name fields: stacked on mobile, side-by-side at tablet+ (from v5) */
+@container page (max-width: 639px) {
+  .field-row { flex-direction: column; gap: var(--tek-spacing-s09, 16px); }
+}
+
+/* Mobile: tighter modal padding via the --tek-modal-padding hook */
+@container page (max-width: 383px) {
+  tek-modal { --tek-modal-padding: var(--tek-spacing-s11, 24px); }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-gradient" aria-hidden="true"></div>
+<video class="bg-video" autoplay muted loop playsinline aria-hidden="true">
+  <source src="./img/bg-mov.mp4" type="video/mp4">
+</video>
+
+<div class="page-wrap">
+
+  <div class="wrap">
+
+    <header class="logo-header">
+      <div class="logo-lockup" role="img" aria-label="TekCloud">
+        <img class="logo-icon" src="./img/IconLogo.svg" alt="">
+        <img class="logo-type" src="./img/TypeLogo.svg" alt="TekCloud">
+      </div>
+    </header>
+
+    <tek-modal>
+
+      <span slot="header">Create Account</span>
+
+      <div id="signup-input-blocks" slot="input-blocks"
+           style="display:flex;flex-direction:column;gap:var(--tek-spacing-s09,16px);width:100%;">
+
+        <!-- First Name / Last Name — side by side at tablet+, stacked on mobile -->
+        <div class="field-row">
+          <div class="field">
+            <tek-label id="label-first">First name</tek-label>
+            <tek-input id="input-first" placeholder="First" type="text"
+                       inputmode="text" autocomplete="given-name"
+                       style="display:block;width:100%"></tek-input>
+          </div>
+          <div class="field">
+            <tek-label id="label-last">Last name</tek-label>
+            <tek-input id="input-last" placeholder="Last" type="text"
+                       inputmode="text" autocomplete="family-name"
+                       style="display:block;width:100%"></tek-input>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="field">
+          <tek-label id="label-email">Email</tek-label>
+          <tek-input id="input-email" placeholder="you@example.com" type="email"
+                     inputmode="email" autocomplete="email"
+                     style="display:block;width:100%"></tek-input>
+        </div>
+
+        <!-- Password with helper text and character count -->
+        <div class="field">
+          <tek-label id="label-password" helper-text="Must be 8+ characters"
+                     char-count="0/128">Password</tek-label>
+          <tek-input id="input-password" placeholder="Create a password" type="password"
+                     autocomplete="new-password"
+                     style="display:block;width:100%"></tek-input>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="field">
+          <tek-label id="label-confirm">Confirm password</tek-label>
+          <tek-input id="input-confirm" placeholder="Re-enter password" type="password"
+                     autocomplete="new-password"
+                     style="display:block;width:100%"></tek-input>
+        </div>
+
+        <!-- Terms checkbox -->
+        <tek-selector id="terms-selector" type="checkbox"
+          label="I agree to the Terms of Service and Privacy Policy" style="width:100%"></tek-selector>
+
+      </div>
+
+      <div id="signup-action-blocks" slot="action-blocks"
+           style="width:100%;display:flex;flex-direction:column;gap:var(--tek-spacing-s06,10px);">
+
+        <tek-button id="create-btn" inactive style="width:100%;display:block">
+          Create Account
+        </tek-button>
+
+        <div class="signin-row">
+          <span>Already have an account?</span>
+          <tek-text-link href="signin.html">Sign in</tek-text-link>
+        </div>
+
+      </div>
+
+    </tek-modal>
+
+  </div>
+
+  <tek-footer>
+    <div slot="left" style="display:flex;align-items:center;gap:4px;">
+      <span style="font-size:16px;line-height:1;" aria-hidden="true">🌚</span>
+      <tek-toggle id="theme-toggle" aria-label="Toggle light mode"></tek-toggle>
+      <span style="font-size:16px;line-height:1;" aria-hidden="true">🌝</span>
+    </div>
+    ©2026 Tektronix. All Rights Reserved.
+  </tek-footer>
+
+</div>
+
+<script type="module">
+/* ============================================================
+   VALIDATION ENGINE (from v3, streamlined per v2/v6 review)
+   Validates on blur. Create Account button stays inactive
+   until ALL fields are valid AND terms are checked.
+============================================================ */
+
+const els = {
+  first:    document.getElementById('input-first'),
+  last:     document.getElementById('input-last'),
+  email:    document.getElementById('input-email'),
+  password: document.getElementById('input-password'),
+  confirm:  document.getElementById('input-confirm'),
+  terms:    document.getElementById('terms-selector'),
+  btn:      document.getElementById('create-btn'),
+  lblFirst:    document.getElementById('label-first'),
+  lblLast:     document.getElementById('label-last'),
+  lblEmail:    document.getElementById('label-email'),
+  lblPassword: document.getElementById('label-password'),
+  lblConfirm:  document.getElementById('label-confirm'),
+};
+
+const touched = { first: false, last: false, email: false, password: false, confirm: false };
+const valid   = { first: false, last: false, email: false, password: false, confirm: false, terms: false };
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/* --- helpers --- */
+
+function getValue(tekInput) {
+  return tekInput.getAttribute('value') || '';
+}
+
+function setFieldError(tekInput, label, isError, message) {
+  tekInput.setAttribute('state', isError ? 'error' : 'default');
+  if (isError && message) {
+    label.setAttribute('helper-text', message);
+    label.setAttribute('helper-state', 'error');
+  } else {
+    /* Restore default helper or clear it */
+    const defaultHelper = label.dataset.defaultHelper;
+    if (defaultHelper) {
+      label.setAttribute('helper-text', defaultHelper);
+      label.removeAttribute('helper-state');
+    } else {
+      label.removeAttribute('helper-text');
+      label.removeAttribute('helper-state');
+    }
+  }
+}
+
+/* Store default helper-text values so we can restore them after errors clear */
+document.querySelectorAll('tek-label[helper-text]').forEach(lbl => {
+  lbl.dataset.defaultHelper = lbl.getAttribute('helper-text');
+});
+
+/* --- field validators --- */
+
+function validateFirst() {
+  valid.first = getValue(els.first).trim().length > 0;
+  if (touched.first) setFieldError(els.first, els.lblFirst, !valid.first, 'First name is required');
+}
+
+function validateLast() {
+  valid.last = getValue(els.last).trim().length > 0;
+  if (touched.last) setFieldError(els.last, els.lblLast, !valid.last, 'Last name is required');
+}
+
+function validateEmail() {
+  const val = getValue(els.email).trim();
+  if (val.length === 0) {
+    valid.email = false;
+    if (touched.email) setFieldError(els.email, els.lblEmail, true, 'Email is required');
+  } else if (!EMAIL_RE.test(val)) {
+    valid.email = false;
+    if (touched.email) setFieldError(els.email, els.lblEmail, true, 'Enter a valid email address');
+  } else {
+    valid.email = true;
+    if (touched.email) setFieldError(els.email, els.lblEmail, false);
+  }
+}
+
+function validatePassword() {
+  const val = getValue(els.password);
+  /* Update character count on label */
+  els.lblPassword.setAttribute('char-count', `${val.length}/128`);
+
+  valid.password = val.length >= 8;
+  if (touched.password) {
+    setFieldError(els.password, els.lblPassword, !valid.password, 'Password must be at least 8 characters');
+  }
+  /* Re-validate confirm when password changes */
+  if (touched.confirm) validateConfirm();
+}
+
+function validateConfirm() {
+  const pw  = getValue(els.password);
+  const val = getValue(els.confirm);
+  if (val.length === 0) {
+    valid.confirm = false;
+    if (touched.confirm) setFieldError(els.confirm, els.lblConfirm, true, 'Please confirm your password');
+  } else if (val !== pw) {
+    valid.confirm = false;
+    if (touched.confirm) setFieldError(els.confirm, els.lblConfirm, true, 'Passwords do not match');
+  } else {
+    valid.confirm = true;
+    if (touched.confirm) setFieldError(els.confirm, els.lblConfirm, false);
+  }
+}
+
+/* --- button gate --- */
+
+function updateButton() {
+  const allValid = Object.values(valid).every(Boolean);
+  allValid ? els.btn.removeAttribute('inactive') : els.btn.setAttribute('inactive', '');
+}
+
+/* --- wire up events --- */
+
+const fieldMap = [
+  [els.first,    'first',    validateFirst],
+  [els.last,     'last',     validateLast],
+  [els.email,    'email',    validateEmail],
+  [els.password, 'password', validatePassword],
+  [els.confirm,  'confirm',  validateConfirm],
+];
+
+fieldMap.forEach(([input, key, validator]) => {
+  input.addEventListener('tek-input', () => { validator(); updateButton(); });
+  input.addEventListener('focusout', () => { touched[key] = true; validator(); updateButton(); });
+});
+
+/* Terms checkbox */
+els.terms.addEventListener('tek-change', e => {
+  valid.terms = e.detail.checked;
+  updateButton();
+});
+
+/* --- Theme toggle --- */
+
+document.getElementById('theme-toggle').addEventListener('tek-change', e => {
+  document.documentElement.setAttribute('data-theme', e.detail.checked ? 'light' : 'dark');
+});
+
+/* --- AutoAnimate --- */
+
+if (typeof autoAnimate !== 'undefined') {
+  autoAnimate(document.querySelector('.wrap'));
+  autoAnimate(document.getElementById('signup-input-blocks'));
+  autoAnimate(document.getElementById('signup-action-blocks'));
+}
+</script>
+
+</body>
+</html>
