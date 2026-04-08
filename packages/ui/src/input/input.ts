@@ -16,7 +16,7 @@ const STYLES = `
     border: 0.5px solid var(--tek-color-input-border-default, #7b7b7b);
     border-radius: var(--tek-borders-radius-03, 5px);
     padding: var(--tek-spacing-s05, 8px) var(--tek-spacing-s02, 4px) var(--tek-spacing-s05, 8px) var(--tek-spacing-s06, 10px);
-    width: 258px;
+    width: 100%;
     box-sizing: border-box;
     transition: border-color 0.1s;
   }
@@ -33,8 +33,8 @@ const STYLES = `
     border: none;
     outline: none;
     font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
-    font-size: 12px;
-    line-height: 15px;
+    font-size: var(--tek-fonts-text-size-lg, 14px);
+    line-height: var(--tek-fonts-text-line-height-lg, 20px);
     color: var(--tek-color-input-text-default, #979797);
     resize: none;
     padding: 0;
