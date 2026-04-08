@@ -1,7 +1,7 @@
 /**
  * tek-modal
  * Figma: DS-v2 → Modal (node 7003:2158)
- * Dimensions: max-width 320px, padding 32px, gap 14px, radius 11px, border 0.25px
+ * Dimensions: max-width 360px, padding 32px, gap 14px, radius 11px, border 0.25px
  * Shadow: 0px 2px 6px 0px rgba(0,0,0,0.2)
  *
  * Tokens:
@@ -33,7 +33,7 @@ const STYLES = `
     border-radius: var(--tek-borders-radius-05, 11px);
     padding: var(--tek-spacing-s13, 32px);
     width: 100%;
-    max-width: 320px;
+    max-width: 360px;
     box-sizing: border-box;
     overflow: clip;
     box-shadow: 0px 2px 6px 0px var(--tek-color-ui-shadow, rgba(0,0,0,0.2));
