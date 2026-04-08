@@ -47,6 +47,7 @@ jobs:
         with:
           commit_message: 'chore(ui): build + bump version [skip ci]'
           file_pattern: 'packages/ui/package.json packages/ui/dist/*'
+          add_options: '-f'
           tagging_message: 'v${{ steps.version.outputs.version }}'
 
       - name: Publish to GitHub Packages

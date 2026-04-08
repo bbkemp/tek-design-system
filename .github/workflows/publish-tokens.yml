@@ -48,6 +48,7 @@ jobs:
         with:
           commit_message: 'chore(tokens): build + bump version [skip ci]'
           file_pattern: 'packages/tokens/package.json packages/tokens/dist/*'
+          add_options: '-f'
 
       - name: Publish to GitHub Packages
         working-directory: packages/tokens
