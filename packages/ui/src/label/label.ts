@@ -2,8 +2,7 @@
  * tek-label
  *
  * Figma: DS-v2 → Label (node 780:10209)
- * Font: Geist Regular 12px lh 12px
- * Width: 258px
+ * Font: Geist Regular 13px lh 16px (text/size/md)
  * Variants: Optional | CharacterCount | HelperText | Link
  *
  * Tokens:
@@ -42,11 +41,11 @@ const STYLES = `
     flex: 1 0 0;
     flex-direction: column;
     font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
-    font-size: 12px;
+    font-size: var(--tek-fonts-text-size-md, 13px);
     font-style: normal;
     font-weight: 400;
     justify-content: center;
-    line-height: 12px;
+    line-height: var(--tek-fonts-text-line-height-md, 16px);
     min-height: 1px;
     min-width: 1px;
     color: var(--tek-color-input-label-default, #cccccc);

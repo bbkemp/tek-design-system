@@ -8,7 +8,7 @@
  *   --tek-color-button-border-default|hover|inactive
  *   --tek-color-button-text-default|hover|inactive
  *
- * Primary:   px-24 py-12, Archivo Medium 16px, ls 2, lh 18, radius full, border 1px
+ * Primary:   px-24 py-12, Archivo SemiBold 600 16px, lh 24px, radius full, border 1px
  * Secondary: px-14 py-6,  Archivo Regular 13px, ls 1, lh 15, radius full, no border width token
  *
  * Usage:
@@ -21,6 +21,7 @@ const STYLES = `
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
     border-radius: var(--tek-borders-radius-full, 9999px);
     border: 1px solid var(--tek-color-button-border-default, #33baea);
     background: var(--tek-color-button-background-default, #1e1e1e);
@@ -37,12 +38,14 @@ const STYLES = `
   }
 
   .label {
+    display: block;
+    width: 100%;
     font-family: var(--tek-fonts-family-archivo, sans-serif);
     font-size: var(--tek-fonts-heading-size-xs, 16px);
-    font-weight: 578;
+    font-weight: 600;
     font-style: normal;
     font-variation-settings: 'wdth' 106;
-    line-height: 18px;
+    line-height: var(--tek-fonts-heading-line-height-xs, 24px);
     letter-spacing: 0.32px;
     color: var(--tek-color-button-text-default, #cccccc);
     text-align: center;
@@ -53,7 +56,7 @@ const STYLES = `
   :host([variant="secondary"]) .label {
     font-size: var(--tek-fonts-text-size-md, 13px);
     font-weight: 534;
-    line-height: 15px;
+    line-height: var(--tek-fonts-text-line-height-md, 16px);
     letter-spacing: 0.13px;
   }
 

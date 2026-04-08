@@ -2,7 +2,7 @@
  * tek-text-link
  * Figma: DS-v2 → TextLink (node 7011:150)
  * States: Default | Hover
- * Font: Geist Regular 10px, lh 15px
+ * Font: Geist Regular 10px, lh 12px (text/size/xs)
  *
  * Tokens:
  *   --tek-color-text-link-default
@@ -19,7 +19,7 @@ const STYLES = `
     font-size: 10px;
     font-weight: 400;
     font-style: normal;
-    line-height: 15px;
+    line-height: var(--tek-fonts-text-line-height-xs, 12px);
     color: var(--tek-color-text-link-default, #33baea);
     text-decoration: none;
     cursor: pointer;
