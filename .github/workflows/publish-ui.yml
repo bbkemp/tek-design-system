@@ -37,14 +37,29 @@ jobs:
         working-directory: packages/ui
         run: npm version patch --no-git-tag-version
 
+      - name: Get new version
+        id: version
+        working-directory: packages/ui
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
       - name: Commit version bump
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore(ui): bump version [skip ci]'
           file_pattern: 'packages/ui/package.json'
+          tagging_message: 'v${{ steps.version.outputs.version }}'
 
       - name: Publish to GitHub Packages
         working-directory: packages/ui
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: '@bbkemp/ui v${{ steps.version.outputs.version }}'
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
