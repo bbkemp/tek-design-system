@@ -65,8 +65,8 @@ body {
 }
 
 .logo-lockup { display: flex; align-items: center; gap: var(--tek-spacing-s06, 10px); }
-.logo-icon   { height: 60px; width: auto; display: block; }
-.logo-type   { height: 26px; width: auto; display: block; }
+.logo-icon   { height: 105px; width: auto; display: block; }
+.logo-type   { height: 16px; width: auto; display: block; }
 
 tek-modal { flex-shrink: 0; }
 
@@ -116,8 +116,7 @@ tek-modal { flex-shrink: 0; }
 
 @container page (min-width: 640px) {
   .wrap { padding: var(--tek-spacing-s17, 48px) var(--tek-spacing-s19, 64px) var(--tek-spacing-s11, 24px); }
-  .logo-icon { height: 90px; }
-  .logo-type { height: 38px; }
+  /* logo stays same size as mobile — both use 105/16 from Figma */
 }
 
 @container page (min-width: 1280px) {
@@ -134,7 +133,7 @@ tek-modal { flex-shrink: 0; }
     align-items: flex-start;
   }
   .logo-icon { height: 128px; }
-  .logo-type { height: 52px; }
+  .logo-type { height: 23px; }
   tek-modal {
     --tek-modal-heading-size: var(--tek-fonts-heading-size-lg, 32px);
     --tek-modal-heading-line-height: var(--tek-fonts-heading-line-height-lg, 40px);
