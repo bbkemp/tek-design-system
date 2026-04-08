@@ -1,6 +1,6 @@
 # Tek Design System
 
-![tokens](https://img.shields.io/badge/@bbkemp%2Ftokens-v1.0.0-33baea?style=flat-square) ![ui](https://img.shields.io/badge/@bbkemp%2Fui-v1.0.0-33baea?style=flat-square) ![status](https://img.shields.io/badge/status-stable-42b54c?style=flat-square)
+![tokens](https://img.shields.io/badge/@bbkemp%2Ftokens-v1.0.0-33baea?style=flat-square) ![ui](https://img.shields.io/badge/@bbkemp%2Fui-v1.0.10-33baea?style=flat-square) ![status](https://img.shields.io/badge/status-stable-42b54c?style=flat-square)
 
 A token-driven, framework-agnostic design system for Tektronix. Built on Figma Variables → W3C design tokens → Web Components, with a fully automated publish pipeline.
 
@@ -395,9 +395,10 @@ blockquote, figure, figcaption, dl, dt, dd, pre { margin: 0; padding: 0; }
 
 ## tek-input state management — developer note
 
-- **`_render()`** — full `innerHTML` replacement. Called on `connectedCallback` and `attributeChangedCallback`.
+- **`_render()`** — full `innerHTML` replacement. Called on `connectedCallback` and structural `attributeChangedCallback` changes only.
+- **State changes (`focus`, `filled`, `default`) do not trigger `_render()`** — they are handled entirely by `:host([state=...])` CSS selectors. Re-rendering on state change would destroy the focused `<input>` mid-typing.
 
-Focus/blur listeners are attached after each render. They never call `setAttribute('state', …)` — state is tracked internally via `_st` and a full `_render()` is triggered only when structural attributes change.
+Focus/blur listeners are re-attached after each `_render()`. They update the `state` attribute directly; CSS reflects the change immediately without touching the DOM.
 
 ---
 

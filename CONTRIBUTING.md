@@ -143,13 +143,13 @@ confirm they published before updating the component.
 
 **Shadow DOM `:host` padding:** Components define their padding via `:host { padding: ... }` in the shadow DOM stylesheet. This works correctly — **unless** the consuming page uses a broad CSS reset like `* { padding: 0 }`. Light DOM `*` styles targeting a custom element host always override shadow DOM `:host` rules. See the CSS reset section in README for the correct pattern.
 
-**`tek-modal` in flex containers:** `tek-modal` has a fixed intrinsic width (320px) and grows to fit its content. When placed inside a flex column container, always add `flex-shrink: 0` so the modal doesn't compress on short viewports — `overflow: clip` on the host will otherwise hide action buttons:
+**`tek-modal` in flex containers:** `tek-modal` has a max-width of 360px and grows to fit its content. When placed inside a flex column container, always add `flex-shrink: 0` so the modal doesn't compress on short viewports — `overflow: clip` on the host will otherwise hide action buttons:
 
 ```css
 tek-modal { flex-shrink: 0; }
 ```
 
-**`width: 100%` on components inside `tek-modal`:** `tek-input`, `tek-label`, and slotted divs should have `style="display:block;width:100%"` or use a flex column wrapper at full width so they fill the modal's 256px content area rather than using their component's default fixed widths.
+**`width: 100%` on components inside `tek-modal`:** `tek-input`, `tek-label`, and slotted divs should have `style="display:block;width:100%"` or use a flex column wrapper at full width so they fill the modal's content area rather than using their component's default fixed widths.
 
 ---
 

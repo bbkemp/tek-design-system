@@ -7,6 +7,24 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.0.10] — 2026-04-08
+
+### Fixed — `@bbkemp/ui`
+
+- **`tek-input`** — `attributeChangedCallback` no longer calls `_render()` on `state` changes. Re-rendering destroyed the focused `<input>` element mid-typing, making form fields non-functional. Visual state continues to be handled by `:host([state=...])` CSS selectors.
+- **`tek-checkbox`** — Rewrote render to use flexbox centering and conditional SVG injection (only inserts checkmark SVG when `checked`). Previous implementation used absolute-positioned `.icon` with `display:none/block` toggling, which produced rendering artifacts in some browsers.
+- **`tek-modal`** — Corrected `max-width` from 320px to 360px to match Figma spec.
+- **`tek-button`** — Corrected label `font-weight` to 600 and `line-height` to `var(--tek-fonts-heading-line-height-xs)`; added `text-align: center` to `:host` so centering survives light DOM `display` overrides.
+
+### Fixed — `signin.html`
+
+- Modal heading is now responsive: 24px (`heading-size-md`) at mobile/tablet, 32px (`heading-size-lg`) at desktop — driven by `--tek-modal-heading-size` custom property override in the 1280px container query.
+- Logo sizes corrected: 60px icon / 26px wordmark at mobile, 90px / 38px at tablet+.
+- Desktop layout: logo positioned `absolute` at `top: 64px; left: 64px` (matching wrap padding token); modal centered freely in remaining space.
+- ES module cache-busting query param added to `<script src>`.
+
+---
+
 ## [1.0.0] — 2026-03-31
 
 First stable release. The pipeline from Figma Variables to published packages is fully automated and end-to-end tested.
