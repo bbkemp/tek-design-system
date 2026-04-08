@@ -1,6 +1,6 @@
 .DS_Store
 .vscode/settings.json
 node_modules/
-packages/*/dist/
+# dist/ is committed by CI so `git pull` gives you ready-to-use built files
 package-lock.json
 .claude/

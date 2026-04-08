@@ -42,11 +42,11 @@ jobs:
         working-directory: packages/ui
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
-      - name: Commit version bump
+      - name: Commit built files + version bump
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'chore(ui): bump version [skip ci]'
-          file_pattern: 'packages/ui/package.json'
+          commit_message: 'chore(ui): build + bump version [skip ci]'
+          file_pattern: 'packages/ui/package.json packages/ui/dist/*'
           tagging_message: 'v${{ steps.version.outputs.version }}'
 
       - name: Publish to GitHub Packages

@@ -1,0 +1,358 @@
+/* @bbkemp/tokens — complete (primitives + dark/light semantic) — auto-generated. Do not edit.
+ *
+ * Single-import file. Includes everything:
+ *   - All primitives: fonts, spacing, border, color palette
+ *   - Dark semantic tokens (default)
+ *   - Light semantic tokens via OS preference and [data-theme] override
+ *
+ * Usage:
+ *   @import '@bbkemp/tokens/css/complete';
+ *
+ * For fine-grained control:
+ *   @import '@bbkemp/tokens/primitives/css';   — primitives only
+ *   @import '@bbkemp/tokens/css/combined';     — semantic only (dark + light)
+ */
+
+/* ── 1. Primitives (:root) ───────────────────────────────────────────────── */
+/* Raw values — fonts, spacing, border radius/width, color palette.          */
+/* These do not change between dark and light mode.                           */
+:root {
+  --tek-borders-width-10: 8px;
+  --tek-borders-width-11: 9px;
+  --tek-borders-width-12: 10px;
+  --tek-borders-width-13: 11px;
+  --tek-borders-width-14: 12px;
+  --tek-borders-width-15: 13px;
+  --tek-borders-width-16: 14px;
+  --tek-borders-width-none: 0px;
+  --tek-borders-width-01: 0.5px;
+  --tek-borders-width-02: 1px;
+  --tek-borders-width-03: 1.5px;
+  --tek-borders-width-04: 2px;
+  --tek-borders-width-05: 3px;
+  --tek-borders-width-06: 4px;
+  --tek-borders-width-07: 5px;
+  --tek-borders-width-08: 6px;
+  --tek-borders-width-09: 7px;
+  --tek-borders-radius-10: 21px;
+  --tek-borders-radius-11: 25px;
+  --tek-borders-radius-12: 25px;
+  --tek-borders-radius-13: 33px;
+  --tek-borders-radius-14: 41px;
+  --tek-borders-radius-15: 49px;
+  --tek-borders-radius-16: 57px;
+  --tek-borders-radius-none: 0px;
+  --tek-borders-radius-01: 1px;
+  --tek-borders-radius-02: 3px;
+  --tek-borders-radius-03: 5px;
+  --tek-borders-radius-04: 7px;
+  --tek-borders-radius-05: 11px;
+  --tek-borders-radius-06: 13px;
+  --tek-borders-radius-07: 13px;
+  --tek-borders-radius-08: 15px;
+  --tek-borders-radius-09: 17px;
+  --tek-borders-radius-full: 9999px;
+  --tek-colors-brand-tek-blue: #33baea;
+  --tek-colors-neutral-100: #cccccc;
+  --tek-colors-neutral-200: #afafaf;
+  --tek-colors-neutral-300: #979797;
+  --tek-colors-neutral-400: #7b7b7b;
+  --tek-colors-neutral-450: #646464;
+  --tek-colors-neutral-500: #454545;
+  --tek-colors-neutral-600: #333333;
+  --tek-colors-neutral-700: #252525;
+  --tek-colors-neutral-800: #1e1e1e;
+  --tek-colors-neutral-900: #181818;
+  --tek-colors-neutral-black: #000000;
+  --tek-colors-neutral-white: #ffffff;
+  --tek-colors-ui-error-red: #e74848;
+  --tek-colors-ui-success-green: #42b54c;
+  --tek-colors-ui-warning-yellow: #e0b732;
+  --tek-colors-ui-shadow: #00000033;
+  --tek-colors-ui-backdrop-dark: #181818cc;
+  --tek-colors-ui-backdrop-light: #cccccccc;
+  --tek-fonts-family-archivo: Archivo;
+  --tek-fonts-family-geist: Geist;
+  --tek-fonts-family-mono: Geist Mono;
+  --tek-fonts-heading-size-5xl: 72px;
+  --tek-fonts-heading-size-4xl: 64px;
+  --tek-fonts-heading-size-3xl: 56px;
+  --tek-fonts-heading-size-2xl: 48px;
+  --tek-fonts-heading-size-xl: 40px;
+  --tek-fonts-heading-size-lg: 32px;
+  --tek-fonts-heading-size-md: 24px;
+  --tek-fonts-heading-size-sm: 20px;
+  --tek-fonts-heading-size-xs: 16px;
+  --tek-fonts-heading-size-2xs: 14px;
+  --tek-fonts-heading-line-height-5xl: 72px;
+  --tek-fonts-heading-line-height-4xl: 64px;
+  --tek-fonts-heading-line-height-3xl: 56px;
+  --tek-fonts-heading-line-height-2xl: 56px;
+  --tek-fonts-heading-line-height-xl: 48px;
+  --tek-fonts-heading-line-height-lg: 40px;
+  --tek-fonts-heading-line-height-md: 32px;
+  --tek-fonts-heading-line-height-sm: 26px;
+  --tek-fonts-heading-line-height-xs: 24px;
+  --tek-fonts-heading-line-height-2xs: 22px;
+  --tek-fonts-text-size-5xl: 40px;
+  --tek-fonts-text-size-4xl: 32px;
+  --tek-fonts-text-size-3xl: 24px;
+  --tek-fonts-text-size-2xl: 20px;
+  --tek-fonts-text-size-xl: 16px;
+  --tek-fonts-text-size-lg: 14px;
+  --tek-fonts-text-size-md: 13px;
+  --tek-fonts-text-size-sm: 12px;
+  --tek-fonts-text-size-xs: 10px;
+  --tek-fonts-text-line-height-5xl: 48px;
+  --tek-fonts-text-line-height-4xl: 40px;
+  --tek-fonts-text-line-height-3xl: 32px;
+  --tek-fonts-text-line-height-2xl: 32px;
+  --tek-fonts-text-line-height-xl: 24px;
+  --tek-fonts-text-line-height-lg: 20px;
+  --tek-fonts-text-line-height-md: 16px;
+  --tek-fonts-text-line-height-sm: 12px;
+  --tek-fonts-text-line-height-xs: 12px;
+  --tek-spacing-s00: 0px;
+  --tek-spacing-s01: 1px;
+  --tek-spacing-s02: 2px;
+  --tek-spacing-s03: 4px;
+  --tek-spacing-s04: 6px;
+  --tek-spacing-s05: 8px;
+  --tek-spacing-s06: 10px;
+  --tek-spacing-s07: 12px;
+  --tek-spacing-s08: 14px;
+  --tek-spacing-s09: 16px;
+  --tek-spacing-s10: 20px;
+  --tek-spacing-s11: 24px;
+  --tek-spacing-s12: 28px;
+  --tek-spacing-s13: 32px;
+  --tek-spacing-s14: 36px;
+  --tek-spacing-s15: 40px;
+  --tek-spacing-s16: 44px;
+  --tek-spacing-s17: 48px;
+  --tek-spacing-s18: 56px;
+  --tek-spacing-s19: 64px;
+  --tek-spacing-s20: 80px;
+  --tek-spacing-s21: 96px;
+  --tek-spacing-s22: 112px;
+  --tek-spacing-s23: 128px;
+  --tek-spacing-s24: 144px;
+  --tek-spacing-s25: 160px;
+  --tek-spacing-s26: 176px;
+  --tek-spacing-s27: 192px;
+  --tek-spacing-s28: 208px;
+  --tek-spacing-s29: 224px;
+  --tek-spacing-s30: 240px;
+  --tek-spacing-s31: 256px;
+  --tek-spacing-s32: 288px;
+  --tek-spacing-s33: 320px;
+  --tek-spacing-c01: 360px;
+  --tek-spacing-c02-mobile-: 384px;
+  --tek-spacing-c03: 512px;
+  --tek-spacing-c04: 640px;
+  --tek-spacing-c05: 768px;
+  --tek-spacing-c06: 1024px;
+  --tek-spacing-c07: 1280px;
+  --tek-spacing-c08: 1440px;
+  --tek-spacing-c09: 1536px;
+  --tek-spacing-c10: 1792px;
+}
+
+/* ── 2. Semantic dark defaults (:root) ──────────────────────────────────── */
+/* Alias tokens for components. Dark is the default.                         */
+:root {
+  --tek-color-button-background-default: #1e1e1e;
+  --tek-color-button-background-hover: #000000;
+  --tek-color-button-background-inactive: #181818;
+  --tek-color-button-border-default: #33baea;
+  --tek-color-button-border-hover: #33baea;
+  --tek-color-button-border-inactive: #454545;
+  --tek-color-button-text-default: #cccccc;
+  --tek-color-button-text-hover: #ffffff;
+  --tek-color-button-text-inactive: #454545;
+  --tek-color-selector-background-default: #252525;
+  --tek-color-selector-background-unchecked: #454545;
+  --tek-color-selector-background-checked: #cccccc;
+  --tek-color-selector-border-unchecked: #7b7b7b;
+  --tek-color-selector-border-checked: #979797;
+  --tek-color-selector-border-error: #e74848;
+  --tek-color-selector-label-unchecked: #cccccc;
+  --tek-color-selector-label-checked: #ffffff;
+  --tek-color-selector-label-error: #ffffff;
+  --tek-color-input-label-default: #cccccc;
+  --tek-color-input-helper-default: #979797;
+  --tek-color-input-border-default: #7b7b7b;
+  --tek-color-input-border-focus: #ffffff;
+  --tek-color-input-border-filled: #afafaf;
+  --tek-color-input-border-disabled: #454545;
+  --tek-color-input-border-error: #e74848;
+  --tek-color-input-text-default: #979797;
+  --tek-color-input-text-focus: #ffffff;
+  --tek-color-input-text-filled: #cccccc;
+  --tek-color-input-text-disabled: #454545;
+  --tek-color-input-text-error: #ffffff;
+  --tek-color-input-background-default: #252525;
+  --tek-color-input-character-count-default: #cccccc;
+  --tek-color-input-character-count-focus: #ffffff;
+  --tek-color-input-character-count-filled: #afafaf;
+  --tek-color-input-character-count-error: #e74848;
+  --tek-color-input-character-count-warning: #e0b732;
+  --tek-color-icons-default: #ffffff;
+  --tek-color-text-link-default: #33baea;
+  --tek-color-modal-background-default: #181818cc;
+  --tek-color-modal-border-default: #7b7b7b;
+  --tek-color-modal-text-default: #ffffff;
+  --tek-color-modal-shadow-default: #00000033;
+  --tek-color-footer-background-default: #252525;
+  --tek-color-footer-text-default: #cccccc;
+  --tek-color-canvas-background-default: #1e1e1e;
+}
+
+/* ── 3. Semantic light via OS preference ────────────────────────────────── */
+@media (prefers-color-scheme: light) {
+  :root {
+    --tek-color-button-background-default: #ffffff;
+    --tek-color-button-background-hover: #33baea;
+    --tek-color-button-background-inactive: #afafaf;
+    --tek-color-button-border-default: #33baea;
+    --tek-color-button-border-hover: #33baea;
+    --tek-color-button-border-inactive: #646464;
+    --tek-color-button-text-default: #000000;
+    --tek-color-button-text-hover: #000000;
+    --tek-color-button-text-inactive: #646464;
+    --tek-color-selector-background-default: #ffffff;
+    --tek-color-selector-background-unchecked: #646464;
+    --tek-color-selector-background-checked: #181818;
+    --tek-color-selector-border-unchecked: #333333;
+    --tek-color-selector-border-checked: #252525;
+    --tek-color-selector-border-error: #e74848;
+    --tek-color-selector-label-unchecked: #000000;
+    --tek-color-selector-label-checked: #000000;
+    --tek-color-selector-label-error: #000000;
+    --tek-color-input-label-default: #181818;
+    --tek-color-input-helper-default: #181818;
+    --tek-color-input-border-default: #333333;
+    --tek-color-input-border-focus: #000000;
+    --tek-color-input-border-filled: #1e1e1e;
+    --tek-color-input-border-disabled: #646464;
+    --tek-color-input-border-error: #e74848;
+    --tek-color-input-text-default: #252525;
+    --tek-color-input-text-focus: #000000;
+    --tek-color-input-text-filled: #181818;
+    --tek-color-input-text-disabled: #646464;
+    --tek-color-input-text-error: #000000;
+    --tek-color-input-background-default: #ffffff;
+    --tek-color-input-character-count-default: #181818;
+    --tek-color-input-character-count-focus: #000000;
+    --tek-color-input-character-count-filled: #1e1e1e;
+    --tek-color-input-character-count-error: #e74848;
+    --tek-color-input-character-count-warning: #e0b732;
+    --tek-color-icons-default: #000000;
+    --tek-color-text-link-default: #33baea;
+    --tek-color-modal-background-default: #cccccccc;
+    --tek-color-modal-border-default: #333333;
+    --tek-color-modal-text-default: #000000;
+    --tek-color-modal-shadow-default: #00000033;
+    --tek-color-footer-background-default: #afafaf;
+    --tek-color-footer-text-default: #181818;
+    --tek-color-canvas-background-default: #cccccc;
+  }
+}
+
+/* ── 4. Explicit light override [data-theme="light"] ───────────────────── */
+[data-theme="light"] {
+  --tek-color-button-background-default: #ffffff;
+  --tek-color-button-background-hover: #33baea;
+  --tek-color-button-background-inactive: #afafaf;
+  --tek-color-button-border-default: #33baea;
+  --tek-color-button-border-hover: #33baea;
+  --tek-color-button-border-inactive: #646464;
+  --tek-color-button-text-default: #000000;
+  --tek-color-button-text-hover: #000000;
+  --tek-color-button-text-inactive: #646464;
+  --tek-color-selector-background-default: #ffffff;
+  --tek-color-selector-background-unchecked: #646464;
+  --tek-color-selector-background-checked: #181818;
+  --tek-color-selector-border-unchecked: #333333;
+  --tek-color-selector-border-checked: #252525;
+  --tek-color-selector-border-error: #e74848;
+  --tek-color-selector-label-unchecked: #000000;
+  --tek-color-selector-label-checked: #000000;
+  --tek-color-selector-label-error: #000000;
+  --tek-color-input-label-default: #181818;
+  --tek-color-input-helper-default: #181818;
+  --tek-color-input-border-default: #333333;
+  --tek-color-input-border-focus: #000000;
+  --tek-color-input-border-filled: #1e1e1e;
+  --tek-color-input-border-disabled: #646464;
+  --tek-color-input-border-error: #e74848;
+  --tek-color-input-text-default: #252525;
+  --tek-color-input-text-focus: #000000;
+  --tek-color-input-text-filled: #181818;
+  --tek-color-input-text-disabled: #646464;
+  --tek-color-input-text-error: #000000;
+  --tek-color-input-background-default: #ffffff;
+  --tek-color-input-character-count-default: #181818;
+  --tek-color-input-character-count-focus: #000000;
+  --tek-color-input-character-count-filled: #1e1e1e;
+  --tek-color-input-character-count-error: #e74848;
+  --tek-color-input-character-count-warning: #e0b732;
+  --tek-color-icons-default: #000000;
+  --tek-color-text-link-default: #33baea;
+  --tek-color-modal-background-default: #cccccccc;
+  --tek-color-modal-border-default: #333333;
+  --tek-color-modal-text-default: #000000;
+  --tek-color-modal-shadow-default: #00000033;
+  --tek-color-footer-background-default: #afafaf;
+  --tek-color-footer-text-default: #181818;
+  --tek-color-canvas-background-default: #cccccc;
+}
+
+/* ── 5. Explicit dark override [data-theme="dark"] ─────────────────────── */
+[data-theme="dark"] {
+  --tek-color-button-background-default: #1e1e1e;
+  --tek-color-button-background-hover: #000000;
+  --tek-color-button-background-inactive: #181818;
+  --tek-color-button-border-default: #33baea;
+  --tek-color-button-border-hover: #33baea;
+  --tek-color-button-border-inactive: #454545;
+  --tek-color-button-text-default: #cccccc;
+  --tek-color-button-text-hover: #ffffff;
+  --tek-color-button-text-inactive: #454545;
+  --tek-color-selector-background-default: #252525;
+  --tek-color-selector-background-unchecked: #454545;
+  --tek-color-selector-background-checked: #cccccc;
+  --tek-color-selector-border-unchecked: #7b7b7b;
+  --tek-color-selector-border-checked: #979797;
+  --tek-color-selector-border-error: #e74848;
+  --tek-color-selector-label-unchecked: #cccccc;
+  --tek-color-selector-label-checked: #ffffff;
+  --tek-color-selector-label-error: #ffffff;
+  --tek-color-input-label-default: #cccccc;
+  --tek-color-input-helper-default: #979797;
+  --tek-color-input-border-default: #7b7b7b;
+  --tek-color-input-border-focus: #ffffff;
+  --tek-color-input-border-filled: #afafaf;
+  --tek-color-input-border-disabled: #454545;
+  --tek-color-input-border-error: #e74848;
+  --tek-color-input-text-default: #979797;
+  --tek-color-input-text-focus: #ffffff;
+  --tek-color-input-text-filled: #cccccc;
+  --tek-color-input-text-disabled: #454545;
+  --tek-color-input-text-error: #ffffff;
+  --tek-color-input-background-default: #252525;
+  --tek-color-input-character-count-default: #cccccc;
+  --tek-color-input-character-count-focus: #ffffff;
+  --tek-color-input-character-count-filled: #afafaf;
+  --tek-color-input-character-count-error: #e74848;
+  --tek-color-input-character-count-warning: #e0b732;
+  --tek-color-icons-default: #ffffff;
+  --tek-color-text-link-default: #33baea;
+  --tek-color-modal-background-default: #181818cc;
+  --tek-color-modal-border-default: #7b7b7b;
+  --tek-color-modal-text-default: #ffffff;
+  --tek-color-modal-shadow-default: #00000033;
+  --tek-color-footer-background-default: #252525;
+  --tek-color-footer-text-default: #cccccc;
+  --tek-color-canvas-background-default: #1e1e1e;
+}
