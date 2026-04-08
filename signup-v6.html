@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TekCloud — Create Account</title>
+
+<!-- Fonts — Geist (body/UI) + Archivo (headings/buttons) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
+
+<!--
+  @bbkemp/tokens — complete build (primitives + dark/light semantic)
+  In production: @import '@bbkemp/tokens/css/complete'
+  Requires: npm run build --workspace=packages/tokens
+-->
+<!-- QUESTION: If you haven't run `npm run build` yet, this file 404s silently and
+     EVERY token resolves to its CSS fallback value. There's no visible error in the
+     console — just a broken page that looks "almost right." Could we add an onerror
+     handler or a build-check script that warns devs? I wasted 20 minutes on this. -->
+<link rel="stylesheet" href="./packages/tokens/dist/tek.complete.css">
+
+<!--
+  @bbkemp/ui — Web Components
+  In production: import '@bbkemp/ui'
+  Requires: npm run build --workspace=packages/ui
+-->
+<!-- WHY: signin.html uses ?v=3 cache-busting on this script, signup.html does not.
+     Which is correct? If we need cache-busting, shouldn't it be automated or consistent? -->
+<script type="module" src="./packages/ui/dist/tek-ui.js"></script>
+
+<!-- WHY: signin.html imports AutoAnimate but signup.html does not.
+     Is AutoAnimate required for these pages or optional? The README says it's for
+     "ambient DOM transitions" but neither page seems to add/remove children dynamically
+     in normal usage. What transitions is it actually providing here? -->
+
+<style>
+/* ============================================================
+   PAGE-LEVEL STYLES ONLY
+   All design tokens come from tek.complete.css above.
+   This block is layout and page-specific only — no hardcoded
+   colors, fonts, or sizes that belong in the token system.
+============================================================ */
+
+/* WHY: This entire <style> block is copy-pasted between signin.html, signup.html,
+   and now this file. Three copies of the same reset, body styles, bg-gradient,
+   page-wrap, wrap, logo-header, and container queries. If any of these change,
+   someone has to update all three files (and probably won't). Why isn't this a
+   shared CSS file like `page-layout.css`? */
+
+/* box-sizing safe to apply globally — does NOT affect shadow DOM :host padding */
+*, *::before, *::after { box-sizing: border-box; }
+/* margin/padding reset scoped to standard HTML elements only.
+   Custom elements (tek-*) define their own padding via :host in shadow DOM.
+   Putting padding:0 in * kills those styles because light DOM always beats :host. */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li,
+blockquote, figure, figcaption, dl, dt, dd, pre { margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--tek-fonts-family-geist);
+  color: var(--tek-primitive-color-neutral-100);
+  background-color: var(--tek-primitive-color-neutral-800);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* WHY: These gradient colors are hardcoded rgba values, not tokens.
+   The README says "every value must trace to a token" but these radial gradient
+   stops (rgba(80,60,140,0.55), rgba(180,100,80,0.35), rgba(30,50,120,0.4)) are
+   raw values with no token equivalent. Is this intentional because gradients
+   aren't tokenized yet, or did someone skip the token step? */
+.bg-video {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: 0; pointer-events: none;
+}
+
+.bg-gradient {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(80,60,140,0.55) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(180,100,80,0.35) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(30,50,120,0.4)  0%, transparent 50%),
+    var(--tek-primitive-color-neutral-800);
+}
+
+.page-wrap {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  min-height: 100vh; width: 100%;
+  container-type: inline-size;
+  container-name: page;
+}
+
+.wrap {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: var(--tek-spacing-s17, 48px);
+  padding: var(--tek-spacing-s17, 48px) var(--tek-spacing-s13, 32px) var(--tek-spacing-s11, 24px);
+  width: 100%; min-height: 1px;
+}
+
+.logo-header {
+  display: flex; flex-direction: column;
+  align-items: center;
+  width: 100%; flex-shrink: 0;
+}
+
+.logo-lockup { display: flex; align-items: center; gap: var(--tek-spacing-s06, 10px); }
+
+/* QUESTION: signin.html starts logo-icon at 60px mobile and bumps to 90px at tablet.
+   signup.html starts at 90px with no mobile override. Which is the canonical size?
+   Figma should be the source of truth here but I can't tell which is "right"
+   just by reading the code. */
+.logo-icon   { height: 90px; width: auto; display: block; }
+.logo-type   { height: 38px; width: auto; display: block; }
+
+tek-modal { flex-shrink: 0; }
+
+/* Field wrapper: label stacked above input */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tek-spacing-s04, 6px);
+  width: 100%;
+}
+
+/* Two inputs side by side (given names) */
+.field-row {
+  display: flex;
+  gap: var(--tek-spacing-s05, 8px);
+  width: 100%;
+}
+
+.field-row .field { flex: 1 1 0; min-width: 0; }
+
+/* WHY: signin.html doesn't use .field or .field-row classes at all. It uses raw
+   inline styles for the same layout: style="display:flex;flex-direction:column;gap:..."
+   Why the inconsistency? signup.html introduced proper CSS classes for the same pattern.
+   Which approach should new pages follow? There's no style guide that says. -->
+
+/* Sign-in link below the button */
+.signin-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tek-spacing-s02, 4px);
+  font-family: var(--tek-fonts-family-geist);
+  font-size: var(--tek-fonts-text-size-xs);
+  line-height: var(--tek-fonts-text-line-height-xs);
+  color: var(--tek-color-input-helper-default);
+}
+
+/* QUESTION: The container query breakpoints are 640px and 1280px. README says
+   Figma Cxx variables define xs=384px, sm=640px, xl=1280px. But where's the
+   384px breakpoint used? And why skip md/lg entirely? Is the jump from 640 straight
+   to 1280 intentional or were intermediate breakpoints never designed? -->
+
+@container page (min-width: 640px) {
+  .wrap { padding: var(--tek-spacing-s17, 48px) var(--tek-spacing-s19, 64px) var(--tek-spacing-s11, 24px); }
+}
+
+/* WHY: signin.html has a 1280px query that repositions the logo absolutely and
+   overrides tek-modal heading size with custom properties. signup.html does NOT
+   do any of that — the logo stays centered and the heading size stays default.
+   These are supposed to be sibling pages in the same flow. Why do they have
+   different desktop layouts? Which one matches the Figma spec? -->
+@container page (min-width: 1280px) {
+  .wrap        { padding: var(--tek-spacing-s19, 64px) var(--tek-spacing-s19, 64px) var(--tek-spacing-s13, 32px); }
+  .logo-header { align-items: flex-start; }
+  .logo-icon   { height: 128px; }
+  .logo-type   { height: 52px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-gradient" aria-hidden="true"></div>
+<video class="bg-video" autoplay muted loop playsinline aria-hidden="true">
+  <source src="./img/bg-mov.mp4" type="video/mp4">
+</video>
+
+<div class="page-wrap">
+
+  <div class="wrap">
+
+    <header class="logo-header">
+      <div class="logo-lockup" role="img" aria-label="TekCloud">
+        <img class="logo-icon" src="./img/IconLogo.svg" alt="">
+        <img class="logo-type" src="./img/TypeLogo.svg" alt="TekCloud">
+      </div>
+    </header>
+
+    <tek-modal>
+
+      <span slot="header">Create Account</span>
+
+      <!-- WHY: The slot="input-blocks" div uses inline styles for flex layout instead of a
+           CSS class. signin.html does this too. But signup.html introduced the .field class
+           for the same pattern inside the fields themselves. So we have inline styles at the
+           container level and CSS classes at the field level. Pick one approach? -->
+      <div id="signup-input-blocks" slot="input-blocks"
+           style="display:flex;flex-direction:column;gap:var(--tek-spacing-s09,16px);width:100%;">
+
+        <!-- QUESTION: Why does this inline style use width:100% instead of a class?
+             Every single slot container and tek-input has style="...width:100%" repeated.
+             This is the kind of thing a utility class or a default in the component should handle. -->
+
+        <div class="field-row">
+          <div class="field">
+            <!-- WHY: signup.html uses <tek-label> for labels. signin.html uses a raw
+                 <div class="form-field-label"> with manually applied font tokens.
+                 The README documents <tek-label> as a real component. Why doesn't
+                 signin.html use it? Was tek-label built after signin.html and nobody
+                 went back to update it? This is confusing for a new dev trying to
+                 figure out the "correct" pattern. -->
+            <tek-label>First name</tek-label>
+            <tek-input placeholder="First" type="text" autocomplete="given-name"
+                       style="display:block;width:100%"></tek-input>
+          </div>
+          <div class="field">
+            <tek-label>Last name</tek-label>
+            <tek-input placeholder="Last" type="text" autocomplete="family-name"
+                       style="display:block;width:100%"></tek-input>
+          </div>
+        </div>
+
+        <div class="field">
+          <tek-label>Email</tek-label>
+          <tek-input placeholder="you@example.com" type="email" autocomplete="email"
+                     style="display:block;width:100%"></tek-input>
+        </div>
+
+        <div class="field">
+          <!-- QUESTION: The helper-text attribute is "Must be at least 8 characters" in
+               signup.html but the requirements doc says "Must be 8+ characters."
+               Which is the canonical copy? Is there a content/copy source of truth
+               or does each dev just wing it? -->
+          <tek-label helper-text="Must be 8+ characters">Password</tek-label>
+          <tek-input placeholder="Create a password" type="password" autocomplete="new-password"
+                     style="display:block;width:100%"></tek-input>
+        </div>
+
+        <div class="field">
+          <tek-label>Confirm password</tek-label>
+          <tek-input placeholder="Re-enter password" type="password" autocomplete="new-password"
+                     style="display:block;width:100%"></tek-input>
+        </div>
+
+        <!-- WHY: tek-selector wraps a checkbox + label into one component, which is nice.
+             But it uses a `label` attribute (string) instead of a slot. This means
+             you can't put a <tek-text-link> inside the label text (e.g., for
+             "I agree to the <a>terms of service</a>"). Is a slot-based variant planned? -->
+        <tek-selector id="terms-selector" type="checkbox"
+          label="I agree to the terms of service" style="width:100%"></tek-selector>
+
+      </div>
+
+      <!-- WHY: The gap in action-blocks is --tek-spacing-s07 (12px) here but
+           signin.html uses --tek-spacing-s06 (10px). Both are sibling pages.
+           Is the extra 2px intentional or a copy-paste drift? -->
+      <div id="signup-action-blocks" slot="action-blocks"
+           style="width:100%;display:flex;flex-direction:column;gap:var(--tek-spacing-s07,12px);">
+
+        <!-- QUESTION: The `inactive` attribute greys out the button. But there's no
+             visual indication of WHY it's inactive. No aria-disabled, no tooltip,
+             no error state on the checkbox. A screen reader user would have no idea
+             why they can't submit. Should tek-button set aria-disabled automatically
+             when `inactive` is present? -->
+        <tek-button id="create-btn" inactive style="width:100%;display:block">
+          Create Account
+        </tek-button>
+
+        <div class="signin-row">
+          <span>Already have an account?</span>
+          <tek-text-link href="signin.html">Sign in</tek-text-link>
+        </div>
+
+      </div>
+
+    </tek-modal>
+
+  </div>
+
+  <!-- WHY: The footer toggle emojis use hardcoded font-size:16px and gap:4px.
+       16px is --tek-fonts-text-size-xl and 4px is --tek-spacing-s02. Why not use
+       the tokens? This is exactly the kind of "close enough" that erodes trust
+       in the system. If even the reference pages don't use tokens consistently,
+       why should product teams bother? -->
+  <tek-footer>
+    <div slot="left" style="display:flex;align-items:center;gap:4px;">
+      <span style="font-size:16px;line-height:1;">🌚</span>
+      <tek-toggle id="theme-toggle"></tek-toggle>
+      <span style="font-size:16px;line-height:1;">🌝</span>
+    </div>
+    ©2026 Tektronix. All Rights Reserved.
+  </tek-footer>
+
+</div>
+
+<script type="module">
+/* Theme toggle */
+document.getElementById('theme-toggle').addEventListener('tek-change', e => {
+  document.documentElement.setAttribute('data-theme', e.detail.checked ? 'light' : 'dark');
+});
+
+/* Terms checkbox gates the Create Account button */
+/* QUESTION: This is vanilla JS event wiring. Is there a recommended pattern for
+   form validation in this design system, or does every page roll its own?
+   What happens when we need real validation (email format, password match, etc.)? */
+document.getElementById('terms-selector').addEventListener('tek-change', e => {
+  const btn = document.getElementById('create-btn');
+  e.detail.checked ? btn.removeAttribute('inactive') : btn.setAttribute('inactive', '');
+});
+</script>
+
+</body>
+</html>
