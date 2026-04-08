@@ -17,127 +17,19 @@
 -->
 <link rel="stylesheet" href="./packages/tokens/dist/tek.complete.css">
 
+<!-- Shared page layout — reset, body, background, page-wrap, container queries -->
+<link rel="stylesheet" href="./page-layout.css">
+
 <!--
   @bbkemp/ui — Web Components
   In production: import '@bbkemp/ui'
   Requires: npm run build --workspace=packages/ui
 -->
-<script type="module" src="./packages/ui/dist/tek-ui.js"></script>
+<script type="module" src="./packages/ui/dist/tek-ui.js?v=3"></script>
 
-<style>
-/* ============================================================
-   PAGE-LEVEL STYLES ONLY
-   All design tokens come from tek.complete.css above.
-   This block is layout and page-specific only — no hardcoded
-   colors, fonts, or sizes that belong in the token system.
-============================================================ */
+<!-- AutoAnimate — ambient DOM transitions (light DOM only) -->
+<script src="https://cdn.jsdelivr.net/npm/@formkit/auto-animate@latest/index.umd.js"></script>
 
-/* box-sizing safe to apply globally — does NOT affect shadow DOM :host padding */
-*, *::before, *::after { box-sizing: border-box; }
-/* margin/padding reset scoped to standard HTML elements only.
-   Custom elements (tek-*) define their own padding via :host in shadow DOM.
-   Putting padding:0 in * kills those styles because light DOM always beats :host. */
-body, h1, h2, h3, h4, h5, h6, p, ul, ol, li,
-blockquote, figure, figcaption, dl, dt, dd, pre { margin: 0; padding: 0; }
-
-html, body {
-  height: 100%;
-  -webkit-font-smoothing: antialiased;
-}
-
-body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  font-family: var(--tek-fonts-family-geist);
-  color: var(--tek-primitive-color-neutral-100);
-  background-color: var(--tek-primitive-color-neutral-800);
-  position: relative;
-  overflow-x: hidden;
-}
-
-.bg-video {
-  position: fixed; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; z-index: 0; pointer-events: none;
-}
-
-.bg-gradient {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(80,60,140,0.55) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 20%, rgba(180,100,80,0.35) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(30,50,120,0.4)  0%, transparent 50%),
-    var(--tek-primitive-color-neutral-800);
-}
-
-.page-wrap {
-  position: relative; z-index: 1;
-  display: flex; flex-direction: column;
-  min-height: 100vh; width: 100%;
-  container-type: inline-size;
-  container-name: page;
-}
-
-.wrap {
-  flex: 1;
-  display: flex; flex-direction: column;
-  align-items: center;
-  gap: var(--tek-spacing-s17, 48px);
-  padding: var(--tek-spacing-s17, 48px) var(--tek-spacing-s13, 32px) var(--tek-spacing-s11, 24px);
-  width: 100%; min-height: 1px;
-}
-
-.logo-header {
-  display: flex; flex-direction: column;
-  align-items: center;
-  width: 100%; flex-shrink: 0;
-}
-
-.logo-lockup { display: flex; align-items: center; gap: var(--tek-spacing-s06, 10px); }
-.logo-icon   { height: 90px; width: auto; display: block; }
-.logo-type   { height: 38px; width: auto; display: block; }
-
-tek-modal { flex-shrink: 0; }
-
-/* Field wrapper: label stacked above input */
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--tek-spacing-s04, 6px);
-  width: 100%;
-}
-
-/* Two inputs side by side (given names) */
-.field-row {
-  display: flex;
-  gap: var(--tek-spacing-s05, 8px);
-  width: 100%;
-}
-
-.field-row .field { flex: 1 1 0; min-width: 0; }
-
-/* Sign-in link below the button */
-.signin-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--tek-spacing-s02, 4px);
-  font-family: var(--tek-fonts-family-geist);
-  font-size: var(--tek-fonts-text-size-xs);
-  line-height: var(--tek-fonts-text-line-height-xs);
-  color: var(--tek-color-input-helper-default);
-}
-
-@container page (min-width: 640px) {
-  .wrap { padding: var(--tek-spacing-s17, 48px) var(--tek-spacing-s19, 64px) var(--tek-spacing-s11, 24px); }
-}
-@container page (min-width: 1280px) {
-  .wrap        { padding: var(--tek-spacing-s19, 64px) var(--tek-spacing-s19, 64px) var(--tek-spacing-s13, 32px); }
-  .logo-header { align-items: flex-start; }
-  .logo-icon   { height: 128px; }
-  .logo-type   { height: 52px; }
-}
-</style>
 </head>
 <body>
 
@@ -220,9 +112,9 @@ tek-modal { flex-shrink: 0; }
 
   <tek-footer>
     <div slot="left" style="display:flex;align-items:center;gap:4px;">
-      <span style="font-size:16px;line-height:1;">🌚</span>
-      <tek-toggle id="theme-toggle"></tek-toggle>
-      <span style="font-size:16px;line-height:1;">🌝</span>
+      <span style="font-size:16px;line-height:1;" aria-hidden="true">🌚</span>
+      <tek-toggle id="theme-toggle" aria-label="Toggle light mode"></tek-toggle>
+      <span style="font-size:16px;line-height:1;" aria-hidden="true">🌝</span>
     </div>
     ©2026 Tektronix. All Rights Reserved.
   </tek-footer>
@@ -240,6 +132,13 @@ document.getElementById('terms-selector').addEventListener('tek-change', e => {
   const btn = document.getElementById('create-btn');
   e.detail.checked ? btn.removeAttribute('inactive') : btn.setAttribute('inactive', '');
 });
+
+/* AutoAnimate */
+if (typeof autoAnimate !== 'undefined') {
+  autoAnimate(document.querySelector('.wrap'));
+  autoAnimate(document.getElementById('signup-input-blocks'));
+  autoAnimate(document.getElementById('signup-action-blocks'));
+}
 </script>
 
 </body>

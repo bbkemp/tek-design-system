@@ -77,11 +77,15 @@ const STYLES = `
     flex-shrink: 0;
     width: 100%;
   }
+
+  .helper--error {
+    color: var(--tek-color-input-text-error, #e74848);
+  }
 `;
 
 export class TekLabel extends HTMLElement {
   static get observedAttributes() {
-    return ['optional', 'helper-text', 'char-count', 'link'];
+    return ['optional', 'helper-text', 'char-count', 'link', 'helper-state'];
   }
 
   private shadow: ShadowRoot;
@@ -106,7 +110,7 @@ export class TekLabel extends HTMLElement {
         ${optional ? `<span class="optional">(optional)</span>` : ''}
         ${charCount ? `<span class="char-count">${charCount}</span>` : ''}
       </div>
-      ${helperText ? `<div class="helper" part="helper">${helperText}</div>` : ''}
+      ${helperText ? `<div class="helper${this.getAttribute('helper-state') === 'error' ? ' helper--error' : ''}" part="helper">${helperText}</div>` : ''}
     `;
   }
 }

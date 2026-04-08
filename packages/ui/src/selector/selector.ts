@@ -34,6 +34,8 @@ export class TekSelector extends HTMLElement {
 
   connectedCallback() {
     this._render();
+    this.setAttribute('role', 'group');
+    this.setAttribute('aria-checked', String(this.checked));
     // tek-change from children (composed:true) bubbles up to here — sync host state
     this.addEventListener('tek-change', (e: Event) => {
       const { checked } = (e as CustomEvent<{checked:boolean}>).detail;
@@ -78,6 +80,7 @@ export class TekSelector extends HTMLElement {
     const lbl = this._getLbl() as any;
     if (lbl) { checked ? lbl.setAttribute('checked','') : lbl.removeAttribute('checked'); }
     checked ? this.setAttribute('checked','') : this.removeAttribute('checked');
+    this.setAttribute('aria-checked', String(checked));
   }
 
   private _syncChildren() {
