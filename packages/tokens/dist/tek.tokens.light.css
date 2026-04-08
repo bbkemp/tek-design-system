@@ -1,0 +1,49 @@
+/* @bbkemp/tokens — auto-generated from Figma variables. Do not edit. */
+
+[data-theme="light"] {
+  --tek-color-button-background-default: #ffffff;
+  --tek-color-button-background-hover: #33baea;
+  --tek-color-button-background-inactive: #afafaf;
+  --tek-color-button-border-default: #33baea;
+  --tek-color-button-border-hover: #33baea;
+  --tek-color-button-border-inactive: #646464;
+  --tek-color-button-text-default: #000000;
+  --tek-color-button-text-hover: #000000;
+  --tek-color-button-text-inactive: #646464;
+  --tek-color-selector-background-default: #ffffff;
+  --tek-color-selector-background-unchecked: #646464;
+  --tek-color-selector-background-checked: #181818;
+  --tek-color-selector-border-unchecked: #333333;
+  --tek-color-selector-border-checked: #252525;
+  --tek-color-selector-border-error: #e74848;
+  --tek-color-selector-label-unchecked: #000000;
+  --tek-color-selector-label-checked: #000000;
+  --tek-color-selector-label-error: #000000;
+  --tek-color-input-label-default: #181818;
+  --tek-color-input-helper-default: #181818;
+  --tek-color-input-border-default: #333333;
+  --tek-color-input-border-focus: #000000;
+  --tek-color-input-border-filled: #1e1e1e;
+  --tek-color-input-border-disabled: #646464;
+  --tek-color-input-border-error: #e74848;
+  --tek-color-input-text-default: #252525;
+  --tek-color-input-text-focus: #000000;
+  --tek-color-input-text-filled: #181818;
+  --tek-color-input-text-disabled: #646464;
+  --tek-color-input-text-error: #000000;
+  --tek-color-input-background-default: #ffffff;
+  --tek-color-input-character-count-default: #181818;
+  --tek-color-input-character-count-focus: #000000;
+  --tek-color-input-character-count-filled: #1e1e1e;
+  --tek-color-input-character-count-error: #e74848;
+  --tek-color-input-character-count-warning: #e0b732;
+  --tek-color-icons-default: #000000;
+  --tek-color-text-link-default: #33baea;
+  --tek-color-modal-background-default: #cccccccc;
+  --tek-color-modal-border-default: #333333;
+  --tek-color-modal-text-default: #000000;
+  --tek-color-modal-shadow-default: #00000033;
+  --tek-color-footer-background-default: #afafaf;
+  --tek-color-footer-text-default: #181818;
+  --tek-color-canvas-background-default: #cccccc;
+}

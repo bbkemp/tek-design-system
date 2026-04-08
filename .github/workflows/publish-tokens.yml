@@ -43,11 +43,11 @@ jobs:
         working-directory: packages/tokens
         run: npm version patch --no-git-tag-version
 
-      - name: Commit version bump
+      - name: Commit built files + version bump
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'chore(tokens): bump version [skip ci]'
-          file_pattern: 'packages/tokens/package.json'
+          commit_message: 'chore(tokens): build + bump version [skip ci]'
+          file_pattern: 'packages/tokens/package.json packages/tokens/dist/*'
 
       - name: Publish to GitHub Packages
         working-directory: packages/tokens
