@@ -94,6 +94,8 @@ tek-modal { flex-shrink: 0; }
   justify-content: space-between;
   width: 100%;
 }
+.form-label-row tek-label { width: auto; flex-shrink: 0; }
+.form-label-row tek-text-link { flex-shrink: 0; white-space: nowrap; }
 
 /* Link row below action button */
 .signin-row {
