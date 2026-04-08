@@ -41,10 +41,10 @@ const STYLES = `
 
   .header {
     font-family: var(--tek-fonts-family-archivo, sans-serif);
-    font-size: var(--tek-fonts-heading-size-lg, 32px);
+    font-size: var(--tek-modal-heading-size, var(--tek-fonts-heading-size-md, 24px));
     font-weight: 600;
     font-variation-settings: 'wdth' 106;
-    line-height: var(--tek-fonts-heading-line-height-lg, 40px);
+    line-height: var(--tek-modal-heading-line-height, var(--tek-fonts-heading-line-height-md, 32px));
     letter-spacing: 0;
     color: var(--tek-color-modal-text-default, #ffffff);
   }
