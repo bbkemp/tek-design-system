@@ -2,7 +2,7 @@
   "colors": {
     "brand": {
       "tek-blue": {
-        "$value": "#33baea",
+        "$value": "#ff00aa",
         "$type": "color"
       }
     },
