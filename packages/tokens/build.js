@@ -292,4 +292,217 @@ ${darkVars}
 fs.writeFileSync('dist/tek.complete.css', complete);
 console.log('✓ tek.complete.css written');
 
+// ═══════════════════════════════════════════════════════════════════════════
+// WPF / XAML Translation Layer
+// Generates ResourceDictionary files for WPF consumers.
+// Output: wpf/Tek.Tokens.Primitives.xaml, Tek.Tokens.Dark.xaml,
+//         Tek.Tokens.Light.xaml, Tek.Telerik.Overrides.xaml
+// ═══════════════════════════════════════════════════════════════════════════
+
+const path = require('path');
+const wpfDir = path.resolve(__dirname, '../../wpf');
+fs.mkdirSync(wpfDir, { recursive: true });
+
+// ── WPF transforms ──────────────────────────────────────────────────────
+
+// PascalCase keys with Tek prefix: color.button.background.default → TekColorButtonBackgroundDefault
+StyleDictionary.registerTransform({
+  name: 'name/tek/pascal',
+  type: 'name',
+  transformer: (token) =>
+    ['Tek', ...token.path]
+      .map(seg =>
+        seg.replace(/[^a-zA-Z0-9]/g, ' ').split(/\s+/)
+          .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+          .join('')
+      )
+      .join('')
+});
+
+// Convert CSS #RRGGBB / #RRGGBBAA to WPF #AARRGGBB format
+StyleDictionary.registerTransform({
+  name: 'color/wpf/argb',
+  type: 'value',
+  matcher: (token) => token.type === 'color',
+  transformer: (token) => {
+    let hex = String(token.value).replace('#', '');
+    if (hex.length === 6) return '#FF' + hex.toUpperCase();          // #RRGGBB → #FFRRGGBB
+    if (hex.length === 8) return '#' + hex.slice(6,8).toUpperCase() + hex.slice(0,6).toUpperCase(); // #RRGGBBAA → #AARRGGBB
+    if (hex.length === 3) return '#FF' + hex.split('').map(c => c+c).join('').toUpperCase(); // #RGB → #FFRRGGBB
+    return '#' + hex.toUpperCase();
+  }
+});
+
+// Strip px from dimensions, pass numbers through bare (for sys:Double, Thickness, CornerRadius)
+StyleDictionary.registerTransform({
+  name: 'size/wpf/double',
+  type: 'value',
+  matcher: (token) => token.type === 'dimension' || token.type === 'number',
+  transformer: (token) => String(token.value).replace('px', '')
+});
+
+StyleDictionary.registerTransformGroup({
+  name: 'tek/wpf',
+  transforms: ['attribute/cti', 'name/tek/pascal', 'color/wpf/argb', 'size/wpf/double']
+});
+
+// ── WPF XAML type mapping ───────────────────────────────────────────────
+
+function emitXamlResource(token) {
+  const key = token.name;
+  const val = token.value;
+
+  if (token.type === 'color') {
+    return `  <Color x:Key="${key}">${String(val).toUpperCase()}</Color>`;
+  }
+  if (token.type === 'string' && token.path.includes('family')) {
+    return `  <FontFamily x:Key="${key}">${val}</FontFamily>`;
+  }
+  if (token.path[0] === 'borders' && token.path[1] === 'radius') {
+    return `  <CornerRadius x:Key="${key}">${val}</CornerRadius>`;
+  }
+  if (token.path[0] === 'spacing' || (token.path[0] === 'borders' && token.path[1] === 'width')) {
+    return `  <Thickness x:Key="${key}">${val}</Thickness>`;
+  }
+  if (token.type === 'number' || token.type === 'dimension') {
+    return `  <sys:Double x:Key="${key}">${val}</sys:Double>`;
+  }
+  return `  <sys:String x:Key="${key}">${val}</sys:String>`;
+}
+
+const XAML_HEADER = (label) =>
+  `<!-- @bbkemp/tokens — ${label} — auto-generated from Figma variables. Do not edit. -->\n` +
+  `<ResourceDictionary\n` +
+  `  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"\n` +
+  `  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"\n` +
+  `  xmlns:sys="clr-namespace:System;assembly=mscorlib">\n`;
+const XAML_FOOTER = `\n</ResourceDictionary>\n`;
+
+// ── WPF formats ─────────────────────────────────────────────────────────
+
+// Primitives: typed resources, no Brush companions
+StyleDictionary.registerFormat({
+  name: 'tek/xaml/primitives',
+  formatter: ({ dictionary }) => {
+    const lines = dictionary.allTokens.map(t => emitXamlResource(t));
+    return XAML_HEADER('primitives') + '\n' + lines.join('\n') + XAML_FOOTER;
+  }
+});
+
+// Semantic: Color + SolidColorBrush pairs for every color token
+StyleDictionary.registerFormat({
+  name: 'tek/xaml/semantic',
+  formatter: ({ dictionary, options }) => {
+    const label = options.label || 'semantic';
+    const lines = [];
+    dictionary.allTokens.forEach(token => {
+      if (token.type === 'color') {
+        const colorKey = token.name;
+        const brushKey = colorKey.replace(/^TekColor/, 'TekBrush');
+        const val = String(token.value).toUpperCase();
+        lines.push(`  <Color x:Key="${colorKey}">${val}</Color>`);
+        lines.push(`  <SolidColorBrush x:Key="${brushKey}" Color="{StaticResource ${colorKey}}"/>`);
+      }
+    });
+    return XAML_HEADER(label) + '\n' + lines.join('\n') + XAML_FOOTER;
+  }
+});
+
+// ── WPF builds ──────────────────────────────────────────────────────────
+
+// WPF Primitives
+StyleDictionary.extend({
+  source: ['src/primitives/**/*.json'],
+  platforms: {
+    wpf: {
+      transformGroup: 'tek/wpf',
+      buildPath: wpfDir + '/',
+      files: [{ destination: 'Tek.Tokens.Primitives.xaml', format: 'tek/xaml/primitives' }]
+    }
+  }
+}).buildAllPlatforms();
+
+// WPF Semantic — dark
+StyleDictionary.extend({
+  source: ['src/primitives/**/*.json', 'src/semantic/tokens.json'],
+  platforms: {
+    wpf: {
+      transformGroup: 'tek/wpf',
+      buildPath: wpfDir + '/',
+      files: [{
+        destination: 'Tek.Tokens.Dark.xaml',
+        format: 'tek/xaml/semantic',
+        filter: t => t.filePath.includes('semantic/tokens.json'),
+        options: { label: 'dark semantic' }
+      }]
+    }
+  }
+}).buildAllPlatforms();
+
+// WPF Semantic — light
+StyleDictionary.extend({
+  source: ['src/primitives/**/*.json', 'src/semantic/tokens.light.json'],
+  platforms: {
+    wpf: {
+      transformGroup: 'tek/wpf',
+      buildPath: wpfDir + '/',
+      files: [{
+        destination: 'Tek.Tokens.Light.xaml',
+        format: 'tek/xaml/semantic',
+        filter: t => t.filePath.includes('tokens.light.json'),
+        options: { label: 'light semantic' }
+      }]
+    }
+  }
+}).buildAllPlatforms();
+
+// ── WPF Telerik overrides (post-build) ──────────────────────────────────
+// Maps Tek semantic tokens to Telerik Fluent theme resource keys.
+// Consumer loads in App.xaml MergedDictionaries in this order:
+//   1. Telerik Fluent theme assembly
+//   2. Tek.Tokens.Dark.xaml (or Light)
+//   3. Tek.Telerik.Overrides.xaml
+
+const telerikMappings = [
+  { telerik: 'MainBrush',           tek: 'TekColorCanvasBackgroundDefault' },
+  { telerik: 'BasicBrush',          tek: 'TekColorInputBorderDefault' },
+  { telerik: 'PrimaryBrush',        tek: 'TekColorButtonBorderDefault' },
+  { telerik: 'AccentBrush',         tek: 'TekColorTextLinkDefault' },
+  { telerik: 'MarkerBrush',         tek: 'TekColorButtonTextDefault' },
+  { telerik: 'ValidationBrush',     tek: 'TekColorInputBorderError' },
+  { telerik: 'AlternativeBrush',    tek: 'TekColorFooterBackgroundDefault' },
+  { telerik: 'MouseOverBrush',      tek: 'TekColorButtonBackgroundHover' },
+  { telerik: 'PressedBrush',        tek: 'TekColorButtonBackgroundHover' },
+  { telerik: 'DisabledBrush',       tek: 'TekColorButtonBackgroundInactive' },
+  { telerik: 'ReadOnlyBrush',       tek: 'TekColorInputBorderDisabled' },
+  { telerik: 'HeaderBrush',         tek: 'TekColorModalTextDefault' },
+  { telerik: 'ComplementaryBrush',  tek: 'TekColorModalBackgroundDefault' },
+];
+
+const overridesLines = telerikMappings.map(m =>
+  `  <SolidColorBrush x:Key="${m.telerik}" Color="{StaticResource ${m.tek}}"/>`
+).join('\n');
+
+const overridesXaml =
+`<!-- @bbkemp/tokens — Telerik Fluent theme overrides — auto-generated. Do not edit.
+ *
+ * Usage (App.xaml):
+ *   <ResourceDictionary.MergedDictionaries>
+ *     <ResourceDictionary Source="/Telerik.Windows.Themes.Fluent;component/Themes/Generic.xaml"/>
+ *     <ResourceDictionary Source="Tek.Tokens.Dark.xaml"/>
+ *     <ResourceDictionary Source="Tek.Telerik.Overrides.xaml"/>
+ *   </ResourceDictionary.MergedDictionaries>
+ -->
+<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+${overridesLines}
+
+</ResourceDictionary>
+`;
+
+fs.writeFileSync(path.join(wpfDir, 'Tek.Telerik.Overrides.xaml'), overridesXaml);
+console.log('✓ Tek.Telerik.Overrides.xaml written');
+
 console.log('\n✓ @bbkemp/tokens built\n');
