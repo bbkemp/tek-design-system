@@ -1,0 +1,97 @@
+<!-- @bbkemp/tokens — light semantic — auto-generated from Figma variables. Do not edit. -->
+<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+  <Color x:Key="TekColorButtonBackgroundDefault">#FFFFFFFF</Color>
+  <SolidColorBrush x:Key="TekBrushButtonBackgroundDefault" Color="{StaticResource TekColorButtonBackgroundDefault}"/>
+  <Color x:Key="TekColorButtonBackgroundHover">#FF33BAEA</Color>
+  <SolidColorBrush x:Key="TekBrushButtonBackgroundHover" Color="{StaticResource TekColorButtonBackgroundHover}"/>
+  <Color x:Key="TekColorButtonBackgroundInactive">#FFAFAFAF</Color>
+  <SolidColorBrush x:Key="TekBrushButtonBackgroundInactive" Color="{StaticResource TekColorButtonBackgroundInactive}"/>
+  <Color x:Key="TekColorButtonBorderDefault">#FF33BAEA</Color>
+  <SolidColorBrush x:Key="TekBrushButtonBorderDefault" Color="{StaticResource TekColorButtonBorderDefault}"/>
+  <Color x:Key="TekColorButtonBorderHover">#FF33BAEA</Color>
+  <SolidColorBrush x:Key="TekBrushButtonBorderHover" Color="{StaticResource TekColorButtonBorderHover}"/>
+  <Color x:Key="TekColorButtonBorderInactive">#FF646464</Color>
+  <SolidColorBrush x:Key="TekBrushButtonBorderInactive" Color="{StaticResource TekColorButtonBorderInactive}"/>
+  <Color x:Key="TekColorButtonTextDefault">#FF000000</Color>
+  <SolidColorBrush x:Key="TekBrushButtonTextDefault" Color="{StaticResource TekColorButtonTextDefault}"/>
+  <Color x:Key="TekColorButtonTextHover">#FF000000</Color>
+  <SolidColorBrush x:Key="TekBrushButtonTextHover" Color="{StaticResource TekColorButtonTextHover}"/>
+  <Color x:Key="TekColorButtonTextInactive">#FF646464</Color>
+  <SolidColorBrush x:Key="TekBrushButtonTextInactive" Color="{StaticResource TekColorButtonTextInactive}"/>
+  <Color x:Key="TekColorSelectorBackgroundDefault">#FFFFFFFF</Color>
+  <SolidColorBrush x:Key="TekBrushSelectorBackgroundDefault" Color="{StaticResource TekColorSelectorBackgroundDefault}"/>
+  <Color x:Key="TekColorSelectorBackgroundUnchecked">#FF646464</Color>
+  <SolidColorBrush x:Key="TekBrushSelectorBackgroundUnchecked" Color="{StaticResource TekColorSelectorBackgroundUnchecked}"/>
+  <Color x:Key="TekColorSelectorBackgroundChecked">#FF181818</Color>
+  <SolidColorBrush x:Key="TekBrushSelectorBackgroundChecked" Color="{StaticResource TekColorSelectorBackgroundChecked}"/>
+  <Color x:Key="TekColorSelectorBorderUnchecked">#FF333333</Color>
+  <SolidColorBrush x:Key="TekBrushSelectorBorderUnchecked" Color="{StaticResource TekColorSelectorBorderUnchecked}"/>
+  <Color x:Key="TekColorSelectorBorderChecked">#FF252525</Color>
+  <SolidColorBrush x:Key="TekBrushSelectorBorderChecked" Color="{StaticResource TekColorSelectorBorderChecked}"/>
+  <Color x:Key="TekColorSelectorBorderError">#FFE74848</Color>
+  <SolidColorBrush x:Key="TekBrushSelectorBorderError" Color="{StaticResource TekColorSelectorBorderError}"/>
+  <Color x:Key="TekColorSelectorLabelUnchecked">#FF000000</Color>
+  <SolidColorBrush x:Key="TekBrushSelectorLabelUnchecked" Color="{StaticResource TekColorSelectorLabelUnchecked}"/>
+  <Color x:Key="TekColorSelectorLabelChecked">#FF000000</Color>
+  <SolidColorBrush x:Key="TekBrushSelectorLabelChecked" Color="{StaticResource TekColorSelectorLabelChecked}"/>
+  <Color x:Key="TekColorSelectorLabelError">#FF000000</Color>
+  <SolidColorBrush x:Key="TekBrushSelectorLabelError" Color="{StaticResource TekColorSelectorLabelError}"/>
+  <Color x:Key="TekColorInputLabelDefault">#FF181818</Color>
+  <SolidColorBrush x:Key="TekBrushInputLabelDefault" Color="{StaticResource TekColorInputLabelDefault}"/>
+  <Color x:Key="TekColorInputHelperDefault">#FF181818</Color>
+  <SolidColorBrush x:Key="TekBrushInputHelperDefault" Color="{StaticResource TekColorInputHelperDefault}"/>
+  <Color x:Key="TekColorInputBorderDefault">#FF333333</Color>
+  <SolidColorBrush x:Key="TekBrushInputBorderDefault" Color="{StaticResource TekColorInputBorderDefault}"/>
+  <Color x:Key="TekColorInputBorderFocus">#FF000000</Color>
+  <SolidColorBrush x:Key="TekBrushInputBorderFocus" Color="{StaticResource TekColorInputBorderFocus}"/>
+  <Color x:Key="TekColorInputBorderFilled">#FF1E1E1E</Color>
+  <SolidColorBrush x:Key="TekBrushInputBorderFilled" Color="{StaticResource TekColorInputBorderFilled}"/>
+  <Color x:Key="TekColorInputBorderDisabled">#FF646464</Color>
+  <SolidColorBrush x:Key="TekBrushInputBorderDisabled" Color="{StaticResource TekColorInputBorderDisabled}"/>
+  <Color x:Key="TekColorInputBorderError">#FFE74848</Color>
+  <SolidColorBrush x:Key="TekBrushInputBorderError" Color="{StaticResource TekColorInputBorderError}"/>
+  <Color x:Key="TekColorInputTextDefault">#FF252525</Color>
+  <SolidColorBrush x:Key="TekBrushInputTextDefault" Color="{StaticResource TekColorInputTextDefault}"/>
+  <Color x:Key="TekColorInputTextFocus">#FF000000</Color>
+  <SolidColorBrush x:Key="TekBrushInputTextFocus" Color="{StaticResource TekColorInputTextFocus}"/>
+  <Color x:Key="TekColorInputTextFilled">#FF181818</Color>
+  <SolidColorBrush x:Key="TekBrushInputTextFilled" Color="{StaticResource TekColorInputTextFilled}"/>
+  <Color x:Key="TekColorInputTextDisabled">#FF646464</Color>
+  <SolidColorBrush x:Key="TekBrushInputTextDisabled" Color="{StaticResource TekColorInputTextDisabled}"/>
+  <Color x:Key="TekColorInputTextError">#FF000000</Color>
+  <SolidColorBrush x:Key="TekBrushInputTextError" Color="{StaticResource TekColorInputTextError}"/>
+  <Color x:Key="TekColorInputBackgroundDefault">#FFFFFFFF</Color>
+  <SolidColorBrush x:Key="TekBrushInputBackgroundDefault" Color="{StaticResource TekColorInputBackgroundDefault}"/>
+  <Color x:Key="TekColorInputCharacterCountDefault">#FF181818</Color>
+  <SolidColorBrush x:Key="TekBrushInputCharacterCountDefault" Color="{StaticResource TekColorInputCharacterCountDefault}"/>
+  <Color x:Key="TekColorInputCharacterCountFocus">#FF000000</Color>
+  <SolidColorBrush x:Key="TekBrushInputCharacterCountFocus" Color="{StaticResource TekColorInputCharacterCountFocus}"/>
+  <Color x:Key="TekColorInputCharacterCountFilled">#FF1E1E1E</Color>
+  <SolidColorBrush x:Key="TekBrushInputCharacterCountFilled" Color="{StaticResource TekColorInputCharacterCountFilled}"/>
+  <Color x:Key="TekColorInputCharacterCountError">#FFE74848</Color>
+  <SolidColorBrush x:Key="TekBrushInputCharacterCountError" Color="{StaticResource TekColorInputCharacterCountError}"/>
+  <Color x:Key="TekColorInputCharacterCountWarning">#FFE0B732</Color>
+  <SolidColorBrush x:Key="TekBrushInputCharacterCountWarning" Color="{StaticResource TekColorInputCharacterCountWarning}"/>
+  <Color x:Key="TekColorIconsDefault">#FF000000</Color>
+  <SolidColorBrush x:Key="TekBrushIconsDefault" Color="{StaticResource TekColorIconsDefault}"/>
+  <Color x:Key="TekColorTextLinkDefault">#FF33BAEA</Color>
+  <SolidColorBrush x:Key="TekBrushTextLinkDefault" Color="{StaticResource TekColorTextLinkDefault}"/>
+  <Color x:Key="TekColorModalBackgroundDefault">#CCCCCCCC</Color>
+  <SolidColorBrush x:Key="TekBrushModalBackgroundDefault" Color="{StaticResource TekColorModalBackgroundDefault}"/>
+  <Color x:Key="TekColorModalBorderDefault">#FF333333</Color>
+  <SolidColorBrush x:Key="TekBrushModalBorderDefault" Color="{StaticResource TekColorModalBorderDefault}"/>
+  <Color x:Key="TekColorModalTextDefault">#FF000000</Color>
+  <SolidColorBrush x:Key="TekBrushModalTextDefault" Color="{StaticResource TekColorModalTextDefault}"/>
+  <Color x:Key="TekColorModalShadowDefault">#33000000</Color>
+  <SolidColorBrush x:Key="TekBrushModalShadowDefault" Color="{StaticResource TekColorModalShadowDefault}"/>
+  <Color x:Key="TekColorFooterBackgroundDefault">#FFAFAFAF</Color>
+  <SolidColorBrush x:Key="TekBrushFooterBackgroundDefault" Color="{StaticResource TekColorFooterBackgroundDefault}"/>
+  <Color x:Key="TekColorFooterTextDefault">#FF181818</Color>
+  <SolidColorBrush x:Key="TekBrushFooterTextDefault" Color="{StaticResource TekColorFooterTextDefault}"/>
+  <Color x:Key="TekColorCanvasBackgroundDefault">#FFCCCCCC</Color>
+  <SolidColorBrush x:Key="TekBrushCanvasBackgroundDefault" Color="{StaticResource TekColorCanvasBackgroundDefault}"/>
+</ResourceDictionary>

@@ -1,0 +1,28 @@
+<!-- @bbkemp/tokens — Telerik Fluent theme overrides — auto-generated. Do not edit.
+ *
+ * Usage (App.xaml):
+ *   <ResourceDictionary.MergedDictionaries>
+ *     <ResourceDictionary Source="/Telerik.Windows.Themes.Fluent;component/Themes/Generic.xaml"/>
+ *     <ResourceDictionary Source="Tek.Tokens.Dark.xaml"/>
+ *     <ResourceDictionary Source="Tek.Telerik.Overrides.xaml"/>
+ *   </ResourceDictionary.MergedDictionaries>
+ -->
+<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <SolidColorBrush x:Key="MainBrush" Color="{StaticResource TekColorCanvasBackgroundDefault}"/>
+  <SolidColorBrush x:Key="BasicBrush" Color="{StaticResource TekColorInputBorderDefault}"/>
+  <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource TekColorButtonBorderDefault}"/>
+  <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource TekColorTextLinkDefault}"/>
+  <SolidColorBrush x:Key="MarkerBrush" Color="{StaticResource TekColorButtonTextDefault}"/>
+  <SolidColorBrush x:Key="ValidationBrush" Color="{StaticResource TekColorInputBorderError}"/>
+  <SolidColorBrush x:Key="AlternativeBrush" Color="{StaticResource TekColorFooterBackgroundDefault}"/>
+  <SolidColorBrush x:Key="MouseOverBrush" Color="{StaticResource TekColorButtonBackgroundHover}"/>
+  <SolidColorBrush x:Key="PressedBrush" Color="{StaticResource TekColorButtonBackgroundHover}"/>
+  <SolidColorBrush x:Key="DisabledBrush" Color="{StaticResource TekColorButtonBackgroundInactive}"/>
+  <SolidColorBrush x:Key="ReadOnlyBrush" Color="{StaticResource TekColorInputBorderDisabled}"/>
+  <SolidColorBrush x:Key="HeaderBrush" Color="{StaticResource TekColorModalTextDefault}"/>
+  <SolidColorBrush x:Key="ComplementaryBrush" Color="{StaticResource TekColorModalBackgroundDefault}"/>
+
+</ResourceDictionary>
