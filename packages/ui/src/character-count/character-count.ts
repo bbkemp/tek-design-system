@@ -18,10 +18,10 @@ const STYLES = `
   }
   .count {
     font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
-    font-size: 10px;
+    font-size: var(--tek-fonts-text-size-xs, 10px);
     font-weight: 400;
     font-style: normal;
-    line-height: 15px;
+    line-height: var(--tek-fonts-text-line-height-xs, 12px);
     color: var(--tek-color-input-character-count-default, #cccccc);
     white-space: nowrap;
   }

@@ -53,7 +53,7 @@ const STYLES = `
 
   .optional {
     font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
-    font-size: 12px;
+    font-size: var(--tek-fonts-text-size-sm, 12px);
     font-weight: 400;
     color: var(--tek-color-input-helper-default, #7b7b7b);
     font-style: italic;
@@ -61,18 +61,18 @@ const STYLES = `
 
   .char-count {
     font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
-    font-size: 10px;
+    font-size: var(--tek-fonts-text-size-xs, 10px);
     font-weight: 400;
-    line-height: 15px;
+    line-height: var(--tek-fonts-text-line-height-xs, 12px);
     color: var(--tek-color-input-character-count-default, #cccccc);
     margin-left: auto;
   }
 
   .helper {
     font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
-    font-size: 10px;
+    font-size: var(--tek-fonts-text-size-xs, 10px);
     font-weight: 400;
-    line-height: 15px;
+    line-height: var(--tek-fonts-text-line-height-xs, 12px);
     color: var(--tek-color-input-helper-default, #7b7b7b);
     flex-shrink: 0;
     width: 100%;
