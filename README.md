@@ -290,7 +290,7 @@ Registers all custom elements: `tek-checkbox`, `tek-radio`, `tek-toggle`, `tek-s
 <tek-input placeholder="Email" type="email"></tek-input>
 <tek-input state="error"></tek-input>
 <tek-input height="double" placeholder="Notes"></tek-input>
-<tek-character-count count="72" max="140"></tek-character-count>
+<tek-character-count current="72" max="140"></tek-character-count>
 <tek-button>Sign In</tek-button>
 <tek-button inactive>Unavailable</tek-button>
 <tek-text-link href="/forgot">Forgot password?</tek-text-link>
@@ -332,7 +332,7 @@ el.addEventListener('tek-click',  () => {});                            // butto
 | `value` | string | input | |
 | `state` | string | input, character-count | `default`, `focus`, `filled`, `disabled`, `error` |
 | `height` | string | input | `single` (default), `double`, `triple` |
-| `count` | number | character-count | |
+| `current` | number | character-count | |
 | `max` | number | character-count | |
 | `inactive` | boolean | button | |
 | `variant` | string | button | `primary` (default), `secondary` |

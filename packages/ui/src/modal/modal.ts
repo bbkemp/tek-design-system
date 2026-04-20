@@ -36,7 +36,7 @@ const STYLES = `
     max-width: 360px;
     box-sizing: border-box;
     overflow: clip;
-    box-shadow: 0px 2px 6px 0px var(--tek-color-ui-shadow, rgba(0,0,0,0.2));
+    box-shadow: 0px 2px 6px 0px var(--tek-color-modal-shadow-default, rgba(0,0,0,0.2));
   }
 
   .header {

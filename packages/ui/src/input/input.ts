@@ -55,6 +55,11 @@ export class TekInput extends HTMLElement {
   get height()      { return this.getAttribute('height') || 'single'; }
   get placeholder() { return this.getAttribute('placeholder') || ''; }
   get value()       { return this.getAttribute('value') || ''; }
+  set value(v: string) {
+    this.setAttribute('value', v);
+    const el = this._shadow.querySelector('input, textarea') as HTMLInputElement;
+    if (el) el.value = v;
+  }
   get type()        { return this.getAttribute('type') || 'text'; }
 
   private _shadow = this.attachShadow({ mode: 'open' });
@@ -67,13 +72,28 @@ export class TekInput extends HTMLElement {
     if (name !== 'state') this._render();
   }
 
+  private _esc(s: string) {
+    return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
   private _render() {
     const isMulti = this.height === 'double' || this.height === 'triple';
     const rows = this.height === 'double' ? 2 : this.height === 'triple' ? 3 : 1;
+    const isDisabled = this.state === 'disabled';
+    const disAttr = isDisabled ? ' disabled' : '';
     const field = isMulti
-      ? `<textarea rows="${rows}" placeholder="${this.placeholder}">${this.value}</textarea>`
-      : `<input type="${this.type}" placeholder="${this.placeholder}" value="${this.value}">`;
+      ? `<textarea rows="${rows}" placeholder="${this._esc(this.placeholder)}"${disAttr}></textarea>`
+      : `<input type="${this._esc(this.type)}" placeholder="${this._esc(this.placeholder)}" value="${this._esc(this.value)}"${disAttr}>`;
     this._shadow.innerHTML = `<style>${STYLES}</style>${field}`;
+
+    // Set textarea value via property (not interpolated into innerHTML) to prevent XSS
+    if (isMulti) {
+      const ta = this._shadow.querySelector('textarea') as HTMLTextAreaElement;
+      if (ta) ta.value = this.value;
+    }
+
+    if (isDisabled) this.setAttribute('aria-disabled', 'true');
+    else this.removeAttribute('aria-disabled');
 
     const el = this._shadow.querySelector('input, textarea') as HTMLElement;
     el?.addEventListener('focus', () => {
