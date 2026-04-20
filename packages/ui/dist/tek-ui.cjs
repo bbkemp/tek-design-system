@@ -375,6 +375,12 @@ class TekInput extends HTMLElement {
     get height() { return this.getAttribute('height') || 'single'; }
     get placeholder() { return this.getAttribute('placeholder') || ''; }
     get value() { return this.getAttribute('value') || ''; }
+    set value(v) {
+        this.setAttribute('value', v);
+        const el = this._shadow.querySelector('input, textarea');
+        if (el)
+            el.value = v;
+    }
     get type() { return this.getAttribute('type') || 'text'; }
     connectedCallback() { this._render(); }
     attributeChangedCallback(name) {
@@ -384,13 +390,28 @@ class TekInput extends HTMLElement {
         if (name !== 'state')
             this._render();
     }
+    _esc(s) {
+        return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
     _render() {
         const isMulti = this.height === 'double' || this.height === 'triple';
         const rows = this.height === 'double' ? 2 : this.height === 'triple' ? 3 : 1;
+        const isDisabled = this.state === 'disabled';
+        const disAttr = isDisabled ? ' disabled' : '';
         const field = isMulti
-            ? `<textarea rows="${rows}" placeholder="${this.placeholder}">${this.value}</textarea>`
-            : `<input type="${this.type}" placeholder="${this.placeholder}" value="${this.value}">`;
+            ? `<textarea rows="${rows}" placeholder="${this._esc(this.placeholder)}"${disAttr}></textarea>`
+            : `<input type="${this._esc(this.type)}" placeholder="${this._esc(this.placeholder)}" value="${this._esc(this.value)}"${disAttr}>`;
         this._shadow.innerHTML = `<style>${STYLES$6}</style>${field}`;
+        // Set textarea value via property (not interpolated into innerHTML) to prevent XSS
+        if (isMulti) {
+            const ta = this._shadow.querySelector('textarea');
+            if (ta)
+                ta.value = this.value;
+        }
+        if (isDisabled)
+            this.setAttribute('aria-disabled', 'true');
+        else
+            this.removeAttribute('aria-disabled');
         const el = this._shadow.querySelector('input, textarea');
         el?.addEventListener('focus', () => {
             if (this.state === 'default')
@@ -602,7 +623,7 @@ const STYLES$4 = `
 
   .optional {
     font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
-    font-size: 12px;
+    font-size: var(--tek-fonts-text-size-sm, 12px);
     font-weight: 400;
     color: var(--tek-color-input-helper-default, #7b7b7b);
     font-style: italic;
@@ -610,18 +631,18 @@ const STYLES$4 = `
 
   .char-count {
     font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
-    font-size: 10px;
+    font-size: var(--tek-fonts-text-size-xs, 10px);
     font-weight: 400;
-    line-height: 15px;
+    line-height: var(--tek-fonts-text-line-height-xs, 12px);
     color: var(--tek-color-input-character-count-default, #cccccc);
     margin-left: auto;
   }
 
   .helper {
     font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
-    font-size: 10px;
+    font-size: var(--tek-fonts-text-size-xs, 10px);
     font-weight: 400;
-    line-height: 15px;
+    line-height: var(--tek-fonts-text-line-height-xs, 12px);
     color: var(--tek-color-input-helper-default, #7b7b7b);
     flex-shrink: 0;
     width: 100%;
@@ -737,10 +758,10 @@ const STYLES$2 = `
   }
   .count {
     font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
-    font-size: 10px;
+    font-size: var(--tek-fonts-text-size-xs, 10px);
     font-weight: 400;
     font-style: normal;
-    line-height: 15px;
+    line-height: var(--tek-fonts-text-line-height-xs, 12px);
     color: var(--tek-color-input-character-count-default, #cccccc);
     white-space: nowrap;
   }
@@ -808,7 +829,7 @@ const STYLES$1 = `
     max-width: 360px;
     box-sizing: border-box;
     overflow: clip;
-    box-shadow: 0px 2px 6px 0px var(--tek-color-ui-shadow, rgba(0,0,0,0.2));
+    box-shadow: 0px 2px 6px 0px var(--tek-color-modal-shadow-default, rgba(0,0,0,0.2));
   }
 
   .header {
