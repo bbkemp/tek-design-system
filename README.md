@@ -370,6 +370,26 @@ Once defined in Figma Variables, Token Push will export them automatically. Comp
 
 ---
 
+## Charts / Data Visualization
+
+### Planned: uPlot
+
+For real-time waveform rendering (oscilloscope traces, measurement plots, any time-series instrument UI) the system will standardize on [uPlot](https://github.com/leeoniya/uPlot).
+
+**Why uPlot:**
+- ~35KB, MIT licensed, no framework dependency
+- Canvas-based, built for high-frequency streaming data
+- Used in Grafana-style instrument dashboards
+- Token-driven styling: axis colors, grid lines, trace colors all consume CSS custom properties from `@bbkemp/tokens`
+
+**Scope:**
+- Channel trace colors consume `--tek-color-channel-{1..6}-trace`
+- Card fill tints consume `--tek-color-channel-{1..6}-fill`
+- Axis/grid/background consume semantic neutral tokens
+- Chart wrapper will ship as a `tek-chart` Web Component once the bench UI is built
+
+---
+
 ## Shadow DOM cascade — CSS reset gotcha
 
 **Do not use `* { padding: 0; margin: 0 }` as a global reset in pages that consume `@bbkemp/ui`.**
