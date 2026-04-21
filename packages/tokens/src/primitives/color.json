@@ -2,7 +2,43 @@
   "colors": {
     "brand": {
       "tek-blue": {
-        "$value": "#33baea",
+        "$value": "#00ff1e",
+        "$type": "color"
+      },
+      "Ch 1": {
+        "$value": "#fff53b",
+        "$type": "color"
+      },
+      "Ch 2": {
+        "$value": "#20cfd3",
+        "$type": "color"
+      },
+      "Ch 3": {
+        "$value": "#ea2d56",
+        "$type": "color"
+      },
+      "Ch 4": {
+        "$value": "#7ac323",
+        "$type": "color"
+      },
+      "Ch 5": {
+        "$value": "#fb8b28",
+        "$type": "color"
+      },
+      "Ch 6": {
+        "$value": "#343d88",
+        "$type": "color"
+      },
+      "Ch 7": {
+        "$value": "#df4592",
+        "$type": "color"
+      },
+      "Ch 8": {
+        "$value": "#0bb984",
+        "$type": "color"
+      },
+      "Radio": {
+        "$value": "#f45618",
         "$type": "color"
       }
     },
