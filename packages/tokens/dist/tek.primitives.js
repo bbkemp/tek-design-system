@@ -35,7 +35,7 @@ export const tokens = {
   "tek-borders-radius-08": "15px",
   "tek-borders-radius-09": "17px",
   "tek-borders-radius-full": "9999px",
-  "tek-colors-brand-tek-blue": "#00ff1e",
+  "tek-colors-brand-tek-blue": "#33baea",
   "tek-colors-brand-ch-1": "#fff53b",
   "tek-colors-brand-ch-2": "#20cfd3",
   "tek-colors-brand-ch-3": "#ea2d56",

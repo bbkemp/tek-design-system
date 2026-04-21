@@ -52,7 +52,7 @@
   --tek-borders-radius-08: 15px;
   --tek-borders-radius-09: 17px;
   --tek-borders-radius-full: 9999px;
-  --tek-colors-brand-tek-blue: #00ff1e;
+  --tek-colors-brand-tek-blue: #33baea;
   --tek-colors-brand-ch-1: #fff53b;
   --tek-colors-brand-ch-2: #20cfd3;
   --tek-colors-brand-ch-3: #ea2d56;
@@ -173,8 +173,8 @@
   --tek-color-button-background-default: #1e1e1e;
   --tek-color-button-background-hover: #000000;
   --tek-color-button-background-inactive: #181818;
-  --tek-color-button-border-default: #00ff1e;
-  --tek-color-button-border-hover: #00ff1e;
+  --tek-color-button-border-default: #33baea;
+  --tek-color-button-border-hover: #33baea;
   --tek-color-button-border-inactive: #454545;
   --tek-color-button-text-default: #cccccc;
   --tek-color-button-text-hover: #ffffff;
@@ -207,7 +207,7 @@
   --tek-color-input-character-count-error: #e74848;
   --tek-color-input-character-count-warning: #e0b732;
   --tek-color-icons-default: #ffffff;
-  --tek-color-text-link-default: #00ff1e;
+  --tek-color-text-link-default: #33baea;
   --tek-color-modal-background-default: #181818cc;
   --tek-color-modal-border-default: #7b7b7b;
   --tek-color-modal-text-default: #ffffff;
@@ -221,10 +221,10 @@
 @media (prefers-color-scheme: light) {
   :root {
     --tek-color-button-background-default: #ffffff;
-    --tek-color-button-background-hover: #00ff1e;
+    --tek-color-button-background-hover: #33baea;
     --tek-color-button-background-inactive: #afafaf;
-    --tek-color-button-border-default: #00ff1e;
-    --tek-color-button-border-hover: #00ff1e;
+    --tek-color-button-border-default: #33baea;
+    --tek-color-button-border-hover: #33baea;
     --tek-color-button-border-inactive: #646464;
     --tek-color-button-text-default: #000000;
     --tek-color-button-text-hover: #000000;
@@ -257,7 +257,7 @@
     --tek-color-input-character-count-error: #e74848;
     --tek-color-input-character-count-warning: #e0b732;
     --tek-color-icons-default: #000000;
-    --tek-color-text-link-default: #00ff1e;
+    --tek-color-text-link-default: #33baea;
     --tek-color-modal-background-default: #cccccccc;
     --tek-color-modal-border-default: #333333;
     --tek-color-modal-text-default: #000000;
@@ -271,10 +271,10 @@
 /* ── 4. Explicit light override [data-theme="light"] ───────────────────── */
 [data-theme="light"] {
   --tek-color-button-background-default: #ffffff;
-  --tek-color-button-background-hover: #00ff1e;
+  --tek-color-button-background-hover: #33baea;
   --tek-color-button-background-inactive: #afafaf;
-  --tek-color-button-border-default: #00ff1e;
-  --tek-color-button-border-hover: #00ff1e;
+  --tek-color-button-border-default: #33baea;
+  --tek-color-button-border-hover: #33baea;
   --tek-color-button-border-inactive: #646464;
   --tek-color-button-text-default: #000000;
   --tek-color-button-text-hover: #000000;
@@ -307,7 +307,7 @@
   --tek-color-input-character-count-error: #e74848;
   --tek-color-input-character-count-warning: #e0b732;
   --tek-color-icons-default: #000000;
-  --tek-color-text-link-default: #00ff1e;
+  --tek-color-text-link-default: #33baea;
   --tek-color-modal-background-default: #cccccccc;
   --tek-color-modal-border-default: #333333;
   --tek-color-modal-text-default: #000000;
@@ -322,8 +322,8 @@
   --tek-color-button-background-default: #1e1e1e;
   --tek-color-button-background-hover: #000000;
   --tek-color-button-background-inactive: #181818;
-  --tek-color-button-border-default: #00ff1e;
-  --tek-color-button-border-hover: #00ff1e;
+  --tek-color-button-border-default: #33baea;
+  --tek-color-button-border-hover: #33baea;
   --tek-color-button-border-inactive: #454545;
   --tek-color-button-text-default: #cccccc;
   --tek-color-button-text-hover: #ffffff;
@@ -356,7 +356,7 @@
   --tek-color-input-character-count-error: #e74848;
   --tek-color-input-character-count-warning: #e0b732;
   --tek-color-icons-default: #ffffff;
-  --tek-color-text-link-default: #00ff1e;
+  --tek-color-text-link-default: #33baea;
   --tek-color-modal-background-default: #181818cc;
   --tek-color-modal-border-default: #7b7b7b;
   --tek-color-modal-text-default: #ffffff;

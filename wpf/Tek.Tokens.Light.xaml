@@ -6,13 +6,13 @@
 
   <Color x:Key="TekColorButtonBackgroundDefault">#FFFFFFFF</Color>
   <SolidColorBrush x:Key="TekBrushButtonBackgroundDefault" Color="{StaticResource TekColorButtonBackgroundDefault}"/>
-  <Color x:Key="TekColorButtonBackgroundHover">#FF00FF1E</Color>
+  <Color x:Key="TekColorButtonBackgroundHover">#FF33BAEA</Color>
   <SolidColorBrush x:Key="TekBrushButtonBackgroundHover" Color="{StaticResource TekColorButtonBackgroundHover}"/>
   <Color x:Key="TekColorButtonBackgroundInactive">#FFAFAFAF</Color>
   <SolidColorBrush x:Key="TekBrushButtonBackgroundInactive" Color="{StaticResource TekColorButtonBackgroundInactive}"/>
-  <Color x:Key="TekColorButtonBorderDefault">#FF00FF1E</Color>
+  <Color x:Key="TekColorButtonBorderDefault">#FF33BAEA</Color>
   <SolidColorBrush x:Key="TekBrushButtonBorderDefault" Color="{StaticResource TekColorButtonBorderDefault}"/>
-  <Color x:Key="TekColorButtonBorderHover">#FF00FF1E</Color>
+  <Color x:Key="TekColorButtonBorderHover">#FF33BAEA</Color>
   <SolidColorBrush x:Key="TekBrushButtonBorderHover" Color="{StaticResource TekColorButtonBorderHover}"/>
   <Color x:Key="TekColorButtonBorderInactive">#FF646464</Color>
   <SolidColorBrush x:Key="TekBrushButtonBorderInactive" Color="{StaticResource TekColorButtonBorderInactive}"/>
@@ -78,7 +78,7 @@
   <SolidColorBrush x:Key="TekBrushInputCharacterCountWarning" Color="{StaticResource TekColorInputCharacterCountWarning}"/>
   <Color x:Key="TekColorIconsDefault">#FF000000</Color>
   <SolidColorBrush x:Key="TekBrushIconsDefault" Color="{StaticResource TekColorIconsDefault}"/>
-  <Color x:Key="TekColorTextLinkDefault">#FF00FF1E</Color>
+  <Color x:Key="TekColorTextLinkDefault">#FF33BAEA</Color>
   <SolidColorBrush x:Key="TekBrushTextLinkDefault" Color="{StaticResource TekColorTextLinkDefault}"/>
   <Color x:Key="TekColorModalBackgroundDefault">#CCCCCCCC</Color>
   <SolidColorBrush x:Key="TekBrushModalBackgroundDefault" Color="{StaticResource TekColorModalBackgroundDefault}"/>

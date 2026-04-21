@@ -1,10 +1,10 @@
 // @bbkemp/tokens — auto-generated
 export const tokens = {
   "tek-color-button-background-default": "#ffffff",
-  "tek-color-button-background-hover": "#00ff1e",
+  "tek-color-button-background-hover": "#33baea",
   "tek-color-button-background-inactive": "#afafaf",
-  "tek-color-button-border-default": "#00ff1e",
-  "tek-color-button-border-hover": "#00ff1e",
+  "tek-color-button-border-default": "#33baea",
+  "tek-color-button-border-hover": "#33baea",
   "tek-color-button-border-inactive": "#646464",
   "tek-color-button-text-default": "#000000",
   "tek-color-button-text-hover": "#000000",
@@ -37,7 +37,7 @@ export const tokens = {
   "tek-color-input-character-count-error": "#e74848",
   "tek-color-input-character-count-warning": "#e0b732",
   "tek-color-icons-default": "#000000",
-  "tek-color-text-link-default": "#00ff1e",
+  "tek-color-text-link-default": "#33baea",
   "tek-color-modal-background-default": "#cccccccc",
   "tek-color-modal-border-default": "#333333",
   "tek-color-modal-text-default": "#000000",
