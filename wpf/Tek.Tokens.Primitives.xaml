@@ -39,7 +39,16 @@
   <CornerRadius x:Key="TekBordersRadius08">15</CornerRadius>
   <CornerRadius x:Key="TekBordersRadius09">17</CornerRadius>
   <CornerRadius x:Key="TekBordersRadiusFull">9999</CornerRadius>
-  <Color x:Key="TekColorsBrandTekBlue">#FF33BAEA</Color>
+  <Color x:Key="TekColorsBrandTekBlue">#FF00FF1E</Color>
+  <Color x:Key="TekColorsBrandCh1">#FFFFF53B</Color>
+  <Color x:Key="TekColorsBrandCh2">#FF20CFD3</Color>
+  <Color x:Key="TekColorsBrandCh3">#FFEA2D56</Color>
+  <Color x:Key="TekColorsBrandCh4">#FF7AC323</Color>
+  <Color x:Key="TekColorsBrandCh5">#FFFB8B28</Color>
+  <Color x:Key="TekColorsBrandCh6">#FF343D88</Color>
+  <Color x:Key="TekColorsBrandCh7">#FFDF4592</Color>
+  <Color x:Key="TekColorsBrandCh8">#FF0BB984</Color>
+  <Color x:Key="TekColorsBrandRadio">#FFF45618</Color>
   <Color x:Key="TekColorsNeutral100">#FFCCCCCC</Color>
   <Color x:Key="TekColorsNeutral200">#FFAFAFAF</Color>
   <Color x:Key="TekColorsNeutral300">#FF979797</Color>
