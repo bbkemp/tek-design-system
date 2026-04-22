@@ -22,67 +22,39 @@
     margin: 0; padding: 0;
     width: 100%; height: 100%;
     background: #181818; color: #e6e6e6;
-    font-family: -apple-system, BlinkMacSystemFont, "Geist", system-ui, sans-serif;
     overflow: hidden;
     -webkit-user-select: none;
   }
-
-  .stage { position: fixed; inset: 0; overflow: hidden; }
-  .frame-wrap {
+  #frame {
     position: absolute; top: 0; left: 0;
-    transform-origin: 0 0; will-change: transform;
-  }
-  iframe {
-    border: 0; display: block; background: #181818;
-    width: var(--vw, 100vw); height: var(--vh, 100vh);
+    width: 1440px; height: 900px;
+    border: 0; background: #181818;
+    transform-origin: 0 0;
+    will-change: transform;
   }
 </style>
 </head>
 <body>
 
-<div class="stage">
-  <div class="frame-wrap" id="wrap">
-    <iframe id="frame" src="./prototype.html" title="Tek Bench prototype"></iframe>
-  </div>
-</div>
+<iframe id="frame" src="./prototype.html" title="Tek Bench prototype"></iframe>
 
 <script>
+  // Prototype renders at this fixed canvas size; wrapper scales to fit viewport.
+  const DESIGN_W = 1440;
+  const DESIGN_H = 900;
+
   const frame = document.getElementById('frame');
-  const wrap = document.getElementById('wrap');
 
   function apply() {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
-
-    let w = vw, h = vh;
-    try {
-      const body = frame.contentDocument && frame.contentDocument.body;
-      if (body) {
-        const docEl = frame.contentDocument.documentElement;
-        w = Math.max(body.scrollWidth, docEl.scrollWidth) || vw;
-        h = Math.max(body.scrollHeight, docEl.scrollHeight) || vh;
-      }
-    } catch (_) {}
-
-    const scale = Math.min(vw / w, vh / h, 1);
-    const tx = (vw - w * scale) / 2;
-    const ty = (vh - h * scale) / 2;
-
-    wrap.style.setProperty('--vw', w + 'px');
-    wrap.style.setProperty('--vh', h + 'px');
-    wrap.style.transform = 'translate(' + tx + 'px, ' + ty + 'px) scale(' + scale + ')';
+    const scale = Math.min(vw / DESIGN_W, vh / DESIGN_H);
+    const tx = (vw - DESIGN_W * scale) / 2;
+    const ty = (vh - DESIGN_H * scale) / 2;
+    frame.style.transform = 'translate(' + tx + 'px, ' + ty + 'px) scale(' + scale + ')';
   }
 
-  frame.addEventListener('load', () => {
-    apply();
-    try {
-      const body = frame.contentDocument && frame.contentDocument.body;
-      if (body && 'ResizeObserver' in window) new ResizeObserver(apply).observe(body);
-    } catch (_) {}
-    // Bundler finishes asynchronously — re-apply a few times for safety.
-    [250, 750, 1500, 3000].forEach(ms => setTimeout(apply, ms));
-  });
-
+  apply();
   window.addEventListener('resize', apply);
   window.addEventListener('orientationchange', () => setTimeout(apply, 200));
 </script>
