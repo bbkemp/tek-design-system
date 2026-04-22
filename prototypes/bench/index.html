@@ -27,36 +27,15 @@
     -webkit-user-select: none;
   }
 
-  .stage { position: fixed; inset: 0; display: grid; place-items: center; }
-  .frame-wrap { transform-origin: center center; will-change: transform; }
+  .stage { position: fixed; inset: 0; overflow: hidden; }
+  .frame-wrap {
+    position: absolute; top: 0; left: 0;
+    transform-origin: 0 0; will-change: transform;
+  }
   iframe {
     border: 0; display: block; background: #181818;
     width: var(--vw, 100vw); height: var(--vh, 100vh);
   }
-
-  /* Viewport preset toolbar — dev only, hidden in standalone PWA */
-  .toolbar {
-    position: fixed;
-    top: calc(env(safe-area-inset-top, 0px) + 8px);
-    left: 50%; transform: translateX(-50%);
-    display: flex; gap: 4px;
-    padding: 6px; z-index: 10;
-    background: #252525cc; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    border: 1px solid #3a3a3a; border-radius: 10px;
-    font: 12px/1 -apple-system, system-ui, sans-serif;
-    opacity: 0.4; transition: opacity 120ms;
-  }
-  .toolbar:hover, .toolbar:focus-within { opacity: 1; }
-  .toolbar button {
-    background: transparent; color: inherit;
-    border: 1px solid transparent;
-    padding: 6px 10px; border-radius: 6px;
-    cursor: pointer; font: inherit;
-  }
-  .toolbar button:hover { border-color: #3a3a3a; }
-  .toolbar button.active { background: #33baea; color: #000; border-color: #33baea; }
-
-  @media (display-mode: standalone) { .toolbar { display: none; } }
 </style>
 </head>
 <body>
@@ -67,52 +46,38 @@
   </div>
 </div>
 
-<nav class="toolbar" id="toolbar" aria-label="Viewport presets">
-  <button data-preset="fit" class="active">Fit</button>
-  <button data-w="1366" data-h="1024">iPad Pro 12.9"</button>
-  <button data-w="1194" data-h="834">iPad 11"</button>
-  <button data-w="1180" data-h="820">iPad Air</button>
-  <button data-w="820" data-h="1180">Portrait</button>
-  <button data-w="1440" data-h="900">Desktop</button>
-</nav>
-
 <script>
   const frame = document.getElementById('frame');
   const wrap = document.getElementById('wrap');
-  const toolbar = document.getElementById('toolbar');
-
-  let preset = { w: null, h: null };
 
   function apply() {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
 
-    let w = preset.w, h = preset.h;
-
-    if (!w || !h) {
-      try {
-        const doc = frame.contentDocument;
-        const body = doc && doc.body;
-        w = (body && body.scrollWidth) || vw;
-        h = (body && body.scrollHeight) || vh;
-      } catch (_) {
-        w = vw; h = vh;
+    let w = vw, h = vh;
+    try {
+      const body = frame.contentDocument && frame.contentDocument.body;
+      if (body) {
+        const docEl = frame.contentDocument.documentElement;
+        w = Math.max(body.scrollWidth, docEl.scrollWidth) || vw;
+        h = Math.max(body.scrollHeight, docEl.scrollHeight) || vh;
       }
-    }
+    } catch (_) {}
+
+    const scale = Math.min(vw / w, vh / h, 1);
+    const tx = (vw - w * scale) / 2;
+    const ty = (vh - h * scale) / 2;
 
     wrap.style.setProperty('--vw', w + 'px');
     wrap.style.setProperty('--vh', h + 'px');
-    const scale = Math.min(vw / w, vh / h, 1);
-    wrap.style.transform = 'scale(' + scale + ')';
+    wrap.style.transform = 'translate(' + tx + 'px, ' + ty + 'px) scale(' + scale + ')';
   }
 
   frame.addEventListener('load', () => {
     apply();
     try {
-      const doc = frame.contentDocument;
-      if (doc && doc.body && 'ResizeObserver' in window) {
-        new ResizeObserver(apply).observe(doc.body);
-      }
+      const body = frame.contentDocument && frame.contentDocument.body;
+      if (body && 'ResizeObserver' in window) new ResizeObserver(apply).observe(body);
     } catch (_) {}
     // Bundler finishes asynchronously — re-apply a few times for safety.
     [250, 750, 1500, 3000].forEach(ms => setTimeout(apply, ms));
@@ -120,19 +85,6 @@
 
   window.addEventListener('resize', apply);
   window.addEventListener('orientationchange', () => setTimeout(apply, 200));
-
-  toolbar.addEventListener('click', (e) => {
-    const btn = e.target.closest('button');
-    if (!btn) return;
-    [...toolbar.querySelectorAll('button')].forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    if (btn.dataset.preset === 'fit') {
-      preset = { w: null, h: null };
-    } else {
-      preset = { w: +btn.dataset.w, h: +btn.dataset.h };
-    }
-    apply();
-  });
 </script>
 
 </body>
