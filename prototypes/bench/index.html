@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+
+<!-- iPad standalone prototype — viewport-fit=cover lets the app paint under the notch/home-indicator -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+
+<!-- Add-to-Home-Screen → launches chrome-free, no Safari UI -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tek Bench">
+<meta name="theme-color" content="#1e1e1e">
+
+<!-- Home-screen icon. iOS ignores SVG for home-screen icons on many versions —
+     drop a 180×180 PNG at ./icon-180.png when ready and this still works as fallback. -->
+<link rel="apple-touch-icon" href="../../img/IconLogo.svg">
+<link rel="icon" href="../../img/IconLogo.svg">
+
+<link rel="manifest" href="./manifest.webmanifest">
+
+<title>Tek Bench — iPad Prototype</title>
+
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #1e1e1e; color: #e6e6e6; font-family: system-ui, -apple-system, sans-serif; }
+  .placeholder { display: grid; place-items: center; height: 100dvh; text-align: center; padding: 24px; }
+  .placeholder code { background: #252525; padding: 2px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!--
+  ============================================================
+  PLACEHOLDER — replace everything between these markers with
+  the packaged bench.html <body> content once delivered.
+  Keep the <head> above intact so the PWA wiring stays correct.
+  ============================================================
+-->
+<main class="placeholder">
+  <div>
+    <h1>Tek Bench</h1>
+    <p>iPad prototype scaffold is ready.</p>
+    <p>Drop the packaged HTML into <code>prototypes/bench/index.html</code>.</p>
+  </div>
+</main>
+<!-- ============================================================ -->
+
+</body>
+</html>

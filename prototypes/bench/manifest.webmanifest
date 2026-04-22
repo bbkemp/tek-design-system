@@ -1,0 +1,19 @@
+{
+  "name": "Tek Bench",
+  "short_name": "Tek Bench",
+  "description": "Tektronix bench prototype — iPad standalone",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#1e1e1e",
+  "theme_color": "#1e1e1e",
+  "icons": [
+    {
+      "src": "../../img/IconLogo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
