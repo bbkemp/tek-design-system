@@ -1,0 +1,47 @@
+name: Skills sync
+
+on:
+  pull_request:
+    paths:
+      - '.claude/skills/**'
+      - 'scripts/export-skills.mjs'
+      - '.cursor/rules/**'
+      - '.windsurf/rules/**'
+      - '.clinerules/**'
+      - '.continue/rules/**'
+      - '.github/instructions/**'
+      - 'AGENTS.md'
+  push:
+    branches: [main]
+    paths:
+      - '.claude/skills/**'
+      - 'scripts/export-skills.mjs'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Regenerate skill mirrors
+        run: npm run skills:export
+
+      - name: Check for drift
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Skill mirrors are out of sync with .claude/skills/."
+            echo "Run 'npm run skills:export' locally and commit the result."
+            echo ""
+            echo "Drift detected in:"
+            git status --porcelain
+            echo ""
+            git --no-pager diff
+            exit 1
+          fi
+          echo "Skill mirrors are in sync."
