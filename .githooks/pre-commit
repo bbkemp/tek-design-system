@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Regenerate cross-LLM skill mirrors when .claude/skills/ source files are staged.
+# Auto-stages the regenerated mirrors so the commit is consistent.
+set -e
+
+if git diff --cached --name-only | grep -qE '^\.claude/skills/|^scripts/export-skills\.mjs$'; then
+  echo "[skills-sync] regenerating cross-LLM mirrors..."
+  npm run --silent skills:export
+  git add .cursor/rules .windsurf/rules .clinerules .continue/rules .github/instructions AGENTS.md
+fi

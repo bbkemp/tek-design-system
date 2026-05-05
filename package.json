@@ -5,6 +5,8 @@
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "build:tokens": "npm run build --workspace=packages/tokens",
-    "build:ui": "npm run build --workspace=packages/ui"
+    "build:ui": "npm run build --workspace=packages/ui",
+    "skills:export": "node scripts/export-skills.mjs",
+    "prepare": "git config core.hooksPath .githooks 2>/dev/null || true"
   }
 }
