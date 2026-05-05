@@ -1,0 +1,92 @@
+name: Figma MCP watch
+
+on:
+  schedule:
+    - cron: '0 13 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run watcher
+        id: watch
+        run: |
+          node scripts/figma-mcp-watch.mjs
+          echo "changed=$(node -e "console.log(JSON.parse(require('fs').readFileSync('/tmp/figma-mcp-delta.json','utf8')).changed)")" >> "$GITHUB_OUTPUT"
+
+      - name: Open issue with delta
+        if: steps.watch.outputs.changed == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const data = JSON.parse(fs.readFileSync('/tmp/figma-mcp-delta.json', 'utf8'));
+            const parts = [];
+            const headlines = [];
+
+            if (data.newTools.length > 0) {
+              headlines.push(`${data.newTools.length} new tool${data.newTools.length === 1 ? '' : 's'}`);
+              parts.push('## New tools');
+              parts.push('');
+              for (const t of data.newTools) parts.push(`- \`${t}\``);
+              parts.push('');
+              parts.push('Source: https://developers.figma.com/docs/figma-mcp-server/tools-and-prompts/');
+              parts.push('');
+            }
+            if (data.removedTools.length > 0) {
+              headlines.push(`${data.removedTools.length} removed`);
+              parts.push('## Removed / renamed tools');
+              parts.push('');
+              for (const t of data.removedTools) parts.push(`- \`${t}\``);
+              parts.push('');
+              parts.push('_Verify whether this is a deprecation or just a rename before acting._');
+              parts.push('');
+            }
+            if (data.newReleaseNotes.length > 0) {
+              headlines.push(`${data.newReleaseNotes.length} release-note entr${data.newReleaseNotes.length === 1 ? 'y' : 'ies'}`);
+              parts.push('## Release-notes mentions');
+              parts.push('');
+              for (const e of data.newReleaseNotes) {
+                parts.push(`### ${e.date}`);
+                parts.push(`_keywords: ${e.keywords.join(', ')}_`);
+                parts.push('');
+                parts.push('> ' + e.excerpt);
+                parts.push('');
+              }
+              parts.push('Source: https://www.figma.com/release-notes/');
+              parts.push('');
+            }
+            parts.push('---');
+            parts.push('');
+            parts.push('Triage steps: `.claude/skills/figma-mcp-watch/SKILL.md`. Close this issue once reviewed — the state file already remembers the change.');
+
+            const title = `Figma MCP watch — ${headlines.join(', ')}`;
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body: parts.join('\n'),
+              labels: ['figma-mcp-watch'],
+            });
+
+      - name: Commit updated state file
+        if: steps.watch.outputs.changed == 'true'
+        run: |
+          if ! git diff --quiet .github/figma-mcp-state.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add .github/figma-mcp-state.json
+            git commit -m "chore(figma-mcp-watch): update tool/seen state"
+            git push
+          fi
