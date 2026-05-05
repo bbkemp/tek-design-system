@@ -2,7 +2,7 @@
 
 You are an AI assistant working in the **Tek Design System** repo — Tektronix's token-driven, framework-agnostic design system. Read this file in full at the start of every session. When this file disagrees with the actual repo, the repo wins — open a PR to update this file.
 
-The thesis behind everything below: **codified, versioned, queryable systems compound.** AI tools amplify the system they're given — grounded context produces production-quality output, ungrounded context produces slop. Treat this file, [README.md](./README.md), [CONTRIBUTING.md](./CONTRIBUTING.md), and [docs/tek-context-architecture.md](./docs/tek-context-architecture.md) as the actual product, not scaffolding around it.
+The thesis behind everything below: **codified, versioned, queryable systems compound.** AI tools amplify the system they're given — grounded context produces production-quality output, ungrounded context produces slop. Treat this file, [README.md](./README.md), [CONTRIBUTING.md](./CONTRIBUTING.md), and [docs/tek-system-core.md](./docs/tek-system-core.md) as the actual product, not scaffolding around it.
 
 ## What this repo is
 
@@ -73,7 +73,7 @@ For Figma Code Connect mappings: use the Figma MCP tools, don't hand-edit Figma'
 
 ## What's in flight (planned, not yet shipped)
 
-These are flagged here so you don't act as if they exist, and don't propose them as new ideas. Context for each is in [docs/tek-context-architecture.md](./docs/tek-context-architecture.md).
+These are flagged here so you don't act as if they exist, and don't propose them as new ideas. Context for each is in [docs/tek-system-core.md](./docs/tek-system-core.md).
 
 | Item | Where in the architecture doc |
 |---|---|
@@ -94,7 +94,7 @@ When a planned convention lands, update this file in the same PR.
 
 ## The five-system context
 
-This repo is one piece of a broader architecture: Knowledge Corpus, PRD System, DEV System, GitHub Foundation, UXR & Analytics — five systems composing into a unified context layer for every team and AI tool. When questions reach beyond this repo (why Web Components? why Style Dictionary? how does this connect to PRDs and analytics? what's the migration sequencing?), read [docs/tek-context-architecture.md](./docs/tek-context-architecture.md). It is the reference; this file is the working contract.
+This repo is one piece of a broader architecture: Knowledge Corpus, PRD System, DEV System, GitHub Foundation, UXR & Analytics — five systems composing into a unified context layer for every team and AI tool. When questions reach beyond this repo (why Web Components? why Style Dictionary? how does this connect to PRDs and analytics? what's the migration sequencing?), read [docs/tek-system-core.md](./docs/tek-system-core.md). It is the reference; this file is the working contract.
 
 ## Working style for AI assistants in this repo
 
@@ -130,4 +130,4 @@ This repo is one piece of a broader architecture: Knowledge Corpus, PRD System, 
 1. This file
 2. [README.md](./README.md) — repo structure, token pipeline, type scale, fonts, install/usage, Figma node map
 3. [CONTRIBUTING.md](./CONTRIBUTING.md) — pipeline detail, token rules, review and approval, local dev
-4. [docs/tek-context-architecture.md](./docs/tek-context-architecture.md) — the five-system architecture
+4. [docs/tek-system-core.md](./docs/tek-system-core.md) — the five-system architecture
