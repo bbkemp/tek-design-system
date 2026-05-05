@@ -26,7 +26,7 @@ These are the rules that hold the system together. Violating any of them produce
 2. **Tokens always.** Never hardcode hex, px, font sizes, font families, or radii. Use `var(--tek-*)` with a fallback: `var(--tek-spacing-s05, 8px)`. Token-adherence rules are spelled out in [CONTRIBUTING.md → Updating Web Components](./CONTRIBUTING.md#updating-web-components).
 3. **Figma is the source of truth.** Before writing or changing component code, look at the relevant Figma node. Do not assume existing code is correct. The Figma file is **DS-v2**, key `3wbYstse9TYKlPtCPpZH5X`. README has the node-to-source map.
 4. **TypeScript strict mode.** No `any` escape hatches.
-5. **No local publishes.** Packages publish only from CI on tag push. Never run `npm publish` from a developer machine. No human holds the publish token.
+5. **No local publishes.** Packages publish only from CI on push to `main` (`publish-tokens.yml`, `publish-ui.yml`). Never run `npm publish` from a developer machine. No human holds the publish token.
 6. **Never commit directly to `main`.** Always: branch → PR → merge from the GitHub UI. See [CONTRIBUTING.md → Working locally](./CONTRIBUTING.md#working-locally).
 7. **Conventional Commits** (`feat:`, `fix:`, `chore:`, `docs:`, `refactor:`). Feeds the auto-changelog and CI version bumps.
 8. **Consistency over cleverness.** Internal consistency is the single biggest reason AI output works on this repo. New code must match existing patterns. If a pattern doesn't fit, raise it as an open question rather than diverging silently.
