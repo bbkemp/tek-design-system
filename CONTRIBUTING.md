@@ -213,19 +213,21 @@ Patch version bumped automatically on every publish.
 
 ## Working locally
 
+The branching, commit, PR, and merge conventions for this repo are codified in **[docs/workflow.md](./docs/workflow.md)** — that's the source of truth, including the trigger phrases used when working with AI assistants. Read it once; the rest of this section is the short version.
+
 All code changes go through branches and pull requests — never commit directly to `main`.
 
 ```bash
 git checkout main && git pull origin main
-git checkout -b feat/your-change-name
+git checkout -b type/your-change-name   # type ∈ feat, fix, chore, docs, refactor
 
 # Make changes, then:
 git add <specific files>
-git commit -m "type: description"
-git push -u origin feat/your-change-name
+git commit -m "type(scope): description"
+git push -u origin type/your-change-name
 ```
 
-Then open a pull request on GitHub. After review, merge from the GitHub UI.
+Open a PR. Squash-merge when ready. Branches auto-delete on merge.
 
 After merging, update your local main:
 ```bash
@@ -234,18 +236,10 @@ git checkout main && git pull origin main
 
 ### Plugin updates
 
-After editing files in `figma-token-push/`:
-```bash
-git checkout -b chore/update-token-push
-git add figma-token-push/
-git commit -m "chore: update Token Push plugin"
-git push -u origin chore/update-token-push
-```
-
-Open a PR, merge, then **reload** in Figma Desktop:
+After editing files in `figma-token-push/`, follow the standard flow above (typically `chore/...` or `feat/...`). After the PR merges, **reload** in Figma Desktop:
 **Plugins → Development → Token Push → right-click → Reload**
 
-No re-import from manifest needed unless you’re setting up a new machine.
+No re-import from manifest needed unless you're setting up a new machine.
 
 ---
 
