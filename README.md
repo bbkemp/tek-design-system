@@ -421,25 +421,32 @@ Breakpoints from Figma `Cxx` variables: xs=384px, sm=640px, xl=1280px.
 | Component | Figma node | Code Connect |
 |---|---|---|
 | Checkbox | 730:16982 | `packages/ui/src/checkbox/checkbox.ts` |
-| Radio | 780:10148 | — |
-| Toggle | 780:10026 | — |
-| SelectorLabel | 780:9896 | — |
-| Selector | 7002:378 | — |
-| Label | 780:10209 | `packages/ui/src/label/label.ts` |
+| Radio | 780:10148 | `packages/ui/src/radio/radio.ts` |
+| Toggle | 780:10026 | `packages/ui/src/toggle/toggle.ts` |
+| SelectorLabel | 780:9896 | `packages/ui/src/selector-label/selector-label.ts` |
+| Selector | 7002:378 | `packages/ui/src/selector/selector.ts` |
+| Label | 780:10209 | `packages/ui/src/input/input.ts` ⚠️ — should be `label/label.ts` (see Known issues below) |
 | Input / Form | 7003:495 / 7003:722 | `packages/ui/src/input/input.ts` |
-| CharacterCount | 7011:143 | `packages/ui/src/character-count/character-count.ts` |
-| TextLink | 7011:150 | — |
+| CharacterCount | 7011:143 | `packages/ui/src/character-count/character-count.ts` ⚠️ — `componentName` is mistyped `CharachterCount` (see Known issues below) |
+| TextLink | 7011:150 | `packages/ui/src/text-link/text-link.ts` |
 | Button | 202:2605 | `packages/ui/src/button/button.ts` |
 | Modal | 7003:2158 | `packages/ui/src/modal/modal.ts` |
-| Footer | 7003:2168 | — |
+| Footer | 7003:2168 | `packages/ui/src/footer/footer.ts` |
 | Sign In — Mobile (dark) | 7134:600 | `signin.html` |
 | Sign In — Tablet (dark) | 7135:638 | `signin.html` |
 | Sign In — Desktop (dark) | 7134:598 | `signin.html` |
-| Sign In — Mobile (light) | 7148:1177 | — |
-| Sign In — Tablet (light) | 7148:1185 | — |
-| Sign In — Desktop (light) | 7148:1193 | — |
+| Sign In — Mobile (light) | 7148:1177 | `signin.html` (inherits from dark master) |
+| Sign In — Tablet (light) | 7148:1185 | `signin.html` (inherits from dark master) |
+| Sign In — Desktop (light) | 7148:1193 | `signin.html` (inherits from dark master) |
 
-Code Connect mappings are managed via the Figma MCP in Claude Code. To update or add mappings, open the Figma node and run the Code Connect workflow.
+Code Connect mappings are managed via the Figma MCP in Claude Code. To update or add mappings, follow the [`code-connect` skill](./.claude/skills/code-connect/SKILL.md).
+
+### Known Code Connect issues — TODO
+
+Two existing mappings have errors that the MCP cannot overwrite. Figma's `add_code_connect_map` and `send_code_connect_mappings` are add-only — fixing requires disconnecting in the Figma UI first, then re-adding via MCP.
+
+1. **Label mapping points at the wrong source.** The 13 Label instances are mapped with `source: packages/ui/src/input/input.ts` instead of `packages/ui/src/label/label.ts`. Designers clicking a Label component in Dev Mode see input.ts code instead of the actual label.ts source. **Fix:** in Figma Dev Mode, disconnect the master `Label` (node `780:10209`) Code Connect mapping, then re-run the `code-connect` skill with the correct source path.
+2. **CharacterCount `componentName` is misspelled.** The 5 CharacterCount instances have `componentName: "CharachterCount"` (extra "h"). Cosmetic only — the source path resolves correctly. **Fix:** in Figma Dev Mode, disconnect the master `CharacterCount` (node `7011:143`) Code Connect mapping, then re-run the `code-connect` skill with the corrected name.
 
 ---
 

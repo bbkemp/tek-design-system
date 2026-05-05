@@ -158,24 +158,29 @@ tek-modal { flex-shrink: 0; }
 
 Code Connect links Figma component instances to their source files so designers see real code in the Dev Panel.
 
-**Current mappings** (managed via Figma MCP in Claude Code):
+**Current mappings** (managed via Figma MCP in Claude Code — every component below has at least one mapping in the Figma store):
 
 | Figma component | Source file | Label |
 |---|---|---|
 | Button | `packages/ui/src/button/button.ts` | Web Components |
-| CharacterCount | `packages/ui/src/character-count/character-count.ts` | Web Components |
+| CharacterCount | `packages/ui/src/character-count/character-count.ts` ⚠️ | Web Components |
 | Checkbox | `packages/ui/src/checkbox/checkbox.ts` | Web Components |
+| Footer | `packages/ui/src/footer/footer.ts` | Web Components |
 | Form / Input | `packages/ui/src/input/input.ts` | Web Components |
+| Label | `packages/ui/src/input/input.ts` ⚠️ | Web Components |
+| Modal | `packages/ui/src/modal/modal.ts` | Web Components |
+| Radio | `packages/ui/src/radio/radio.ts` | Web Components |
+| Selector | `packages/ui/src/selector/selector.ts` | Web Components |
+| SelectorLabel | `packages/ui/src/selector-label/selector-label.ts` | Web Components |
 | Sign In (all viewports) | `signin.html` | Web Components |
+| TextLink | `packages/ui/src/text-link/text-link.ts` | Web Components |
+| Toggle | `packages/ui/src/toggle/toggle.ts` | Web Components |
 
-**Adding or updating a mapping:**
+⚠️ See [README → Known Code Connect issues](./README.md#known-code-connect-issues--todo) for two outstanding mapping bugs (Label points at the wrong source; CharacterCount `componentName` is misspelled). Both require Figma-UI-side disconnect before they can be re-added via MCP.
 
-1. Open the Figma file and navigate to the component node
-2. In Claude Code, provide the Figma URL and ask to set up Code Connect
-3. The MCP will suggest matches — confirm or correct them
-4. Mappings are stored in Figma's system (not in the repo)
+**Adding or updating a mapping:** follow the [`code-connect` skill](./.claude/skills/code-connect/SKILL.md). The skill captures: required MCP tools, naming conventions, single-vs-batch flow, and doc-table sync.
 
-**Naming convention for new mappings:** Use the component's TypeScript class name or page filename as `componentName`. Always use `"Web Components"` as the label.
+**Naming convention for new mappings:** use the component's TypeScript class name or page filename as `componentName`, always with `label: "Web Components"`.
 
 ---
 
