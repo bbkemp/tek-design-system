@@ -2,7 +2,7 @@
 
 You are an AI assistant working in the **Tek Design System** repo — Tektronix's token-driven, framework-agnostic design system. Read this file in full at the start of every session. When this file disagrees with the actual repo, the repo wins — open a PR to update this file.
 
-The thesis behind everything below: **codified, versioned, queryable systems compound.** AI tools amplify the system they're given — grounded context produces production-quality output, ungrounded context produces slop. Treat this file, [README.md](./README.md), [CONTRIBUTING.md](./CONTRIBUTING.md), and [docs/tek-system-core.md](./docs/tek-system-core.md) as the actual product, not scaffolding around it.
+The thesis behind everything below: **codified, versioned, queryable systems compound.** AI tools amplify the system they're given — grounded context produces production-quality output, ungrounded context produces slop. Treat this file, [README.md](./README.md), [CONTRIBUTING.md](./CONTRIBUTING.md), [docs/workflow.md](./docs/workflow.md), and [docs/tek-system-core.md](./docs/tek-system-core.md) as the actual product, not scaffolding around it.
 
 ## What this repo is
 
@@ -27,7 +27,7 @@ These are the rules that hold the system together. Violating any of them produce
 3. **Figma is the source of truth.** Before writing or changing component code, look at the relevant Figma node. Do not assume existing code is correct. The Figma file is **DS-v2**, key `3wbYstse9TYKlPtCPpZH5X`. README has the node-to-source map.
 4. **TypeScript strict mode.** No `any` escape hatches.
 5. **No local publishes.** Packages publish only from CI on push to `main` (`publish-tokens.yml`, `publish-ui.yml`). Never run `npm publish` from a developer machine. No human holds the publish token.
-6. **Never commit directly to `main`.** Always: branch → PR → merge from the GitHub UI. See [CONTRIBUTING.md → Working locally](./CONTRIBUTING.md#working-locally).
+6. **Never commit directly to `main`.** Always: branch → PR → squash-merge via GitHub MCP. The full git/GitHub workflow — trigger phrases ("let's push it", "merge it"), branch naming, commit format, merge gate — is codified in [docs/workflow.md](./docs/workflow.md). Read it.
 7. **Conventional Commits** (`feat:`, `fix:`, `chore:`, `docs:`, `refactor:`). Feeds the auto-changelog and CI version bumps.
 8. **Consistency over cleverness.** Internal consistency is the single biggest reason AI output works on this repo. New code must match existing patterns. If a pattern doesn't fit, raise it as an open question rather than diverging silently.
 
@@ -128,6 +128,7 @@ This repo is one piece of a broader architecture: Knowledge Corpus, PRD System, 
 ## Read order when in doubt
 
 1. This file
-2. [README.md](./README.md) — repo structure, token pipeline, type scale, fonts, install/usage, Figma node map
-3. [CONTRIBUTING.md](./CONTRIBUTING.md) — pipeline detail, token rules, review and approval, local dev
-4. [docs/tek-system-core.md](./docs/tek-system-core.md) — the five-system architecture
+2. [docs/workflow.md](./docs/workflow.md) — git/GitHub workflow: trigger phrases, branching, commits, PRs, merge gate
+3. [README.md](./README.md) — repo structure, token pipeline, type scale, fonts, install/usage, Figma node map
+4. [CONTRIBUTING.md](./CONTRIBUTING.md) — pipeline detail, token rules, review and approval, local dev
+5. [docs/tek-system-core.md](./docs/tek-system-core.md) — the five-system architecture
