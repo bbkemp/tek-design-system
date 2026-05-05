@@ -13,7 +13,7 @@ The premise: codified, versioned, queryable systems compound. AI tools amplify t
 - [PRD System](#prd-system) — product requirements as version-controlled artifacts
 - [DEV System](#dev-system) — architectural rules codified so AI produces production code
 - [UXR & Analytics](#uxr--analytics) — qualitative and quantitative user signal
-- [Appendix: The case for building this now](#appendix-the-case-for-building-this-now) — leadership-facing framing
+- [Appendix: Notes for Bill](#appendix-notes-for-bill) — leadership-facing framing, kept in personal voice
 - [Appendix: Why the Design System works as the proof point](#appendix-why-the-design-system-works-as-the-proof-point)
 
 ---
@@ -219,18 +219,6 @@ Once everything's under one org with consistent conventions, the systems plug in
 
 The MCP server pattern is the runtime unifier. A single endpoint exposes the design system, PRDs, ADRs, corpus, and analytics as queryable surfaces — see the Meta-Architecture diagram above.
 
-### Vendor neutrality
-
-The MCP layer is also the decoupling. There is no org-wide single-vendor commitment. Engineers using Cursor with mixed models, PMs using Claude, marketers using Copilot the company already pays for — all of them ground in the same shared resources through the same endpoint.
-
-What this avoids:
-
-- Capital lock-in to any single AI platform.
-- A growing pile of redundant SaaS subscriptions, each with its own isolated AI feature sold by a vendor.
-- Fragmentation across teams that each bought their own AI tool with their own knowledge silo.
-
-The codified content itself isn't locked to a vendor either. Skills, rules, conventions, and prompts live as markdown in the repo. They get wrapped for whatever tool needs them — Claude skill today, Cursor rules tomorrow, MCP prompt after that. The knowledge is the asset; the format is just today's container.
-
 ### Migration sequencing
 
 1. **Org setup (week 1).** Create or claim the `@tektronix` org. SSO, teams, billing, branch protection defaults. No content migration yet.
@@ -344,18 +332,6 @@ Response with inline citations linking to source PDF + page
 
 Citations are required. Every claim links to a page in a manual. Engineers trust the system because they can verify in two clicks.
 
-### Progressive disclosure
-
-The retrieval flow above is the per-query lifecycle. Across queries, the corpus exposes itself in tiers so cheap requests stay cheap and deep requests pull only as much context as they need:
-
-- **Top tier** — always available, near-zero cost. What domains the corpus covers, what product families exist, what doc types are loaded.
-- **Mid tier** — pulled when the question warrants it. Product overviews, persona-shaped summaries, section-level abstracts.
-- **Deep tier** — pulled only when the task calls for it. Full specs, edge cases, raw chunks with citations.
-
-A persona, agent, or chat surface drills from cheap to deep based on the actual question. The corpus stays usable across surfaces with very different cost and latency budgets — a customer-facing scope-picker can run almost entirely in the top and mid tiers; a support engineer debugging a hardware issue pulls from the deep tier. Same store, different appetites.
-
-This shape — cheap by default, deep on demand — is also why a single corpus can serve every surface in the next subsection without context bloat.
-
 ### Evaluation harness
 
 Hand-curate 50 questions with known correct answers from the chosen product line. Run them on every change. Track retrieval recall (did the right chunk make it into context?) and answer accuracy (did the LLM use it correctly?). Without an eval harness, RAG quality is invisible until users complain.
@@ -370,20 +346,6 @@ A working internal chat — `tek-corpus.internal` or similar — where anyone ca
 - **Phase 3.** Expose as an MCP server so Claude Code, Cursor, and other agents auto-retrieve.
 - **Phase 4.** Second product line. Validate the pattern generalizes.
 - **Phase 5.** Personas, scoped retrieval profiles, customer-facing constrained interface.
-
-### Composable surfaces
-
-Once the corpus exists, the surfaces it powers compose on top of one shared brain:
-
-- **Customer-facing.** "Help me pick which oscilloscope and which probes fit my application, and how many I need."
-- **Sales.** Persona that knows the product line, pricing structure, competitive positioning.
-- **Support.** Persona that grounds in manuals and prior tickets.
-- **Internal training.** Persona that teaches the way an electrical engineer wants to learn.
-- **Marketing.** Persona that knows brand voice and positioning.
-
-The alternative — the path most companies take — is each team buying a separate AI feature embedded in whatever SaaS tool they use, then spending months trying to get product information into it. The result is expensive, doesn't compose, and gets repeated by the next team on a different platform.
-
-With one corpus and the MCP layer, the work shifts to the UI surface — custom build, third-party tool, integration into an existing system, whatever the audience needs. The intelligence is already there.
 
 ### CMS integration (Sanity or similar)
 
@@ -532,15 +494,13 @@ Same idea as design tokens, for code. Reusable hooks, utilities, base classes, e
 
 Consistency in the existing codebase is the single biggest predictor of AI output quality. The Day 2 refactor worked because the system was internally consistent enough for Claude to pattern-match.
 
-**4. AI-specific rules files (CLAUDE.md / .cursorrules / skill packs)**
+**4. AI-specific rules files (CLAUDE.md / .cursorrules)**
 
 Cursor reads `.cursorrules`, Claude Code reads `CLAUDE.md`, both at the repo root, both injected into every prompt. This is where meta-instructions live:
 
 > "Always check `/prds/` for the relevant PRD before writing code. Always reference `@tektronix/tokens` for any styling values, never hardcode. Always emit Web Components, never React. Always run `npm run lint` after changes."
 
 This is the layer that turns AI tools from generic code generators into Tek-specific code generators.
-
-The content is portable. The same markdown source generates the Claude skill, the Cursor rules file, the Copilot instructions, and a plain human-readable version. Tek doesn't pick an AI vendor at this layer — every team's tool of choice loads the same baseline.
 
 **5. Validation as code (CI gates)**
 
@@ -567,20 +527,6 @@ CI gates              ← validation enforcement
 
 Top three are documentation. Bottom three are executable. The design system worked because rules were encoded into Style Dictionary, the Token Push plugin, and CI publish workflows — not just documentation. Same move applies here. A `CLAUDE.md` that says "always use tokens" is a starting point; an ESLint rule that fails the build when a hex value appears in a `.ts` file is the actual system.
 
-### Skills as the interim MCP layer
-
-Most of what unblocks people on day one is static knowledge — the contribution playbook, persona scaffolding, brand rules, system conventions, ADR pointers. None of that needs a live API. It can ship today as a multi-format skill bundle:
-
-- **One markdown source of truth** in the repo.
-- **Built into Claude skills, Cursor rules, Copilot instructions, and human-readable docs** through a small generator step.
-- **Loaded by every team member's AI** regardless of which tool they're using.
-
-That covers most of the perceived value of an MCP layer with no infrastructure to stand up.
-
-When the real MCP server lands, none of this gets thrown away. The same markdown source feeds an MCP server's prompts and resources. The migration is mechanical, not a rebuild.
-
-What this approach does *not* cover is live capability — querying the corpus, fetching current tokens, hitting product APIs. Those still need the real MCP eventually. But the static knowledge layer ships now.
-
 ### Phasing
 
 **Phase 1 — Documentation foundation (1 week).**
@@ -588,9 +534,8 @@ What this approach does *not* cover is live capability — querying the corpus, 
 - Write `CLAUDE.md` at the repo root.
 - Capture 5–10 ADRs from existing in-head decisions.
 - Add ESLint rules for the most common drift cases (hardcoded values, missing types, wrong import paths).
-- Draft a role-based "how do I contribute?" skill — one entry point with branches for product, hardware, software, firmware, marketing. Anyone joining the system invokes it instead of asking a maintainer where they fit.
 
-Lowest effort, highest immediate impact on AI output quality. The contribution skill is what lets the system scale across roles without funneling every new contributor through a single maintainer.
+Lowest effort, highest immediate impact on AI output quality.
 
 **Phase 2 — Scaffolding (1–2 weeks).**
 
@@ -690,76 +635,114 @@ Qual and quant accessible through the same MCP surface as everything else. Any A
 
 ---
 
-## Appendix: The case for building this now
+## Appendix: Notes for Bill
 
-For leadership and stakeholders. The body of this doc is the operational reference. This appendix is the why-it-matters, why-this-shape, and why-now — written so it stands alone for anyone who only reads this far.
+Notes addressed to a specific reader, kept in personal voice. Less polished than the rest of this doc, on purpose — the "blocked from X" reframe and the first-person framing are the right way in for a leadership audience.
 
-### The reframe
+### The core thesis
 
-Stop asking "what can we do with AI?" Start asking "without this system, what are we blocked from doing?"
+The system is scalable, and it's meant to be. It's foundational to Tek's approach to AI — it's the enablement layer.
 
-- Blocked from creating a customer-facing persona that knows our products and helps a buyer pick the right scope and probes.
-- Blocked from training an AI to explain how our oscilloscopes work in the language an electrical engineer thinks in.
-- Blocked from giving every team a tool that grounds in actual Tek expertise instead of generic web knowledge.
-- Blocked from contributing to the system at all if you're not an engineer — because the path for a hardware designer, PM, marketer, or salesperson to plug in doesn't exist yet.
+New AI features tap into the MCP layer rather than getting invented from scratch each time. We can still use AI in other ways, but anything Tek-native plugs into this foundation.
 
-The list keeps growing. Every entry is a feature, a product, an internal tool, or a customer experience the company can't ship today. This system is what unblocks them — at the source, once, for everything downstream.
+The reframe: stop asking "what can we do with AI?" Start saying "without this system, I am blocked from doing X."
 
-The reframe matters because it changes the budget conversation. Investing in a context system is not "speculative AI R&D." It's removing a specific, enumerable list of blockers that have a direct line to revenue, support cost, sales velocity, and engineering throughput.
+- Blocked from creating a persona
+- Blocked from creating a skill
+- Blocked from training an AI to explain how our oscilloscopes work in the way I best understand
+- Blocked from training an AI to understand how an electrical engineer wants to test and measure something
+- Blocked from X — the list keeps growing
 
-### Decoupled by design — no vendor lock-in
+### The "how do I fit into the system?" skill
 
-The MCP layer is the decoupling. No org-wide single-vendor commitment. Engineers using Cursor with mixed models, PMs using Claude, marketers using Copilot the company already pays for — all hitting the same shared resources through the same endpoint.
+I want to write a skill for this. Written once, used broadly. Anyone contributing to the system invokes it to figure out how their work plugs in.
 
-What this avoids:
+Role-based:
 
-- Capital lock-in to any single AI platform.
-- A growing pile of redundant SaaS subscriptions, each with its own isolated AI feature.
-- Fragmentation across teams that each bought their own little tool with their own little knowledge silo.
+- **Product person** → how do I contribute my PRDs?
+- **Hardware designer** → how do I contribute my files so they best serve the system?
+- More roles as we add branches — software, firmware, marketing, etc.
 
-The skills, rules, and conventions aren't locked to a vendor either. They live as markdown in the repo and get wrapped for whatever tool needs them — Claude skill today, Cursor rules tomorrow, MCP prompt after that. The knowledge is the asset; the format is just today's container.
+Once the skill is complete, we use it broadly while developing every new branch of the system. Contribution stops being tribal knowledge. It stops being "ask Bryan." The system scales because the bottleneck goes away.
 
-The financial story is real. The alternative trajectory — a dozen vendor-specific AI features bolted onto a dozen different SaaS tools, each requiring its own data integration and ongoing maintenance — is dramatically more expensive and produces a worse outcome.
+### Where this is headed — and why we're already there
 
-### Future-ready for collaborative AI
+I haven't researched this; I just know it. Claude is going to turn into more of a Slack or Teams — collaborative, multi-human, multi-AI in shared space.
 
-Claude (and the category) is heading toward Slack/Teams-shaped collaboration: multi-human, multi-AI, shared workspace. That's not a roadmap forecast; it's where practical workflows are already pulling.
+I caught the moment when I was working on the GitHub permissions issue with Brock. I almost started writing a skill to play Brock's voice on a speaker so my Claude could transcribe it and converse with him. That's a workaround for collaboration that doesn't natively exist yet. But it's coming.
 
-When that lands, the teams with shared, codified, queryable resources plug in on day one. The teams without spend the next year scrambling to retrofit their knowledge into a form their AI agents can share. Tek was ready when Claude Design landed because the design system was already built to operate in that mode. Same pattern, larger scope.
+When it arrives, everyone needs shared resources out of the gate. With this approach, we'll be ready — same way we were ready when Claude Design came out. The design system was already built to operate in that mode.
 
-### One brain, every surface
+### Scalable because nothing is locked in
 
-The clearest payoff is the knowledge corpus + persona pattern. One corpus of grounded Tek knowledge feeds an unbounded set of surfaces:
+Everything is intentional. Integrated. But also decoupled.
 
-- A customer-facing tool that helps someone pick the right oscilloscope and probes for their application.
-- A sales persona that knows the product line and competitive positioning.
-- A support persona that grounds in manuals and prior tickets.
-- An internal training persona that teaches the way an EE wants to learn.
-- A marketing persona that knows the brand voice.
+The MCP layer is how we use and license any element we want. We don't need an org-wide Claude-only instance. People can do the Cursor thing with multiple models. People who just want to use Copilot because we already have it — fine. The MCP layer enables all of it.
 
-The work becomes the UI surface, not the intelligence. The intelligence is already there.
+What we avoid:
 
-The alternative is what most companies do: marketing buys an "AI sales guy" plug-in for some CMS, then spends six months trying to get product information into it. Sales does the same on a different platform. Support does the same on a third. Each one expensive, none of them composing, none of them sharing what they learn.
+- Enormous investments in any one platform
+- A pile of random SaaS subscriptions and isolated AI features that get sold to us
+- Fragmentation across teams who all bought their own little tool
 
-### Realistic, not hypothetical
+We'll save a ton of money.
 
-This is a real, straightforward, parallelizable plan — not a moonshot.
+Even the skills themselves aren't locked to Claude. The content lives as markdown in our repo and gets wrapped for whatever tool needs it — Claude skill today, Cursor rules tomorrow, MCP prompt after that. The knowledge is the asset; the format is just today's container.
 
-- The biggest piece (the design system) is already shipped and proven at v1.0.
-- The remaining pieces are well-trodden: RAG over PDFs, ADRs, PRDs as markdown, event taxonomies. None of them require novel research.
-- Multiple swim lanes can run in parallel because the systems compose at well-defined surfaces (the MCP endpoint, the GitHub foundation), not by being merged into one giant codebase.
-- A multi-format skill bundle (see [Skills as the interim MCP layer](#skills-as-the-interim-mcp-layer)) ships the static knowledge layer this quarter, with no rewrites required when the real MCP lands later.
+### A concrete example — RAG to personas
 
-Tek isn't bound to old-fashioned ways of working or dated technology. This is the moment to recalibrate and put the company on the relative forefront of organizations using AI — pragmatically, at the layer that actually matters.
+Our RAG / knowledge base. Out of the gate, we can build personas that use that information to sell products to customers. A million different ways to use it.
+
+A customer-facing tool that helps someone figure out which oscilloscope and which probes fit their business, and how many they need. Educational personas. Internal sales and support personas. The work becomes the UI layer — custom build, third-party, integrated into an existing system, whatever the surface calls for. The intelligence is already there.
+
+Without this approach: the marketing team gets sold a plug-in on some CMS — an "AI sales guy" — and then they're trying to figure out how to get our product information into it. It's out of whack. It's expensive. It's a waste of time.
+
+With this approach: one knowledge base, one MCP layer, infinite surfaces. Marketing's AI, sales' AI, support's AI, the customer's "help me pick a scope" AI — all the same brain, different faces.
+
+### How the RAG should work — progressive disclosure
+
+Same principle that makes skills work should govern the RAG. Don't dump everything into context. Don't pull top-K chunks blindly. Layer it:
+
+- **Top level** — cheap, always available. What domains we cover, what product families exist, what doc types are in the system.
+- **Mid level** — pulled when relevant. Product overviews, persona-shaped summaries.
+- **Deep level** — pulled only when the task calls for it. Full specs, edge cases, technical detail.
+
+The persona, or whatever surface is asking, drills down from cheap to deep based on the actual question. We don't pay for context we don't need, and we don't drown the model in noise. Cheap by default, deep on demand.
+
+This is what makes the RAG actually scalable across all the surfaces — sales persona, customer "help me pick a scope" tool, internal training. They're all hitting the same store, but each one only pulls what its task requires.
+
+### Skills as a temp MCP layer — we can start now
+
+We don't need to wait for a full MCP buildout to start operating like we have one.
+
+Most of what unblocks people today is static knowledge — the contribution playbook, persona scaffolding, brand rules, system conventions. None of that needs to be live. We can ship it now as a multi-format skill bundle:
+
+- One markdown source of truth in the repo
+- Built into Claude skills, Cursor rules, Copilot instructions, and plain human-readable docs
+- Every team member's AI loads the same baseline, regardless of which tool they're using
+
+That covers most of the perceived value of an MCP layer with no infrastructure to stand up.
+
+When we do build the real MCP, none of this gets thrown away. The same markdown source feeds an MCP server's prompts and resources. The migration is mechanical, not a rebuild.
+
+What this does *not* cover is live capability — querying the RAG, fetching current tokens, hitting APIs. That still needs the real MCP eventually. But the static knowledge layer? Ships now.
+
+### This is realistic, not hypothetical
+
+I want to be clear: this isn't a crazy or hypothetical approach. It's very real, very realistic, very straightforward.
+
+We can break this out into parallel swim lanes and make a lot of progress. The biggest benefit is that not a lot of re-architecting is required to do it.
+
+I don't accept that Tek is bound to old-fashioned ways of working, dated technology, or dated mindsets. We're at the perfect time to recalibrate and put ourselves on the relative forefront of organizations using AI — in the smartest, most pragmatic way possible.
 
 ### The arc
 
-1. **Foundation.** This system is the AI enablement layer.
-2. **Contribution.** A role-based "how do I fit in?" skill makes the system scale across product, hardware, software, firmware, and marketing — without funneling everyone through a single maintainer.
-3. **Future-readiness.** Ready for collaborative multi-human, multi-AI workspaces by default, not as a retrofit.
-4. **Decoupled.** MCP layer means no lock-in, no wasted SaaS spend, model flexibility.
-5. **Payoff.** RAG → personas → surfaces. One foundation, every customer-facing and internal experience.
-6. **Realistic.** Parallel swim lanes, minimal re-architecting. The skill bundle gives the company a working AI layer today; real MCP later, no rewrites in between.
+1. **Foundation** — the system is the AI enablement layer
+2. **Contribution** — the "how do I fit in" skill makes it scale across roles
+3. **Future-readiness** — ready for collaborative AI by default, not as a retrofit
+4. **Decoupled** — MCP layer means no lock-in, no wasted SaaS spend, model flexibility
+5. **Payoff** — RAG → personas → surfaces. One foundation, every customer and internal experience.
+6. **Realistic** — parallel swim lanes, minimal re-architecting. Multi-format skill bundle gives us a working layer today; real MCP later, no rewrites in between. Tek is perfectly positioned to recalibrate now.
 
 ---
 
