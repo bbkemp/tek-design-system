@@ -13,7 +13,7 @@ prototypes/rag-poc/
     └── <product-id>/              e.g. 2450-smu/
         ├── raw/                   raw photos / screenshots dropped here
         ├── screens/               one .md per screen + downscaled image
-        ├── manual.pdf             optional, paired during processing
+        ├── *.pdf                  optional reference docs (manual.pdf, quickstart.pdf, …) paired during processing
         └── index.md               screen graph + nav map (generated)
 ```
 
@@ -35,7 +35,7 @@ Markdown is the RAG payload. PDF is for humans.
 | `sources/*/raw/` | **No** (gitignored) | Raw photos are 3–12MB each; permanent repo bloat. Originals add no RAG value once markdown + downscale are extracted. |
 | `sources/*/screens/*.md` | Yes | The RAG payload. |
 | `sources/*/screens/*.{jpg,png,webp}` | Yes | Downscaled reference image, paired 1:1 with the markdown. |
-| `sources/*/manual.pdf` | **No** (gitignored) | Manuals are large and may be license-restricted. Pair locally during processing. |
+| `sources/*/*.pdf` | **No** (gitignored) | Reference PDFs (full manual, quick-start guide, spec sheet, etc.) are large and may be license-restricted. Pair locally during processing. |
 | `sources/*/index.md` | Yes | Generated screen graph. |
 
 After a screen is processed, the raw photo can be deleted from local disk — the downscaled image + markdown are the artifact.

@@ -10,4 +10,4 @@ package-lock.json
 # image + extracted markdown in screens/ get committed.
 prototypes/rag-poc/sources/*/raw/*
 !prototypes/rag-poc/sources/*/raw/.gitkeep
-prototypes/rag-poc/sources/*/manual.pdf
+prototypes/rag-poc/sources/*/*.pdf
