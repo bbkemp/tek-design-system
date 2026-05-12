@@ -1,6 +1,6 @@
 ---
 name: document-screens
-description: Document every screen of an existing piece of Tek software as structured markdown for the org-wide RAG. Use when given a folder of raw photos / screenshots under rag/sources/<product>/uploads/photos/ — produces one .md + downscaled image per unique screen in screens/, with frontmatter, controls inventory, DS mapping, and verbatim text. Optionally process a single photo for testing.
+description: Document every screen of an existing piece of Tek software as structured markdown for the org-wide RAG. Use when given a folder of raw photos / screenshots under rag/sources/<product>/uploads/photos/ — produces one .md + downscaled image per unique screen in screens/, with frontmatter, controls inventory, and verbatim text. Optionally process a single photo for testing. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa.
 ---
 
 # Document screens
@@ -27,7 +27,7 @@ Optional:
 2. **Confidence over completeness.** If a label, value, or behavior is not legible or not derivable from the photo, mark it in **Confidence notes** rather than fabricating. Hallucinated controls are worse than missing controls — they poison the RAG.
 3. **One `.md` per unique screen, not per photo.** Multiple photos of the same screen with different state become **State variations** within a single `.md`. See *Clustering*.
 4. **`uploads/` is gitignored.** Never commit anything under `uploads/`. Only the downscaled image in `screens/` and the markdown.
-5. **Trace every control to a `tek-*` primitive or flag it as a new primitive.** The DS mapping section is not optional; it is the bridge from documentation to component work.
+5. **No design system mapping in screen `.md`.** Do not reference `tek-*` primitives, propose new primitives, or compare against DS-v2 in any part of the screen markdown. The corpus describes the legacy device as-is; DS mapping is a separate, dated, disposable audit produced on-demand by [`prototype-qa`](../prototype-qa/SKILL.md). Mixing the two rots the corpus the moment DS-v2 evolves.
 
 ## Process
 
@@ -120,11 +120,12 @@ controls:
 2. **`## Purpose`** — one paragraph. What this screen is for, where it sits in the nav, what the user does here.
 3. **`## Controls inventory`** — prose walkthrough of every entry in `controls[]`, region by region, top-to-bottom, left-to-right. Reference each control by `` `id` `` (backticks). Group hardware bezel into one paragraph at the end.
 4. **`## State variations`** — if visible across other photos in the cluster (or knowable from the device): function changes, output ON/OFF, overlays, themes. Cross-reference other photos by filename (`uploads/photos/photo-XXX_…jpeg`) and name future child screens by `screen_id`.
-5. **`## Design system mapping`** — table: control → closest `tek-*` primitive → "new primitive needed?" Group hardware bezel as out-of-scope unless building a virtual front-panel emulator. Aggregate the proposed-new-primitives in a closing sentence ("New primitives surfaced by this screen: …").
-6. **`## Visible text (verbatim)`** — every label, value, unit, and status string transcribed exactly. Group by region. This block is the highest-signal RAG payload — terms a user types into a search ("what does AZERO mean") are most likely to land here.
-7. **`## Confidence notes`** — bulleted list of every transcription, behavior, or interpretation that is uncertain. Be explicit about *what* is unverified and *why* (illegible at this resolution / unconfirmed in this single shot / requires manual). The manual-pairing pass works through this list.
-8. **`## Manual references`** — placeholder until the manual-pairing pass: `> Pending. Manual will be paired in a later pass (<product> User's Manual, sections covering …).`
-9. **`## Source photo`** — which file in `uploads/photos/` was selected and why; brief disposition of other candidates that were not selected.
+5. **`## Visible text (verbatim)`** — every label, value, unit, and status string transcribed exactly. Group by region. This block is the highest-signal RAG payload — terms a user types into a search ("what does AZERO mean") are most likely to land here.
+6. **`## Confidence notes`** — bulleted list of every transcription, behavior, or interpretation that is uncertain. Be explicit about *what* is unverified and *why* (illegible at this resolution / unconfirmed in this single shot / requires manual). The manual-pairing pass works through this list.
+7. **`## Manual references`** — placeholder until the manual-pairing pass: `> Pending. Manual will be paired in a later pass (<product> User's Manual, sections covering …).`
+8. **`## Source photo`** — which file in `uploads/photos/` was selected and why; brief disposition of other candidates that were not selected.
+
+**Do not include a `## Design system mapping` section.** See Hard rule 5.
 
 ### 6. Update `index.md`
 

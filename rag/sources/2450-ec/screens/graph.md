@@ -166,20 +166,6 @@ Other states this same screen layout will exhibit:
 - **Buffer change** — `buffer-name` changes to whichever buffer is selected; the trace and statistics update.
 - **Empty buffer** — when no readings have been taken since the buffer was last cleared, the plot region is empty (no waveform). Not visible in any of the candidate photos.
 
-## Design system mapping
-
-| Control | Existing tek-* | New primitive needed? |
-|---|---|---|
-| `tab-graph`, `tab-data`, `tab-scale`, `tab-trigger` | `tek-selector` (segmented control) is the closest existing primitive | Possibly **`tek-tabs`** — depending on whether `tek-selector` covers the active-tab + content-routing pattern or only "pick one of N values". Worth a design conversation. |
-| `status-trigger` | `tek-button` styled as status pill | **`tek-status-pill`** (already proposed by `home.md`). |
-| `y-axis`, `x-axis` | — | **`tek-axis`** — labeled tick scale for plots. Not currently in the system. |
-| `waveform` | — | **`tek-plot`** — line/scatter plot with autoscaling, zoom, and cursors. Foundational for any instrumentation UI; almost certainly recurs on every graph-style screen across the Tek family. |
-| `buffer-name` | `tek-button` (as trigger) | **`tek-dropdown`** (already proposed by `home.md`). |
-| `stat-left`, `stat-right` | `tek-label` for static; — for dynamic | **`tek-readout`** (already proposed by `home.md`) at a smaller display variant. |
-| Hardware bezel | — | Out of scope for web — see `home.md` mapping. Same set of `hardkey`/`knob`/`terminal`/`port`/`status-led` proposals if a virtual front-panel emulator is ever built. |
-
-**Summary of new primitives surfaced by this screen:** `tek-tabs` (or extension of `tek-selector`), `tek-axis`, `tek-plot`. Of these, **`tek-plot`** is the most strategically valuable — every instrument we onboard from here forward will need a plotting primitive. Also reinforces the prior proposals from `home.md`: `tek-status-pill`, `tek-dropdown`, `tek-readout`.
-
 ## Visible text (verbatim)
 
 Tab bar: `Graph` · `Data` · `Scale` · `Trigger`.
