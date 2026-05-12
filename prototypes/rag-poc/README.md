@@ -10,36 +10,44 @@ Goal: a consistent, LLM-optimized way to document every screen of an existing pi
 ```
 prototypes/rag-poc/
 └── sources/
-    └── <product-id>/              e.g. 2450-smu/
-        ├── raw/                   raw photos / screenshots dropped here
+    └── <product-id>/              e.g. 2450-ec/  (SKU, kebab)
+        ├── uploads/               local-only dump zone
+        │   ├── photos/            screen + hardware photos
+        │   ├── pdfs/              manuals, quick-start guides, spec sheets
+        │   ├── transcripts/       walkthrough transcripts
+        │   └── artifacts/         CAD, AI, technical artifacts
         ├── screens/               one .md per screen + downscaled image
-        ├── *.pdf                  optional reference docs (manual.pdf, quickstart.pdf, …) paired during processing
-        └── index.md               screen graph + nav map (generated)
+        └── index.md               cross-asset index (generated)
 ```
+
+Future asset-class output folders (`hardware/`, `docs/<doc-id>/`, `walkthroughs/`, `artifacts/`) land alongside `screens/` as their processing skills come online.
 
 ## Workflow
 
-1. Drop raw photos into `sources/<product>/raw/`.
-2. Run the `/document-screens` skill against that folder.
-3. Skill produces, per image:
-   - Downscaled image (max 1600px long edge) in `screens/`
-   - Structured markdown with frontmatter + controls inventory + DS mapping
-4. Skill regenerates `index.md` (screen graph) and an optional thumbnail PDF for human browsing.
+1. Drop raw inputs into the right `uploads/<class>/` subfolder.
+2. Run the matching processing skill (today: `/document-screens` for `uploads/photos/`).
+3. Skill produces, per asset:
+   - Downscaled / extracted reference (max 1600px long edge for images) in the class output folder.
+   - Structured markdown with frontmatter + class-specific body sections.
+4. Skill regenerates `index.md` (cross-asset graph).
 
-Markdown is the RAG payload. PDF is for humans.
+Markdown is the RAG payload. PDFs and other binaries stay in `uploads/` and are local-only.
 
 ## Local hygiene — what's committed vs. local-only
 
 | Path | Committed? | Why |
 |---|---|---|
-| `sources/*/raw/` | **No** (gitignored) | Raw photos are 3–12MB each; permanent repo bloat. Originals add no RAG value once markdown + downscale are extracted. |
+| `sources/*/uploads/` | **No** (gitignored) | Raw photos, PDFs, transcripts, and binary artifacts are large, often license-restricted, and add no RAG value once their markdown is extracted. |
 | `sources/*/screens/*.md` | Yes | The RAG payload. |
 | `sources/*/screens/*.{jpg,png,webp}` | Yes | Downscaled reference image, paired 1:1 with the markdown. |
-| `sources/*/*.pdf` | **No** (gitignored) | Reference PDFs (full manual, quick-start guide, spec sheet, etc.) are large and may be license-restricted. Pair locally during processing. |
-| `sources/*/index.md` | Yes | Generated screen graph. |
+| `sources/*/index.md` | Yes | Generated cross-asset index. |
 
-After a screen is processed, the raw photo can be deleted from local disk — the downscaled image + markdown are the artifact.
+After an asset is processed, the original in `uploads/` can be deleted from local disk — the markdown + downscaled reference are the artifact.
 
-## Markdown format (locked once step-0 ships)
+## Cross-product applicability
 
-The first processed screen under `sources/2450-smu/screens/` is the canonical format reference. Subsequent screens — and the eventual `/document-screens` skill — must match its frontmatter shape and body sections exactly.
+When an asset applies to more than one product (e.g. a manual that covers 2450-EC, 2460-EC, and 2461-EC), the markdown declares the full list in frontmatter as `applies_to: [<sku>, …]`. Families are an emergent property of `applies_to`, not a folder hierarchy. Products are folders; cross-product joins happen at retrieval time.
+
+## Markdown format
+
+The canonical reference is `sources/2450-ec/screens/home.md`. Subsequent screens — and any other class-specific skill — must mirror its frontmatter shape and body section order; class-specific fields extend the base schema rather than replacing it.

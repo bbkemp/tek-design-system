@@ -1,11 +1,11 @@
 ---
-software: 2450 SMU
+software: 2450-EC
 software_version: TBD
 screen_id: home
 screen_title: Home
 screen_type: readout
 image: home.jpg
-source_photo: raw/photo-262_singular_display_fullPicture.jpeg
+source_photo: uploads/photos/photo-262_singular_display_fullPicture.jpeg
 function_state: MEASURE CURRENT 2-WIRE
 navigation_path: [Home]
 parent_screens: []
@@ -154,7 +154,7 @@ controls:
 
 ## Purpose
 
-The Home screen is the 2450 SMU's primary measurement view. It shows two simultaneous readouts — the active measure function (here, current) at the top, and the source readback at the bottom — plus the range and source configuration that produced them. It is the navigational root: every other screen is reached from here via a hardkey (HOME, MENU, QUICKSET, HELP, FUNCTION, TRIGGER) or by tapping a tappable element on screen. The function shown depends on whether the instrument is configured to source-V/measure-I, source-I/measure-V, source-V/measure-R, or source-I/measure-R; in this photo it is configured to source 0 V and measure current with a 105 µA compliance limit, two-wire connection.
+The Home screen is the 2450-EC's primary measurement view. It shows two simultaneous readouts — the active measure function (here, current) at the top, and the source readback at the bottom — plus the range and source configuration that produced them. It is the navigational root: every other screen is reached from here via a hardkey (HOME, MENU, QUICKSET, HELP, FUNCTION, TRIGGER) or by tapping a tappable element on screen. The function shown depends on whether the instrument is configured to source-V/measure-I, source-I/measure-V, source-V/measure-R, or source-I/measure-R; in this photo it is configured to source 0 V and measure current with a 105 µA compliance limit, two-wire connection.
 
 ## Controls inventory
 
@@ -172,10 +172,10 @@ The hardware bezel is functionally part of this screen even though it is physica
 
 Visible in this photo: function = Measure Current 2-Wire, output = OFF (inferred — readouts are at noise floor; LED state present but interpretation unverified), AZERO = active, range = 10 nA Auto, source = 0 V with 105 µA limit, trigger = Continuous, mode = Local, buffer = defbuffer1, no script.
 
-Other states this same screen layout will exhibit (from the broader photo set in `raw/`):
+Other states this same screen layout will exhibit (from the broader photo set in `uploads/photos/`):
 - Function changes — Measure Voltage, Measure Resistance, Measure Power — change the units and which side is "measure" vs "source".
 - Output ON vs OFF — when output is on, the readback values are non-trivial and the LED state changes.
-- Settings overlay — see photo-690 (`raw/`), where a configuration panel (Rel / Math / NPLCs / Filter / Auto Zero / Display Digits) overlays the lower half. This is documented as a child screen `home-settings` once processed.
+- Settings overlay — see photo-690 (`uploads/photos/`), where a configuration panel (Rel / Math / NPLCs / Filter / Auto Zero / Display Digits) overlays the lower half. This is documented as a child screen `home-settings` once processed.
 - Range overlay — see photo-604, where tapping the range opens a Measure Range picker. Documented as child screen `measure-range`.
 
 ## Design system mapping
@@ -219,11 +219,11 @@ Transcriptions verified against the 1600 px downscale (`home.jpg`). Items below 
 
 ## Manual references
 
-> Pending. Manual will be paired in a later pass (2450 SMU User's Manual, sections covering the Home screen, source/measure configuration, status bar, and front-panel hardware). The `manual.pdf` slot in `sources/2450-smu/` is gitignored — drop locally during processing.
+> Pending. Manual will be paired in a later pass (2450-EC User's Manual, sections covering the Home screen, source/measure configuration, status bar, and front-panel hardware). The `manual.pdf` slot in `sources/2450-ec/` is gitignored — drop locally during processing.
 
 ## Source photo
 
-Selected from `raw/`: **photo-262_singular_display_fullPicture.jpeg** — chosen for clarity (no hand or glare, sharp focus on the LCD, full bezel visible, output appears OFF so the readouts are at the noise floor and the screen is in its "rest" configuration). Other candidates and why they were not used for step-0:
+Selected from `uploads/photos/`: **photo-262_singular_display_fullPicture.jpeg** — chosen for clarity (no hand or glare, sharp focus on the LCD, full bezel visible, output appears OFF so the readouts are at the noise floor and the screen is in its "rest" configuration). Other candidates and why they were not used for step-0:
 
 - `photo-392`, `photo-604`, `photo-690` — hand in frame.
 - `photo-477`, `photo-549` — Graph view, not the foundational Home screen.

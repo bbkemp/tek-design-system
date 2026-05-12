@@ -1,6 +1,6 @@
 ---
 name: document-screens
-description: Document every screen of an existing piece of Tek software as structured markdown for the org-wide RAG. Use when given a folder of raw photos / screenshots under prototypes/rag-poc/sources/<product>/raw/ — produces one .md + downscaled image per unique screen in screens/, with frontmatter, controls inventory, DS mapping, and verbatim text. Optionally process a single photo for testing.
+description: Document every screen of an existing piece of Tek software as structured markdown for the org-wide RAG. Use when given a folder of raw photos / screenshots under prototypes/rag-poc/sources/<product>/uploads/photos/ — produces one .md + downscaled image per unique screen in screens/, with frontmatter, controls inventory, DS mapping, and verbatim text. Optionally process a single photo for testing.
 ---
 
 # Document screens
@@ -10,12 +10,12 @@ Turns raw photos of an existing product UI into a consistent, LLM-optimized corp
 1. Feed the org-wide MCP RAG with high-signal references.
 2. Hand Claude Code a complete picture of a legacy UI when refactoring it onto the design system (cd→cc handoff, like User Portal).
 
-The format is **locked** by `prototypes/rag-poc/sources/2450-smu/screens/home.md`. That file is the canonical reference; mirror its frontmatter shape and body sections exactly.
+The format is **locked** by `prototypes/rag-poc/sources/2450-ec/screens/home.md`. That file is the canonical reference; mirror its frontmatter shape and body sections exactly.
 
 ## Inputs
 
 The user provides:
-- A product folder under `prototypes/rag-poc/sources/<product-id>/`, e.g. `2450-smu`. The folder must contain `raw/<photos>` and an empty (or partially populated) `screens/`.
+- A product folder under `prototypes/rag-poc/sources/<product-id>/`, e.g. `2450-ec`. The folder must contain `uploads/photos/<photos>` and an empty (or partially populated) `screens/`.
 
 Optional:
 - `--photo <filename>` to process a single photo (validation / one-off mode).
@@ -26,7 +26,7 @@ Optional:
 1. **Format is locked. Do not deviate from `home.md`.** If you think the format needs to change, surface the proposal in the response and stop — do not edit the format unilaterally. The whole point of locking it is downstream reproducibility.
 2. **Confidence over completeness.** If a label, value, or behavior is not legible or not derivable from the photo, mark it in **Confidence notes** rather than fabricating. Hallucinated controls are worse than missing controls — they poison the RAG.
 3. **One `.md` per unique screen, not per photo.** Multiple photos of the same screen with different state become **State variations** within a single `.md`. See *Clustering*.
-4. **`raw/` is gitignored.** Never commit raw photos or `manual.pdf`. Only the downscaled image in `screens/` and the markdown.
+4. **`uploads/` is gitignored.** Never commit anything under `uploads/`. Only the downscaled image in `screens/` and the markdown.
 5. **Trace every control to a `tek-*` primitive or flag it as a new primitive.** The DS mapping section is not optional; it is the bridge from documentation to component work.
 
 ## Process
@@ -34,7 +34,7 @@ Optional:
 ### 1. Discover
 
 ```bash
-ls prototypes/rag-poc/sources/<product>/raw/
+ls prototypes/rag-poc/sources/<product>/uploads/photos/
 ```
 
 Read every photo (or only the one passed via `--photo`). The Read tool accepts JPEGs/PNGs and returns them as visual content.
@@ -80,7 +80,7 @@ If two screens have the same role across products (every product has a Home), pr
 
 ```bash
 sips -Z 1600 -s format jpeg -s formatOptions 85 \
-  prototypes/rag-poc/sources/<product>/raw/<canonical-photo> \
+  prototypes/rag-poc/sources/<product>/uploads/photos/<canonical-photo> \
   --out prototypes/rag-poc/sources/<product>/screens/<screen-id>.jpg
 ```
 
@@ -94,13 +94,13 @@ Write `screens/<screen-id>.md` matching the **exact** frontmatter and body secti
 
 ```yaml
 ---
-software: <product display name, e.g. "2450 SMU">
+software: <product display name, e.g. "2450-EC">
 software_version: <visible from screen, else TBD>
 screen_id: <kebab>
 screen_title: <as labeled on screen, or short noun phrase>
 screen_type: readout | menu | config | dialog | graph | status
 image: <screen-id>.jpg
-source_photo: raw/<original-filename>
+source_photo: uploads/photos/<original-filename>
 function_state: <function/state context if relevant, else omit>
 navigation_path: [<top>, <sub>, <screen-title>]
 parent_screens: [<screen-id>, …]
@@ -119,12 +119,12 @@ controls:
 1. **`# <screen-title>` heading** — short, possibly with a state qualifier (e.g. "Home — Measure Current 2-Wire").
 2. **`## Purpose`** — one paragraph. What this screen is for, where it sits in the nav, what the user does here.
 3. **`## Controls inventory`** — prose walkthrough of every entry in `controls[]`, region by region, top-to-bottom, left-to-right. Reference each control by `` `id` `` (backticks). Group hardware bezel into one paragraph at the end.
-4. **`## State variations`** — if visible across other photos in the cluster (or knowable from the device): function changes, output ON/OFF, overlays, themes. Cross-reference other photos by filename (`raw/photo-XXX_…jpeg`) and name future child screens by `screen_id`.
+4. **`## State variations`** — if visible across other photos in the cluster (or knowable from the device): function changes, output ON/OFF, overlays, themes. Cross-reference other photos by filename (`uploads/photos/photo-XXX_…jpeg`) and name future child screens by `screen_id`.
 5. **`## Design system mapping`** — table: control → closest `tek-*` primitive → "new primitive needed?" Group hardware bezel as out-of-scope unless building a virtual front-panel emulator. Aggregate the proposed-new-primitives in a closing sentence ("New primitives surfaced by this screen: …").
 6. **`## Visible text (verbatim)`** — every label, value, unit, and status string transcribed exactly. Group by region. This block is the highest-signal RAG payload — terms a user types into a search ("what does AZERO mean") are most likely to land here.
 7. **`## Confidence notes`** — bulleted list of every transcription, behavior, or interpretation that is uncertain. Be explicit about *what* is unverified and *why* (illegible at this resolution / unconfirmed in this single shot / requires manual). The manual-pairing pass works through this list.
 8. **`## Manual references`** — placeholder until the manual-pairing pass: `> Pending. Manual will be paired in a later pass (<product> User's Manual, sections covering …).`
-9. **`## Source photo`** — which file in `raw/` was selected and why; brief disposition of other candidates that were not selected.
+9. **`## Source photo`** — which file in `uploads/photos/` was selected and why; brief disposition of other candidates that were not selected.
 
 ### 6. Update `index.md`
 
