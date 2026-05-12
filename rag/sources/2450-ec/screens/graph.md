@@ -1,11 +1,11 @@
 ---
-software: 2450 SMU
+software: 2450-EC
 software_version: TBD
 screen_id: graph
 screen_title: Graph
 screen_type: graph
 image: graph.jpg
-source_photo: raw/photo-477_singular_display_fullPicture.jpeg
+source_photo: uploads/photos/photo-477_singular_display_fullPicture.jpeg
 function_state: MEASURE CURRENT 2-WIRE (inferred from pA-scale y-axis)
 navigation_path: [Home, Graph]
 parent_screens:
@@ -141,7 +141,7 @@ controls:
 
 ## Purpose
 
-The Graph screen plots the active buffer's measurements over time. It is the primary visualization view for the 2450 SMU, reached from Home and serving as the parent for three sibling sub-views (Data, Scale, Trigger) selected via tabs along the top edge. Users come here to look for trends, transients, or noise in a measurement run that is already underway or has completed; the configuration of *what* is plotted (function, range, units) lives elsewhere — this screen is read-only with respect to source/measure setup.
+The Graph screen plots the active buffer's measurements over time. It is the primary visualization view for the 2450-EC, reached from Home and serving as the parent for three sibling sub-views (Data, Scale, Trigger) selected via tabs along the top edge. Users come here to look for trends, transients, or noise in a measurement run that is already underway or has completed; the configuration of *what* is plotted (function, range, units) lives elsewhere — this screen is read-only with respect to source/measure setup.
 
 ## Controls inventory
 
@@ -208,15 +208,15 @@ Several elements in this photo sit at or below the legibility limit of the 1600 
 - `function_state` — inferred from pA-scale y-axis; not directly labeled on this screen. Could be confirmed by inspecting the active measure function on Home.
 - `parent_screens: [home]` — assumed because Home is the navigational root and the HOME hardkey returns there. The exact path *to* Graph (FUNCTION hardkey, MENU > Views, swipe, etc.) is not derivable from this single shot.
 - `output-led` color and meaning — same caveat as Home; green is visible, but the on/off/armed convention is unverified.
-- `tab-data`, `tab-scale`, `tab-trigger` action descriptions — the *content* of those sub-views is inferred from typical SMU instrument patterns, not from photos in `raw/`. Confirm against the manual or by processing photos of those tabs (likely candidates: photos showing waveforms with tabular overlays for Data; axis-config dialogs for Scale; trigger-model diagrams for Trigger).
+- `tab-data`, `tab-scale`, `tab-trigger` action descriptions — the *content* of those sub-views is inferred from typical SMU instrument patterns, not from photos in `uploads/photos/`. Confirm against the manual or by processing photos of those tabs (likely candidates: photos showing waveforms with tabular overlays for Data; axis-config dialogs for Scale; trigger-model diagrams for Trigger).
 
 ## Manual references
 
-> Pending. Manual will be paired in a later pass (2450 SMU User's Manual, sections covering the Graph view, buffer statistics display, axis scaling, and tab navigation between Graph / Data / Scale / Trigger).
+> Pending. Manual will be paired in a later pass (2450-EC User's Manual, sections covering the Graph view, buffer statistics display, axis scaling, and tab navigation between Graph / Data / Scale / Trigger).
 
 ## Source photo
 
-Selected from `raw/`: **photo-477_singular_display_fullPicture.jpeg** — chosen for clarity (no hand obstruction, sharp focus on the LCD, full hardware bezel visible, tab bar and waveform readable). Other Graph-view candidates and why they were not used:
+Selected from `uploads/photos/`: **photo-477_singular_display_fullPicture.jpeg** — chosen for clarity (no hand obstruction, sharp focus on the LCD, full hardware bezel visible, tab bar and waveform readable). Other Graph-view candidates and why they were not used:
 
 - `photo-549` — Histogram/data variant with the Data tab active, scope drift visible. Better as the canonical photo for `graph-data` once that screen is processed.
-- Other candidates in `raw/` — primarily Home screen variants (with and without overlays) or modal dialogs; not Graph views.
+- Other candidates in `uploads/photos/` — primarily Home screen variants (with and without overlays) or modal dialogs; not Graph views.

@@ -6,8 +6,9 @@ package-lock.json
 .claude/*
 !.claude/skills/
 
-# RAG POC: raw source photos are local-only — only the downscaled
-# image + extracted markdown in screens/ get committed.
-prototypes/rag-poc/sources/*/raw/*
-!prototypes/rag-poc/sources/*/raw/.gitkeep
-prototypes/rag-poc/sources/*/*.pdf
+# RAG POC: uploads/ is local-only — only processed outputs in
+# screens/ etc. and index.md get committed.
+rag/sources/*/uploads/*/*
+!rag/sources/*/uploads/*/.gitkeep
+# Safety net for PDFs misplaced at the product root (should live in uploads/pdfs/).
+rag/sources/*/*.pdf
