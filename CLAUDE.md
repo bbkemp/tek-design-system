@@ -96,11 +96,10 @@ When a planned convention lands, update this file in the same PR.
 
 This repo is one piece of a broader architecture: Knowledge Corpus, PRD System, DEV System, GitHub Foundation, UXR & Analytics — five systems composing into a unified context layer for every team and AI tool. When questions reach beyond this repo (why Web Components? why Style Dictionary? how does this connect to PRDs and analytics? what's the migration sequencing?), read [docs/tek-system-core.md](./docs/tek-system-core.md). It is the reference; this file is the working contract.
 
-## Working style for AI assistants in this repo
+## Working style for contributors and AI
 
-- **Lead with the answer.** Justify after, only as much as needed. Skip preambles.
-- **Be terse.** No "great question," no caveats unless load-bearing.
-- **Push back directly when wrong.** Don't soften tradeoffs; surface them.
+These are repo-level rules that apply to anyone touching this codebase — human or AI. Personal communication preferences belong in a collaborator's own operating contract, not here.
+
 - **Read the source before rebuilding anything.** Recreating X without first loading X has been the worst failure mode on this project. Use Read, preview tools, WebFetch, or Figma MCP — don't work from prior summaries.
 - **Iterate, don't restart.** Pulling from scratch instead of editing the working file produces regressions. Always edit existing files when they exist.
 - **Trace every value to a token.** If a value can't be expressed as an existing token, propose a new token via Figma Variables before adding the value to code.
