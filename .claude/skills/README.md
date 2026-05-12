@@ -11,7 +11,7 @@ Skills that produce the **as-is dump** of legacy products into `rag/sources/<pro
 | Skill | What it does | Status |
 |---|---|---|
 | [document-screens](./document-screens/SKILL.md) | photos → per-screen markdown | shipped |
-| document-pdf | manuals / quickstart guides → chunked markdown | planned (P0) |
+| [document-pdf](./document-pdf/SKILL.md) | manuals / quickstart guides → chunked markdown; back-updates screen Manual references | shipped |
 | document-hardware | physical product photos → hardware markdown | planned (P1) |
 | document-walkthrough | walkthrough transcripts → flow markdown | planned (P2) |
 | document-artifact | .cad / .ai / .step → artifact markdown + render | planned (P2) |

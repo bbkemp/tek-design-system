@@ -1,0 +1,195 @@
+---
+name: document-pdf
+description: Process a manual or guide (PDF) into chunked, cross-linked markdown for the RAG corpus. Use when given a PDF at rag/sources/<product>/uploads/pdfs/. Produces _index.md plus one .md per top-level heading under rag/sources/<product>/docs/<doc-id>/, and back-updates the Manual references section in any corpus screen .md files the chunks cross-link to. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa.
+---
+
+# Document PDF
+
+Turns a manufacturer manual, quick-start guide, or spec sheet into structured per-section markdown for the RAG corpus. Output is the **as-is dump** of the document's content — durable, write-once, source-grounded. Interpretation (DS mapping, design briefs) lives separately under `audits/`.
+
+The format is **locked** by the first processed manual: `rag/sources/2450-ec/docs/user-manual/`. Mirror its frontmatter and body section order exactly for any future PDF.
+
+## Inputs
+
+- A PDF at `rag/sources/<product-id>/uploads/pdfs/<filename>.pdf`. The product folder must already have a `screens/` directory if cross-linking back to corpus screens is expected (otherwise the skill will write chunks but skip the back-update step).
+
+Optional:
+- `--doc-id <kebab>` to override the automatic doc-id derivation (default: derived from the filename or cover page — e.g. `user-manual`, `quickstart`, `spec-sheet`).
+- `--section <range>` to process only specified sections (e.g. `--section 1` or `--section 1-3`). Default: all sections. For first runs or large manuals, scope to a single section to validate the format.
+
+## Hard rules
+
+1. **Format is locked. Do not deviate from `rag/sources/2450-ec/docs/user-manual/`.** Mirror its frontmatter shape and body section order; class-specific fields extend the base rather than replacing it.
+2. **Verbatim where possible.** Manuals are authoritative source-of-truth. Procedures, definitions, warnings, and notes get transcribed *as-written*, reformatted as clean Markdown (numbered lists for steps, blockquotes for notes/warnings, code spans for filenames and TSP commands). Do not paraphrase unless explicitly under `## Summary`.
+3. **Confidence over completeness.** If a passage is illegible (scanned PDF artifact), table is structurally ambiguous, or a figure caption is unclear, mark it in **Confidence notes** rather than guessing.
+4. **`uploads/` is gitignored.** Never commit the source PDF; only the extracted markdown. Image extraction (figures) is allowed but optional — for the first pass, name the figures by caption and skip the binary.
+5. **No design system mapping in chunks.** Same hard rule as `document-screens`. Do not reference `tek-*` primitives or compare against DS-v2 in chunk markdown. The corpus is DS-agnostic.
+6. **Cross-link via frontmatter, not prose.** When a chunk references a corpus screen, declare it in `related_screens: [<screen-id>]`. The skill's back-update step rewrites the screen's Manual references section to cite the chunk.
+
+## Process
+
+### 1. Parse the cover and copyright pages
+
+Read pages 1-3 of the PDF. Extract:
+- `doc_title` — full title as printed on the cover.
+- `doc_number` — manufacturer document number (e.g. `077110403`).
+- `doc_date` — publication date (e.g. `2020-03` for "March 2020").
+- `applies_to` — SKU list, parsed from the cover ("Models X, Y, and Z") or from a "Compatibility" section. Use kebab SKU IDs (e.g. `[2450-ec, 2460-ec, 2461-ec]`).
+
+If `--doc-id` is not provided, infer it from the title:
+- "User's Manual" → `user-manual`
+- "Quick Start Guide" → `quickstart`
+- "Specifications" / "Datasheet" → `spec-sheet`
+- "Reference Manual" → `reference-manual`
+
+### 2. Parse the Table of Contents
+
+Walk the TOC. Identify:
+- **Section boundaries** — typically numbered (`Section 1`, `Section 2`, etc.) or chapter-style.
+- **Top-level headings within each section** — these become chunk boundaries.
+- **Nested sub-headings** — these become `## ` headers inside the chunk's body, NOT separate chunks (unless a sub-heading cross-links to a corpus screen and warrants isolation; see *Granularity*).
+
+### 3. Granularity — one `.md` per coherent topic
+
+A chunk is one logical unit a user might query for. Heuristics:
+- A procedure with numbered steps → its own chunk.
+- A concept overview with definitions → its own chunk.
+- A reference table (parameters, ranges, default values) → its own chunk.
+- A sub-heading that contains *only a screen description* and would naturally cross-link to a corpus screen → its own chunk, even if it lives under a broader section in the TOC.
+
+Aim for chunks of roughly 300–1500 tokens. Smaller is better for retrieval, but don't fragment a single coherent procedure.
+
+### 4. Generate `section_id` (chunk filename)
+
+Kebab-case, descriptive but short. **Drop section numbers from filenames** — the TOC order is preserved in `_index.md`, and renumbered manual revisions shouldn't force a file rename. Examples:
+
+| Manual heading | Chunk filename |
+|---|---|
+| Introduction | `introduction.md` |
+| Getting started | `getting-started.md` |
+| Cable assembly details | `cable-assembly.md` |
+| Connections and usage | `connections-and-usage.md` |
+| Home and Menu screen overview | `home-and-menu-overview.md` |
+| Run the cyclic voltammetry test application | `cyclic-voltammetry-run.md` |
+| Test application parameters | `cyclic-voltammetry-parameters.md` |
+
+If two sections have the same heading text (rare but possible), disambiguate with the parent section: `<parent>-<heading>.md`.
+
+### 5. Extract chunk content
+
+For each chunk, read the relevant page range from the PDF (use the `Read` tool with `pages: "<start>-<end>"`). Transcribe content into the locked body sections (below). Image figures: keep the caption text in body; mention the figure by name; skip the binary unless image extraction is requested explicitly.
+
+### 6. Write chunk files
+
+Path: `rag/sources/<product>/docs/<doc-id>/<section_id>.md`
+
+#### Frontmatter
+
+```yaml
+---
+class: doc-section
+doc_id: <doc-id>
+doc_title: <full title from cover>
+doc_number: <manufacturer doc number>
+doc_date: <YYYY-MM>
+applies_to: [<sku>, …]
+section_id: <kebab>
+section_title: <heading as printed>
+parent_section: <parent section_id, or null>
+page_range: "<start logical page> to <end logical page>"
+related_screens: [<screen-id>, …]
+related_hardware: [<hardware-id>, …]
+---
+```
+
+#### Body sections, in this exact order
+
+1. **`# <section-title>` heading** — match the manual's heading text exactly.
+2. **`## Summary`** — one short paragraph paraphrasing what the section covers and what a reader will leave knowing. Optimized for retrieval matching; not a substitute for the verbatim content below.
+3. **`## Content`** — verbatim manual text, reformatted as clean Markdown:
+   - Procedures with numbered steps → ordered list.
+   - Bulleted enumerations → unordered list.
+   - Warnings → `> ⚠ **WARNING:** …` blockquote.
+   - Cautions → `> ⚠ **CAUTION:** …` blockquote.
+   - Notes → `> **NOTE:** …` blockquote.
+   - Tables → Markdown tables.
+   - Filenames, TSP commands, on-screen labels → backticks.
+   - Figure references → `*Figure N: <caption>*` inline (skip the image itself unless extracting).
+4. **`## Cross-references`** — bulleted list of in-doc references (other sections by `section_id`), corpus screens (`screens/<screen-id>.md`), and corpus hardware (`hardware/<id>.md`) the section mentions or relies on. Mirror these in frontmatter `related_screens` / `related_hardware`. Omit the section if nothing to cross-reference.
+5. **`## Confidence notes`** — bulleted list of items that are uncertain (illegible passages, ambiguous tables, missing figures, scanned-PDF artifacts). Omit if nothing uncertain.
+
+### 7. Write `_index.md`
+
+After every doc is processed, write `rag/sources/<product>/docs/<doc-id>/_index.md` summarizing the document:
+
+```markdown
+# <doc-title>
+
+**Doc ID:** `<doc-id>` · **Doc number:** `<doc_number>` · **Published:** <doc_date> · **Applies to:** <SKU list>
+
+Generated <YYYY-MM-DD> by `document-pdf` skill from `uploads/pdfs/<filename>.pdf`.
+
+## Sections
+
+| Section | Pages | Chunks |
+|---|---|---|
+| Section 1: Introduction | 1-1 to 1-11 | [introduction](./introduction.md), [getting-started](./getting-started.md), [cable-assembly](./cable-assembly.md), [connections-and-usage](./connections-and-usage.md), [home-and-menu-overview](./home-and-menu-overview.md) |
+| Section 2: Cyclic voltammetry | 2-1 to 2-17 | … |
+| … | … | … |
+
+## Processed in this pass
+
+When the skill is invoked with `--section <range>`, list only the sections processed; mark others as `pending`.
+```
+
+### 8. Back-update screen `.md` Manual references
+
+For each chunk with `related_screens: [<screen-id>, …]`, open `rag/sources/<product>/screens/<screen-id>.md` and replace the **`## Manual references`** section's content with citations to the chunks:
+
+```markdown
+## Manual references
+
+- **`<chunk-section-title>`** ([`docs/<doc-id>/<section-id>.md`](../docs/<doc-id>/<section-id>.md), <doc-id> pp. <page-range>) — <one-line note on what the chunk covers about this screen>.
+- …
+```
+
+Keep the section header verbatim (`## Manual references`); replace only the body. If the screen `.md` is the FIRST one for this corpus, drop the original `> Pending. …` placeholder.
+
+If no chunks reference a given screen, leave its Manual references section as-is (placeholder).
+
+## Output
+
+For one PDF processed:
+
+```
+rag/sources/<product>/docs/<doc-id>/
+├── _index.md
+├── <section-id-1>.md
+├── <section-id-2>.md
+└── …
+rag/sources/<product>/screens/<screen-id>.md   (back-updated Manual references, if cross-linked)
+```
+
+Nothing written outside of `rag/sources/<product>/`.
+
+## Required tools
+
+- **Read** — for PDF pages (use `pages: "<start>-<end>"`) and existing markdown.
+- **Write** — for new chunk files and `_index.md`.
+- **Edit** — for back-updating screen `.md` Manual references.
+- **Bash** — for `ls` of uploads and confirming output paths.
+
+## Workflow rules from CLAUDE.md that apply here
+
+- Branch → PR; never commit to `main`. Feature branch with `feat(skills):` for new skill work or `feat(rag):` for new corpus content.
+- No raw uploads in commits. The source PDF is gitignored; only the extracted markdown is committed.
+- Match existing patterns. The format is locked to `rag/sources/2450-ec/docs/user-manual/` — do not improvise.
+
+## Notes
+
+- **Why chunk-per-topic, not chunk-per-page?** Pages are a layout artifact; topics are the semantic unit. Embedding a chunk that covers a coherent procedure or concept retrieves better than embedding an arbitrary page slice.
+- **Why drop section numbers from filenames?** Manuals get renumbered between revisions. Topic-named files survive renumbering; the `_index.md` carries the order.
+- **Why `applies_to` per-chunk and not per-doc?** The vast majority of chunks share the doc's `applies_to`. But occasionally a section will narrow to a single SKU ("Model 2461-EC only: …"). Putting `applies_to` per-chunk keeps the join precise.
+- **Why a separate `_index.md` instead of just using the parent `index.md`?** The product's top-level `index.md` is the cross-asset graph (screens + docs + hardware + …). The per-doc `_index.md` is a within-doc TOC. Different audiences, different content.
+- **What if the PDF is a scanned image with no text layer?** OCR first (`pdftotext`, `tesseract`, or similar) before invoking this skill. The skill assumes a text-extractable PDF.
+- **Image extraction?** Not in scope for the first pass. When added later, save renders alongside the markdown as `<section-id>-figure-<N>.png` and inline-reference in `## Content`.

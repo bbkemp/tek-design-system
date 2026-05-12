@@ -203,7 +203,11 @@ Transcriptions verified against the 1600 px downscale (`home.jpg`). Items below 
 
 ## Manual references
 
-> Pending. Manual will be paired in a later pass (2450-EC User's Manual, sections covering the Home screen, source/measure configuration, status bar, and front-panel hardware). The `manual.pdf` slot in `sources/2450-ec/` is gitignored — drop locally during processing.
+- **`Home and Menu screen overview`** ([`docs/user-manual/home-and-menu-overview.md`](../docs/user-manual/home-and-menu-overview.md), `user-manual` p. 1-11) — the default SourceMeter Home screen described in the manual matches this corpus screen's layout exactly; differs only in source-level / current-limit values (DUT-dependent state, same screen identity).
+- **`Connections and usage`** ([`docs/user-manual/connections-and-usage.md`](../docs/user-manual/connections-and-usage.md), `user-manual` pp. 1-7 to 1-10) — physical-connection prerequisites; SENSE HI/LO + FORCE HI/LO banana jacks correspond to the `terminals` control.
+- **`Getting started`** ([`docs/user-manual/getting-started.md`](../docs/user-manual/getting-started.md), `user-manual` pp. 1-2 to 1-6) — power-on procedure, high-impedance output-off state, MENU-key navigation that maps to the `btn-menu` hardkey.
+
+Pending sections (manual content not yet processed into the corpus): EC test-application Home/Menu screen variants (Sections 2–7) — those describe application-specific replacements for this default screen and will land as their own corpus screens (`screens/<app>-home.md`) once processed.
 
 ## Source photo
 
