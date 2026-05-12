@@ -8,7 +8,7 @@ Goal: a consistent, LLM-optimized way to document every screen of an existing pi
 ## Layout
 
 ```
-prototypes/rag-poc/
+rag/
 └── sources/
     └── <product-id>/              e.g. 2450-ec/  (SKU, kebab)
         ├── uploads/               local-only dump zone

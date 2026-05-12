@@ -1,6 +1,6 @@
 ---
 name: document-screens
-description: Document every screen of an existing piece of Tek software as structured markdown for the org-wide RAG. Use when given a folder of raw photos / screenshots under prototypes/rag-poc/sources/<product>/uploads/photos/ — produces one .md + downscaled image per unique screen in screens/, with frontmatter, controls inventory, DS mapping, and verbatim text. Optionally process a single photo for testing.
+description: Document every screen of an existing piece of Tek software as structured markdown for the org-wide RAG. Use when given a folder of raw photos / screenshots under rag/sources/<product>/uploads/photos/ — produces one .md + downscaled image per unique screen in screens/, with frontmatter, controls inventory, DS mapping, and verbatim text. Optionally process a single photo for testing.
 ---
 
 # Document screens
@@ -10,12 +10,12 @@ Turns raw photos of an existing product UI into a consistent, LLM-optimized corp
 1. Feed the org-wide MCP RAG with high-signal references.
 2. Hand Claude Code a complete picture of a legacy UI when refactoring it onto the design system (cd→cc handoff, like User Portal).
 
-The format is **locked** by `prototypes/rag-poc/sources/2450-ec/screens/home.md`. That file is the canonical reference; mirror its frontmatter shape and body sections exactly.
+The format is **locked** by `rag/sources/2450-ec/screens/home.md`. That file is the canonical reference; mirror its frontmatter shape and body sections exactly.
 
 ## Inputs
 
 The user provides:
-- A product folder under `prototypes/rag-poc/sources/<product-id>/`, e.g. `2450-ec`. The folder must contain `uploads/photos/<photos>` and an empty (or partially populated) `screens/`.
+- A product folder under `rag/sources/<product-id>/`, e.g. `2450-ec`. The folder must contain `uploads/photos/<photos>` and an empty (or partially populated) `screens/`.
 
 Optional:
 - `--photo <filename>` to process a single photo (validation / one-off mode).
@@ -34,7 +34,7 @@ Optional:
 ### 1. Discover
 
 ```bash
-ls prototypes/rag-poc/sources/<product>/uploads/photos/
+ls rag/sources/<product>/uploads/photos/
 ```
 
 Read every photo (or only the one passed via `--photo`). The Read tool accepts JPEGs/PNGs and returns them as visual content.
@@ -80,8 +80,8 @@ If two screens have the same role across products (every product has a Home), pr
 
 ```bash
 sips -Z 1600 -s format jpeg -s formatOptions 85 \
-  prototypes/rag-poc/sources/<product>/uploads/photos/<canonical-photo> \
-  --out prototypes/rag-poc/sources/<product>/screens/<screen-id>.jpg
+  rag/sources/<product>/uploads/photos/<canonical-photo> \
+  --out rag/sources/<product>/screens/<screen-id>.jpg
 ```
 
 `-Z 1600` resizes the long edge to 1600 px while preserving aspect ratio. `formatOptions 85` is a quality compromise: text on the LCD must remain crisply legible at 100% zoom in a browser — verify this before continuing. Re-read the downscaled image and confirm every value/label still reads.
@@ -128,7 +128,7 @@ controls:
 
 ### 6. Update `index.md`
 
-After every screen pass, regenerate `prototypes/rag-poc/sources/<product>/index.md`:
+After every screen pass, regenerate `rag/sources/<product>/index.md`:
 
 ```markdown
 # <product display name> — screen index
@@ -155,12 +155,12 @@ If processing a single photo, regeneration is still cheap — do it.
 Per screen processed:
 
 ```
-prototypes/rag-poc/sources/<product>/screens/<screen-id>.md
-prototypes/rag-poc/sources/<product>/screens/<screen-id>.jpg
-prototypes/rag-poc/sources/<product>/index.md          (regenerated)
+rag/sources/<product>/screens/<screen-id>.md
+rag/sources/<product>/screens/<screen-id>.jpg
+rag/sources/<product>/index.md          (regenerated)
 ```
 
-Nothing is written outside of `prototypes/rag-poc/sources/<product>/`.
+Nothing is written outside of `rag/sources/<product>/`.
 
 ## Required tools
 
@@ -171,7 +171,7 @@ Nothing is written outside of `prototypes/rag-poc/sources/<product>/`.
 
 ## Workflow rules from CLAUDE.md that apply here
 
-- Branch → PR; never commit to `main`. The skill produces files; committing them happens in a feature branch with a Conventional-Commit message (`feat(rag-poc):`).
+- Branch → PR; never commit to `main`. The skill produces files; committing them happens in a feature branch with a Conventional-Commit message (`feat(rag):`).
 - No raw photos or `manual.pdf` in commits. The product's `.gitignore` rules already enforce this; do not stage them.
 - Match existing patterns. The format is locked to `home.md` — do not improvise.
 
@@ -181,4 +181,4 @@ Nothing is written outside of `prototypes/rag-poc/sources/<product>/`.
 - **Why a downscaled image at all, if the markdown is the RAG payload?** For human reviewers and for the hand-off conversation when a designer or developer asks "what did this look like." It also lets a multimodal LLM verify a transcription claim against the actual image.
 - **Why is "Visible text (verbatim)" a separate section instead of inline?** Direct keyword retrieval. A user searching "AZERO" or "+105.000 µA" should get a hit even if no other prose mentions the value.
 - **Why include hardware bezel buttons in `controls[]`?** They are part of the user's interaction with the screen — leaving them out misrepresents how the screen is operated. They are flagged as out-of-scope for the web DS in the mapping section.
-- **What if the manual is available?** Drop `manual.pdf` into `prototypes/rag-poc/sources/<product>/`. It is gitignored. A separate manual-pairing pass cross-references screen markdown with manual sections; that is not this skill.
+- **What if the manual is available?** Drop `manual.pdf` into `rag/sources/<product>/`. It is gitignored. A separate manual-pairing pass cross-references screen markdown with manual sections; that is not this skill.

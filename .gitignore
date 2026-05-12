@@ -8,7 +8,7 @@ package-lock.json
 
 # RAG POC: uploads/ is local-only — only processed outputs in
 # screens/ etc. and index.md get committed.
-prototypes/rag-poc/sources/*/uploads/*/*
-!prototypes/rag-poc/sources/*/uploads/*/.gitkeep
+rag/sources/*/uploads/*/*
+!rag/sources/*/uploads/*/.gitkeep
 # Safety net for PDFs misplaced at the product root (should live in uploads/pdfs/).
-prototypes/rag-poc/sources/*/*.pdf
+rag/sources/*/*.pdf
