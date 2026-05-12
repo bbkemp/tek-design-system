@@ -178,22 +178,6 @@ Other states this same screen layout will exhibit (from the broader photo set in
 - Settings overlay — see photo-690 (`uploads/photos/`), where a configuration panel (Rel / Math / NPLCs / Filter / Auto Zero / Display Digits) overlays the lower half. This is documented as a child screen `home-settings` once processed.
 - Range overlay — see photo-604, where tapping the range opens a Measure Range picker. Documented as child screen `measure-range`.
 
-## Design system mapping
-
-For each on-screen control, the closest existing `tek-*` primitive — and a flag where a new primitive is required.
-
-| Control | Existing tek-* | New primitive needed? |
-|---|---|---|
-| `status-mode`, `status-trigger` | `tek-button` (visually styled as a status pill) | **`tek-status-pill`** — label + state color + optional chevron, tappable. The pattern recurs across the status bar and is not a plain button. |
-| `status-buffer`, `status-script` | `tek-button` (as trigger) | **`tek-dropdown` / `tek-select`** — no current primitive for "tap to open picker menu". Could be a `tek-button` + `tek-modal` composition, but the pattern is common enough to deserve its own primitive. |
-| `function-header`, `azero-indicator`, `range-label` | `tek-label` | None (read-only labels). |
-| `primary-readout`, `source-readback` | — | **`tek-readout`** — large monospaced numeric display with auto-fitting digit width and unit suffix. Core to any instrumentation UI; not currently in the system. |
-| `range-auto-toggle`, `source-auto-toggle` | `tek-toggle` | None. |
-| `source-level`, `source-limit` | `tek-input` (numeric variant) | Possibly **`tek-numeric-tile`** — the on-screen affordance is "value-as-tile, tap to open editor", which is closer to a stepper/tile than a focused input. Worth a design conversation. |
-| Hardware bezel (`btn-home`, `btn-menu`, etc.) | — | Out of scope for web — physical hardware. Only relevant if a virtual front-panel emulator is ever built (`tek-hardkey`, `tek-knob`, `tek-terminal`, `tek-status-led`). |
-
-**Summary of new primitives proposed by this screen:** `tek-readout`, `tek-status-pill`, `tek-dropdown` (or `tek-select`), `tek-numeric-tile` (tentative). All four are reusable across other 2450 screens and almost certainly across the broader Tek instrument family.
-
 ## Visible text (verbatim)
 
 Status bar: `Local` · `defbuffer1` · `No Script` · `CONT`.
