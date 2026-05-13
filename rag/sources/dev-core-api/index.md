@@ -6,7 +6,7 @@ The Tek Platform API (dev environment) as a corpus subject. Source: `https://dev
 
 | Snapshot | Spec version | Fetched | Endpoints documented |
 |---|---|---|---|
-| [v1.0-2026-05-12](./api/v1.0-2026-05-12/_index.md) | `v1.0` | 2026-05-12 | 9 of 49 (products + nested files) |
+| [v1.0-2026-05-12](./api/v1.0-2026-05-12/_index.md) | `v1.0` | 2026-05-12 | **49 of 49** (complete — all 17 resources, 21 cluster chunks) |
 
 ## Code snapshots
 
