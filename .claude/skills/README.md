@@ -14,7 +14,7 @@ Skills that produce the **as-is dump** of legacy products into `rag/sources/<pro
 | [document-pdf](./document-pdf/SKILL.md) | manuals / quickstart guides → chunked markdown; back-updates screen Manual references | shipped |
 | [document-repo](./document-repo/SKILL.md) | source repos → versioned snapshot of public surface + module map | shipped |
 | [document-api](./document-api/SKILL.md) | OpenAPI/Swagger specs → per-resource chunks with paths, schemas, examples | shipped |
-| document-hardware | physical product photos → hardware markdown | planned (P1) |
+| [document-hardware](./document-hardware/SKILL.md) | physical product photos → per-view hardware markdown; cross-links to screens | shipped |
 | document-walkthrough | walkthrough transcripts → flow markdown | planned (P2) |
 | document-artifact | .cad / .ai / .step → artifact markdown + render | planned (P2) |
 
