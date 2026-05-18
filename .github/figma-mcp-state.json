@@ -1,24 +1,26 @@
 {
   "tools": [
     "add_code_connect_map",
-    "create_design_system_rules",
     "create_new_file",
     "generate_diagram",
     "generate_figma_design",
     "get_code_connect_map",
     "get_code_connect_suggestions",
+    "get_context_for_code_connect",
     "get_design_context",
     "get_figjam",
+    "get_libraries",
     "get_metadata",
     "get_screenshot",
     "get_variable_defs",
     "search_design_system",
     "send_code_connect_mappings",
+    "upload_assets",
     "use_figma",
     "whoami"
   ],
   "releaseNoteSigs": [
     "May 1, 2026::May 1, 2026 Faster file transitions on desktop New release Update Desktop app Figma Copy link Move between files in the "
   ],
-  "lastChecked": "2026-05-05T18:07:18.056Z"
+  "lastChecked": "2026-05-18T16:19:44.057Z"
 }
