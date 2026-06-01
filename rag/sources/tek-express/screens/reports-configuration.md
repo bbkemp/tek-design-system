@@ -184,8 +184,15 @@ Status: `Completed`.
 
 ## Manual references
 
-> Pending PR C.
+Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
+- [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — audit entry for Reports › Configuration (Tab 1) — NOTE: audit/corpus tab-content swap flagged in this chunk's Confidence notes.
+- [`docs/ui-audit/navigation-components.md`](../docs/ui-audit/navigation-components.md) — side-nav, tab bar.
+- [`docs/ui-audit/form-inputs.md`](../docs/ui-audit/form-inputs.md) — Report Update Mode radios + sub-radios + nested checkbox; Save-as-type dropdown; report-name input; auto-* checkboxes.
+- [`docs/ui-audit/inline-teal-pill-buttons.md`](../docs/ui-audit/inline-teal-pill-buttons.md) — View / Generate / Save As, Browse.
+- [`docs/ui-audit/feedback-overlays.md`](../docs/ui-audit/feedback-overlays.md) — blocking modal triggered by View before run completes (pending: reports-configuration-modal.md).
+
+The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/19. Reports-Configuration.png` (per Bryan's filename — note the audit-PDF mapping discrepancy above).

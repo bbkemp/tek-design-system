@@ -148,8 +148,12 @@ Dropdown items (top-to-bottom):
 
 ## Manual references
 
-> Pending PR C.
+Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
+- [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — not a separate screen in the audit; the Options ▼ button is documented in navigation-components.
+- [`docs/ui-audit/navigation-components.md`](../docs/ui-audit/navigation-components.md) — Options ▼ button anchor.
+
+The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/0. Options Dropdown.png`. Captured with the dropdown open over the Setup › DUT screen.

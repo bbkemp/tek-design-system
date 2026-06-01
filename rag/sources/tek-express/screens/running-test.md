@@ -119,8 +119,13 @@ Status bar: `Running...`.
 
 ## Manual references
 
-> Pending PR C.
+Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
+- [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — not enumerated as a separate screen in the audit; closest match is Status › Test Status during run.
+- [`docs/ui-audit/right-rail-toolbar.md`](../docs/ui-audit/right-rail-toolbar.md) — Stop (replacing Start during run), Pause.
+- [`docs/ui-audit/data-display.md`](../docs/ui-audit/data-display.md) — compact log pane, title bar, status bar.
+
+The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/14. Running Test_Minimised Window.png`. Companion running-state photos `15. Running Test_Maximised.png` and `16. Running Test_Log View.png` are captured under [status-test-status.md](./status-test-status.md) and [status-log-view.md](./status-log-view.md) respectively (as the running-state variation of each).

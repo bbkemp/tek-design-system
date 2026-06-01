@@ -87,11 +87,42 @@ Tek Express AppEmulator is PC software — no front-panel hardware to document. 
 
 ## Documented manual sections
 
-*pending PR C* — `uploads/pdfs/UI-app-emulator-audit.pdf` is a UI component audit (43 component types, 292 instances) rather than a user manual; it will be processed via `document-pdf` and land as `docs/ui-audit/` chunks. Each chunk will cross-link back to the screen `.md` files documented above.
+The audit PDF is processed at `docs/ui-audit/` — **10 chunks** covering the screen inventory and component categorization:
+
+| Chunk | Topic |
+|---|---|
+| [_index](docs/ui-audit/_index.md) | TOC + summary totals (43 distinct component types, ~292 total instances across 7 categories) |
+| [screen-inventory](docs/ui-audit/screen-inventory.md) | Per-screen audit entries (11 screens with descriptions + tags) |
+| [navigation-components](docs/ui-audit/navigation-components.md) | Side nav, Wizard step indicator, Tab bar, Options ▼ |
+| [right-rail-toolbar](docs/ui-audit/right-rail-toolbar.md) | Start, Pause, Clear |
+| [inline-teal-pill-buttons](docs/ui-audit/inline-teal-pill-buttons.md) | 16 labels / 22 instances of the dominant inline-action style |
+| [outlined-pill-buttons](docs/ui-audit/outlined-pill-buttons.md) | Debug, Preferences ▼ (only two non-teal outlined pills in the app) |
+| [icon-buttons](docs/ui-audit/icon-buttons.md) | Edit/pencil, Session ellipsis, Logo picker, window mail/min/close |
+| [form-inputs](docs/ui-audit/form-inputs.md) | Checkbox, Radio, Dropdown, Text input, Checkbox tree |
+| [data-display](docs/ui-audit/data-display.md) | Data tables, group boxes, text areas, empty state, status bar, title bar |
+| [feedback-overlays](docs/ui-audit/feedback-overlays.md) | Modal alert dialog (the single blocking-overlay component) |
+
+A separate end-user-guide PDF is not yet in the corpus. If one is provided in the future it will land as `docs/user-manual/`.
 
 ## Documented walkthroughs
 
-*pending PR C* — `uploads/transcripts/TekExpress & TekRx Overview Transcript(By Pranavi).docx` (5.5 MB) is a 23 April 2026 Design System follow-up discussion led by Bryan with Bill Israel, Mahesha, and others. Topics: tokens, components, Figma → CSS pipeline, design-QA, the DS-to-TekExpress integration ask. This is a conversation about design, not a TekExpress user walkthrough — `applies_to` will likely cover both `tek-express` and `tek-design-system`.
+The transcript is processed at `walkthroughs/` — **4 topic-clustered chunks** plus an index, covering the 23 April 2026 Design System follow-up discussion led by Bryan with Bill Israel, Mahesha Gl, Pranavi Chanda, Rick Kuhlman, Richard Patterson, Hemant Pardeshi, and Srevats Laxman. Every chunk carries `applies_to: [tek-express, tek-design-system]` since the conversation spans both subjects.
+
+| Chunk | Topic | Time range |
+|---|---|---|
+| [_index](walkthroughs/_index.md) | Meeting metadata, participant table, chunk overview | (full meeting) |
+| [ds-architecture-presentation](walkthroughs/ds-architecture-presentation.md) | Bryan's DS overview — tokens, components, Figma → CSS pipeline, motion libraries (planned), release process | 0:18 – 9:00 |
+| [desktop-integration-strategy](walkthroughs/desktop-integration-strategy.md) | WPF integration approach; Mahesha's control-library proposal; Bill's incremental-adoption framing | 9:00 – 16:35 |
+| [tek-products-walkthrough](walkthroughs/tek-products-walkthrough.md) | Pranavi's combined demo of TekExpress (compliance app) and TekRx (receiver-test wizard) | 16:35 – 46:00 |
+| [ux-feedback-and-open-questions](walkthroughs/ux-feedback-and-open-questions.md) | Half-screen mode, container breakpoints, composite controls, chart-library re-implementation pain, mermaid diagrams | 46:00 – 1:04:00 |
+
+**Highest-RAG-value friction notes** from the transcript:
+
+- *"We go and sort of remake charts in the native place. And then what happens is we lose all the richness."* — Rick Kuhlman (55:23). The chart-library decision is the most-impactful open question for the redesign.
+- *"These need to be designed in such a way to dock half and half."* — Rick Kuhlman (50:05). Window-sizing modes between full and minimised are unvalidated.
+- *"We're baking into the design system is container breakpoints. Instead of doing like viewport breakpoints, the responsiveness is on the container level."* — Bryan Kemp (51:56). High-signal architectural decision, already committed.
+
+The corpus exists in part because of this transcript — Bryan explicitly asks (1:02:14) for *"screenshots of Tech Express in the…"* and an audit of the charts and diagrams. The screenshots are in `uploads/photos/`; the audit PDF in `uploads/pdfs/`; this corpus is the loop-closing response.
 
 ## API snapshots
 

@@ -188,8 +188,16 @@ Chrome: same as setup-dut.md.
 
 ## Manual references
 
-> Pending PR C.
+Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
+- [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — audit entry for Setup › Acquisitions (Step 3).
+- [`docs/ui-audit/navigation-components.md`](../docs/ui-audit/navigation-components.md) — side-nav, wizard step indicator.
+- [`docs/ui-audit/data-display.md`](../docs/ui-audit/data-display.md) — acquisition mapping table.
+- [`docs/ui-audit/inline-teal-pill-buttons.md`](../docs/ui-audit/inline-teal-pill-buttons.md) — Refresh Sources / View Probes.
+- [`docs/ui-audit/form-inputs.md`](../docs/ui-audit/form-inputs.md) — Show Acquire Parameters checkbox.
+- [`docs/ui-audit/icon-buttons.md`](../docs/ui-audit/icon-buttons.md) — per-row waveform file pickers.
+
+The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/8. Setup-Acquisitions.png`. The Probe Config sub-dialog launched from `btn-view-probes` is documented separately at [setup-acquisitions-probe-config.md](./setup-acquisitions-probe-config.md) from photo 9.

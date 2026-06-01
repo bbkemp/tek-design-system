@@ -215,8 +215,15 @@ Chrome: same as setup-dut.md.
 
 ## Manual references
 
-> Pending PR C.
+Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
+- [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — audit entry for Setup › Preferences (Step 4).
+- [`docs/ui-audit/navigation-components.md`](../docs/ui-audit/navigation-components.md) — side-nav, wizard step indicator.
+- [`docs/ui-audit/form-inputs.md`](../docs/ui-audit/form-inputs.md) — three group boxes of checkboxes + numeric inputs.
+- [`docs/ui-audit/inline-teal-pill-buttons.md`](../docs/ui-audit/inline-teal-pill-buttons.md) — Email Settings button.
+- [`docs/ui-audit/data-display.md`](../docs/ui-audit/data-display.md) — three labelled group-box sections.
+
+The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/10. Setup-Preferences.png`. The Email Settings dialog launched from `btn-email-settings` is documented separately at [setup-preferences-email-settings.md](./setup-preferences-email-settings.md) from photo 11.

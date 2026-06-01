@@ -122,8 +122,15 @@ Chrome: `TekExpress AppEmulator — (Untitled)*` · `Setup` · `Status` · `Resu
 
 ## Manual references
 
-> Pending PR C.
+Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
+- [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — audit entry for Results.
+- [`docs/ui-audit/navigation-components.md`](../docs/ui-audit/navigation-components.md) — side-nav.
+- [`docs/ui-audit/outlined-pill-buttons.md`](../docs/ui-audit/outlined-pill-buttons.md) — Debug, Preferences ▼ (the ONLY two outlined non-teal buttons in the application).
+- [`docs/ui-audit/right-rail-toolbar.md`](../docs/ui-audit/right-rail-toolbar.md) — Clear button (ONLY on Results).
+- [`docs/ui-audit/data-display.md`](../docs/ui-audit/data-display.md) — 7-column results table.
+
+The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/17. Results_Overall Test Result.png`. Captured mid-run with partial results.

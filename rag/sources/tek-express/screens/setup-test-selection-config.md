@@ -199,8 +199,14 @@ Analyze form: `RISE` · `FALL` · `High Level` · `50` · `Mid Level` · `20` ·
 
 ## Manual references
 
-> Pending the audit PDF pairing pass in PR C.
+Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
+- [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — state of Setup › Test Selection in the audit.
+- [`docs/ui-audit/navigation-components.md`](../docs/ui-audit/navigation-components.md) — tab bar (Global Settings / Measurements; Acquire / Analyze sub-tabs).
+- [`docs/ui-audit/form-inputs.md`](../docs/ui-audit/form-inputs.md) — mode radios, dropdowns, numeric inputs.
+- [`docs/ui-audit/inline-teal-pill-buttons.md`](../docs/ui-audit/inline-teal-pill-buttons.md) — Test Selection / Limits Editor jump buttons.
+
+The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photos
 
 - `uploads/photos/5. Setup-Test Selection_Config_Acquire tab.png` — Acquire sub-tab state.

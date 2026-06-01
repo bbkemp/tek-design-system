@@ -206,8 +206,15 @@ Status: `Completed`.
 
 ## Manual references
 
-> Pending PR C.
+Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
+- [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — audit entry for Reports › View Settings (Tab 2) — NOTE: audit/corpus tab-content swap flagged in reports-configuration.md.
+- [`docs/ui-audit/navigation-components.md`](../docs/ui-audit/navigation-components.md) — side-nav, tab bar.
+- [`docs/ui-audit/form-inputs.md`](../docs/ui-audit/form-inputs.md) — 9 Contents-To-Save checkboxes (1 disabled), 2 Group-Report-By radios, Include User Logo checkbox.
+- [`docs/ui-audit/icon-buttons.md`](../docs/ui-audit/icon-buttons.md) — user-comments pencil edit icon, user-logo file picker.
+- [`docs/ui-audit/inline-teal-pill-buttons.md`](../docs/ui-audit/inline-teal-pill-buttons.md) — View / Generate / Save As.
+
+The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/20. Reports-View Settings.png` (per Bryan's filename — note the audit-PDF tab/content mapping discrepancy flagged in `reports-configuration.md`).

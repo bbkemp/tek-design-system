@@ -89,8 +89,13 @@ Background (chrome, partial): `TekExpress AppEmulator — (9346)*` · `Setup` ·
 
 ## Manual references
 
-> Pending. The audit PDF processed via `document-pdf` may reference this popup under the Setup › DUT screen entry; back-link will land in PR C.
+Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
+- [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — this dialog is a state of Setup › DUT in the audit, not enumerated separately.
+- [`docs/ui-audit/form-inputs.md`](../docs/ui-audit/form-inputs.md) — multi-line text area.
+- [`docs/ui-audit/inline-teal-pill-buttons.md`](../docs/ui-audit/inline-teal-pill-buttons.md) — Clear / Copy / Paste / Cancel / OK buttons.
+
+The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/2. Setup-DUT_Comments popup.png`. Companion to the Setup › DUT format-lock screenshot — same window, with the Comments dialog visible.
