@@ -17,6 +17,8 @@ child_screens:
   - source-edit
   - buffer-picker
   - trigger-config
+related_hardware:
+  - front-panel
 controls:
   - id: status-mode
     label: Local
