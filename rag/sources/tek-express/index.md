@@ -1,57 +1,87 @@
 # tek-express — service index
 
-Tek Express (Windows PC software) — corpus subject scaffolded **2026-05-13** ahead of the redesign onto Tek Design System v2.
+**TekExpress AppEmulator** — Windows desktop application for Tek scope-compliance test automation. Configures a device under test, selects compliance test suites, drives waveform acquisition (live or prerecorded), runs analysis, and generates a results / reports artifact. The active build is internally tagged "Not Intended For Public Release."
 
-## Goal
+This corpus subject was scaffolded **2026-06-01** ahead of the redesign onto Tek Design System v2.
 
-Phase 1 of the Tek Express redesign: transition the legacy UI to DS-v2 while preserving most user flows and functionality. Some UI reorganization is in scope. The RAG corpus captures the **as-is** state so the redesign work has grounded source-of-truth context.
+## Redesign context
 
-## Scaffolded — drop assets locally
+Phase 1 of the TekExpress AppEmulator redesign:
 
-The `uploads/` folder is gitignored. Drop your assets in via Finder / drag-and-drop on your Mac. They never enter Git, only the processed markdown outputs do.
+- Transition the legacy Windows UI to **DS-v2**.
+- Preserve **most user flows** and functionality (the walkthrough transcript in `uploads/transcripts/` is the source of truth for flow preservation).
+- Some **UI reorganization** is in scope.
 
-| Path | What goes here | Skill that processes it |
-|---|---|---|
-| `uploads/photos/` | PC screenshots — one per screen, dialog, wizard step. PNG / JPG fine. | [`document-screens`](../../../.claude/skills/document-screens/SKILL.md) |
-| `uploads/pdfs/` | User guide, help PDF, installer help, exported online help. | [`document-pdf`](../../../.claude/skills/document-pdf/SKILL.md) |
-| `uploads/transcripts/` | Recorded walkthrough transcripts. Plain text, VTT, SRT, or speaker-attributed dialogue all work. | [`document-walkthrough`](../../../.claude/skills/document-walkthrough/SKILL.md) |
-| `uploads/artifacts/` | Source design files — .ai, .sketch, .xd, .fig exports, legacy mockups. | `document-artifact` (planned P2) |
-| `uploads/api-specs/` | Backend OpenAPI / Swagger spec if Tek Express talks to one. | [`document-api`](../../../.claude/skills/document-api/SKILL.md) |
-| *(tell me path/URL)* | Tek Express source repo, if Bryan has access. | [`document-repo`](../../../.claude/skills/document-repo/SKILL.md) |
+The corpus captures the **as-is**. The redesign deliverable lives under `audits/` or `prds/` once that work begins, not in this folder.
+
+## Application structure (from the audit PDF)
+
+**11 distinct screens** organized into 5 top-level panels via a persistent left side-nav:
+
+```
+TekExpress AppEmulator
+├── Setup (4-step wizard)
+│   ├── Step 1: DUT                  ← screens/setup-dut.md          (format-lock; documented)
+│   ├── Step 2: Test Selection       ← screens/setup-test-selection.md (pending)
+│   ├── Step 3: Acquisitions         ← screens/setup-acquisitions.md   (pending)
+│   └── Step 4: Preferences          ← screens/setup-preferences.md    (pending)
+├── Status (2 tabs)
+│   ├── Tab 1: Test Status           ← screens/status-test-status.md   (pending)
+│   └── Tab 2: Log View              ← screens/status-log-view.md      (pending)
+├── Results                          ← screens/results.md              (pending)
+├── Plots                            ← screens/plots.md                (pending)
+└── Reports (2 tabs)
+    ├── Tab 1: Configuration         ← screens/reports-configuration.md (pending)
+    │   └── + blocking modal overlay ← screens/reports-configuration-modal.md (pending; same screen + dialog)
+    └── Tab 2: View Settings         ← screens/reports-view-settings.md (pending)
+```
+
+Persistent chrome across all 11 screens:
+
+- **Title bar** with brand mark + session ID + unsaved indicator + **Options ▼** dropdown + window controls (mail, minimise, close).
+- **Side-nav** (5 pills: Setup, Status, Results, Plots, Reports).
+- **Right-rail toolbar** (Start ▶, Pause ‖, Clear × on Results only).
+- **Status bar** at the bottom (state text + progress indicator).
+- Build-mode red notice **"Not Intended For Public Release"** at the lower-left.
+
+State variations and dialogs (in the 21 source photos, alongside the 11 base screens):
+
+- `setup-dut-comments` — DUT Comments popup.
+- `setup-dut-session-browser` — Session selector dialog.
+- `setup-test-selection-config` — per-test configuration with Acquire / Analyze tabs and a Limits Editor.
+- `setup-acquisitions-probe-config` — Probe configuration dialog.
+- `setup-preferences-email-settings` — Email Settings dialog.
+- `running-test` — three window-state variants (minimised window, maximised window, log view during run).
+- `options-dropdown` — application-level Options ▼ menu, opened from the title bar.
 
 ## Documented screens
 
-*pending* — populated by `document-screens` once screenshots are in `uploads/photos/`.
+| screen_id | screen_title | wizard_step | source photo |
+|---|---|---|---|
+| [setup-dut](screens/setup-dut.md) | Setup › DUT | Step 1 / 4 | `uploads/photos/1. Setup-DUT_Landing screen.png` |
+
+**Pending** (queued for PR B — bulk pass): all other screens in the graph above. The format is locked by `setup-dut.md`; the bulk pass mirrors its frontmatter shape and body section order exactly.
 
 ## Documented hardware
 
-*pending* — for PC software, the "hardware" view documents the host machine's relevant features: minimum specs, expected display resolutions, OS support matrix. Populated by `document-hardware` if applicable; may also live as a manual chunk instead.
+For TekExpress AppEmulator (PC software), "hardware" documentation if any will capture host-machine requirements (OS, minimum specs, expected display resolutions, supported scope-instrument family for live acquisition) — likely landing in `hardware/host-requirements.md` if it warrants its own chunk, or folded into the user-guide doc chunks.
 
 ## Documented manual sections
 
-*pending* — populated by `document-pdf` once `uploads/pdfs/` contains the user guide.
+*pending* — the PDF currently in `uploads/pdfs/` is a UI-audit document, not a user manual. It will be processed via `document-pdf` in PR B and land as `docs/ui-audit/` rather than `docs/user-manual/` — distinguishing audit content from end-user-guide content.
 
 ## Documented walkthroughs
 
-*pending* — populated by `document-walkthrough` once `uploads/transcripts/` contains a transcript. Especially important for Tek Express: the walkthrough Bryan referenced will anchor the user-flow preservation requirement during redesign.
+*pending* — `uploads/transcripts/TekExpress & TekRx Overview Transcript(By Pranavi).docx` will be processed via `document-walkthrough` in PR C. Topic preview from the first 3 KB: a 23 April 2026 design-system follow-up discussion led by Bryan with Bill Israel, Mahesha, and others — tokens, components, the Figma → CSS pipeline, design-QA, and the DS-to-TekExpress integration ask. Conversation, not a user walkthrough; will chunk by topic.
 
 ## API snapshots
 
-*pending* — if Tek Express has a backend API.
+*pending* — TekExpress AppEmulator may or may not call a backend API; nothing in `uploads/api-specs/` yet.
 
 ## Code snapshots
 
-*pending* — if a Tek Express source repo is available.
+*pending* — Tek Express source repo not yet provided.
 
 ## Cross-product applicability
 
-`applies_to: [tek-express]` — Windows PC software. Set narrowly; if a flow or screen turns out to be shared with other Tek desktop apps, the relevant chunk's `applies_to` array gets expanded.
-
-## Redesign context (for downstream consumers)
-
-When CD or CC consumes this corpus for the Phase-1 redesign:
-
-- **User flows are preserved** — the walkthroughs in this folder are the source of truth for "what the user is trying to do." Redesign that breaks a documented flow is a regression.
-- **UI reorganization is in scope** — screens may move, regroup, or rename. Cross-references between screens may change. The corpus documents the as-is; the redesign deliverable lives under `audits/` or `prds/`, not in this folder.
-- **DS-v2 is the design target** — the `prototype-qa` audit against this corpus is how we measure DS coverage. Gaps surface as new-primitive proposals.
-- **Functionality stays** — Phase 1 is design transition, not feature change. Any feature delta gets surfaced explicitly, not silently shipped.
+`applies_to: [tek-express]` — the AppEmulator build of Tek Express specifically. The walkthrough transcript references a sibling product **TekRx**; if that product gets its own corpus folder, shared screens may carry `applies_to: [tek-express, tek-rx]`.
