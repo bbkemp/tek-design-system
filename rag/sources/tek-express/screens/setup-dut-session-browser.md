@@ -122,8 +122,14 @@ Background (chrome partial): `TekExpress AppEmulator — (9346)*` · `Use pre-re
 
 ## Manual references
 
-> Pending. Audit PDF chunk for this dialog (if it is enumerated separately) will back-link in PR C.
+Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
+- [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — state of Setup › DUT.
+- [`docs/ui-audit/data-display.md`](../docs/ui-audit/data-display.md) — sessions table.
+- [`docs/ui-audit/form-inputs.md`](../docs/ui-audit/form-inputs.md) — Session Name text input.
+- [`docs/ui-audit/inline-teal-pill-buttons.md`](../docs/ui-audit/inline-teal-pill-buttons.md) — Save / Close / Default / Load / Delete / Run Sessions buttons.
+
+The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/3. Setup-DUT_Run_Config Session.png`. Captured with one saved session visible in the table.

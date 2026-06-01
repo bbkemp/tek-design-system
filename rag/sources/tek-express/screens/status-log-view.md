@@ -131,8 +131,15 @@ Chrome / state: `TekExpress AppEmulator — (9346)*` · `Setup` · `Status` · `
 
 ## Manual references
 
-> Pending PR C.
+Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
+- [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — audit entry for Status › Log View (Tab 2).
+- [`docs/ui-audit/navigation-components.md`](../docs/ui-audit/navigation-components.md) — side-nav, tab bar.
+- [`docs/ui-audit/data-display.md`](../docs/ui-audit/data-display.md) — Message History scrollable text area.
+- [`docs/ui-audit/form-inputs.md`](../docs/ui-audit/form-inputs.md) — Auto Scroll checkbox.
+- [`docs/ui-audit/inline-teal-pill-buttons.md`](../docs/ui-audit/inline-teal-pill-buttons.md) — Clear Log / Save… buttons.
+
+The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/13. Status-Log View.png` (idle, canonical). The running-state variation is captured in `uploads/photos/16. Running Test_Log View.png`.

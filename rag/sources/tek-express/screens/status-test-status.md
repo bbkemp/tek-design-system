@@ -126,8 +126,13 @@ Chrome / state: `TekExpress AppEmulator — (9346)*` · `Setup` · `Status` · `
 
 ## Manual references
 
-> Pending PR C.
+Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
+- [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — audit entry for Status › Test Status (Tab 1).
+- [`docs/ui-audit/navigation-components.md`](../docs/ui-audit/navigation-components.md) — side-nav, tab bar.
+- [`docs/ui-audit/data-display.md`](../docs/ui-audit/data-display.md) — test-status table.
+
+The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/12. Status-Test Status.png` (idle, canonical). The running-state variation is captured in `uploads/photos/15. Running Test_Maximised.png` and detailed under [running-test.md](./running-test.md).

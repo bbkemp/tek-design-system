@@ -104,8 +104,13 @@ Bottom: `OK`.
 
 ## Manual references
 
-> Pending PR C.
+Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
+- [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — state of Setup › Test Selection.
+- [`docs/ui-audit/data-display.md`](../docs/ui-audit/data-display.md) — limits-editor table.
+- [`docs/ui-audit/inline-teal-pill-buttons.md`](../docs/ui-audit/inline-teal-pill-buttons.md) — OK button.
+
+The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/7. Setup-Test Selection_Config_Limits Editor.png` — captured with the Limits Editor overlaying the Configure dialog. The User Defined Mode radio and the Configure dialog's controls are partially visible behind.

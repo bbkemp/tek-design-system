@@ -226,8 +226,15 @@ Chrome (consistent with setup-dut.md): `TekExpress AppEmulator — (9346)*` · `
 
 ## Manual references
 
-> Pending. The audit PDF processed in PR C will likely have a corresponding entry; cross-link will be added then.
+Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
+- [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — audit entry for Setup › Test Selection (Step 2).
+- [`docs/ui-audit/navigation-components.md`](../docs/ui-audit/navigation-components.md) — side-nav, wizard step indicator.
+- [`docs/ui-audit/form-inputs.md`](../docs/ui-audit/form-inputs.md) — checkbox tree (4 parents, 5 children, 9 nodes total).
+- [`docs/ui-audit/inline-teal-pill-buttons.md`](../docs/ui-audit/inline-teal-pill-buttons.md) — Deselect All / Select Required / Select All; Show MOI / Schematic / Configure.
+- [`docs/ui-audit/data-display.md`](../docs/ui-audit/data-display.md) — Test Description text area.
+
+The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/4. Setup-Test Selection.png`. The three Test Selection Config dialog screenshots (5, 6, 7) are documented separately in [setup-test-selection-config.md](./setup-test-selection-config.md).
