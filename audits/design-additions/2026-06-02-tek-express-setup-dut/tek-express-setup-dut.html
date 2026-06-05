@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TekExpress · Setup › DUT</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
+
+<!-- DS-v2 tokens (primitives + dark/light semantic) -->
+<link rel="stylesheet" href="ds/tek.complete.css">
+
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   New semantic tokens proposed for the TekExpress redesign.
+   Documented in tek-express-redesign-additions.md. Each binds to an existing
+   primitive (or a proposed primitive) and carries a hex fallback. Light/dark
+   parity confirmed — UI-state colours are constant primitives.
+════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* surface the UI-state primitives as semantic aliases (the DS only ships
+     these as primitives today — see audit) */
+  --tek-color-success: var(--tek-colors-ui-success-green, #42b54c);
+  --tek-color-warning: var(--tek-colors-ui-warning-yellow, #e0b732);
+  --tek-color-error:   var(--tek-colors-ui-error-red, #e74848);
+
+  /* pressed/active shades — proposed new primitives */
+  --tek-colors-brand-tek-blue-pressed: #1ea3d4;
+  --tek-colors-ui-success-green-pressed: #379a40;
+
+  /* single-shadow alias (matches DS modal shadow) */
+  --shadow-modal: 0px 2px 6px 0px rgba(0,0,0,0.2);
+
+  /* container-breakpoint tokens (proposed) — see additions audit.
+     @container queries can't read custom props in the condition, so the px
+     below are duplicated literally in the @container rules and kept in sync
+     with these names. */
+  --tek-container-breakpoint-sm: 640px;
+  --tek-container-breakpoint-md: 900px;
+  --tek-container-breakpoint-lg: 1200px;
+
+  /* chrome surface — app shell sits one step above canvas (light parity below) */
+  --app-chrome-bg: var(--tek-colors-neutral-900, #181818);
+}
+[data-theme="light"] { --app-chrome-bg: var(--tek-colors-neutral-white, #ffffff); }
+
+/* Safe reset per DS guide — box-sizing only + scoped element reset.
+   Never `* { padding:0 }` — it zeroes tek-* host padding through the shadow boundary. */
+*, *::before, *::after { box-sizing: border-box; }
+html, body, h1, h2, h3, p, fieldset, legend, ul, figure { margin: 0; padding: 0; }
+
+/* themed scrollbars — follow the app's dark/light mode */
+* { scrollbar-width: thin; }
+[data-theme="dark"] * { scrollbar-color: var(--tek-colors-neutral-500, #5a5a5a) transparent; }
+[data-theme="light"] * { scrollbar-color: var(--tek-colors-neutral-300, #979797) transparent; }
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { border-radius: var(--tek-borders-radius-full, 9999px); border: 3px solid transparent; background-clip: padding-box; }
+[data-theme="dark"] ::-webkit-scrollbar-thumb { background-color: var(--tek-colors-neutral-500, #5a5a5a); }
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background-color: var(--tek-colors-neutral-400, #6f6f6f); }
+[data-theme="light"] ::-webkit-scrollbar-thumb { background-color: var(--tek-colors-neutral-300, #979797); }
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover { background-color: var(--tek-colors-neutral-450, #5e5e5e); }
+::-webkit-scrollbar-corner { background: transparent; }
+
+html, body { height: 100%; }
+body {
+  background: var(--tek-colors-neutral-900, #181818);
+  color: var(--tek-colors-neutral-100, #cccccc);
+  font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
+  font-size: var(--tek-fonts-text-size-lg, 14px);
+  line-height: var(--tek-fonts-text-line-height-lg, 20px);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: var(--tek-spacing-s11, 24px);
+}
+[data-theme="light"] body { background: var(--tek-colors-neutral-200, #b3b3b3); }
+
+/* ── Window frame — the real TekExpress content area: 875 × 773 ──────────────
+   Resizable so the live @container breakpoints can still be demonstrated by
+   dragging the bottom-right handle. */
+.frame {
+  width: 875px; height: 773px;
+  max-width: 100%;
+  resize: both; overflow: hidden;
+  display: flex; flex-direction: column;
+  border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b);
+  border-radius: var(--tek-borders-radius-05, 11px);
+  box-shadow: var(--shadow-modal);
+  background: var(--tek-color-canvas-background-default, #1e1e1e);
+}
+.frame.maximized { position: fixed; inset: 0; width: auto !important; height: auto !important; max-width: none; border-radius: 0; border: none; resize: none; z-index: 100; }
+.frame.minimized { display: none; }
+
+/* ── Windows 11-style window chrome (host-OS; not a DS component). The bar is
+   INVERTED from the app theme: light bar over a dark app, dark bar over a light app. */
+.titlebar { display: flex; align-items: stretch; height: 32px; flex-shrink: 0; border-bottom: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b); user-select: none; -webkit-user-select: none; }
+.tb-drag { display: flex; align-items: center; gap: var(--tek-spacing-s05, 8px); flex: 1 1 auto; padding-left: var(--tek-spacing-s06, 10px); min-width: 0; }
+.tb-icon { width: 15px; height: 13px; display: inline-flex; flex-shrink: 0; }
+.tb-title { font-family: var(--tek-fonts-family-geist, sans-serif); font-size: var(--tek-fonts-text-size-sm, 12px); line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tb-caption { display: flex; align-items: stretch; flex-shrink: 0; }
+.cap { width: 46px; align-self: stretch; border: none; background: transparent; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; outline: none; transition: background .12s, color .12s; }
+.cap svg { display: block; }
+.cap.close:hover { background: #c42b1c; color: #fff; }
+.cap:focus-visible { box-shadow: inset 0 0 0 2px var(--tek-color-text-link-default, #33baea); }
+
+/* dark app → LIGHT bar */
+[data-theme="dark"] .titlebar { background: var(--tek-colors-neutral-100, #cccccc); }
+[data-theme="dark"] .tb-icon svg path { fill: var(--tek-colors-neutral-900, #181818); }
+[data-theme="dark"] .tb-title { color: var(--tek-colors-neutral-700, #252525); }
+[data-theme="dark"] .cap { color: var(--tek-colors-neutral-800, #1e1e1e); }
+[data-theme="dark"] .cap:hover { background: color-mix(in srgb, var(--tek-colors-neutral-black, #000) 8%, transparent); }
+
+/* light app → DARK bar */
+[data-theme="light"] .titlebar { background: var(--tek-colors-neutral-900, #181818); }
+[data-theme="light"] .tb-icon svg path { fill: var(--tek-colors-neutral-white, #ffffff); }
+[data-theme="light"] .tb-title { color: var(--tek-colors-neutral-300, #979797); }
+[data-theme="light"] .cap { color: var(--tek-colors-neutral-100, #cccccc); }
+[data-theme="light"] .cap:hover { background: color-mix(in srgb, var(--tek-colors-neutral-white, #fff) 9%, transparent); }
+
+/* minimized taskbar chip + closed card */
+.taskchip { position: fixed; left: var(--tek-spacing-s11, 24px); bottom: var(--tek-spacing-s11, 24px); z-index: 120; display: none; align-items: center; gap: var(--tek-spacing-s05, 8px); padding: var(--tek-spacing-s05, 8px) var(--tek-spacing-s09, 16px); background: var(--app-chrome-bg); border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b); border-bottom: var(--tek-borders-width-04, 2px) solid var(--tek-color-text-link-default, #33baea); border-radius: var(--tek-borders-radius-03, 5px); box-shadow: var(--shadow-modal); cursor: pointer; color: var(--tek-color-input-text-filled, #cccccc); font-family: var(--tek-fonts-family-geist, sans-serif); font-size: var(--tek-fonts-text-size-md, 13px); }
+.taskchip.open { display: inline-flex; }
+.taskchip .tb-icon { width: 16px; height: 14px; }
+.closed-card { position: fixed; inset: 0; z-index: 120; display: none; align-items: center; justify-content: center; }
+.closed-card.open { display: flex; }
+.app {
+  display: flex; flex-direction: column;
+  flex: 1 1 auto; min-height: 0; width: 100%;
+  container-type: inline-size;     /* ← the responsiveness anchor */
+  container-name: app;
+  overflow: hidden;
+}
+
+/* ── Top navigation (chrome) ─────────────────────────────────────────────── */
+.topnav {
+  display: flex; align-items: center; gap: var(--tek-spacing-s09, 16px);
+  height: 48px; flex-shrink: 0;
+  padding: 0 var(--tek-spacing-s09, 16px);
+  background: var(--app-chrome-bg);
+  border-bottom: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b);
+}
+.brand { display: inline-flex; align-items: center; gap: var(--tek-spacing-s05, 8px); flex-shrink: 0; }
+.brand .mark {
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.brand .mark svg { height: 28px; width: auto; }
+.brand .mark svg path { fill: var(--tek-color-icons-default, #ffffff); }
+.brand .wordmark {
+  font-family: var(--tek-fonts-family-archivo, sans-serif); font-variation-settings: 'wdth' 120; font-weight: 600;
+  font-size: var(--tek-fonts-heading-size-xs, 16px); line-height: 1; letter-spacing: -0.02em;
+  color: var(--tek-color-modal-text-default, #ffffff);
+}
+.brand-sep-removed { display: none; }
+.brand .filename {
+  margin-left: var(--tek-spacing-s05, 8px);
+  font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
+  font-size: var(--tek-fonts-text-size-sm, 12px); font-weight: 400; line-height: 1;
+  color: var(--tek-color-selector-label-unchecked, #afafaf); white-space: nowrap;
+}
+.brand .filename .unsaved { color: var(--tek-color-text-link-default, #33baea); }
+.nav-spacer { flex: 1 1 auto; }
+
+/* ── Body: left side-nav + stage ──────────────────────────────────── */
+.body { display: flex; flex: 1 1 auto; min-height: 0; min-width: 0; }
+.sidenav {
+  flex: 0 0 160px; display: flex; flex-direction: column;
+  padding: 0;
+  background: var(--app-chrome-bg);
+  border-right: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b);
+  overflow-y: auto;
+}
+.sidenav-spacer { flex: 1 1 auto; min-height: var(--tek-spacing-s11, 24px); }
+.sidenav-foot { display: flex; flex-direction: column; gap: var(--tek-spacing-s06, 10px); padding: 0 var(--tek-spacing-s07, 12px) var(--tek-spacing-s09, 16px); }
+.sidenav-foot tek-button { display: block; width: 100%; }
+
+.chrome-right { display: inline-flex; align-items: center; gap: var(--tek-spacing-s09, 16px); flex-shrink: 0; }
+.theme-toggle { display: inline-flex; align-items: center; gap: var(--tek-spacing-s04, 6px); }
+.theme-toggle span { font-size: 12px; line-height: 1; }
+.statusbar .theme-toggle { transform: scale(0.85); transform-origin: right center; }
+
+/* Options menu button */
+.options { position: relative; }
+.options-btn {
+  display: inline-flex; align-items: center; gap: var(--tek-spacing-s04, 6px);
+  padding: var(--tek-spacing-s03, 4px) var(--tek-spacing-s06, 10px) var(--tek-spacing-s03, 4px) var(--tek-spacing-s07, 12px);
+  background: var(--tek-color-button-background-default, #1e1e1e);
+  border: var(--tek-borders-width-02, 1px) solid var(--tek-color-button-border-default, #33baea);
+  border-radius: var(--tek-borders-radius-full, 9999px);
+  color: var(--tek-color-button-text-default, #cccccc);
+  font-family: var(--tek-fonts-family-archivo, sans-serif); font-variation-settings: 'wdth' 106; font-weight: 600;
+  font-size: var(--tek-fonts-text-size-lg, 14px); letter-spacing: 0.02em;
+  cursor: pointer; outline: none; transition: background .15s, color .15s, border-color .15s;
+}
+.options-btn:hover { background: var(--tek-color-button-background-hover, #000); color: var(--tek-color-button-text-hover, #fff); }
+.options-btn:focus-visible { box-shadow: 0 0 0 2px var(--tek-color-button-border-default, #33baea); }
+.options-btn .chev { display: inline-flex; align-items: center; justify-content: center; margin-left: 0; }
+.options-btn .chev svg { display: block; transition: transform .15s; transform-box: fill-box; transform-origin: center; }
+.options-btn[aria-expanded="true"] .chev svg { transform: rotate(180deg); }
+.options-menu {
+  position: absolute; top: calc(100% + 8px); right: 0; z-index: 60; min-width: 232px;
+  background: var(--tek-color-input-background-default, #252525);
+  border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-filled, #afafaf);
+  border-radius: var(--tek-borders-radius-05, 11px);
+  box-shadow: var(--shadow-modal);
+  padding: var(--tek-spacing-s03, 4px); display: none;
+}
+.options-menu.open { display: block; }
+.options-menu button {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--tek-spacing-s09, 16px);
+  width: 100%; text-align: left; background: none; border: none; cursor: pointer;
+  padding: var(--tek-spacing-s05, 8px) var(--tek-spacing-s07, 12px);
+  border-radius: var(--tek-borders-radius-02, 3px);
+  font-family: var(--tek-fonts-family-geist, sans-serif);
+  font-size: var(--tek-fonts-text-size-lg, 14px); line-height: var(--tek-fonts-text-line-height-lg, 20px);
+  color: var(--tek-color-input-text-filled, #cccccc); outline: none;
+}
+.options-menu button:hover, .options-menu button:focus-visible { background: var(--tek-color-selector-background-unchecked, #454545); color: var(--tek-color-modal-text-default, #fff); }
+.options-menu .sub { font-family: var(--tek-fonts-family-mono, monospace); font-size: var(--tek-fonts-text-size-sm, 12px); color: var(--tek-color-input-text-default, #979797); }
+.options-menu .check { width: 14px; display: inline-flex; color: var(--tek-color-text-link-default, #33baea); }
+.options-menu button[aria-checked="true"] .check::before { content: "\2713"; font-size: 13px; }
+.options-menu hr { border: none; border-top: 0.5px solid var(--tek-color-input-border-default, #7b7b7b); margin: var(--tek-spacing-s03, 4px) 0; }
+
+/* ── Stage / content ─────────────────────────────────────────────────────── */
+.stage { flex: 1 1 auto; min-height: 0; min-width: 0; overflow-y: auto; padding: var(--tek-spacing-s09, 16px); display: flex; flex-direction: column; gap: var(--tek-spacing-s09, 16px); }
+.title-row { display: flex; align-items: center; gap: var(--tek-spacing-s07, 12px); flex-wrap: wrap; }
+.title {
+  font-family: var(--tek-fonts-family-archivo, sans-serif); font-variation-settings: 'wdth' 120; font-weight: 600;
+  font-size: var(--tek-fonts-heading-size-sm, 20px); line-height: var(--tek-fonts-heading-line-height-sm, 26px);
+  letter-spacing: -0.02em; color: var(--tek-color-modal-text-default, #ffffff);
+}
+.title .unsaved { color: var(--tek-color-text-link-default, #33baea); }
+
+/* work area: wizard rail + panel */
+.work { display: grid; grid-template-columns: 164px 1fr; gap: var(--tek-spacing-s11, 24px); align-items: start; min-width: 0; }
+.rail {
+  border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b);
+  border-radius: var(--tek-borders-radius-05, 11px);
+  background: var(--app-chrome-bg);
+  padding: var(--tek-spacing-s09, 16px);
+}
+.panel { min-width: 0; display: flex; flex-direction: column; gap: var(--tek-spacing-s09, 16px); }
+
+/* section cards (acquisition + identity use the group-box card look directly) */
+.card {
+  border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b);
+  border-radius: var(--tek-borders-radius-05, 11px);
+  background: var(--app-chrome-bg);
+  padding: var(--tek-spacing-s09, 16px);
+}
+
+/* generic 2-col field grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--tek-spacing-s07, 12px) var(--tek-spacing-s11, 24px); align-items: start; }
+.acq { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--tek-spacing-s11, 24px); align-items: center; }
+.radio-stack { display: flex; flex-direction: column; gap: var(--tek-spacing-s06, 10px); }
+
+.card-split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--tek-spacing-s07, 12px) var(--tek-spacing-s11, 24px); align-items: center; }
+
+.section-heading {
+  font-family: var(--tek-fonts-family-archivo, sans-serif); font-variation-settings: 'wdth' 120; font-weight: 600;
+  font-size: var(--tek-fonts-heading-size-xs, 16px); line-height: var(--tek-fonts-heading-line-height-xs, 24px);
+  letter-spacing: -0.02em; color: var(--tek-color-modal-text-default, #ffffff);
+  margin-bottom: var(--tek-spacing-s07, 12px);
+}
+.subhead {
+  font-family: var(--tek-fonts-family-geist, sans-serif); font-weight: 500;
+  font-size: var(--tek-fonts-text-size-xl, 16px); line-height: var(--tek-fonts-text-line-height-xl, 24px);
+  color: var(--tek-color-modal-text-default, #ffffff);
+}
+.hr { border: none; border-top: 0.5px solid var(--tek-color-input-border-default, #7b7b7b); margin: var(--tek-spacing-s09, 16px) 0; }
+.hr-v { border: none; border-left: 0.5px solid var(--tek-color-input-border-default, #7b7b7b); align-self: stretch; margin: 0; }
+.probe-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--tek-spacing-s07, 12px) var(--tek-spacing-s11, 24px); align-items: end; }
+.probe-row .subhead { grid-column: 1 / -1; }
+.inline-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: var(--tek-spacing-s09, 16px) var(--tek-spacing-s11, 24px); align-items: end; }
+
+/* DUT ID field with inline edit affordance */
+.dutid { display: flex; align-items: center; gap: var(--tek-spacing-s05, 8px); }
+.dutid tek-input { flex: 1 1 auto; }
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 30px; height: 30px; cursor: pointer;
+  background: var(--tek-color-input-background-default, #252525);
+  border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b);
+  border-radius: var(--tek-borders-radius-03, 5px);
+  color: var(--tek-color-icons-default, #ffffff); outline: none; transition: border-color .1s, color .1s;
+}
+.icon-btn:hover { border-color: var(--tek-color-input-border-filled, #afafaf); }
+.icon-btn:focus-visible { box-shadow: 0 0 0 2px var(--tek-color-text-link-default, #33baea); }
+.icon-btn svg { display: block; }
+
+/* button content (icon + label) inside slotted tek-button */
+.bc { display: inline-flex; align-items: center; justify-content: center; gap: var(--tek-spacing-s05, 8px); }
+.bc svg { display: block; }
+
+/* tek-button host defaults to width:100% — make buttons size to content by default;
+   only full-width where we explicitly opt in (.sidenav-foot run buttons). */
+tek-button { width: auto; }
+.sidenav-foot tek-button { width: 100%; }
+/* dialog buttons: match the Start/Stop (secondary) size, never huge */
+#dlgScrim tek-button { padding: var(--tek-spacing-s04, 6px) var(--tek-spacing-s08, 14px); }
+
+/* solid + success button tones — token rebinding (proposed additions) */
+/* solid + success button tones — token rebinding (proposed additions).
+   Text + icons stay BLACK in every state; hover uses a more-vibrant shade. */
+tek-button.btn-solid {
+  --tek-color-button-background-default: var(--tek-colors-brand-tek-blue, #33baea);
+  --tek-color-button-text-default: var(--tek-colors-neutral-900, #181818);
+  --tek-color-button-background-hover: #4ccbf7;
+  --tek-color-button-text-hover: var(--tek-colors-neutral-900, #181818);
+  --tek-color-button-border-default: var(--tek-colors-brand-tek-blue, #33baea);
+  --tek-color-button-border-hover: #4ccbf7;
+}
+tek-button.btn-success {
+  --tek-color-button-background-default: var(--tek-color-success, #42b54c);
+  --tek-color-button-text-default: var(--tek-colors-neutral-900, #181818);
+  --tek-color-button-background-hover: #4fd35a;
+  --tek-color-button-text-hover: var(--tek-colors-neutral-900, #181818);
+  --tek-color-button-border-default: var(--tek-color-success, #42b54c);
+  --tek-color-button-border-hover: #4fd35a;
+}
+tek-button.btn-danger {
+  --tek-color-button-background-default: var(--tek-color-error, #e74848);
+  --tek-color-button-text-default: var(--tek-colors-neutral-900, #181818);
+  --tek-color-button-background-hover: #ff5a5a;
+  --tek-color-button-text-hover: var(--tek-colors-neutral-900, #181818);
+  --tek-color-button-border-default: var(--tek-color-error, #e74848);
+  --tek-color-button-border-hover: #ff5a5a;
+}
+/* ghost run button — no border, no fill; icon + label only, centered to match Start/Stop */
+tek-button.btn-ghost {
+  --tek-color-button-background-default: transparent;
+  --tek-color-button-background-hover: color-mix(in srgb, var(--tek-colors-neutral-white, #fff) 8%, transparent);
+  --tek-color-button-background-inactive: transparent;
+  --tek-color-button-border-default: transparent;
+  --tek-color-button-border-hover: transparent;
+  --tek-color-button-border-inactive: transparent;
+}
+/* run-control CTAs (side-nav foot): semibold label + leading Phosphor icon, centered */
+.sidenav-foot .bc { display: flex; align-items: center; justify-content: center; line-height: 1; font-weight: 600; gap: var(--tek-spacing-s05, 8px); }
+.sidenav-foot .bc svg { display: block; flex-shrink: 0; }
+
+/* action cluster */
+.actions {
+  display: flex; align-items: center; justify-content: flex-end; gap: var(--tek-spacing-s07, 12px);
+  flex-wrap: wrap; padding-top: var(--tek-spacing-s02, 2px);
+}
+.actions .run-group { display: inline-flex; gap: var(--tek-spacing-s07, 12px); margin-right: auto; }
+.actions tek-button { width: auto; }
+/* Back/Next: vertically centered, tight caret-to-text and caret-to-border spacing */
+.actions #backBtn .bc, .actions #nextBtn .bc { display: flex; align-items: center; justify-content: center; gap: 0; line-height: 1; }
+.actions #backBtn .bc svg, .actions #nextBtn .bc svg { display: block; }
+.actions #nextBtn { padding-right: var(--tek-spacing-s03, 4px); }
+.actions #backBtn { padding-left: var(--tek-spacing-s03, 4px); }
+
+/* running state: form becomes read-only */
+.panel.is-running .card, .panel.is-running tek-group-box { opacity: .55; pointer-events: none; }
+.panel.is-running .actions { opacity: 1; pointer-events: auto; }
+
+/* nav/wizard panel swap */
+.placeholder { display: none; }
+[hidden] { display: none !important; }
+
+/* ── Multi-screen: nav view, sub-tabs, context header, panels ─────────────── */
+#navView { min-width: 0; display: flex; flex-direction: column; gap: var(--tek-spacing-s09, 16px); }
+.panel-head { display: flex; align-items: center; gap: var(--tek-spacing-s09, 16px); flex-wrap: wrap; }
+.panel-title { font-family: var(--tek-fonts-family-archivo, sans-serif); font-variation-settings: 'wdth' 120; font-weight: 600; font-size: var(--tek-fonts-heading-size-xs, 16px); line-height: var(--tek-fonts-heading-line-height-xs, 24px); letter-spacing: -0.02em; color: var(--tek-color-modal-text-default, #fff); }
+.panel-head .spacer { flex: 1 1 auto; }
+
+/* sub-tabs (Status / Reports inner tabs) — pill style, distinct from top nav */
+.subtabs { display: inline-flex; gap: var(--tek-spacing-s03, 4px); padding: var(--tek-spacing-s02, 2px); background: var(--tek-color-footer-background-default, #252525); border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b); border-radius: var(--tek-borders-radius-full, 9999px); }
+.subtab { appearance: none; border: none; cursor: pointer; background: transparent; white-space: nowrap; border-radius: var(--tek-borders-radius-full, 9999px); padding: var(--tek-spacing-s04, 6px) var(--tek-spacing-s09, 16px); font-family: var(--tek-fonts-family-geist, sans-serif); font-size: var(--tek-fonts-text-size-lg, 14px); line-height: var(--tek-fonts-text-line-height-lg, 20px); color: var(--tek-color-input-text-default, #979797); outline: none; transition: background .15s, color .15s; }
+.subtab:hover { color: var(--tek-color-input-text-filled, #cccccc); }
+.subtab[aria-selected="true"] { background: var(--tek-color-text-link-default, #33baea); color: var(--tek-colors-neutral-900, #181818); font-weight: 500; }
+.subtab:focus-visible { box-shadow: 0 0 0 2px var(--tek-color-text-link-default, #33baea); }
+
+/* context header (Device : Suite : Version) */
+.context-header { font-family: var(--tek-fonts-family-mono, monospace); font-size: var(--tek-fonts-text-size-md, 13px); line-height: var(--tek-fonts-text-line-height-md, 16px); color: var(--tek-color-input-text-default, #979797); padding: var(--tek-spacing-s04, 6px) var(--tek-spacing-s07, 12px); border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b); border-radius: var(--tek-borders-radius-full, 9999px); background: var(--tek-color-footer-background-default, #252525); white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; box-sizing: border-box; }
+
+/* tertiary action button (subtle, for in-panel actions like Show MOI / Refresh) */
+.btn-row { display: inline-flex; gap: var(--tek-spacing-s07, 12px); flex-wrap: wrap; }
+
+/* bottom action button group — side-by-side, right-aligned; full-width stack only when skinny */
+.action-bar { display: flex; flex-direction: row; justify-content: flex-end; align-items: center; gap: var(--tek-spacing-s07, 12px); flex-wrap: wrap; }
+.action-bar tek-button { flex: 0 0 auto; width: auto; }
+.panel-head .action-bar { margin-left: auto; }
+@container app (max-width: 559px) {
+  .action-bar { flex-direction: column; align-items: stretch; }
+  .action-bar tek-button { width: 100%; }
+}
+
+/* description / readonly text region */
+.readonly-box { border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b); border-radius: var(--tek-borders-radius-03, 5px); background: var(--tek-color-input-background-default, #252525); padding: var(--tek-spacing-s07, 12px); font-size: var(--tek-fonts-text-size-lg, 14px); line-height: var(--tek-fonts-text-line-height-lg, 20px); color: var(--tek-color-input-text-filled, #cccccc); min-height: 64px; }
+.readonly-label { font-family: var(--tek-fonts-family-geist, sans-serif); font-weight: 500; font-size: var(--tek-fonts-text-size-lg, 14px); color: var(--tek-color-modal-text-default, #fff); margin-bottom: var(--tek-spacing-s04, 6px); }
+
+/* split layout used by Test Selection (tree | description) */
+.split-2 { display: grid; grid-template-columns: 1.6fr 1fr; gap: var(--tek-spacing-s11, 24px); align-items: stretch; min-width: 0; }
+.ts-desc-col { display: flex; flex-direction: column; min-width: 0; }
+.ts-desc-col .readonly-box { flex: 1 1 auto; }
+/* Reports View Settings: Contents (left) + User logo / Group Report By stacked (right) */
+.vs-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: var(--tek-spacing-s09, 16px); align-items: start; min-width: 0; }
+.vs-side { display: flex; flex-direction: column; gap: var(--tek-spacing-s09, 16px); min-width: 0; }
+@container app (max-width: 699px) { .vs-grid { grid-template-columns: 1fr; } }
+
+/* log / message-history mono pane */
+.log-pane { font-family: var(--tek-fonts-family-mono, monospace); font-size: var(--tek-fonts-text-size-sm, 12px); line-height: 1.7; color: var(--tek-color-input-text-filled, #cccccc); background: var(--tek-colors-neutral-900, #181818); border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b); border-radius: var(--tek-borders-radius-05, 11px); padding: var(--tek-spacing-s09, 16px); overflow-y: auto; min-height: 200px; max-height: 340px; white-space: pre-wrap; }
+.log-pane .ts { color: var(--tek-color-input-text-default, #979797); }
+
+/* inline status pill cell helpers for tables */
+.cell-status { display: inline-flex; align-items: center; gap: var(--tek-spacing-s05, 8px); white-space: nowrap; }
+.tkx-dt td .cell-status { white-space: nowrap; }
+.cell-dot { width: 7px; height: 7px; border-radius: 9999px; flex-shrink: 0; }
+.dot-idle { background: var(--tek-color-input-text-default, #979797); }
+.dot-run { background: var(--tek-color-text-link-default, #33baea); }
+.dot-ok { background: var(--tek-color-success, #42b54c); }
+.dot-warn { background: var(--tek-color-warning, #e0b732); }
+.dot-err { background: var(--tek-color-error, #e74848); }
+.row-active { background: color-mix(in srgb, var(--tek-color-text-link-default,#33baea) 12%, transparent); }
+
+/* dialogs (generic) */
+.scrim { position: fixed; inset: 0; z-index: 200; background: var(--tek-color-modal-background-default, #181818cc); display: none; align-items: center; justify-content: center; backdrop-filter: blur(2px); padding: var(--tek-spacing-s11, 24px); }
+.scrim.open { display: flex; }
+.dialog { width: min(640px, 100%); max-height: calc(100vh - 64px); display: flex; flex-direction: column; background: var(--tek-color-modal-background-default, #1e1e1e); border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-filled, #afafaf); border-radius: var(--tek-borders-radius-05, 11px); box-shadow: var(--shadow-modal); }
+.dialog.wide { width: min(820px, 100%); }
+.dialog-head { display: flex; align-items: center; gap: var(--tek-spacing-s07, 12px); padding: var(--tek-spacing-s09, 16px) var(--tek-spacing-s11, 24px); border-bottom: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b); }
+.dialog-title { flex: 1 1 auto; font-family: var(--tek-fonts-family-archivo, sans-serif); font-variation-settings: 'wdth' 120; font-weight: 600; font-size: var(--tek-fonts-heading-size-sm, 20px); letter-spacing: -0.02em; color: var(--tek-color-modal-text-default, #fff); }
+.dialog-x { width: 28px; height: 28px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; background: none; border: none; color: var(--tek-color-input-text-default, #979797); border-radius: var(--tek-borders-radius-02, 3px); outline: none; }
+.dialog-x:hover { color: var(--tek-color-modal-text-default, #fff); background: var(--tek-color-selector-background-unchecked, #454545); }
+.dialog-x:focus-visible { box-shadow: 0 0 0 2px var(--tek-color-text-link-default, #33baea); }
+.dialog-body { padding: var(--tek-spacing-s11, 24px); overflow-y: auto; display: flex; flex-direction: column; gap: var(--tek-spacing-s11, 24px); }
+.dialog-foot { display: flex; align-items: center; gap: var(--tek-spacing-s07, 12px); justify-content: flex-end; flex-wrap: wrap; padding: var(--tek-spacing-s09, 16px) var(--tek-spacing-s11, 24px); border-top: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b); }
+.dialog-foot .spacer { flex: 1 1 auto; }
+.help-text { font-size: var(--tek-fonts-text-size-md, 13px); line-height: var(--tek-fonts-text-line-height-md, 16px); color: var(--tek-color-input-text-default, #979797); }
+
+.check-list { display: flex; flex-direction: column; gap: var(--tek-spacing-s09, 16px); }
+.check-inline { display: inline; line-height: 1.9; }
+.check-inline tek-input { display: inline-block; vertical-align: middle; width: 56px; margin: 0 var(--tek-spacing-s04, 6px); }
+.muted { color: var(--tek-color-input-text-default, #979797); }
+.sub-indent { margin-left: var(--tek-spacing-s13, 32px); }
+
+/* running minimised window */
+.run-win { position: fixed; right: var(--tek-spacing-s11, 24px); bottom: var(--tek-spacing-s11, 24px); z-index: 240; width: 420px; max-width: calc(100vw - 48px); display: none; flex-direction: column; background: var(--tek-color-modal-background-default, #1e1e1e); border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-filled, #afafaf); border-radius: var(--tek-borders-radius-05, 11px); box-shadow: var(--shadow-modal); overflow: hidden; }
+.run-win.open { display: flex; }
+.run-win-head { display: flex; align-items: center; gap: var(--tek-spacing-s07, 12px); padding: var(--tek-spacing-s06, 10px) var(--tek-spacing-s09, 16px); background: var(--app-chrome-bg); border-bottom: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b); }
+.run-win-title { flex: 1 1 auto; font-family: var(--tek-fonts-family-mono, monospace); font-size: var(--tek-fonts-text-size-sm, 12px); color: var(--tek-color-input-text-filled, #cccccc); }
+.run-win .log-pane { border: none; border-radius: 0; max-height: 220px; min-height: 160px; }
+.run-win-foot { display: flex; align-items: center; gap: var(--tek-spacing-s07, 12px); padding: var(--tek-spacing-s06, 10px) var(--tek-spacing-s09, 16px); border-top: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-input-border-default, #7b7b7b); }
+.run-win-foot .spacer { flex: 1 1 auto; }
+.run-dot { width: 12px; height: 12px; border-radius: var(--tek-borders-radius-02, 3px); }
+
+/* outlined (non-teal) pill — Results Debug / Preferences (corpus: only outlined buttons) */
+.pill-outline { appearance: none; cursor: pointer; display: inline-flex; align-items: center; gap: var(--tek-spacing-s05, 8px); background: transparent; border: var(--tek-borders-width-02, 1px) solid var(--tek-color-input-border-filled, #afafaf); border-radius: var(--tek-borders-radius-full, 9999px); padding: var(--tek-spacing-s04, 6px) var(--tek-spacing-s09, 16px); font-family: var(--tek-fonts-family-geist, sans-serif); font-size: var(--tek-fonts-text-size-md, 13px); color: var(--tek-color-input-text-filled, #cccccc); outline: none; transition: border-color .15s, color .15s; }
+.pill-outline:hover { border-color: var(--tek-color-modal-text-default, #fff); color: var(--tek-color-modal-text-default, #fff); }
+.pill-outline:focus-visible { box-shadow: 0 0 0 2px var(--tek-color-text-link-default, #33baea); }
+
+/* icon-btn small for table cells / toolbars */
+.icon-btn.sm { width: 26px; height: 26px; }
+.plot-placeholder { border: var(--tek-borders-width-03, 1.5px) dashed var(--tek-color-input-border-default, #7b7b7b); border-radius: var(--tek-borders-radius-05, 11px); background: var(--tek-colors-neutral-900, #181818); min-height: 240px; display: flex; align-items: center; justify-content: center; }
+
+/* status bar */
+.statusbar { flex-shrink: 0; }
+.statusbar tek-status-pill { cursor: default; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   CONTAINER BREAKPOINTS  (live @container queries on .app)
+   Recalibrated for the compact 875px content frame. Drag the frame's resize
+   handle to fire them live. Names map to --tek-container-breakpoint-* tokens.
+     ≥760  cb-md/lg : two-column work (184px rail + panel), full layout
+     600–759 cb-sm  : rail stacks above content, wizard goes horizontal
+     <600  cb-xs    : single column, nav → icons, actions stack
+════════════════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════
+   CONTAINER BREAKPOINTS  (live @container queries on .app)
+   The 168px side-nav permanently consumes width, so thresholds reflect the
+   remaining content column. Drag the frame's resize handle to fire them live.
+     ≥700  cb-md/lg : side-nav + wizard rail + panel, two-column form
+     560–699 cb-sm  : wizard rail stacks above content, goes horizontal
+     <560  cb-xs    : side-nav → icons, single-column form, actions stack
+════════════════════════════════════════════════════════════════ */
+
+/* cb-sm (560–699): wizard rail moves above content and goes horizontal */
+@container app (max-width: 699px) {
+  .work { grid-template-columns: 1fr; gap: var(--tek-spacing-s09, 16px); }
+  .rail { padding: var(--tek-spacing-s07, 12px) var(--tek-spacing-s09, 16px); }
+  .rail .tkx-wiz { flex-direction: row; }
+  .rail .tkx-step { flex-direction: column; align-items: center; flex: 1; text-align: center; gap: var(--tek-spacing-s04, 6px); }
+  .rail .tkx-rail { flex-direction: row; width: 100%; }
+  .rail .tkx-guide { height: var(--tek-borders-width-04, 2px); width: auto; min-height: 0; flex: 1; margin: 0 var(--tek-spacing-s04, 6px); }
+  .rail .tkx-step-lbl { padding-top: 0; }
+}
+
+/* cb-xs (<560): side-nav condenses to icons, single column, actions stack */
+@container app (max-width: 559px) {
+  .brand .wordmark, .brand .filename { display: none; }
+  .sidenav { flex-basis: 52px; padding-left: var(--tek-spacing-s03, 4px); padding-right: var(--tek-spacing-s03, 4px); }
+  .sidenav .tkx-lbl { display: none; }
+  .sidenav .tkx-tab { justify-content: center; padding-left: var(--tek-spacing-s05, 8px); padding-right: var(--tek-spacing-s05, 8px); }
+  .acq, .grid-2, .card-split, .probe-row { grid-template-columns: 1fr; }
+  .rail .tkx-step-lbl { font-size: var(--tek-fonts-text-size-sm, 12px); line-height: var(--tek-fonts-text-line-height-md, 16px); }
+  .actions { justify-content: stretch; }
+  .actions .run-group { width: 100%; }
+  .actions tek-button { flex: 1 1 auto; }
+}
+</style>
+</head>
+<body style="background-color: rgb(123, 123, 123)">
+<div class="frame" id="frame">
+<!-- Windows 11-style window chrome (host-OS; out of DS scope per brief, added on request) -->
+<div class="titlebar" id="titlebar">
+  <div class="tb-drag" data-comment-anchor="a31b391fbb-div">
+    <span class="tb-icon"><svg viewBox="0 0 150 128" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M62.955 128h-33.3L116.026 0h33.301L62.955 128Zm86.37-.527h-33.821L93.65 91.163l17.692-26.906 37.983 63.216ZM60.353 72.626l-30.699 45.453V26.65h30.7v45.976Zm30.963-45.981H0V0h109.268L91.316 26.645Z"></path></svg></span>
+    <span class="tb-title">TekExpress AppEmulator</span>
+  </div>
+  <div class="tb-caption">
+    <button class="cap min" id="capMin" aria-label="Minimize" title="Minimize"><svg width="11" height="11" viewBox="0 0 11 11"><line x1="1" y1="5.5" x2="10" y2="5.5" stroke="currentColor" stroke-width="1"></line></svg></button>
+    <button class="cap max" id="capMax" aria-label="Maximize" title="Maximize"><svg width="11" height="11" viewBox="0 0 11 11" id="capMaxIcon"><rect x="1.5" y="1.5" width="8" height="8" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"></rect></svg></button>
+    <button class="cap close" id="capClose" aria-label="Close" title="Close"><svg width="11" height="11" viewBox="0 0 11 11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="currentColor" stroke-width="1"></line><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="currentColor" stroke-width="1"></line></svg></button>
+  </div>
+</div>
+<div class="app" id="app" data-screen-label="Setup › DUT">
+
+  <!-- ════ TOP NAV (chrome) ════ -->
+  <header class="topnav" data-comment-anchor="a477e84773-header">
+    <div class="brand">
+      <span class="mark" data-comment-anchor="d9a90eaf17-span"><svg viewBox="0 0 150 128" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M62.955 128h-33.3L116.026 0h33.301L62.955 128Zm86.37-.527h-33.821L93.65 91.163l17.692-26.906 37.983 63.216ZM60.353 72.626l-30.699 45.453V26.65h30.7v45.976Zm30.963-45.981H0V0h109.268L91.316 26.645Z"></path></svg></span>
+      <span class="wordmark">TekExpress</span>
+      <span class="filename">DDR Tx &mdash; (Untitled)<span class="unsaved" id="unsavedStar" title="Unsaved changes">*</span></span>
+    </div>
+    <div class="nav-spacer"></div>
+    <div class="chrome-right">
+      <div class="options">
+        <button class="options-btn" id="optBtn" aria-haspopup="menu" aria-expanded="false">
+          Options<span class="chev" id="optChev"></span>
+        </button>
+        <div class="options-menu" id="optMenu" role="menu">
+          <button role="menuitem" data-opt="default">Default Test Setup</button>
+          <button role="menuitem" data-opt="open">Open Test Setup</button>
+          <button role="menuitem" data-opt="save">Save Test Setup</button>
+          <button role="menuitem" data-opt="saveas">Save Test Setup As</button>
+          <button role="menuitem" data-opt="recent">Open Recent<span class="sub">▶</span></button>
+          <hr>
+          <button role="menuitem" data-opt="continuous">Continuous Run Setup</button>
+          <button role="menuitem" data-opt="instrument">Instrument Control Settings</button>
+          <button role="menuitemcheckbox" data-opt="keeptop" aria-checked="false">Keep On Top<span class="check" aria-hidden="true"></span></button>
+          <hr>
+          <button role="menuitem" data-opt="email">Email Settings</button>
+          <button role="menuitem" data-opt="deskew">Deskew<span class="sub">▶</span></button>
+          <button role="menuitem" data-opt="suite">Suite<span class="sub">▶</span></button>
+          <button role="menuitem" data-opt="fontsize">Message Font Size<span class="sub">▶</span></button>
+          <hr>
+          <button role="menuitem" data-opt="help">Help</button>
+          <button role="menuitem" data-opt="about">About TekExpress</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════ BODY: left side-nav + stage ════ -->
+  <div class="body">
+
+    <!-- ════ SIDE NAV (legacy vertical pill column, persistent) ════ -->
+    <nav class="sidenav" aria-label="Primary" data-comment-anchor="c7fdea577e-nav">
+      <tek-tabs id="tabs" orientation="vertical">
+        <tek-tab icon="setup" active data-value="setup">Setup</tek-tab>
+        <tek-tab icon="status" data-value="status">Status</tek-tab>
+        <tek-tab icon="results" data-value="results">Results</tek-tab>
+        <tek-tab icon="plots" data-value="plots">Plots</tek-tab>
+        <tek-tab icon="reports" data-value="reports">Reports</tek-tab>
+      </tek-tabs>
+      <div class="sidenav-spacer"></div>
+      <!-- Persistent run controls (legacy right-rail toolbar, relocated to side-nav foot) -->
+      <div class="sidenav-foot">
+        <tek-button id="startBtn" variant="secondary" class="btn-success" data-comment-anchor="cfa13bc020-tek-button"><span class="bc" id="startBc">Start</span></tek-button>
+        <tek-button id="pauseBtn" variant="secondary" class="btn-ghost" inactive><span class="bc" id="pauseBc">Pause</span></tek-button>
+      </div>
+    </nav>
+
+  <!-- ════ STAGE ════ -->
+  <main class="stage" data-comment-anchor="3b527d14a4-main">
+
+    <div class="work" id="setupView">
+      <!-- Wizard rail -->
+      <aside class="rail">
+        <tek-wizard-stepper id="wizard" orientation="vertical" aria-label="Setup steps">
+          <tek-step state="current" data-value="dut">DUT</tek-step>
+          <tek-step state="pending" data-value="test-selection">Test Selection</tek-step>
+          <tek-step state="pending" data-value="acquisitions">Acquisitions</tek-step>
+          <tek-step state="pending" data-value="configuration">Configuration</tek-step>
+          <tek-step state="pending" data-value="preferences">Preferences</tek-step>
+        </tek-wizard-stepper>
+      </aside>
+
+      <!-- Panel: DUT (the built screen) -->
+      <section class="panel" id="panel-dut">
+
+        <!-- Acquisition + identity (merged top card for density) -->
+        <div class="card">
+          <div class="acq">
+            <div class="radio-stack" role="radiogroup" aria-label="Acquisition source">
+              <tek-selector type="radio" name="acq" label="Acquire Live Waveforms"></tek-selector>
+              <tek-selector type="radio" name="acq" label="Use pre-recorded waveform files" checked></tek-selector>
+            </div>
+            <div>
+              <tek-selector type="toggle" label="User Defined Acquisition"></tek-selector>
+            </div>
+          </div>
+          <hr class="hr">
+          <div class="grid-2">
+            <tek-field label="DUT ID">
+              <div class="dutid">
+                <tek-input id="dutid" placeholder="Enter DUT ID"></tek-input>
+                <button class="icon-btn" id="dutidEdit" title="Comments" aria-label="Edit comments"></button>
+              </div>
+            </tek-field>
+            <tek-field label="Device">
+              <tek-dropdown value="DDR5">
+                <option>DDR5</option>
+              </tek-dropdown>
+            </tek-field>
+          </div>
+        </div>
+
+        <!-- Device Profile -->
+        <tek-group-box label="Device Profile">
+          <div class="grid-2">
+            <tek-field label="Data Rate">
+              <tek-dropdown value="Select…">
+                <option>Select…</option>
+              </tek-dropdown>
+            </tek-field>
+            <tek-field label="Burst Detection Method">
+              <tek-dropdown value="Select…">
+                <option>Select…</option>
+              </tek-dropdown>
+              <tek-button slot="action" variant="secondary" data-setup="Burst Detection Method"><span class="bc">Setup</span></tek-button>
+            </tek-field>
+          </div>
+
+          <hr class="hr">
+
+          <div class="probe-row">
+            <span class="subhead">Signal Probe Type</span>
+            <tek-field label="Clock">
+              <tek-dropdown value="Differential">
+                <option>Single-Ended</option><option>Differential</option><option>TriMode</option>
+              </tek-dropdown>
+              <tek-button slot="action" variant="secondary" data-setup="Clock"><span class="bc">Setup</span></tek-button>
+            </tek-field>
+            <tek-field label="EQ1">
+              <tek-dropdown value="Differential">
+                <option>Single-Ended</option><option>Differential</option><option>TriMode</option>
+              </tek-dropdown>
+            </tek-field>
+          </div>
+
+          <hr class="hr">
+
+          <div class="inline-row">
+            <tek-field label="Voltage Settings" layout="inline">
+              <tek-button slot="action" variant="secondary" data-setup="Voltage Settings"><span class="bc">Setup</span></tek-button>
+            </tek-field>
+            <tek-field label="TriMode Probe Setup" layout="inline">
+              <tek-button slot="action" variant="secondary" data-setup="TriMode Probe Setup"><span class="bc">Setup</span></tek-button>
+            </tek-field>
+            <tek-field label="Filter Files Path">
+              <tek-dropdown value="Disable">
+                <option>Disable</option>
+              </tek-dropdown>
+            </tek-field>
+          </div>
+        </tek-group-box>
+
+        <!-- Action cluster -->
+      </section>
+
+      <!-- Other wizard steps (Test Selection / Acquisitions / Configuration / Preferences) — built by app.js -->
+      <section class="panel" id="panel-step" hidden></section>
+    </div>
+
+    <!-- NAV view: Status / Results / Reports — built by app.js -->
+    <div id="navView" hidden></div>
+
+    <!-- Shared bottom action cluster (run controls now live in the side-nav foot) -->
+    <div class="actions" id="actions" data-comment-anchor="f7936074fd-div">
+      <tek-button id="clearBtn" variant="secondary" hidden><span class="bc" id="clearBc">Clear</span></tek-button>
+      <tek-button id="backBtn" variant="secondary" inactive><span class="bc"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Back</span></tek-button>
+      <tek-button id="nextBtn" variant="secondary" data-comment-anchor="bc56cc4248-tek-button"><span class="bc">Next<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></tek-button>
+    </div>
+  </main>
+  </div>
+
+  <!-- ════ STATUS BAR (chrome) ════ -->
+  <div class="statusbar">
+    <tek-status-bar id="statusBar" status="Ready.">
+      <div class="theme-toggle" slot="right" title="Toggle light / dark">
+        <span>🌚</span><tek-toggle id="theme" aria-label="Light mode"></tek-toggle><span>🌝</span>
+      </div>
+    </tek-status-bar>
+  </div>
+</div>
+</div>
+
+<!-- Minimized taskbar chip + closed state (host-OS window chrome) -->
+<div class="taskchip" id="taskChip" role="button" tabindex="0" title="Restore TekExpress">
+  <span class="tb-icon"><svg viewBox="0 0 150 128" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M62.955 128h-33.3L116.026 0h33.301L62.955 128Zm86.37-.527h-33.821L93.65 91.163l17.692-26.906 37.983 63.216ZM60.353 72.626l-30.699 45.453V26.65h30.7v45.976Zm30.963-45.981H0V0h109.268L91.316 26.645Z"></path></svg></span>
+  <span>TekExpress AppEmulator</span>
+</div>
+<div class="closed-card" id="closedCard">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:var(--tek-spacing-s09,16px)">
+    <tek-empty-state icon="grid" title="TekExpress closed" note="The application window was closed."></tek-empty-state>
+    <tek-button id="reopenBtn" class="btn-solid"><span class="bc">Reopen</span></tek-button>
+  </div>
+</div>
+
+<!-- Comments dialog (corpus: setup-dut-comments.md — launched from the DUT ID edit affordance) -->
+<div id="modalScrim" style="display:none;position:fixed;inset:0;z-index:200;background:var(--tek-color-modal-background-default,#181818cc);align-items:center;justify-content:center;backdrop-filter:blur(2px);">
+  <tek-modal id="dutModal">
+    <span slot="header">Comments</span>
+    <div slot="input-blocks" style="display:flex;flex-direction:column;gap:6px;width:100%;">
+      <tek-input id="dutNotes" height="triple" placeholder="Comment for this DUT / session"></tek-input>
+    </div>
+    <div slot="action-blocks" style="display:flex;gap:8px;width:100%;flex-wrap:wrap;">
+      <tek-button id="dutClear" variant="secondary" style="flex:1"><span class="bc">Clear</span></tek-button>
+      <tek-button id="dutCopy" variant="secondary" style="flex:1"><span class="bc">Copy</span></tek-button>
+      <tek-button id="dutPaste" variant="secondary" style="flex:1"><span class="bc">Paste</span></tek-button>
+      <tek-button id="dutCancel" variant="secondary" style="flex:1"><span class="bc">Cancel</span></tek-button>
+      <tek-button id="dutOk" class="btn-solid" style="flex:1"><span class="bc">OK</span></tek-button>
+    </div>
+  </tek-modal>
+</div>
+
+<script src="ds/tek-ui.js"></script>
+<script src="tek-express-components.js"></script>
+<script src="tek-express-app.js"></script>
+<script src="tek-express-tweaks.js"></script>
+<script>
+/* Windows 10-style window chrome behaviour (host-OS chrome; not a DS component) */
+(function () {
+  "use strict";
+  const $id = (id) => document.getElementById(id);
+  const frame = $id("frame"), taskChip = $id("taskChip"), closedCard = $id("closedCard"), capMax = $id("capMax");
+  if (!frame || !capMax) return;
+  const maxIcon = `<svg width="11" height="11" viewBox="0 0 11 11"><rect x="1.5" y="1.5" width="8" height="8" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"></rect></svg>`;
+  const restoreIcon = `<svg width="11" height="11" viewBox="0 0 11 11"><rect x="1.5" y="3" width="6.5" height="6.5" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"></rect><path d="M3.5 3V1.5h6.5V8h-1.5" fill="none" stroke="currentColor" stroke-width="1"></path></svg>`;
+  function setMax(on) { frame.classList.toggle("maximized", on); capMax.innerHTML = on ? restoreIcon : maxIcon; capMax.title = on ? "Restore" : "Maximize"; capMax.setAttribute("aria-label", capMax.title); }
+  capMax.addEventListener("click", () => setMax(!frame.classList.contains("maximized")));
+  const drag = document.querySelector(".tb-drag"); if (drag) drag.addEventListener("dblclick", () => setMax(!frame.classList.contains("maximized")));
+  const capMin = $id("capMin"); if (capMin) capMin.addEventListener("click", () => { frame.classList.add("minimized"); if (taskChip) taskChip.classList.add("open"); });
+  const restore = () => { frame.classList.remove("minimized"); if (taskChip) taskChip.classList.remove("open"); };
+  if (taskChip) { taskChip.addEventListener("click", restore); taskChip.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); restore(); } }); }
+  const capClose = $id("capClose"); if (capClose) capClose.addEventListener("click", () => { frame.classList.add("minimized"); if (taskChip) taskChip.classList.remove("open"); if (closedCard) closedCard.classList.add("open"); });
+  const reopen = $id("reopenBtn"); if (reopen) reopen.addEventListener("tek-click", () => { if (closedCard) closedCard.classList.remove("open"); frame.classList.remove("minimized"); });
+})();
+</script>
+
+<!-- thumbnail used by the offline bundler / no-JS fallback -->
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#1e1e1e"/><rect x="30" y="30" width="40" height="40" rx="6" fill="#252525" stroke="#33baea" stroke-width="2"/><path d="M44 58 L42 44 L56 42 L58 56 Z" fill="none" stroke="#33baea" stroke-width="2"/></svg>
+</template>
+</body>
+</html>
