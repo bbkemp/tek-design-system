@@ -5,6 +5,7 @@ node_modules/
 package-lock.json
 .claude/*
 !.claude/skills/
+!.claude/settings.json
 
 # RAG POC: uploads/ is local-only — only processed outputs in
 # screens/ etc. and index.md get committed.

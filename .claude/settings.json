@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "use_figma",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf 'TEK FIGMA BUILD RULE (CLAUDE.md Hard Constraint 9):\\n  1) Bind every existing variable — spacing, radius, colors, strokes — on every node that can take one.\\n  2) Every TextNode gets a text style (setTextStyleIdAsync). No raw fontName+fontSize.\\n  3) Use the component if one exists. Never draw a shape that mimics a tek-* component.\\n  4) Close to existing → defer (23px → 24px token). Genuinely new → bind what you can, then flag in the additions audit.\\nSee .claude/skills/tek-figma-build/SKILL.md for the full workflow.\\n'"
+          }
+        ]
+      }
+    ]
+  }
+}
