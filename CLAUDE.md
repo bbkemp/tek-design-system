@@ -30,6 +30,13 @@ These are the rules that hold the system together. Violating any of them produce
 6. **Never commit directly to `main`.** Always: branch → PR → squash-merge via GitHub MCP. The full git/GitHub workflow — trigger phrases ("let's push it", "merge it"), branch naming, commit format, merge gate — is codified in [docs/workflow.md](./docs/workflow.md). Read it.
 7. **Conventional Commits** (`feat:`, `fix:`, `chore:`, `docs:`, `refactor:`). Feeds the auto-changelog and CI version bumps.
 8. **Consistency over cleverness.** Internal consistency is the single biggest reason AI output works on this repo. New code must match existing patterns. If a pattern doesn't fit, raise it as an open question rather than diverging silently.
+9. **Figma builds: variables, styles, components — every property, every time.** The same "tokens always" rule that applies to code applies to every Figma write. This is the core ethos of the design system, not a nice-to-have. Full detail in [CONTRIBUTING.md → Building in Figma](./CONTRIBUTING.md#building-in-figma) and the `tek-figma-build` skill at `.claude/skills/tek-figma-build/SKILL.md`. The four-point rule:
+   1. **Apply ALL existing variables** to every element that can use them — spacing, border radius, colors, stroke weights. Raw numbers are forbidden where a variable exists.
+   2. **All type must have a text style applied.** No raw `fontName + fontSize` pairs.
+   3. **Use the component. If a component exists, use it. Every time.** Never draw a shape that mimics a Tek component.
+   4. **No variable / component? Two paths:**
+      a. *Close to existing → defer.* 23px → use 24px spacing. Dropdown with a different caret → still the dropdown.
+      b. *Genuinely new → bind what you can, add to the additions audit.* Never silently un-tokenized.
 
 ## Repo layout — current state
 

@@ -154,6 +154,49 @@ tek-modal { flex-shrink: 0; }
 
 ---
 
+## Building in Figma
+
+**Who:** Designer, or AI agent producing a Figma file.
+
+The same "tokens always" rule that governs code (see [Updating Web Components → Token adherence](#updating-web-components)) applies to every Figma write — at every property, on every node, every time. This is the core ethos of the design system, not a stylistic preference.
+
+### The four-point rule
+
+1. **Apply every existing variable to every property that can take one.** Spacing, border radius, colors, stroke weights — bind them. Raw numbers are forbidden where a variable exists.
+2. **Every text node has a text style applied.** No raw `fontName + fontSize` pairs. If the library publishes `text/body/md/regular`, the text uses that style.
+3. **Use the component. Every single time.** If `tek-button` is in the library, do not draw a frame that resembles a button. Variant overrides (`Type=Secondary`, `State=Hover`) are the right adjustments; replacing with a shape is not.
+4. **If a variable or component doesn't exist:**
+   - **Close to existing → defer.** 23px → use the 24px spacing token. A dropdown with a different caret glyph → still the dropdown component (the caret is an icon swap, not a justification for a custom build).
+   - **Genuinely new → bind what you can, add to the additions audit.** Use every variable that fits, every component that applies, and flag the new token / component / variant proposal in `audits/design-additions/<date>-<slug>/<artifact>-redesign-additions.md` with `(PROPOSED: tek-…)` annotations both in the Figma layer name AND the audit `.md` table.
+
+### Workflow
+
+1. **Discovery before writing.** Before the first `use_figma` write, query the library: `get_libraries` (confirm DS-v2 subscription), `search_design_system` for `color`, `spacing`, `borders`, `fonts`, and for component names (`button`, `selector`, `input`, etc.), plus text-style searches (`body`, `heading`, `bold`, `mono` — NOT `typography`, which returns empty). Record the variable + style + component-set keys you'll need.
+
+2. **Bind during writing**, not after. The "I'll bind it in a later pass" pattern is exactly how the failure mode happens. Bind the variable as you create the node — `setBoundVariableForPaint` for fills/strokes, `setBoundVariableForLayoutMode` for padding/gap/itemSpacing, `setBoundVariable` for cornerRadius/strokeWeight, `setTextStyleIdAsync` for typography.
+
+3. **Verify before declaring done.** A frame is not complete until: every fill/stroke is bound, every layout property with a matching token is bound, every text node has a style applied, every Tek component is an instance (not a frame mimicking it), every deviation is flagged.
+
+4. **Run `figma-design-qa`** ([skill](./.claude/skills/figma-design-qa/SKILL.md)) on the finished file to catch any binding misses before declaring complete.
+
+### Enforcement layers (redundant on purpose)
+
+| Layer | Where | What it does |
+|---|---|---|
+| Memory | `~/.claude/projects/.../memory/feedback_design_system_execution.md` | Personal-context reminder (per-agent) |
+| Repo contract | This file + [`CLAUDE.md`](./CLAUDE.md) Hard Constraint 9 | Anyone in the repo reads it |
+| Skill | [`.claude/skills/tek-figma-build/SKILL.md`](./.claude/skills/tek-figma-build/SKILL.md) | MANDATORY prerequisite — load before every `use_figma` call |
+| Hook | [`.claude/settings.json`](./.claude/settings.json) PreToolUse on `use_figma` | Re-injects the rule into context on every write |
+| Universal | [`bkai/CHARTER.md`](https://github.com/bbkemp/bkai/blob/main/CHARTER.md) Rule 22 + [`bkai/design-system.md`](https://github.com/bbkemp/bkai/blob/main/design-system.md) | Bryan's cross-LLM operating contract |
+
+If any layer were the only enforcement, it would fail eventually (memory is per-agent; CLAUDE.md is per-session; the skill is per-tool-call). All five together is the design.
+
+### Why this is so emphatic
+
+The receipts: building 4 Riddick screens on 2026-04-22 with 100% inline hex / no components / no variables, and the Tek Express setup-dut + 9 screens on 2026-06-04 with partial binding (colors yes; spacing/radius/typography no). Both were caught after the fact by Bryan. Both happened despite the prescriptive memory file existing. **A rule that doesn't fire is the same as no rule.** The redundant layers above are what makes it fire.
+
+---
+
 ## Figma Code Connect
 
 Code Connect links Figma component instances to their source files so designers see real code in the Dev Panel.
