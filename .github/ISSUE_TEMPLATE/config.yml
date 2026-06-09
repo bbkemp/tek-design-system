@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Workflow & conventions
+    url: https://github.com/bbkemp/tek-design-system/blob/main/docs/workflow.md
+    about: How changes ship to this repo — trigger phrases, branching, the merge gate.

@@ -1,0 +1,58 @@
+# Headless Copilot CLI: triage newly opened issues (copilot-strategy.md Parts 2.3 + 4).
+# Classifies the issue against the repo's conventions and applies labels, so the backlog
+# is sorted without manual grooming. Issues labeled `good-first-agent-task` can then be
+# handed to the Copilot coding agent.
+#
+# REQUIRES a Copilot license + a repo/org secret COPILOT_GITHUB_TOKEN. Guards out cleanly otherwise.
+name: Copilot triage
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Guard — require Copilot token
+        id: guard
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+        run: |
+          if [ -z "${COPILOT_GITHUB_TOKEN}" ]; then
+            echo "COPILOT_GITHUB_TOKEN not configured — skipping." >> "$GITHUB_STEP_SUMMARY"
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Node
+        if: steps.guard.outputs.enabled == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Copilot CLI
+        if: steps.guard.outputs.enabled == 'true'
+        run: npm install -g @github/copilot
+
+      - name: Triage issue
+        if: steps.guard.outputs.enabled == 'true'
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          copilot -p "Read .github/copilot-instructions.md for repo conventions. \
+          Triage issue #${ISSUE_NUMBER} titled '${ISSUE_TITLE}'. Body follows between the markers. \
+          Decide appropriate labels (bug, ui, tokens, docs, rag, chore) and whether it is a small, \
+          well-scoped, verifiable task suitable for the coding agent — if so also apply \
+          'good-first-agent-task'. Apply the labels via the GitHub tools. Do not modify code. \
+          BODY_START ${ISSUE_BODY} BODY_END" --allow-all-tools

@@ -1,0 +1,33 @@
+name: Component bug
+description: A tek-* Web Component behaves or renders incorrectly.
+labels: [bug, ui]
+body:
+  - type: input
+    id: component
+    attributes:
+      label: Component
+      placeholder: tek-button
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual
+      description: What should happen, what happens instead. Reference the Figma node if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: Steps, plus which reference page (signin.html / component-library.html) and theme (dark/light).
+    validations:
+      required: true
+  - type: checkboxes
+    id: token-check
+    attributes:
+      label: Suspected cause
+      options:
+        - label: Possible hardcoded value where a token should be used
+        - label: Shadow-DOM / slotting issue
+        - label: Token value itself looks wrong (upstream of the component)

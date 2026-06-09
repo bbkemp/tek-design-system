@@ -1,0 +1,70 @@
+# Headless Copilot CLI: run the design-system QA audit over packages/ui and post the report.
+# This is the "skill as a batch job" pattern (copilot-strategy.md Part 4): the code-design-qa
+# procedure is the program, `copilot -p` is the interpreter.
+#
+# REQUIRES, before this does anything:
+#   - A Copilot license that permits CLI usage in Actions.
+#   - A repo/org secret COPILOT_GITHUB_TOKEN (a token authorized for Copilot CLI).
+# Without the secret it guards out cleanly — it never fails CI.
+#
+# Manual/opt-in for now (workflow_dispatch). Wire to `pull_request` once it's proven.
+name: Copilot design QA
+
+on:
+  workflow_dispatch:
+  # pull_request:
+  #   paths: ['packages/ui/src/**']
+
+permissions:
+  contents: read
+
+jobs:
+  design-qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Guard — require Copilot token
+        id: guard
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+        run: |
+          if [ -z "${COPILOT_GITHUB_TOKEN}" ]; then
+            echo "COPILOT_GITHUB_TOKEN not configured — skipping. Add it under repo Settings → Secrets to enable." >> "$GITHUB_STEP_SUMMARY"
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Node
+        if: steps.guard.outputs.enabled == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Copilot CLI
+        if: steps.guard.outputs.enabled == 'true'
+        run: npm install -g @github/copilot
+
+      - name: Run code-design-qa
+        if: steps.guard.outputs.enabled == 'true'
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+        run: |
+          copilot -p "Follow the procedure in .github/instructions/code-design-qa.instructions.md. \
+          Audit packages/ui/src for design-system violations — hardcoded colors, raw pixel values, \
+          missing token usage, native elements where tek-* components exist, and shadow-DOM traps. \
+          Write the clean Markdown report to design-qa-report.md." --allow-all-tools
+
+      - name: Publish report
+        if: steps.guard.outputs.enabled == 'true'
+        run: |
+          if [ -f design-qa-report.md ]; then cat design-qa-report.md >> "$GITHUB_STEP_SUMMARY"; fi
+
+      - name: Upload report artifact
+        if: steps.guard.outputs.enabled == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-qa-report
+          path: design-qa-report.md
+          if-no-files-found: ignore

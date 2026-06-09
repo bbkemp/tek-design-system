@@ -4,17 +4,20 @@ on:
   pull_request:
     paths:
       - '.claude/skills/**'
+      - 'docs/agent-baseline.md'
       - 'scripts/export-skills.mjs'
       - '.cursor/rules/**'
       - '.windsurf/rules/**'
       - '.clinerules/**'
       - '.continue/rules/**'
       - '.github/instructions/**'
+      - '.github/copilot-instructions.md'
       - 'AGENTS.md'
   push:
     branches: [main]
     paths:
       - '.claude/skills/**'
+      - 'docs/agent-baseline.md'
       - 'scripts/export-skills.mjs'
 
 jobs:

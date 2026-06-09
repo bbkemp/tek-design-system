@@ -1,0 +1,31 @@
+name: Good first agent task
+description: A well-scoped, low-to-medium-complexity task suitable for the Copilot coding agent (or any AI assistant).
+labels: [good-first-agent-task]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for the boilerplate tier — adding tests, splitting files, backfilling docs/ADRs,
+        mechanical refactors. Keep it small, well-defined, and verifiable. The agent opens a PR; a human reviews it.
+  - type: textarea
+    id: task
+    attributes:
+      label: Task
+      description: Exactly what to do. Point at a pattern to follow (e.g. "mirror packages/ui/src/button/button.ts").
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How we know it's done. Include the build/check that must pass.
+      placeholder: |
+        - [ ] npm run build:ui passes
+        - [ ] follows the existing component pattern
+    validations:
+      required: true
+  - type: input
+    id: scope
+    attributes:
+      label: Files / area in scope
+      placeholder: packages/ui/src/**

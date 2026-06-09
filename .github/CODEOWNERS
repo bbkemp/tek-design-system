@@ -1,0 +1,24 @@
+# Code ownership — routes review requests automatically.
+# Single-maintainer today (@bbkemp). When the @tektronix org lands, replace these
+# with teams (e.g. @tektronix/design-system-maintainers) per docs/tek-system-core.md.
+
+# Default owner for everything.
+*                           @bbkemp
+
+# Design system surfaces.
+/packages/ui/               @bbkemp
+/packages/tokens/           @bbkemp
+/qt/                        @bbkemp
+/wpf/                       @bbkemp
+
+# RAG corpus.
+/rag/                       @bbkemp
+
+# Agent/AI context — canonical sources. Changes here ripple to every AI tool.
+/CLAUDE.md                  @bbkemp
+/docs/agent-baseline.md     @bbkemp
+/.claude/skills/            @bbkemp
+/scripts/export-skills.mjs  @bbkemp
+
+# CI/CD and repo automation.
+/.github/                   @bbkemp
