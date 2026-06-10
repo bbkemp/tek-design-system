@@ -1,0 +1,19 @@
+{
+  "name": "Tek Express",
+  "short_name": "Tek Express",
+  "description": "TekExpress AppEmulator rr-variant prototype",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#181818",
+  "theme_color": "#181818",
+  "icons": [
+    {
+      "src": "../../img/IconLogo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
