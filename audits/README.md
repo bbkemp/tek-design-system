@@ -8,11 +8,16 @@ Shareable Markdown reports produced by the QA skills under `.claude/skills/`. Ea
 audits/
 ├── figma/<YYYY-MM-DD>-<slug>.md            ← figma-design-qa
 ├── code/<YYYY-MM-DD>.md                    ← code-design-qa
+├── competitive/<YYYY-MM-DD>-<slug>/        ← Tek-authored competitive analysis
+│   ├── report.md                           ← comparison narrative / feature matrix
+│   └── assets/                             ← source decks, screenshots, vendor PDFs (local-only)
 └── prototype/<YYYY-MM-DD>-<slug>/
     ├── report.md                           ← prototype-qa
     ├── screenshot-diff.md                  ← prototype-screenshot-diff
     └── screenshots/*.png                   ← prototype-screenshot-diff
 ```
+
+`competitive/` is the home for interpretation of competitor products (decks, feature matrices, UX critiques). Vendor-authored manuals and datasheets go in the corpus instead, as a peer product source under `rag/sources/<vendor>-<sku>/` — see [`rag/README.md`](../rag/README.md#competitor-products).
 
 ## Generating a report
 

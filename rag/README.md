@@ -48,6 +48,12 @@ After an asset is processed, the original in `uploads/` can be deleted from loca
 
 When an asset applies to more than one product (e.g. a manual that covers 2450-EC, 2460-EC, and 2461-EC), the markdown declares the full list in frontmatter as `applies_to: [<sku>, …]`. Families are an emergent property of `applies_to`, not a folder hierarchy. Products are folders; cross-product joins happen at retrieval time.
 
+## Competitor products
+
+Non-Tek vendor products use the same schema as Tek products — they are still *products*. Their folder name is `<vendor>-<sku>/` (e.g. `keysight-b2961a/`), and `uploads/` accepts the vendor's own manuals, datasheets, and other as-is reference material exactly as it does for Tek.
+
+The corpus is for *as-is* legacy artifact dumps only. Tek-authored comparative analysis (competitive decks, feature matrices, UX critiques of a competitor's product) is **interpretation**, not corpus — it lives under `audits/competitive/` and is dated/disposable like any other audit.
+
 ## Corpus vs. audits — what belongs here and what doesn't
 
 The corpus is the **as-is dump** of the legacy product. It is durable and write-once: once a screen, hardware view, or manual section is processed, the markdown stays put unless the *legacy artifact itself* changes (firmware update, manual revision).
