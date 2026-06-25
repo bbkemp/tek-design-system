@@ -25,3 +25,16 @@ audits/competitive/*/assets/*
 corpus/_inbox/*
 !corpus/_inbox/.gitkeep
 !corpus/_inbox/README.md
+
+# UXR (User Experience Research): provisional / discussion-stage material.
+# Binaries (briefing PDFs, decks, spreadsheets) stay local; only markdown notes are committed.
+uxr/**/*.pdf
+uxr/**/*.pptx
+uxr/**/*.ppt
+uxr/**/*.key
+uxr/**/*.docx
+uxr/**/*.doc
+uxr/**/*.xlsx
+uxr/**/*.xls
+uxr/**/*.csv
+uxr/**/*.zip
