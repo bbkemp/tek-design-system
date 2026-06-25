@@ -27,7 +27,7 @@ Optional flags (passed as the first arg, never confused with filenames):
 
 1. **Never silently misroute.** Every file's destination must appear in the routing plan, and the user must say go before any `mv`. If a file is ambiguous (no clear product, no clear class), surface it as a question — do not best-guess.
 2. **Corpus vs. audit boundary is load-bearing.** Vendor-authored manuals/datasheets go into `corpus/sources/<vendor>-<sku>/uploads/pdfs/` (corpus, as-is). Tek-authored comparison decks/matrices/critiques go into `audits/competitive/<YYYY-MM-DD>-<slug>/assets/` (audit, interpretation, disposable). Crossing this line rots the corpus.
-3. **Auto-create new product folder skeletons.** When a filename or parent folder surfaces a new SKU (e.g. `keysight-b2961a`), scaffold `corpus/sources/<sku>/uploads/{pdfs,transcripts,recordings,photos,artifacts,api-specs}/.gitkeep` before the move. Include this in the plan so the user sees what's being created.
+3. **Auto-create new product folder skeletons.** When a filename or parent folder surfaces a new SKU (e.g. `keysight-b2961a`), scaffold `corpus/sources/<sku>/uploads/{pdfs,transcripts,photos,artifacts,api-specs}/.gitkeep` before the move. Include this in the plan so the user sees what's being created.
 4. **The inbox is gitignored.** Files in `corpus/_inbox/` never get committed. Same applies to everything that lands under `uploads/`. Only the skeleton `.gitkeep` files and processed markdown make it to git.
 5. **One file → one destination.** Never copy. Always `mv`. After the run, the inbox is empty (or holds only files the user explicitly declined to route, plus emptied folders cleaned up).
 6. **No content peeking on first pass.** Classification is filename + extension + parent folder name only. If that's not enough, ask. Do not open PDFs, parse docx XML, run OCR, or transcribe audio — that's the job of the downstream processing skills.
@@ -88,8 +88,8 @@ Use both the filename AND every parent folder name above it (up to `_inbox/`). F
 | `.vtt`, `.srt`, `.txt` | `uploads/transcripts/` | `openapi`/`swagger` → `uploads/api-specs/` |
 | `.pptx`, `.key`, `.ppt` | `uploads/artifacts/` | — |
 | `.png`, `.jpg`, `.jpeg`, `.webp`, `.heic`, `.tiff`, `.bmp`, `.gif` | `uploads/photos/` | — (hardware photos still go to `photos/`; `document-screens` handles the split) |
-| `.m4a`, `.mp3`, `.wav`, `.aac`, `.ogg`, `.flac` | `uploads/recordings/` | — (transcription happens downstream) |
-| `.mp4`, `.mov`, `.webm`, `.mkv`, `.avi` | `uploads/recordings/` | — (audio extraction + transcription happens downstream) |
+| `.m4a`, `.mp3`, `.wav`, `.aac`, `.ogg`, `.flac`, `.mp4`, `.mov`, `.webm`, `.mkv`, `.avi` | **Refused at intake** — see Section 2.6 | — |
+| `.chm` | `uploads/pdfs/` | — (Compiled HTML Help; treated as manual/reference doc for downstream processing) |
 | `.yaml`, `.yml`, `.json` | **Ask** | If filename contains `openapi`/`swagger`/`api` → `uploads/api-specs/` without asking |
 | `.xlsx`, `.csv`, `.xls`, `.numbers` | `uploads/artifacts/` | If filename contains `comparison`/`matrix`/`vs`/`benchmark` → `audits/competitive/<>/assets/` |
 | `.md` | `uploads/artifacts/` | If filename contains `audit`/`analysis`/`review`/`critique` → ask whether it's a draft audit report (route to `audits/` location) |
@@ -136,6 +136,16 @@ Already handled in Discover — report at top of plan as "needs force-download i
 
 For any single file >500 MB, include a warning line in the plan: `⚠ <filename> is <size> MB — confirm this isn't a misplaced install image / ISO / DMG before saying go.` Vendor full-install packages get dropped by accident. Still routable if the user confirms.
 
+### 2.6. Audio/video recordings — refused at intake
+
+Audio (`.m4a`/`.mp3`/`.wav`/`.aac`/`.ogg`/`.flac`) and video (`.mp4`/`.mov`/`.webm`/`.mkv`/`.avi`) files are **refused at intake**. They land in the "Refused at intake" section of the plan with a message like:
+
+> `Meeting recording 2026-06-25.m4a` — transcribe externally first (Whisper, Otter.ai, Teams export), then drop the resulting `.vtt`/`.txt`/`.docx` transcript into `_inbox/` and re-run intake. A `/document-recording` skill is on the high-priority follow-up list to remove this friction.
+
+The file stays in `_inbox/` for the user to handle (transcribe + re-intake, or move out manually). Never auto-create an `uploads/recordings/` folder; never move audio/video into the corpus.
+
+Rationale: until `/document-recording` ships, audio/video in `uploads/recordings/` is a corpus dead-end — no downstream skill consumes it. Explicit refusal is more honest than a silent orphan.
+
 ### 3. Build the routing plan
 
 A Markdown table with columns: `Original path | Detected product | Class | Destination | Action`.
@@ -168,8 +178,8 @@ For each row in dependency order (new-skeleton/new-audit first, then unzip, then
 
 ```bash
 # 5a. If new-skeleton, scaffold first:
-mkdir -p "corpus/sources/<sku>/uploads/"{pdfs,transcripts,recordings,photos,artifacts,api-specs}/
-touch "corpus/sources/<sku>/uploads/"{pdfs,transcripts,recordings,photos,artifacts,api-specs}/.gitkeep
+mkdir -p "corpus/sources/<sku>/uploads/"{pdfs,transcripts,photos,artifacts,api-specs}/
+touch "corpus/sources/<sku>/uploads/"{pdfs,transcripts,photos,artifacts,api-specs}/.gitkeep
 
 # 5b. If new-audit, scaffold first:
 mkdir -p "audits/competitive/<YYYY-MM-DD>-<slug>/assets/"

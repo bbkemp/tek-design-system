@@ -180,6 +180,12 @@ The source spec stays in `uploads/api-specs/` (gitignored). The skill never modi
 - Never commit the source spec — it's in `uploads/`, gitignored.
 - Auth: never accept pasted credentials. Read from env vars.
 
+## Operational notes
+
+- **Idempotence.** Within a snapshot ID, re-running regenerates chunks from the current spec. **Across snapshot IDs, runs accumulate** — old snapshots stay forever for historical queries. To overwrite a snapshot, pass the same `--snapshot-id` flag explicitly.
+- **Output dir creation.** The skill creates `corpus/sources/<service-id>/api/<snapshot-id>/` if missing — `mkdir -p` is fine. First snapshot for a service works without pre-scaffolding.
+- **`index.md` regenerates** on every run with the service-level snapshot table updated.
+
 ## Notes
 
 - **Why cluster by resource instead of per endpoint?** Per-endpoint chunks fragment context (`GET /products` and `POST /products` share their entire conceptual frame); a consumer asking "how do I work with products?" wants both. Per-resource keeps the unit coherent.

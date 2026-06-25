@@ -143,6 +143,13 @@ corpus/sources/<product>/screens/<screen-id>.md   (back-updated `related_hardwar
 - No raw photos in commits. The downscaled hardware reference image is committed; the source raw photo stays in `uploads/`, gitignored.
 - Match existing patterns. Mirror `document-screens` body section order exactly where applicable.
 
+## Operational notes
+
+- **Idempotence.** Re-running this skill on the same product regenerates hardware .md files from the current state of `uploads/photos/`. Hand-edited content gets overwritten — preserve via source comments before re-running.
+- **Output dir creation.** The skill creates `corpus/sources/<subject>/hardware/` if missing — `mkdir -p` is fine. First invocation works without pre-scaffolding.
+- **`index.md` regenerates** on every run.
+- **`sips` is macOS-only.** Image downscaling uses `sips` (built-in on macOS). On Linux/Windows, substitute `magick` (ImageMagick) with equivalent flags.
+
 ## Notes
 
 - **Why a separate skill from `document-screens`?** Same input class (photos) but different *anatomy*. A screen has controls + state; a hardware view has ports + dimensions + indicators. The structured fields differ enough that two skills are clearer than one polymorphic skill.

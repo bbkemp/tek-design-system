@@ -185,6 +185,13 @@ Nothing written outside of `corpus/sources/<product>/`.
 - No raw uploads in commits. The source PDF is gitignored; only the extracted markdown is committed.
 - Match existing patterns. The format is locked to `corpus/sources/2450-ec/docs/user-manual/` — do not improvise.
 
+## Operational notes
+
+- **Idempotence.** Re-running this skill on the same PDF regenerates the chunks from the current source. The Manual-references back-update overwrites the previous version. If you've hand-edited a chunk and want to preserve those edits, copy them out before re-running. Otherwise, re-runs are safe.
+- **Output dir creation.** The skill creates `corpus/sources/<subject>/docs/<doc-id>/` if missing — `mkdir -p` is fine. First invocation works without pre-scaffolding.
+- **`index.md` regenerates** on every run with a new "Documented manuals" section. See `corpus/README.md` § Process completion.
+- **Scanned PDFs need OCR first.** This skill assumes a text-extractable PDF. If the manual is a scanned image with no text layer, run `pdftotext` or `tesseract` (or similar) externally to produce a text-layered version, then re-run.
+
 ## Notes
 
 - **Why chunk-per-topic, not chunk-per-page?** Pages are a layout artifact; topics are the semantic unit. Embedding a chunk that covers a coherent procedure or concept retrieves better than embedding an arbitrary page slice.

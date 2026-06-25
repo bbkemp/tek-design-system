@@ -208,6 +208,12 @@ Nothing written outside of `corpus/sources/<service-id>/`. The source repo is ne
 - Never commit generated artifacts. Only the extracted markdown.
 - Match existing patterns. The format is locked to the first snapshot — do not improvise.
 
+## Operational notes
+
+- **Idempotence.** Within a snapshot ID, re-running regenerates module summaries from the current source. **Across snapshot IDs, runs accumulate** — old snapshots persist for historical queries. To overwrite, pass the same `--snapshot-id` flag explicitly (or use `--snapshot-id main` for a mutable current-view snapshot).
+- **Output dir creation.** The skill creates `corpus/sources/<service-id>/code/<snapshot-id>/` if missing — `mkdir -p` is fine.
+- **`index.md` regenerates** on every run with the service-level snapshot table updated.
+
 ## Notes
 
 - **Why versioned snapshots instead of overwriting?** Code is volatile; the corpus is queryable. Asking "how did the API look at v1.0.16?" requires the snapshot to persist. Disk grows linearly with releases; sweep old snapshots manually when stale.

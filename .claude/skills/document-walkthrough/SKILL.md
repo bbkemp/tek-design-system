@@ -7,7 +7,7 @@ description: Process a recorded walkthrough transcript (text, VTT, SRT, or speak
 
 Turns a recorded walkthrough — typically a screen-record + voiceover by an engineer, support agent, or product manager demonstrating a user flow — into structured corpus markdown. The transcript is the input; the output is a flow `.md` that captures the user's intent, the steps they take, the screens they visit, where they get stuck, and any architectural or historical context the narrator volunteers.
 
-The format is **locked by the first processed walkthrough**. Until that exists, this skill spec is the contract; mirror it exactly when the first walkthrough lands.
+The format is **locked** by `corpus/sources/tek-express/walkthroughs/tek-products-walkthrough.md` (and the three sibling files in that folder — `_index.md`, `ds-architecture-presentation.md`, `desktop-integration-strategy.md`, `ux-feedback-and-open-questions.md`). Mirror its frontmatter shape and body section order exactly for any future walkthrough.
 
 ## Inputs
 
@@ -24,7 +24,7 @@ Optional:
 
 ## Hard rules
 
-1. **Format is locked** (by the first processed walkthrough). Mirror its frontmatter and body section order exactly.
+1. **Format is locked** by `corpus/sources/tek-express/walkthroughs/tek-products-walkthrough.md`. Mirror its frontmatter and body section order exactly.
 2. **Verbatim where possible.** Narrator quotes that explain *why* the product behaves this way are high-RAG-value — preserve them word-for-word in `## Annotations`. Step descriptions get paraphrased for clarity in `## Steps`, but the original transcript line(s) for each step are quoted inline.
 3. **One `.md` per distinct user flow, not per recording.** A 30-minute recording that covers three flows yields three `.md` files; a 5-minute recording that covers one flow yields one.
 4. **Cross-link via frontmatter.** When the narrator visits a documented screen, declare `screens_visited: [<screen-id>, …]` in frontmatter (ordered as visited) and `related_screens` for screens conceptually relevant but not directly shown. Same for hardware and APIs.
@@ -144,6 +144,12 @@ The source transcript stays in `uploads/transcripts/` (gitignored).
 - Branch → PR; never commit to `main`. `feat(rag):` for new corpus content.
 - Never commit transcripts or paired videos — they're in `uploads/`, gitignored.
 - Match existing patterns. Mirror the locked observation format the other `document-*` skills established.
+
+## Operational notes
+
+- **Idempotence.** Re-running this skill on the same transcript regenerates chunks from the current source. Hand-edited annotations get overwritten on re-run — copy edits back into a source-transcript comment block before re-running if you want them preserved.
+- **Output dir creation.** The skill creates `corpus/sources/<subject>/walkthroughs/` if missing — `mkdir -p` is fine. First invocation works without pre-scaffolding.
+- **`index.md` regenerates** on every run with an updated "Documented walkthroughs" section.
 
 ## Notes
 
