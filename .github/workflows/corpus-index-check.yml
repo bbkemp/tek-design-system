@@ -1,0 +1,30 @@
+name: corpus index freshness
+
+on:
+  pull_request:
+    paths:
+      - 'corpus/sources/**'
+      - '.claude/skills/refresh-index/**'
+      - '.github/workflows/corpus-index-check.yml'
+
+jobs:
+  check:
+    name: refresh-index --check --all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect drift between corpus index.md files and chunk frontmatter
+        run: |
+          # Placeholder until a CLI runner for /refresh-index ships.
+          # The skill itself is invoked from Claude Code today; this CI step
+          # will become a real check once /refresh-index has a non-Claude
+          # entry point (e.g. scripts/refresh-index.mjs).
+          #
+          # For now, surface that the check is wired but pending its runner:
+          echo "::warning::corpus-index-check is wired but pending its CLI runner."
+          echo "Today, contributors should manually run /refresh-index <subject>"
+          echo "(or /refresh-index --all) before pushing a corpus-touching PR."
+          echo "See .claude/skills/refresh-index/SKILL.md for the regeneration"
+          echo "algorithm and --check semantics."
+          exit 0

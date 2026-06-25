@@ -1954,6 +1954,181 @@ The issue is labeled `figma-mcp-watch` so you can filter/triage easily.
 
 ---
 
+## pair-manual
+
+_Link screens (and hardware views) to manual chunks bidirectionally inside a corpus subject. Use after both /document-screens and /document-pdf (or /document-hardware) have run for the same subject, when screen .md files have "manual pairing pending" confidence notes or doc chunks have empty related_screens frontmatter. Idempotent — re-runs are safe; existing correct links are left alone. Reads each side's frontmatter + body, infers the right pairings, and writes both directions (screen.md Manual references section + doc chunk related_screens frontmatter). Reports the pairing diff before committing._
+
+# Pair manual
+
+Closes the "manual pairing pending" status that appears in screen `.md` confidence notes when screens and manual chunks both exist for a subject but aren't yet cross-linked. Runs after both `/document-screens` and `/document-pdf` have completed for a subject. Idempotent.
+
+## What gets linked
+
+For a subject `<subject>` that has both `screens/` and `docs/<doc-id>/`:
+
+- **Forward**: each `screens/<screen-id>.md`'s `## Manual references` section gets a list of links to the manual chunks that cover the same surface.
+- **Reverse**: each `docs/<doc-id>/<section-id>.md`'s `related_screens` frontmatter array gets the screen ids it covers.
+
+Same logic for `hardware/` ↔ `docs/`: hardware view ↔ manual chunk pairing follows the same rules. Walkthroughs and API chunks are out of scope (their cross-references work differently).
+
+## Inputs
+
+The user provides:
+- A subject id (e.g. `2450-ec`, `tek-express`). The skill operates on a single subject per invocation.
+
+Optional flags:
+- `--check` — print the pairing diff without writing. Used by the future `/refresh-index` CI gate to catch drift.
+- `--screen <id>` — limit forward pass to one screen; useful for spot fixes.
+- `--doc <doc-id>` — limit reverse pass to one manual.
+
+## Hard rules
+
+1. **Idempotent.** Re-running the skill on a fully-paired subject produces zero writes. Each pairing is computed deterministically from the current chunk content; the skill is safe to run as often as you want.
+2. **Never invent a pairing.** A link must be justified by content overlap — a screen's controls / visible text / workflow appear in the manual chunk's body, or the manual chunk's section title names the screen. Speculative pairs poison retrieval.
+3. **Write both directions, atomically.** A pairing is either present in *both* the screen .md and the manual chunk, or in neither. The skill never leaves a half-pairing.
+4. **Preserve hand-edits.** Manual references sections may include hand-written context (page hints, "see also" notes). Preserve text outside the auto-generated link list. Only the link list itself is regenerated.
+5. **Surface confidence flags.** If a candidate pairing is low-confidence (heuristic match only — single keyword overlap, no body overlap), include it in the plan as `low-confidence: <screen> ↔ <chunk>` and ask before writing.
+6. **Two-way frontmatter is the canonical join.** Screens get a human-readable `## Manual references` section + frontmatter `manual_refs: [<chunk-path>, …]`. Manual chunks get frontmatter `related_screens: [<screen-id>, …]`. Both sides must agree.
+
+## Process
+
+### 1. Discover
+
+```bash
+# Subject must have both classes documented
+test -d corpus/sources/<subject>/screens/ || exit "no screens for <subject>"
+test -d corpus/sources/<subject>/docs/ || exit "no docs for <subject>"
+
+# Inventory both sides
+ls corpus/sources/<subject>/screens/*.md
+find corpus/sources/<subject>/docs/ -name '*.md' ! -name '_index.md'
+```
+
+If either side is empty, exit cleanly with a note ("paired nothing — no `<class>` chunks exist yet").
+
+### 2. Read both sides
+
+For each screen .md: extract frontmatter (`screen_id`, `screen_title`, `controls`), the `## Visible text (verbatim)` block, and any existing `## Manual references` section.
+
+For each manual chunk: extract frontmatter (`section_title`, `related_screens`, `applies_to`), the `## Summary`, and the `## Content` body.
+
+### 3. Score candidate pairs
+
+For each (screen, manual-chunk) combination, score the match:
+
+| Signal | Weight |
+|---|---|
+| Screen title appears verbatim in chunk title or first paragraph of `## Content` | **High** (auto-pair) |
+| 3+ screen control labels appear verbatim in chunk body | **High** (auto-pair) |
+| 2+ screen controls + screen title noun appear in chunk body | **Medium** (auto-pair) |
+| Single screen control label appears in chunk body | **Low** (ask) |
+| `applies_to` overlap (subject set intersects) | **+1 weight** to any tier |
+| Manual section title is a verb phrase (e.g. "Configuring the source") and screen title is a noun phrase (e.g. "Source") | **+1 weight** if base score already triggers |
+
+Any score below "Low" → not a pair. Don't link.
+
+Skip self-pairing — a screen named "menu-source" doesn't get paired with itself if the manual happens to mention "menu source" because the screen's own title is the source of that match.
+
+### 4. Build the pairing plan
+
+A Markdown table grouped by direction:
+
+```markdown
+## Pairing plan
+
+### Auto-pair (will write on `go`)
+| Subject | Screen | Manual chunk | Score | Reason |
+|---|---|---|---|---|
+| ... | `home` | `docs/user-manual/home-and-menu-overview.md` | High | screen_title appears verbatim in chunk title |
+
+### Low-confidence — confirm before writing
+| Subject | Screen | Manual chunk | Score | Reason | Confirm? |
+|---|---|---|---|---|---|
+| ... | `graph` | `docs/user-manual/cable-assembly.md` | Low | single overlap on "input" — likely false-positive | y/n |
+
+### Pre-existing (no change)
+| Subject | Screen | Manual chunk | Status |
+|---|---|---|---|
+| ... | `setup-dut` | `docs/tek-express-getting-started/configure-dut.md` | already paired (both sides agree) |
+
+### Removed (chunk no longer mentions screen, or vice versa)
+| Subject | Screen | Manual chunk | Reason |
+|---|---|---|---|
+| ... | `obsolete-dialog` | `docs/.../legacy-config.md` | manual chunk no longer references this screen — unlink? |
+```
+
+### 5. Wait for confirmation
+
+Print the plan. Wait for the user to:
+- Say `go` — write all auto-pair rows + any low-confidence rows the user accepted.
+- Say `skip <screen>` or `skip <chunk>` to leave specific items unpaired.
+- Override low-confidence rows individually with `y`/`n`.
+- Cancel with `cancel`.
+
+If `--check` was passed: just print the plan, exit with status code 1 if any drift exists (for CI use), 0 if clean.
+
+### 6. Write the pairings
+
+For each accepted pair, **write both sides**:
+
+**Screen side** — `corpus/sources/<subject>/screens/<screen-id>.md`:
+
+- Add `manual_refs: [<chunk-relative-path>, …]` to frontmatter (or update if exists).
+- Replace the `## Manual references` section body with a generated link list:
+  ```markdown
+  ## Manual references
+  
+  <!-- auto-generated by pair-manual. Hand-edits ABOVE this line are preserved; the link list BELOW is regenerated. -->
+  
+  - [<chunk section_title>](<relative-path>) — <one-line excerpt from chunk's ## Summary>
+  ```
+- Preserve any text above the auto-generated marker comment.
+- If the screen's confidence notes mention "manual pairing pending," remove that line.
+
+**Manual chunk side** — `corpus/sources/<subject>/docs/<doc-id>/<section-id>.md`:
+
+- Add the screen id to `related_screens: [<screen-id>, …]` in frontmatter (sorted, unique).
+
+### 7. Report
+
+```markdown
+## Done
+
+- N pairings written
+- M pairings left unchanged (already correct)
+- K low-confidence rows skipped
+- L pairings unlinked (chunks or screens that no longer support the prior pairing)
+
+Run `git diff` to review the writes before committing.
+```
+
+## Edge cases
+
+| Case | Behavior |
+|---|---|
+| A screen matches 3+ manual chunks (e.g. the manual covers it across multiple sections) | Link all of them. The link list is a list — order by section_id. |
+| A manual chunk matches multiple screens (one section covers Setup-DUT + Setup-DUT comments) | Link both screens. `related_screens` is an array. |
+| Subject has hardware/ — same rules apply for hardware ↔ manual chunks | Use the same score table, substituting "hardware view" for "screen". Forward writes go to `hardware/<part-id>.md`'s `## Manual references` section. |
+| `cross-subject` chunk (chunk has `applies_to: [2450-ec, 2460-ec]`) | Pair the chunk with screens in each subject the `applies_to` covers. The chunk's `related_screens` becomes union of all subjects' matched screens. |
+| Screen file is missing the `## Manual references` section entirely | Append it as the last section. |
+| `--check` mode finds drift | Exit code 1 + print the drift table. CI uses this to fail PRs. |
+
+## What this skill does NOT do
+
+- **No content extraction or summarization.** The "excerpt" included in the link list is verbatim from the chunk's `## Summary` first sentence — not generated.
+- **No walkthrough / API / code pairing.** Those classes use different cross-reference patterns. This skill is only screens/hardware ↔ docs.
+- **No retroactive frontmatter migration.** If the chunk's frontmatter uses old field names, fix them via `/document-pdf` re-run or hand-edit; this skill only writes `related_screens` (and `manual_refs` on the screen side).
+- **No new chunks.** If a screen has no matching chunk, the skill flags it but doesn't propose new manual content — that's a `/document-pdf` job after the manual itself updates.
+
+## See also
+
+- [`document-pdf`](../document-pdf/SKILL.md) — produces the manual chunks this skill pairs against.
+- [`document-screens`](../document-screens/SKILL.md) — produces the screen `.md` files.
+- [`document-hardware`](../document-hardware/SKILL.md) — produces the hardware view `.md` files.
+- [`corpus/README.md`](../../../corpus/README.md) § Manual pairing — the documented social rule until this skill ships.
+
+---
+
 ## prototype-qa
 
 _Compare a prototype (Figma frame, local HTML, or RAG corpus screen .md) against the design system and classify every distinct UI element as existing-match, close-match, or new. Identifies design system gaps and produces a shareable Markdown report. Invoke prototype-screenshot-diff afterwards for visual close-match comparisons. Output is a dated, disposable snapshot under audits/prototype/._
@@ -2169,6 +2344,188 @@ When invoked standalone (no parent), default to `audits/prototype/<YYYY-MM-DD>-<
 - If a screenshot fetch fails, leave the cell as `_screenshot unavailable_` and continue. Don't abort the whole run for one missing image.
 - Image filenames are stable: re-running with the same inputs overwrites cleanly, which is what we want for iterative review.
 - If invoked from `prototype-qa`, return the path of `screenshot-diff.md` so the parent can link to it.
+
+---
+
+## refresh-index
+
+_Regenerate corpus/sources/<subject>/index.md by walking every .md file in the subject and rebuilding the cross-asset index from frontmatter. Use after multiple /document-* skills run on the same subject, after merging parallel PRs that both modified the index, or any time the index drifts from the actual contents on disk. Idempotent. Has a --check mode used by the CI gate to fail any PR that leaves index.md out of sync with the underlying chunks. Replaces the per-skill incremental index updates that race on parallel writes._
+
+# Refresh index
+
+Regenerates `corpus/sources/<subject>/index.md` from scratch by walking the subject's folder tree and reading every chunk's frontmatter. Idempotent. The authoritative way to bring an index in sync with what's actually on disk.
+
+A single skill regenerating the whole index is the centralized half of the "Hybrid" model from baseline-audit Decision 7: `document-*` skills still update incrementally (cheap, immediate), and `refresh-index` plus a CI gate (this skill in `--check` mode) keeps everything correct under parallel writes.
+
+## Inputs
+
+- A subject id (e.g. `2450-ec`, `tek-express`, `keysight-b2961a`).
+
+Optional flags:
+- `--check` — print the diff between current `index.md` and the regenerated one. Exit 0 if no drift, exit 1 if drift. Used by CI; no writes.
+- `--all` — run against every subject under `corpus/sources/`. Useful for repo-wide cleanup; CI uses this implicitly.
+
+## Hard rules
+
+1. **Idempotent.** A clean subject regenerates an `index.md` byte-identical to what's already there.
+2. **Frontmatter is the source of truth.** The index is built from chunk frontmatter only — never from file paths alone, never from chunk body content. If a chunk's frontmatter is wrong, fix the chunk; the index reflects what the chunks claim.
+3. **Stable ordering.** Asset classes appear in fixed order: Screens → Walkthroughs → Hardware → Docs → API snapshots → Code snapshots. Within each class, chunks sort by their semantic id (alphabetical, with `_index.md` first if present).
+4. **Preserve the human preamble.** The first time `refresh-index` runs against a subject, it preserves any hand-written content above the first auto-generated marker. On subsequent runs the marker tells the skill where to start regenerating.
+5. **Don't touch the chunks.** The skill reads chunk frontmatter and writes only `index.md`. Chunks are never modified.
+
+## Process
+
+### 1. Discover
+
+```bash
+test -d corpus/sources/<subject>/ || exit "no subject"
+find corpus/sources/<subject>/ -name '*.md' -not -path '*/uploads/*' -not -name 'index.md'
+```
+
+If the subject is empty (only `.gitkeep` files), generate a stub `index.md` saying so.
+
+### 2. Read frontmatter from every chunk
+
+For each `.md` file found, parse YAML frontmatter and extract:
+
+- `class` (screen, walkthrough, doc-section, hardware-view, api-endpoint-cluster, code-module)
+- The semantic id field for that class: `screen_id`, `flow_id`, `section_id` + `doc_id`, `part_id`, `module_id`, `module_id` again
+- `screen_title` / `flow_title` / `section_title` / `part_title` / `module_title`
+- `applies_to` (for the cross-subject column)
+- `function_state` / `view` / `parent_section` / `endpoints` / `commit` (class-specific context)
+- `related_screens`, `related_apis`, `related_hardware`, `related_modules` (for the graph section)
+
+Skip files without a `class` field or with malformed frontmatter — log them in the report.
+
+### 3. Group by class
+
+Build six tables, one per asset class, in the fixed order. Empty classes get omitted (not shown as "pending" — that's a job for the per-class skill).
+
+Each table has columns:
+
+- Screens: `screen_id | screen_title | screen_type | function_state | applies_to`
+- Walkthroughs: `flow_id | flow_title | recorded_date | screens_visited`
+- Hardware: `part_id | part_title | view | applies_to`
+- Docs: grouped by `doc_id`; per-doc sub-table of `section_id | section_title | parent_section`
+- API: grouped by `snapshot_id`; per-snapshot sub-table of `module_id | module_title | resource | endpoints (count)`
+- Code: grouped by `snapshot_id`; per-snapshot sub-table of `module_id | module_title | module_path | language`
+
+### 4. Build the cross-asset graph
+
+After the tables, render a "Cross-references" section that lists every `related_*` edge found across all chunks. Used as a quick way for retrieval to traverse the corpus.
+
+Format:
+
+```markdown
+## Cross-references
+
+| Source | Target | Edge |
+|---|---|---|
+| screen `setup-dut` | doc `tek-express-getting-started/configure-dut` | manual_refs |
+| walkthrough `tek-products-walkthrough` | screen `setup-dut` | screens_visited |
+| ... |
+```
+
+### 5. Build the index
+
+```markdown
+# <subject> — corpus index
+
+> Generated by /refresh-index on <today>. Edits above the `<!-- /AUTO -->` marker are preserved; everything below is regenerated.
+
+<preserved human preamble — if any — copied from the previous index.md>
+
+<!-- /AUTO -->
+
+## Screens (<N>)
+
+<screens table>
+
+## Walkthroughs (<N>)
+
+<walkthroughs table>
+
+[... per-class sections ...]
+
+## Cross-references
+
+<edge table>
+
+## Coverage notes
+
+- Screens documented: <N>
+- Walkthroughs documented: <N>
+- Manual sections documented: <N>
+- Hardware views documented: <N>
+- API snapshots: <N>
+- Code snapshots: <N>
+- Cross-references: <N>
+- Last regenerated: <today> by /refresh-index
+```
+
+### 6. Diff against existing
+
+```bash
+diff corpus/sources/<subject>/index.md /tmp/new-index.md
+```
+
+If `--check` mode:
+- If diff is empty → print "OK: <subject>/index.md is current" and exit 0.
+- If diff is non-empty → print the diff + "DRIFT: regenerate with `/refresh-index <subject>`" and exit 1.
+
+If normal mode and diff is non-empty:
+- Write the new `index.md`.
+- Report `N lines changed`.
+
+### 7. Report
+
+```markdown
+## Done — <subject>
+
+- <N> chunks scanned across <M> asset classes
+- Index <regenerated | already current>
+- <K> chunks skipped (missing class field — listed below)
+
+Skipped (need frontmatter fix before next refresh):
+- <file>: <reason>
+```
+
+## --all mode
+
+`/refresh-index --all` walks every subject under `corpus/sources/` and runs the regeneration. Report aggregates per-subject results.
+
+`/refresh-index --check --all` is what the CI gate runs on every PR — any drift in any subject fails the check.
+
+## Hard rules (continued)
+
+6. **No new content, no creative formatting.** The skill renders a deterministic format. If the format needs to change, change the skill in a PR; never one-off edit `index.md` and expect it to survive a refresh.
+7. **`--check` is read-only.** Even on drift, `--check` writes nothing — it's a CI assertion.
+8. **`--check` exit codes:** `0 = clean`, `1 = drift`, `2 = malformed chunk frontmatter encountered`. CI fails on `1` and `2`.
+
+## Edge cases
+
+| Case | Behavior |
+|---|---|
+| Subject has no chunks (only `.gitkeep`) | Generate a stub `index.md` with "No chunks documented yet" |
+| Subject has an `index.md` with hand-written preamble above the `<!-- /AUTO -->` marker | Preserve the preamble verbatim, regenerate everything below |
+| Subject has an `index.md` with no `<!-- /AUTO -->` marker (legacy) | Treat the entire file as the preamble on first refresh; subsequent runs control via the marker |
+| A chunk has malformed YAML frontmatter | Skip it, log it, exit code 2 in `--check` mode |
+| A chunk's `applies_to` includes subjects that don't exist | Include in the table; flag in the report. Don't try to validate cross-subject existence — that's a `/pair-manual` style job. |
+| Two chunks claim the same `screen_id` | Both listed; flagged in the report as a duplicate-id error. Resolve by hand-editing one of the chunks. |
+
+## What this skill does NOT do
+
+- **No chunk content modification.** Only `index.md` is written.
+- **No frontmatter migration.** Old field names stay; the skill flags them in the report but doesn't rewrite chunks.
+- **No coverage analysis vs. uploads.** "Is there an unprocessed photo in `uploads/photos/`?" is a `/document-screens` question, not an index question.
+- **No cross-subject index.** Each subject's index is independent. The org-wide retrieval layer (Phase 2) does cross-subject joins via `applies_to` at query time.
+
+## See also
+
+- [`document-screens`](../document-screens/SKILL.md), [`document-pdf`](../document-pdf/SKILL.md), [`document-walkthrough`](../document-walkthrough/SKILL.md), [`document-hardware`](../document-hardware/SKILL.md), [`document-api`](../document-api/SKILL.md), [`document-repo`](../document-repo/SKILL.md) — produce the chunks this skill reads
+- [`pair-manual`](../pair-manual/SKILL.md) — writes the `related_screens` cross-references this skill rolls up into the graph section
+- `.github/workflows/corpus-index-check.yml` — CI gate that runs `/refresh-index --check --all` on every PR
+- [`corpus/README.md`](../../../corpus/README.md) § Process completion — uses this skill's output as the "index regenerated" checkbox
 
 ---
 
