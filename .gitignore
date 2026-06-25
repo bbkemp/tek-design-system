@@ -13,3 +13,8 @@ rag/sources/*/uploads/*/*
 !rag/sources/*/uploads/*/.gitkeep
 # Safety net for PDFs misplaced at the product root (should live in uploads/pdfs/).
 rag/sources/*/*.pdf
+
+# Audits: competitive-analysis raw assets (vendor PDFs, source decks, screenshots)
+# are local-only — only the synthesized report.md is committed.
+audits/competitive/*/assets/*
+!audits/competitive/*/assets/.gitkeep
