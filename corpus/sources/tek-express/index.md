@@ -16,6 +16,18 @@ Phase 1 of the TekExpress AppEmulator redesign:
 
 The corpus captures the **as-is**. The redesign deliverable lives under `audits/` or `prds/` once that work begins, not in this folder.
 
+### Recent additions (2026-06-25 batch 2, pending processing)
+
+5 new artifacts in `uploads/artifacts/` directly inform the redesign brief:
+
+- **`TekExpress_Needed_Features 1.md`** — customer-requested TekExpress features summary (Modern UI / Facelift, PC-native Execution, workflow definition, performance, configurability). **Direct redesign input.**
+- **`Tx-Rx Solutions Platform VOC guide Draft _08_TEK-CONFIDENTIAL.pdf`** — TekExpress VoC interview guide V0.8 (Subhasis Bera, Principal Product Manager, Solutions Platform and Decoders). Internal methodology document for VOC engagements covering workflow, JTBD, pain points, automation.
+- **`Designcon 2023 VOC_SUMMARY.pptx`** — Designcon 2023 conference VOC summary, cross-product event feedback.
+- **`mAR 2023 ind Customer VOC.pptx`** — March 2023 India regional customer VOC.
+- **`GA VOC for Empathy Disc Guide Question Bank - GM v1.docx`** — empathy interview discussion guide / question bank (methodology, not transcript data).
+
+7 new manuals (`.pdf` + `.chm`) in `uploads/pdfs/` from the prior batch await `/document-pdf` processing. The new `AU VoC Sync up.docx` in `uploads/transcripts/` awaits `/document-walkthrough`. None of these are reflected in the documented-chunks tables below yet — `/refresh-index` will fold them in once processed.
+
 ## Application structure
 
 5 top-level panels accessed via the persistent left side-nav, 17 distinct screens (11 base + 5 dialogs + 1 minimised-window state):
