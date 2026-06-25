@@ -6,7 +6,7 @@ This README is the **map**. The categories below group skills by what they do to
 
 ## RAG corpus — durable, write-once
 
-Skills that produce the **as-is dump** of legacy products into `rag/sources/<product>/`. Output is durable; rerun only if the source artifact changes (firmware update, new manual revision).
+Skills that produce the **as-is dump** of legacy products into `corpus/sources/<product>/`. Output is durable; rerun only if the source artifact changes (firmware update, new manual revision).
 
 | Skill | What it does | Status |
 |---|---|---|
@@ -52,8 +52,8 @@ Skills that produce **views** on the corpus, on the design system, or on live co
 
 ## When to use which
 
-- **New legacy product to document?** Start with `document-screens` (photos); add `document-pdf` (manual) when it ships. Each output lives in `rag/sources/<product-id>/`.
-- **Need a DS-coverage view of the corpus?** `prototype-qa` against `rag/sources/<product>/screens/`. Output is a dated snapshot under `audits/prototype/`.
+- **New legacy product to document?** Start with `document-screens` (photos); add `document-pdf` (manual) when it ships. Each output lives in `corpus/sources/<product-id>/`.
+- **Need a DS-coverage view of the corpus?** `prototype-qa` against `corpus/sources/<product>/screens/`. Output is a dated snapshot under `audits/prototype/`.
 - **Implementing one of the proposed primitives?** `code-connect` for Figma mapping, `add-token` for any new tokens. Then rerun `prototype-qa` to verify the gap closed.
 - **Adding or changing a skill?** Edit / create the SKILL.md, add a row in the table above under the right category, run `export-skills` to mirror to other AI tools, commit + PR with `feat(skills): <name> — <one-line>`.
 

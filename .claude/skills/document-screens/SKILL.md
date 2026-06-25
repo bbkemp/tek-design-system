@@ -1,6 +1,6 @@
 ---
 name: document-screens
-description: Document every screen of an existing piece of Tek software as structured markdown for the org-wide RAG. Use when given a folder of raw photos / screenshots under rag/sources/<product>/uploads/photos/ — produces one .md + downscaled image per unique screen in screens/, with frontmatter, controls inventory, and verbatim text. Optionally process a single photo for testing. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa.
+description: Document every screen of an existing piece of Tek software as structured markdown for the org-wide RAG. Use when given a folder of raw photos / screenshots under corpus/sources/<product>/uploads/photos/ — produces one .md + downscaled image per unique screen in screens/, with frontmatter, controls inventory, and verbatim text. Optionally process a single photo for testing. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa.
 ---
 
 # Document screens
@@ -10,12 +10,12 @@ Turns raw photos of an existing product UI into a consistent, LLM-optimized corp
 1. Feed the org-wide MCP RAG with high-signal references.
 2. Hand Claude Code a complete picture of a legacy UI when refactoring it onto the design system (cd→cc handoff, like User Portal).
 
-The format is **locked** by `rag/sources/2450-ec/screens/home.md`. That file is the canonical reference; mirror its frontmatter shape and body sections exactly.
+The format is **locked** by `corpus/sources/2450-ec/screens/home.md`. That file is the canonical reference; mirror its frontmatter shape and body sections exactly.
 
 ## Inputs
 
 The user provides:
-- A product folder under `rag/sources/<product-id>/`, e.g. `2450-ec`. The folder must contain `uploads/photos/<photos>` and an empty (or partially populated) `screens/`.
+- A product folder under `corpus/sources/<product-id>/`, e.g. `2450-ec`. The folder must contain `uploads/photos/<photos>` and an empty (or partially populated) `screens/`.
 
 Optional:
 - `--photo <filename>` to process a single photo (validation / one-off mode).
@@ -34,7 +34,7 @@ Optional:
 ### 1. Discover
 
 ```bash
-ls rag/sources/<product>/uploads/photos/
+ls corpus/sources/<product>/uploads/photos/
 ```
 
 Read every photo (or only the one passed via `--photo`). The Read tool accepts JPEGs/PNGs and returns them as visual content.
@@ -80,8 +80,8 @@ If two screens have the same role across products (every product has a Home), pr
 
 ```bash
 sips -Z 1600 -s format jpeg -s formatOptions 85 \
-  rag/sources/<product>/uploads/photos/<canonical-photo> \
-  --out rag/sources/<product>/screens/<screen-id>.jpg
+  corpus/sources/<product>/uploads/photos/<canonical-photo> \
+  --out corpus/sources/<product>/screens/<screen-id>.jpg
 ```
 
 `-Z 1600` resizes the long edge to 1600 px while preserving aspect ratio. `formatOptions 85` is a quality compromise: text on the LCD must remain crisply legible at 100% zoom in a browser — verify this before continuing. Re-read the downscaled image and confirm every value/label still reads.
@@ -129,7 +129,7 @@ controls:
 
 ### 6. Update `index.md`
 
-After every screen pass, regenerate `rag/sources/<product>/index.md`:
+After every screen pass, regenerate `corpus/sources/<product>/index.md`:
 
 ```markdown
 # <product display name> — screen index
@@ -156,12 +156,12 @@ If processing a single photo, regeneration is still cheap — do it.
 Per screen processed:
 
 ```
-rag/sources/<product>/screens/<screen-id>.md
-rag/sources/<product>/screens/<screen-id>.jpg
-rag/sources/<product>/index.md          (regenerated)
+corpus/sources/<product>/screens/<screen-id>.md
+corpus/sources/<product>/screens/<screen-id>.jpg
+corpus/sources/<product>/index.md          (regenerated)
 ```
 
-Nothing is written outside of `rag/sources/<product>/`.
+Nothing is written outside of `corpus/sources/<product>/`.
 
 ## Required tools
 
@@ -182,4 +182,4 @@ Nothing is written outside of `rag/sources/<product>/`.
 - **Why a downscaled image at all, if the markdown is the RAG payload?** For human reviewers and for the hand-off conversation when a designer or developer asks "what did this look like." It also lets a multimodal LLM verify a transcription claim against the actual image.
 - **Why is "Visible text (verbatim)" a separate section instead of inline?** Direct keyword retrieval. A user searching "AZERO" or "+105.000 µA" should get a hit even if no other prose mentions the value.
 - **Why include hardware bezel buttons in `controls[]`?** They are part of the user's interaction with the screen — leaving them out misrepresents how the screen is operated. They are flagged as out-of-scope for the web DS in the mapping section.
-- **What if the manual is available?** Drop `manual.pdf` into `rag/sources/<product>/`. It is gitignored. A separate manual-pairing pass cross-references screen markdown with manual sections; that is not this skill.
+- **What if the manual is available?** Drop `manual.pdf` into `corpus/sources/<product>/`. It is gitignored. A separate manual-pairing pass cross-references screen markdown with manual sections; that is not this skill.

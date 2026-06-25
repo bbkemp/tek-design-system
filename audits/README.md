@@ -17,7 +17,7 @@ audits/
     └── screenshots/*.png                   ← prototype-screenshot-diff
 ```
 
-`competitive/` is the home for interpretation of competitor products (decks, feature matrices, UX critiques). Vendor-authored manuals and datasheets go in the corpus instead, as a peer product source under `rag/sources/<vendor>-<sku>/` — see [`rag/README.md`](../rag/README.md#competitor-products).
+`competitive/` is the home for interpretation of competitor products (decks, feature matrices, UX critiques). Vendor-authored manuals and datasheets go in the corpus instead, as a peer product source under `corpus/sources/<vendor>-<sku>/` — see [`corpus/README.md`](../corpus/README.md#competitor-products).
 
 ## Generating a report
 

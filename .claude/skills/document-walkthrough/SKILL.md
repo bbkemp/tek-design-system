@@ -1,6 +1,6 @@
 ---
 name: document-walkthrough
-description: Process a recorded walkthrough transcript (text, VTT, SRT, or speaker-attributed dialogue) into structured flow markdown — steps with timestamps, screens visited, friction notes, and architectural annotations from the narrator. Use when given a transcript at rag/sources/<product>/uploads/transcripts/. Produces one .md per distinct user flow under rag/sources/<product>/walkthroughs/, cross-linked to screens/hardware/APIs. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa.
+description: Process a recorded walkthrough transcript (text, VTT, SRT, or speaker-attributed dialogue) into structured flow markdown — steps with timestamps, screens visited, friction notes, and architectural annotations from the narrator. Use when given a transcript at corpus/sources/<product>/uploads/transcripts/. Produces one .md per distinct user flow under corpus/sources/<product>/walkthroughs/, cross-linked to screens/hardware/APIs. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa.
 ---
 
 # Document walkthrough
@@ -11,7 +11,7 @@ The format is **locked by the first processed walkthrough**. Until that exists, 
 
 ## Inputs
 
-- A transcript file at `rag/sources/<product-id>/uploads/transcripts/<filename>`. Supported formats:
+- A transcript file at `corpus/sources/<product-id>/uploads/transcripts/<filename>`. Supported formats:
   - **Plain text** (`.txt`, `.md`) — flowing narrative.
   - **WebVTT** (`.vtt`) — common output from screen-record tools (Loom, Riverside, automatic captions).
   - **SubRip** (`.srt`) — same shape as VTT.
@@ -73,7 +73,7 @@ Map every screen the user visits to its `screens/<screen-id>.md` if documented; 
 
 ### 5. Write the chunk
 
-Path: `rag/sources/<product>/walkthroughs/<flow_id>.md`
+Path: `corpus/sources/<product>/walkthroughs/<flow_id>.md`
 
 #### Frontmatter
 
@@ -114,7 +114,7 @@ related_hardware: [<part-id>, …]
 
 ### 6. Update `index.md`
 
-Add a "Documented walkthroughs" section to `rag/sources/<product>/index.md`:
+Add a "Documented walkthroughs" section to `corpus/sources/<product>/index.md`:
 
 ```markdown
 ## Documented walkthroughs
@@ -127,8 +127,8 @@ Add a "Documented walkthroughs" section to `rag/sources/<product>/index.md`:
 ## Output
 
 ```
-rag/sources/<product>/walkthroughs/<flow_id>.md
-rag/sources/<product>/index.md          (updated)
+corpus/sources/<product>/walkthroughs/<flow_id>.md
+corpus/sources/<product>/index.md          (updated)
 ```
 
 The source transcript stays in `uploads/transcripts/` (gitignored).

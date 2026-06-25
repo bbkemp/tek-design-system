@@ -1,13 +1,13 @@
 ---
 name: document-repo
-description: Process a source code repository into chunked, versioned corpus markdown — public-surface and module summaries, not implementation bodies. Use when given a local repo path or a GitHub URL. Output is a versioned snapshot under rag/sources/<service-id>/code/<snapshot-id>/, one .md per major module plus _index.md. Re-run on new releases to add fresh snapshots; old ones stay for historical queries. Does not extract implementation details, tests, or generated files — those live in the live repo, queryable via grep at retrieval time.
+description: Process a source code repository into chunked, versioned corpus markdown — public-surface and module summaries, not implementation bodies. Use when given a local repo path or a GitHub URL. Output is a versioned snapshot under corpus/sources/<service-id>/code/<snapshot-id>/, one .md per major module plus _index.md. Re-run on new releases to add fresh snapshots; old ones stay for historical queries. Does not extract implementation details, tests, or generated files — those live in the live repo, queryable via grep at retrieval time.
 ---
 
 # Document repo
 
 Turns a source code repository into structured corpus markdown — the **public contract** and **module map**, not the implementation. The corpus answers "what does this expose, how do I consume it, and where is it" — not "how does it work line by line." Implementation is volatile; the public surface is the stable, queryable contract.
 
-The format is **locked** by the first processed repo's snapshot: `rag/sources/tek-design-system/code/<first-snapshot>/`. Mirror its frontmatter shape and body section order for any future repo.
+The format is **locked** by the first processed repo's snapshot: `corpus/sources/tek-design-system/code/<first-snapshot>/`. Mirror its frontmatter shape and body section order for any future repo.
 
 ## Inputs
 
@@ -84,7 +84,7 @@ Do **not** read implementation bodies. Resist the urge to summarize what the cod
 
 ### 5. Write chunks
 
-Path: `rag/sources/<service-id>/code/<snapshot-id>/<module_id>.md`
+Path: `corpus/sources/<service-id>/code/<snapshot-id>/<module_id>.md`
 
 #### Frontmatter
 
@@ -128,7 +128,7 @@ related_modules: [<module_id>, …]
 
 ### 6. Write `_index.md`
 
-After every snapshot, write `rag/sources/<service-id>/code/<snapshot-id>/_index.md`:
+After every snapshot, write `corpus/sources/<service-id>/code/<snapshot-id>/_index.md`:
 
 ```markdown
 # <service-id> — code snapshot <snapshot-id>
@@ -156,7 +156,7 @@ Generated <YYYY-MM-DD> by `document-repo` skill from <repo-path-or-url>.
 
 ### 7. Update the service-level `index.md`
 
-Write or update `rag/sources/<service-id>/index.md` to list all snapshots:
+Write or update `corpus/sources/<service-id>/index.md` to list all snapshots:
 
 ```markdown
 # <service-id> — service index
@@ -185,15 +185,15 @@ This is different from `document-pdf`'s back-update — manuals reference screen
 For one repo processed at one snapshot:
 
 ```
-rag/sources/<service-id>/code/<snapshot-id>/
+corpus/sources/<service-id>/code/<snapshot-id>/
 ├── _index.md
 ├── <module_id-1>.md
 ├── <module_id-2>.md
 └── …
-rag/sources/<service-id>/index.md          (created or updated)
+corpus/sources/<service-id>/index.md          (created or updated)
 ```
 
-Nothing written outside of `rag/sources/<service-id>/`. The source repo is never modified.
+Nothing written outside of `corpus/sources/<service-id>/`. The source repo is never modified.
 
 ## Required tools
 

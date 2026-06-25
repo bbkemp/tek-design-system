@@ -1,6 +1,6 @@
 # Prototype QA: 2450-EC corpus — DS-v2 mapping snapshot
 
-**Source:** `rag/sources/2450-ec/screens/{home,graph}.md` · **Audited:** 2026-05-12 · **DS version:** DS-v2 (key `3wbYstse9TYKlPtCPpZH5X`)
+**Source:** `corpus/sources/2450-ec/screens/{home,graph}.md` · **Audited:** 2026-05-12 · **DS version:** DS-v2 (key `3wbYstse9TYKlPtCPpZH5X`)
 
 This is the **first disposable snapshot** of the DS-v2 mapping for the 2450-EC corpus. The mappings previously lived inline in each screen's markdown; they were extracted here when the corpus refactored to separate observation (durable) from interpretation (snapshot, on-demand). Future snapshots: rerun `prototype-qa` against the corpus when DS-v2 evolves or a fresh redesign briefing is needed.
 

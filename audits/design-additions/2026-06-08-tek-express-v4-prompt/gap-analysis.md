@@ -3,7 +3,7 @@
 **Audited:** 2026-06-08
 **Source:** [`cd-prompt.md`](./cd-prompt.md) — Bryan's CD-generated prompt for the right-rail layout variant
 **Audited against:**
-- `rag/sources/tek-express/` corpus (17 screens, 4 walkthroughs, 10 audit chunks, 1 wireframe + render)
+- `corpus/sources/tek-express/` corpus (17 screens, 4 walkthroughs, 10 audit chunks, 1 wireframe + render)
 - DS-v2 published library (`3wbYstse9TYKlPtCPpZH5X`) — actual variable + style + component namespace
 - Five-layer build rule (CHARTER Rule 22, CLAUDE.md Hard Constraint 9, tek-figma-build skill, PreToolUse hook, figma-design-qa)
 - v3 audit findings ([`../2026-06-02-tek-express-setup-dut/v3-rag-audit.md`](../2026-06-02-tek-express-setup-dut/v3-rag-audit.md))
@@ -200,7 +200,7 @@ notes.md.
 
 ### 10. Top nav is the legacy 5-tab, not the wireframe's 4-tab
 
-CD prompt §3: "Setup · Status · Results · Plots · Reports". Per the wireframe ([`rag/sources/tek-express/wireframes/setup-dut-wireframe.md`](../../../rag/sources/tek-express/wireframes/setup-dut-wireframe.md)), **Plots is gone from top-level nav** and folds into Results. Per CD's own v3 behavior, Plots rendered **inline within Results**.
+CD prompt §3: "Setup · Status · Results · Plots · Reports". Per the wireframe ([`corpus/sources/tek-express/wireframes/setup-dut-wireframe.md`](../../../corpus/sources/tek-express/wireframes/setup-dut-wireframe.md)), **Plots is gone from top-level nav** and folds into Results. Per CD's own v3 behavior, Plots rendered **inline within Results**.
 
 **Two options:**
 
@@ -291,4 +291,4 @@ A corrected v2 of the prompt is at [`cd-prompt.v2.md`](./cd-prompt.v2.md) — dr
 - [PR #68 retrofit comment](https://github.com/bbkemp/tek-design-system/pull/68#issuecomment-4650278669) — what binding "looks right" in practice (2,700 bindings across 3 pages)
 - [`tek-figma-build` skill](../../../.claude/skills/tek-figma-build/SKILL.md) — the four-point rule in detail
 - [Redesign baseline](../../prototype/2026-06-01-tek-express-redesign-baseline/report.md) — DS-mapping audit for every component
-- [Wireframe](../../../rag/sources/tek-express/wireframes/setup-dut-wireframe.md) — structural reference, IA deltas
+- [Wireframe](../../../corpus/sources/tek-express/wireframes/setup-dut-wireframe.md) — structural reference, IA deltas

@@ -1,17 +1,17 @@
 ---
 name: document-api
-description: Process an OpenAPI / Swagger spec into chunked, versioned corpus markdown — one .md per endpoint cluster (typically one resource), plus _index.md and a service-level index. Use when given a spec URL or a local .json/.yaml at rag/sources/<service-id>/uploads/api-specs/. Output is a versioned snapshot under rag/sources/<service-id>/api/<snapshot-id>/. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa.
+description: Process an OpenAPI / Swagger spec into chunked, versioned corpus markdown — one .md per endpoint cluster (typically one resource), plus _index.md and a service-level index. Use when given a spec URL or a local .json/.yaml at corpus/sources/<service-id>/uploads/api-specs/. Output is a versioned snapshot under corpus/sources/<service-id>/api/<snapshot-id>/. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa.
 ---
 
 # Document API
 
 Turns an OpenAPI / Swagger spec into structured corpus markdown — one chunk per endpoint cluster (typically a REST resource). Output is the **public contract** of the service at a point in time: paths, methods, request/response schemas, auth, examples. Snapshots accumulate; new versions of the spec produce new dated folders.
 
-The format is **locked** by the first processed spec: `rag/sources/dev-core-api/api/v1.0-2026-05-12/`. Mirror its frontmatter shape and body section order exactly for any future API.
+The format is **locked** by the first processed spec: `corpus/sources/dev-core-api/api/v1.0-2026-05-12/`. Mirror its frontmatter shape and body section order exactly for any future API.
 
 ## Inputs
 
-- A spec URL (e.g. `https://dev-core.platform.tek-api.com/api/v1/openapi`), OR a local file at `rag/sources/<service-id>/uploads/api-specs/<filename>.json|.yaml`. Either form gets saved to `uploads/api-specs/` (gitignored) before processing.
+- A spec URL (e.g. `https://dev-core.platform.tek-api.com/api/v1/openapi`), OR a local file at `corpus/sources/<service-id>/uploads/api-specs/<filename>.json|.yaml`. Either form gets saved to `uploads/api-specs/` (gitignored) before processing.
 - Implicit: `service-id` — the corpus subject id. Derived from the spec's `info.title` (kebab) or the URL hostname (`dev-core-api`).
 
 Optional:
@@ -33,7 +33,7 @@ Optional:
 
 ```bash
 curl -sS "https://<host>/<spec-path>" \
-  -o rag/sources/<service-id>/uploads/api-specs/openapi.json
+  -o corpus/sources/<service-id>/uploads/api-specs/openapi.json
 ```
 
 If the spec requires auth, read credentials from env vars (`<SERVICE>_TOKEN` etc.) and pass via `-H "Authorization: Bearer $TOKEN"`. Never accept pasted credentials; the user configures them on their machine.
@@ -82,7 +82,7 @@ For each endpoint in the cluster, pull from the spec:
 
 ### 6. Write chunks
 
-Path: `rag/sources/<service-id>/api/<snapshot-id>/<module_id>.md`
+Path: `corpus/sources/<service-id>/api/<snapshot-id>/<module_id>.md`
 
 #### Frontmatter
 
@@ -125,7 +125,7 @@ related_modules: [<code-module-id>, …]
 
 ### 7. Write `_index.md`
 
-After the snapshot is processed, write `rag/sources/<service-id>/api/<snapshot-id>/_index.md`:
+After the snapshot is processed, write `corpus/sources/<service-id>/api/<snapshot-id>/_index.md`:
 
 ```markdown
 # <service-id> — API snapshot <snapshot-id>
@@ -157,15 +157,15 @@ Same shape as `document-repo`'s service index — list all snapshots in time ord
 ## Output
 
 ```
-rag/sources/<service-id>/api/<snapshot-id>/
+corpus/sources/<service-id>/api/<snapshot-id>/
 ├── _index.md
 ├── <module_id-1>.md
 ├── <module_id-2>.md
 └── …
-rag/sources/<service-id>/index.md          (created or updated)
+corpus/sources/<service-id>/index.md          (created or updated)
 ```
 
-The source spec stays in `uploads/api-specs/` (gitignored). The skill never modifies anything outside `rag/sources/<service-id>/`.
+The source spec stays in `uploads/api-specs/` (gitignored). The skill never modifies anything outside `corpus/sources/<service-id>/`.
 
 ## Required tools
 

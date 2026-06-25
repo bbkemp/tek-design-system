@@ -67,10 +67,10 @@ Bryan is screen-sharing a Figma file with the design system components. Dev Mode
 
 ## Cross-references
 
-- DS architecture: [`rag/sources/tek-design-system/index.md`](../../../tek-design-system/index.md).
-- Token package: [`rag/sources/tek-design-system/code/<latest>/packages-tokens.md`](../../../tek-design-system/index.md).
-- UI components: [`rag/sources/tek-design-system/code/<latest>/packages-ui.md`](../../../tek-design-system/index.md) and per-component chunks.
-- Figma Token Push plugin: [`rag/sources/tek-design-system/code/<latest>/figma-token-push.md`](../../../tek-design-system/index.md).
+- DS architecture: [`corpus/sources/tek-design-system/index.md`](../../../tek-design-system/index.md).
+- Token package: [`corpus/sources/tek-design-system/code/<latest>/packages-tokens.md`](../../../tek-design-system/index.md).
+- UI components: [`corpus/sources/tek-design-system/code/<latest>/packages-ui.md`](../../../tek-design-system/index.md) and per-component chunks.
+- Figma Token Push plugin: [`corpus/sources/tek-design-system/code/<latest>/figma-token-push.md`](../../../tek-design-system/index.md).
 - The C# / WPF integration question Mahesha raises here is followed up in the next chunk: [`desktop-integration-strategy`](./desktop-integration-strategy.md).
 
 ## Pending references

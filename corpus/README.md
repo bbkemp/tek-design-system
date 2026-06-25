@@ -1,15 +1,19 @@
-# RAG POC — Software Screen Documentation
+# Corpus
 
-Goal: a consistent, LLM-optimized way to document every screen of an existing piece of Tek software, so we can:
+A structured-markdown corpus of the legacy Tek products being modernized — one folder per *subject* (product, internal service, repo) under [`sources/`](./sources/), with screens, walkthroughs, hardware views, manuals, APIs, and code snapshots all in a locked markdown format.
 
-1. Feed the org-wide MCP RAG with high-signal references.
-2. Hand Claude Code a complete picture of a legacy UI when refactoring it to the design system (cd→cc handoff, like we did for User Portal).
+**Corpus vs. RAG.** The corpus is the *asset* — the durable markdown. RAG (retrieval-augmented generation) is one *technique* for consuming it, and only one of several consumers (Claude Code reading files directly, grep, a future vector-DB retrieval layer). This folder holds the corpus, not retrieval code; the retrieval pipeline is Phase 2.
+
+Two downstream uses today:
+
+1. Hand Claude Code a complete picture of a legacy UI when refactoring it to the design system (cd→cc handoff, like we did for User Portal).
+2. Feed the org-wide retrieval layer with high-signal references when it ships.
 
 ## Layout
 
 ```
-rag/
-├── _inbox/                       drop zone for unsorted assets — routed by /rag-intake
+corpus/
+├── _inbox/                       drop zone for unsorted assets — routed by /corpus-intake
 └── sources/
     └── <product-id>/              e.g. 2450-ec/  (SKU, kebab)
         ├── uploads/               local-only dump zone
@@ -27,7 +31,7 @@ Future asset-class output folders (`hardware/`, `docs/<doc-id>/`, `walkthroughs/
 
 ## Workflow
 
-1. Either drop raw inputs directly into the right `uploads/<class>/` subfolder, or dump everything (mixed files, whole folders, zip archives) into `rag/_inbox/` and run `/rag-intake` to sort them.
+1. Either drop raw inputs directly into the right `uploads/<class>/` subfolder, or dump everything (mixed files, whole folders, zip archives) into `corpus/_inbox/` and run `/corpus-intake` to sort them.
 2. Run the matching processing skill (today: `/document-screens` for `uploads/photos/`).
 3. Skill produces, per asset:
    - Downscaled / extracted reference (max 1600px long edge for images) in the class output folder.

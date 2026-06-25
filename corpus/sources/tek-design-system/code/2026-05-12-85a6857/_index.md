@@ -14,7 +14,7 @@ tek-design-system/
 │       └── src/button/          → packages-ui-button.md  (drilldown; one chunk per published component)
 ├── qt/                          → qt.md
 ├── figma-token-push/            → figma-token-push.md
-└── (non-module dirs: scripts/, prototypes/, drafts/, design-audit/, docs/, audits/, rag/, img/, wpf/)
+└── (non-module dirs: scripts/, prototypes/, drafts/, design-audit/, docs/, audits/, corpus/, img/, wpf/)
 ```
 
 ## Modules in this snapshot
@@ -39,6 +39,6 @@ Validation pass: 5 modules. Remaining `tek-*` components in `packages/ui/src/` (
 | `design-audit/` | Past audits handed off from CD | Snapshot work product, not source. |
 | `docs/` | Markdown architecture docs | Already RAG-readable as-is; no transformation needed. |
 | `audits/` | Disposable audit reports produced by audit skills | By design, never enters the corpus. |
-| `rag/` | This corpus | Self-reference; would create a circular chunk. |
+| `corpus/` | This corpus | Self-reference; would create a circular chunk. |
 | `img/` | Static assets (logos, video) | No public surface. |
 | `wpf/` | Planned WPF translation layer (not yet built) | Empty placeholder. |

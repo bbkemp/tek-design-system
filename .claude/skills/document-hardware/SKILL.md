@@ -1,17 +1,17 @@
 ---
 name: document-hardware
-description: Document the physical hardware of a Tek product — front panel, rear panel, accessories, connectors, indicators — from photos. Use when given photos at rag/sources/<product>/uploads/photos/ showing the device itself (not its UI screen). Produces one .md + downscaled image per distinct hardware view under rag/sources/<product>/hardware/, mirroring the locked observation format from document-screens. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa.
+description: Document the physical hardware of a Tek product — front panel, rear panel, accessories, connectors, indicators — from photos. Use when given photos at corpus/sources/<product>/uploads/photos/ showing the device itself (not its UI screen). Produces one .md + downscaled image per distinct hardware view under corpus/sources/<product>/hardware/, mirroring the locked observation format from document-screens. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa.
 ---
 
 # Document hardware
 
 Turns photos of a Tek device's physical hardware — front panel, rear panel, accessories, connector close-ups — into structured per-view markdown. Twin of `document-screens`: same locked-observation pattern, different anatomy. Where `document-screens` enumerates UI controls (buttons, readouts, tabs), `document-hardware` enumerates ports, jacks, indicators, hardkeys, knobs, and physical features.
 
-The format is **locked** by the first processed hardware view: `rag/sources/2450-ec/hardware/front-panel.md`. Mirror its frontmatter shape and body section order exactly for any future hardware view.
+The format is **locked** by the first processed hardware view: `corpus/sources/2450-ec/hardware/front-panel.md`. Mirror its frontmatter shape and body section order exactly for any future hardware view.
 
 ## Inputs
 
-- Photos in `rag/sources/<product-id>/uploads/photos/` showing the physical device. The same photo set used for `document-screens` may also contain hardware-relevant content (the bezel surrounding the LCD); the same photo can yield two chunks — one screen `.md`, one hardware `.md` — referencing different downscaled images cropped or framed differently.
+- Photos in `corpus/sources/<product-id>/uploads/photos/` showing the physical device. The same photo set used for `document-screens` may also contain hardware-relevant content (the bezel surrounding the LCD); the same photo can yield two chunks — one screen `.md`, one hardware `.md` — referencing different downscaled images cropped or framed differently.
 
 Optional:
 - `--view <front-panel | rear-panel | side | closeup-<feature>>` to scope to one view per invocation.
@@ -31,7 +31,7 @@ Optional:
 ### 1. Discover and select
 
 ```bash
-ls rag/sources/<product>/uploads/photos/
+ls corpus/sources/<product>/uploads/photos/
 ```
 
 Pick the clearest photo for each view you intend to document. Same selection criteria as `document-screens`:
@@ -57,15 +57,15 @@ Kebab. The view name above is usually the id (`front-panel`, `rear-panel`, `clos
 
 ```bash
 sips -Z 1600 -s format jpeg -s formatOptions 85 \
-  rag/sources/<product>/uploads/photos/<canonical-photo> \
-  --out rag/sources/<product>/hardware/<part-id>.jpg
+  corpus/sources/<product>/uploads/photos/<canonical-photo> \
+  --out corpus/sources/<product>/hardware/<part-id>.jpg
 ```
 
 Re-read the downscaled image; confirm every label is still legible. If a critical label is illegible at the downscale, choose a different source photo or document the illegibility in `## Confidence notes`.
 
 ### 4. Transcribe and structure
 
-Write `rag/sources/<product>/hardware/<part_id>.md` matching the locked frontmatter and body section order.
+Write `corpus/sources/<product>/hardware/<part_id>.md` matching the locked frontmatter and body section order.
 
 #### Frontmatter
 
@@ -109,7 +109,7 @@ If a screen `.md` exists with hardware-bezel controls (`btn-home`, `terminals`, 
 
 ### 6. Update `index.md`
 
-Add or update the **Documented hardware** section in `rag/sources/<product>/index.md`:
+Add or update the **Documented hardware** section in `corpus/sources/<product>/index.md`:
 
 ```markdown
 ## Documented hardware
@@ -122,12 +122,12 @@ Add or update the **Documented hardware** section in `rag/sources/<product>/inde
 ## Output
 
 ```
-rag/sources/<product>/hardware/
+corpus/sources/<product>/hardware/
 ├── <part-id>.md
 ├── <part-id>.jpg
 └── …
-rag/sources/<product>/index.md   (updated)
-rag/sources/<product>/screens/<screen-id>.md   (back-updated `related_hardware` frontmatter, if cross-linked)
+corpus/sources/<product>/index.md   (updated)
+corpus/sources/<product>/screens/<screen-id>.md   (back-updated `related_hardware` frontmatter, if cross-linked)
 ```
 
 ## Required tools
