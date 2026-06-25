@@ -18,3 +18,10 @@ rag/sources/*/*.pdf
 # are local-only — only the synthesized report.md is committed.
 audits/competitive/*/assets/*
 !audits/competitive/*/assets/.gitkeep
+
+# RAG intake: drop zone for unsorted assets. Routed into rag/sources/<product>/uploads/<class>/
+# (or audits/competitive/) by the /rag-intake skill. README and .gitkeep are the only tracked
+# files — everything else stays local until sorted.
+rag/_inbox/*
+!rag/_inbox/.gitkeep
+!rag/_inbox/README.md
