@@ -129,29 +129,29 @@ Captured 2026-06-25, in chat.
 
 | # | Decision | Resolution | Status |
 |---|---|---|---|
-| 1 | Retrieval scope | **Lightweight bridge skill (`/search-rag`) now**; real vector retrieval is Phase 2 | Skill build queued |
+| 1 | Retrieval scope | **Playbook skill (`/corpus-query`) now**; real vector retrieval is Phase 2 | ✓ Shipped as `/corpus-query` (#84) — reframed from search-engine to retrieval-algorithm; same outcome, simpler implementation |
 | 2 | Subject taxonomy | **Rename "products" → "subjects"** — products, services, repos, competitors all use the same `uploads/<class>/` schema | Landed in corpus/README + audits/README + README + CLAUDE.md (this PR) |
 | 3 | Recordings (`uploads/recordings/`) | **Refuse audio/video at intake.** Future `/document-recording` skill on high-priority follow-up list | Landed: corpus-intake refuses `.m4a`/`.mp3`/`.wav`/`.mp4`/`.mov` etc. (this PR) |
 | 4 | High-res photos | **Stay gitignored.** Formalize a cheap shared location (with reference links from screen .md) as a follow-up | Doc-only; deferred |
 | 5 | Competitor products | **Always full corpus folder** (`corpus/sources/<vendor>-<sku>/`). Symmetric treatment with Tek subjects | Landed in corpus/README "Competitor products" section (this PR) |
-| 6 | Manual-pairing pass | **Build `/pair-manual` skill.** Until then, social rule = whoever processes 2nd of (screens, manual) does the link | Skill build queued; social rule documented in corpus/README "Manual pairing" (this PR) |
-| 7 | `index.md` regeneration | **Hybrid** — skills update incrementally + new `/refresh-index` skill + CI gate validates freshness on every PR | Skill + CI build queued; idempotence statement landed in all `document-*` skills (this PR) |
+| 6 | Manual-pairing pass | **Build `/pair-manual` skill.** Until then, social rule = whoever processes 2nd of (screens, manual) does the link | ✓ Shipped — `/pair-manual` skill (bidirectional, idempotent, --check mode); social rule remains documented for the pre-skill state |
+| 7 | `index.md` regeneration | **Hybrid** — skills update incrementally + new `/refresh-index` skill + CI gate validates freshness on every PR | ✓ Shipped — `/refresh-index` skill (--check + --all modes) + `.github/workflows/corpus-index-check.yml` CI gate; idempotence statement already landed in all `document-*` skills |
 
 ### What the rename PR (`chore/rename-rag-to-corpus`) resolves
 
 Lands the doc-level and skill-level resolutions inline with the `corpus/`-rename:
 
 - **Decisions 2, 3, 5, 6** — fully resolved in docs + skill behavior.
-- **Decisions 1, 6, 7** — partial: doc framing + social rules in place; new skills (`/search-rag`, `/pair-manual`, `/refresh-index` + CI) on the follow-up queue.
-- **Decision 4** — doc note added; shared-location formalization deferred.
+- **Decisions 1, 6, 7** — fully resolved in subsequent PRs (#84 `/corpus-query`, this PR `/pair-manual` + `/refresh-index` + CI gate).
+- **Decision 4** — doc note added (corpus/README § Sharing high-res originals); shared-location formalization deferred until friction is measurable.
 
 ### Follow-up PRs queued
 
 | PR | Scope | Decision |
 |---|---|---|
-| `feat(skill): search-rag` | Bridge skill — grep + frontmatter match + chunk return | Decision 1 |
-| `feat(skill): pair-manual` | Bidirectional screen ↔ manual-chunk linking, idempotent | Decision 6 |
-| `feat(skill,ci): refresh-index + CI gate` | Centralized index regeneration + per-PR consistency check | Decision 7 |
-| `chore: cheap-shared-photo-storage` | Pick + document a low-cost shared location for high-res originals | Decision 4 |
+| `feat(skill): corpus-query` (#84) | Simulated RAG retrieval playbook | Decision 1 — ✓ landed |
+| `feat(skill): pair-manual` (this PR) | Bidirectional screen ↔ manual-chunk linking, idempotent, --check mode | Decision 6 — ✓ landed |
+| `feat(skill,ci): refresh-index + CI gate` (this PR) | Centralized index regeneration + per-PR consistency check | Decision 7 — ✓ landed |
+| `chore: cheap-shared-photo-storage` (this PR) | Doc note in corpus/README § Sharing high-res originals — full service selection deferred | Decision 4 — ✓ doc note landed |
 
-Update this resolutions block as those PRs land.
+**All seven open decisions from the baseline audit are now resolved.** Remaining P1/P2 items from the audit (P2-22 .chm routing landed; P2-13 high-res photos doc-note; rest scoped for future work as friction surfaces) are tracked individually.

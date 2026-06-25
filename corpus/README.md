@@ -57,6 +57,14 @@ Markdown is the RAG payload. PDFs and other binaries stay in `uploads/` and are 
 
 After an asset is processed, the original in `uploads/` can be deleted from local disk — the markdown + downscaled reference are the artifact.
 
+### Sharing high-res originals
+
+Most consumers (designers reading screen .md for redesign work, devs implementing) get everything they need from the downscaled 1600px image in `screens/`. Occasionally a contributor needs the original-resolution photo for control-placement verification or a side-by-side comparison.
+
+**Today:** originals live in the corpus author's `uploads/` folder (local-only, gitignored). Request the original by pinging the author.
+
+**Planned:** when the friction warrants it, formalize a low-cost shared location for original photos. Candidate services in rough cost order — Backblaze B2 ($6/TB/mo), Cloudflare R2 ($0.015/GB/mo + zero egress), Google Drive (existing org subscription). The chosen service becomes a referenced field in screen frontmatter (`source_photo_url:`) so consumers can fetch directly without asking. Decision deferred until "ask the author" becomes a measurable bottleneck — currently rare.
+
 ## Cross-subject applicability
 
 When an asset applies to more than one subject (e.g. a manual that covers 2450-EC, 2460-EC, and 2461-EC), the markdown declares the full list in frontmatter as `applies_to: [<id>, …]`. Families are an emergent property of `applies_to`, not a folder hierarchy. Subjects are folders; cross-subject joins happen at retrieval time.
