@@ -120,3 +120,38 @@ Audit produced via four parallel research agents (Explore subagents) each tasked
 4. **XFN usability scenarios** — 7 role-based walk-throughs (designer onboarding, dev screen lookup, PM comparison, new product, screen update, two-person collision, retrieval discovery); flag friction per scenario; synthesize cross-cutting findings.
 
 Findings synthesized across the four passes. P0/P1/P2 severity assigned by impact on XFN-team scaled use. Open decisions surfaced where multiple agents flagged the same ambiguity without an obviously-right answer.
+
+---
+
+## Resolutions — Bryan's decisions on the seven open questions
+
+Captured 2026-06-25, in chat.
+
+| # | Decision | Resolution | Status |
+|---|---|---|---|
+| 1 | Retrieval scope | **Lightweight bridge skill (`/search-rag`) now**; real vector retrieval is Phase 2 | Skill build queued |
+| 2 | Subject taxonomy | **Rename "products" → "subjects"** — products, services, repos, competitors all use the same `uploads/<class>/` schema | Landed in corpus/README + audits/README + README + CLAUDE.md (this PR) |
+| 3 | Recordings (`uploads/recordings/`) | **Refuse audio/video at intake.** Future `/document-recording` skill on high-priority follow-up list | Landed: corpus-intake refuses `.m4a`/`.mp3`/`.wav`/`.mp4`/`.mov` etc. (this PR) |
+| 4 | High-res photos | **Stay gitignored.** Formalize a cheap shared location (with reference links from screen .md) as a follow-up | Doc-only; deferred |
+| 5 | Competitor products | **Always full corpus folder** (`corpus/sources/<vendor>-<sku>/`). Symmetric treatment with Tek subjects | Landed in corpus/README "Competitor products" section (this PR) |
+| 6 | Manual-pairing pass | **Build `/pair-manual` skill.** Until then, social rule = whoever processes 2nd of (screens, manual) does the link | Skill build queued; social rule documented in corpus/README "Manual pairing" (this PR) |
+| 7 | `index.md` regeneration | **Hybrid** — skills update incrementally + new `/refresh-index` skill + CI gate validates freshness on every PR | Skill + CI build queued; idempotence statement landed in all `document-*` skills (this PR) |
+
+### What the rename PR (`chore/rename-rag-to-corpus`) resolves
+
+Lands the doc-level and skill-level resolutions inline with the `corpus/`-rename:
+
+- **Decisions 2, 3, 5, 6** — fully resolved in docs + skill behavior.
+- **Decisions 1, 6, 7** — partial: doc framing + social rules in place; new skills (`/search-rag`, `/pair-manual`, `/refresh-index` + CI) on the follow-up queue.
+- **Decision 4** — doc note added; shared-location formalization deferred.
+
+### Follow-up PRs queued
+
+| PR | Scope | Decision |
+|---|---|---|
+| `feat(skill): search-rag` | Bridge skill — grep + frontmatter match + chunk return | Decision 1 |
+| `feat(skill): pair-manual` | Bidirectional screen ↔ manual-chunk linking, idempotent | Decision 6 |
+| `feat(skill,ci): refresh-index + CI gate` | Centralized index regeneration + per-PR consistency check | Decision 7 |
+| `chore: cheap-shared-photo-storage` | Pick + document a low-cost shared location for high-res originals | Decision 4 |
+
+Update this resolutions block as those PRs land.
