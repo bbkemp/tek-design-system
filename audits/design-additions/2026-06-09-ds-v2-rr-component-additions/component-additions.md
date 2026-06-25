@@ -7,7 +7,7 @@
 **Related:**
 - Tek Express setup-dut redesign additions ([`tek-express-redesign-additions.md`](../2026-06-02-tek-express-setup-dut/tek-express-redesign-additions.md)) — original CD-proposed component list
 - Redesign baseline DS-mapping audit ([`audits/prototype/2026-06-01-tek-express-redesign-baseline/report.md`](../../prototype/2026-06-01-tek-express-redesign-baseline/report.md))
-- Corpus: [`rag/sources/tek-express/`](../../../rag/sources/tek-express/) — every screen + walkthrough + ui-audit chunk
+- Corpus: [`corpus/sources/tek-express/`](../../../corpus/sources/tek-express/) — every screen + walkthrough + ui-audit chunk
 
 ---
 
@@ -900,4 +900,4 @@ The following components are referenced in the rr-variant redesign but are NOT b
 - **Redesign baseline audit** ([`audits/prototype/2026-06-01-tek-express-redesign-baseline/report.md`](../../prototype/2026-06-01-tek-express-redesign-baseline/report.md)) — the original DS-mapping audit.
 - **Tek Express v4 prompt (rr variant)** ([`cd-prompt.v2.md`](../2026-06-08-tek-express-v4-prompt/cd-prompt.v2.md)) — references the components above as `4b` proposed components.
 - **CHARTER Rule 22 + tek-figma-build skill** — these components must be authored in Figma per the four-point rule; the additions audit (this doc) is the artifact that prevents silent un-tokenized values.
-- **Corpus** — every component above maps to specific screens documented under [`rag/sources/tek-express/screens/`](../../../rag/sources/tek-express/screens/).
+- **Corpus** — every component above maps to specific screens documented under [`corpus/sources/tek-express/screens/`](../../../corpus/sources/tek-express/screens/).

@@ -7,21 +7,21 @@ package-lock.json
 !.claude/skills/
 !.claude/settings.json
 
-# RAG POC: uploads/ is local-only — only processed outputs in
+# Corpus: uploads/ is local-only — only processed outputs in
 # screens/ etc. and index.md get committed.
-rag/sources/*/uploads/*/*
-!rag/sources/*/uploads/*/.gitkeep
-# Safety net for PDFs misplaced at the product root (should live in uploads/pdfs/).
-rag/sources/*/*.pdf
+corpus/sources/*/uploads/*/*
+!corpus/sources/*/uploads/*/.gitkeep
+# Safety net for PDFs misplaced at the subject root (should live in uploads/pdfs/).
+corpus/sources/*/*.pdf
 
 # Audits: competitive-analysis raw assets (vendor PDFs, source decks, screenshots)
 # are local-only — only the synthesized report.md is committed.
 audits/competitive/*/assets/*
 !audits/competitive/*/assets/.gitkeep
 
-# RAG intake: drop zone for unsorted assets. Routed into rag/sources/<product>/uploads/<class>/
-# (or audits/competitive/) by the /rag-intake skill. README and .gitkeep are the only tracked
+# Corpus intake: drop zone for unsorted assets. Routed into corpus/sources/<subject>/uploads/<class>/
+# (or audits/competitive/) by the /corpus-intake skill. README and .gitkeep are the only tracked
 # files — everything else stays local until sorted.
-rag/_inbox/*
-!rag/_inbox/.gitkeep
-!rag/_inbox/README.md
+corpus/_inbox/*
+!corpus/_inbox/.gitkeep
+!corpus/_inbox/README.md

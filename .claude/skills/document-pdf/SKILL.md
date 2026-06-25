@@ -1,17 +1,17 @@
 ---
 name: document-pdf
-description: Process a manual or guide (PDF) into chunked, cross-linked markdown for the RAG corpus. Use when given a PDF at rag/sources/<product>/uploads/pdfs/. Produces _index.md plus one .md per top-level heading under rag/sources/<product>/docs/<doc-id>/, and back-updates the Manual references section in any corpus screen .md files the chunks cross-link to. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa.
+description: Process a manual or guide (PDF) into chunked, cross-linked markdown for the RAG corpus. Use when given a PDF at corpus/sources/<product>/uploads/pdfs/. Produces _index.md plus one .md per top-level heading under corpus/sources/<product>/docs/<doc-id>/, and back-updates the Manual references section in any corpus screen .md files the chunks cross-link to. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa.
 ---
 
 # Document PDF
 
 Turns a manufacturer manual, quick-start guide, or spec sheet into structured per-section markdown for the RAG corpus. Output is the **as-is dump** of the document's content — durable, write-once, source-grounded. Interpretation (DS mapping, design briefs) lives separately under `audits/`.
 
-The format is **locked** by the first processed manual: `rag/sources/2450-ec/docs/user-manual/`. Mirror its frontmatter and body section order exactly for any future PDF.
+The format is **locked** by the first processed manual: `corpus/sources/2450-ec/docs/user-manual/`. Mirror its frontmatter and body section order exactly for any future PDF.
 
 ## Inputs
 
-- A PDF at `rag/sources/<product-id>/uploads/pdfs/<filename>.pdf`. The product folder must already have a `screens/` directory if cross-linking back to corpus screens is expected (otherwise the skill will write chunks but skip the back-update step).
+- A PDF at `corpus/sources/<product-id>/uploads/pdfs/<filename>.pdf`. The product folder must already have a `screens/` directory if cross-linking back to corpus screens is expected (otherwise the skill will write chunks but skip the back-update step).
 
 Optional:
 - `--doc-id <kebab>` to override the automatic doc-id derivation (default: derived from the filename or cover page — e.g. `user-manual`, `quickstart`, `spec-sheet`).
@@ -19,7 +19,7 @@ Optional:
 
 ## Hard rules
 
-1. **Format is locked. Do not deviate from `rag/sources/2450-ec/docs/user-manual/`.** Mirror its frontmatter shape and body section order; class-specific fields extend the base rather than replacing it.
+1. **Format is locked. Do not deviate from `corpus/sources/2450-ec/docs/user-manual/`.** Mirror its frontmatter shape and body section order; class-specific fields extend the base rather than replacing it.
 2. **Verbatim where possible.** Manuals are authoritative source-of-truth. Procedures, definitions, warnings, and notes get transcribed *as-written*, reformatted as clean Markdown (numbered lists for steps, blockquotes for notes/warnings, code spans for filenames and TSP commands). Do not paraphrase unless explicitly under `## Summary`.
 3. **Confidence over completeness.** If a passage is illegible (scanned PDF artifact), table is structurally ambiguous, or a figure caption is unclear, mark it in **Confidence notes** rather than guessing.
 4. **`uploads/` is gitignored.** Never commit the source PDF; only the extracted markdown. Image extraction (figures) is allowed but optional — for the first pass, name the figures by caption and skip the binary.
@@ -81,7 +81,7 @@ For each chunk, read the relevant page range from the PDF (use the `Read` tool w
 
 ### 6. Write chunk files
 
-Path: `rag/sources/<product>/docs/<doc-id>/<section_id>.md`
+Path: `corpus/sources/<product>/docs/<doc-id>/<section_id>.md`
 
 #### Frontmatter
 
@@ -120,7 +120,7 @@ related_hardware: [<hardware-id>, …]
 
 ### 7. Write `_index.md`
 
-After every doc is processed, write `rag/sources/<product>/docs/<doc-id>/_index.md` summarizing the document:
+After every doc is processed, write `corpus/sources/<product>/docs/<doc-id>/_index.md` summarizing the document:
 
 ```markdown
 # <doc-title>
@@ -144,7 +144,7 @@ When the skill is invoked with `--section <range>`, list only the sections proce
 
 ### 8. Back-update screen `.md` Manual references
 
-For each chunk with `related_screens: [<screen-id>, …]`, open `rag/sources/<product>/screens/<screen-id>.md` and replace the **`## Manual references`** section's content with citations to the chunks:
+For each chunk with `related_screens: [<screen-id>, …]`, open `corpus/sources/<product>/screens/<screen-id>.md` and replace the **`## Manual references`** section's content with citations to the chunks:
 
 ```markdown
 ## Manual references
@@ -162,15 +162,15 @@ If no chunks reference a given screen, leave its Manual references section as-is
 For one PDF processed:
 
 ```
-rag/sources/<product>/docs/<doc-id>/
+corpus/sources/<product>/docs/<doc-id>/
 ├── _index.md
 ├── <section-id-1>.md
 ├── <section-id-2>.md
 └── …
-rag/sources/<product>/screens/<screen-id>.md   (back-updated Manual references, if cross-linked)
+corpus/sources/<product>/screens/<screen-id>.md   (back-updated Manual references, if cross-linked)
 ```
 
-Nothing written outside of `rag/sources/<product>/`.
+Nothing written outside of `corpus/sources/<product>/`.
 
 ## Required tools
 
@@ -183,7 +183,14 @@ Nothing written outside of `rag/sources/<product>/`.
 
 - Branch → PR; never commit to `main`. Feature branch with `feat(skills):` for new skill work or `feat(rag):` for new corpus content.
 - No raw uploads in commits. The source PDF is gitignored; only the extracted markdown is committed.
-- Match existing patterns. The format is locked to `rag/sources/2450-ec/docs/user-manual/` — do not improvise.
+- Match existing patterns. The format is locked to `corpus/sources/2450-ec/docs/user-manual/` — do not improvise.
+
+## Operational notes
+
+- **Idempotence.** Re-running this skill on the same PDF regenerates the chunks from the current source. The Manual-references back-update overwrites the previous version. If you've hand-edited a chunk and want to preserve those edits, copy them out before re-running. Otherwise, re-runs are safe.
+- **Output dir creation.** The skill creates `corpus/sources/<subject>/docs/<doc-id>/` if missing — `mkdir -p` is fine. First invocation works without pre-scaffolding.
+- **`index.md` regenerates** on every run with a new "Documented manuals" section. See `corpus/README.md` § Process completion.
+- **Scanned PDFs need OCR first.** This skill assumes a text-extractable PDF. If the manual is a scanned image with no text layer, run `pdftotext` or `tesseract` (or similar) externally to produce a text-layered version, then re-run.
 
 ## Notes
 

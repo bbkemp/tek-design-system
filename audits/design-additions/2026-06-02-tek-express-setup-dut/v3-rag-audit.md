@@ -3,7 +3,7 @@ class: audit
 audit_id: 2026-06-03-v3-rag-audit
 target_artifact: v3.html
 audited_by: cd
-audited_against: rag/sources/tek-express
+audited_against: corpus/sources/tek-express
 applies_to: [tek-express]
 verdict: corrected — strong across the board; the two F grades in my original audit (artifact contract, container queries) were both wrong
 amended_date: 2026-06-04
@@ -12,7 +12,7 @@ amended_date: 2026-06-04
 # v3.html — RAG Audit (amended 2026-06-04)
 
 **Artifact under audit:** `audits/design-additions/2026-06-02-tek-express-setup-dut/v3.html` (596 KB single file, React-bundled inline)
-**Corpus reference:** `rag/sources/tek-express/` (17 screens, 4 walkthroughs, 10 audit chunks, 1 wireframe + render)
+**Corpus reference:** `corpus/sources/tek-express/` (17 screens, 4 walkthroughs, 10 audit chunks, 1 wireframe + render)
 **Redesign baseline:** [`audits/prototype/2026-06-01-tek-express-redesign-baseline/report.md`](../../prototype/2026-06-01-tek-express-redesign-baseline/report.md)
 
 ## ⚠ Amendment (2026-06-04) — two F grades retracted
@@ -82,7 +82,7 @@ Each tek-* tag appears **exactly once** in the source. Meanwhile **19 bare `<but
 **Round 2 fix:** Add a hard rule — *"Every interactive element MUST be a `<tek-*>` custom element. Bare `<button>`, `<input>`, `<select>`, `<textarea>`, `<label>` are forbidden. If the needed primitive doesn't exist, declare it in the additions audit instead of falling back to a bare element."*
 
 ### 2. Container queries: 1 rule, 1 declaration
-The prompt was explicit on container breakpoints — also reinforced in [`walkthroughs/ux-feedback-and-open-questions.md`](../../../rag/sources/tek-express/walkthroughs/ux-feedback-and-open-questions.md) at the 51:56 turn (Bryan's commitment to Richard Patterson). CD shipped **one** `@container` rule and **one** `container-type` declaration in 596KB of output. That's not "responsive at the container level"; that's a token gesture.
+The prompt was explicit on container breakpoints — also reinforced in [`walkthroughs/ux-feedback-and-open-questions.md`](../../../corpus/sources/tek-express/walkthroughs/ux-feedback-and-open-questions.md) at the 51:56 turn (Bryan's commitment to Richard Patterson). CD shipped **one** `@container` rule and **one** `container-type` declaration in 596KB of output. That's not "responsive at the container level"; that's a token gesture.
 
 The wireframe at 1440×900 is one breakpoint. The redesign needs at minimum:
 - Half-width docked (Rick Kuhlman's 50:05 ask in the same walkthrough)
@@ -119,9 +119,9 @@ The two missing rules ("every interactive must be `<tek-*>`" + "every container 
 ## Cross-references
 
 - [`audits/prototype/2026-06-01-tek-express-redesign-baseline/report.md`](../../prototype/2026-06-01-tek-express-redesign-baseline/report.md) — the DS-mapping audit CD was supposed to extend with the additions file
-- [`rag/sources/tek-express/wireframes/setup-dut-wireframe.md`](../../../rag/sources/tek-express/wireframes/setup-dut-wireframe.md) — structural reference (Plots-absence, Configuration step, inline Setup buttons)
-- [`rag/sources/tek-express/walkthroughs/ux-feedback-and-open-questions.md`](../../../rag/sources/tek-express/walkthroughs/ux-feedback-and-open-questions.md) — container-breakpoints commitment (51:56) + Rick's half-screen ask (50:05) + Patterson's horizontal-stretch layout question (51:14)
-- [`rag/sources/tek-express/screens/setup-dut.md`](../../../rag/sources/tek-express/screens/setup-dut.md) — the canonical-content reference
+- [`corpus/sources/tek-express/wireframes/setup-dut-wireframe.md`](../../../corpus/sources/tek-express/wireframes/setup-dut-wireframe.md) — structural reference (Plots-absence, Configuration step, inline Setup buttons)
+- [`corpus/sources/tek-express/walkthroughs/ux-feedback-and-open-questions.md`](../../../corpus/sources/tek-express/walkthroughs/ux-feedback-and-open-questions.md) — container-breakpoints commitment (51:56) + Rick's half-screen ask (50:05) + Patterson's horizontal-stretch layout question (51:14)
+- [`corpus/sources/tek-express/screens/setup-dut.md`](../../../corpus/sources/tek-express/screens/setup-dut.md) — the canonical-content reference
 
 ## Round 2 recommendations
 

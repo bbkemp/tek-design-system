@@ -14,7 +14,7 @@ Given a prototype, classify every distinct UI element by its relationship to the
 The user provides one of:
 - A Figma URL pointing to a prototype frame.
 - A path to a local HTML / TSX / JSX file in this repo (e.g., `prototypes/<name>/index.html`).
-- A path to a corpus screen `.md` or a folder of them in `rag/sources/<product>/screens/`. The screen `.md` is a structured representation of a legacy UI — its `controls[]` frontmatter and `## Controls inventory` body are the element list. Audit it the same way you would a live Figma frame.
+- A path to a corpus screen `.md` or a folder of them in `corpus/sources/<product>/screens/`. The screen `.md` is a structured representation of a legacy UI — its `controls[]` frontmatter and `## Controls inventory` body are the element list. Audit it the same way you would a live Figma frame.
 
 Optional: `output-dir` (default `audits/prototype/`), `slug` (default derived from the input name).
 
