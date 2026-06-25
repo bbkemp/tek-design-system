@@ -9,13 +9,16 @@ Goal: a consistent, LLM-optimized way to document every screen of an existing pi
 
 ```
 rag/
+├── _inbox/                       drop zone for unsorted assets — routed by /rag-intake
 └── sources/
     └── <product-id>/              e.g. 2450-ec/  (SKU, kebab)
         ├── uploads/               local-only dump zone
         │   ├── photos/            screen + hardware photos
         │   ├── pdfs/              manuals, quick-start guides, spec sheets
-        │   ├── transcripts/       walkthrough transcripts
-        │   └── artifacts/         CAD, AI, technical artifacts
+        │   ├── transcripts/       walkthrough transcripts (text — .docx, .vtt, .srt, .txt)
+        │   ├── recordings/        meeting audio/video (.m4a, .mp3, .mp4, .mov) — transcribe externally then re-intake the transcript
+        │   ├── artifacts/         CAD, AI, slide decks, spreadsheets, anything else
+        │   └── api-specs/         OpenAPI / Swagger / similar
         ├── screens/               one .md per screen + downscaled image
         └── index.md               cross-asset index (generated)
 ```
@@ -24,7 +27,7 @@ Future asset-class output folders (`hardware/`, `docs/<doc-id>/`, `walkthroughs/
 
 ## Workflow
 
-1. Drop raw inputs into the right `uploads/<class>/` subfolder.
+1. Either drop raw inputs directly into the right `uploads/<class>/` subfolder, or dump everything (mixed files, whole folders, zip archives) into `rag/_inbox/` and run `/rag-intake` to sort them.
 2. Run the matching processing skill (today: `/document-screens` for `uploads/photos/`).
 3. Skill produces, per asset:
    - Downscaled / extracted reference (max 1600px long edge for images) in the class output folder.
