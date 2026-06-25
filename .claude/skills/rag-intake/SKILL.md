@@ -1,159 +1,283 @@
 ---
 name: rag-intake
-description: Sort a pile of mixed files dropped into rag/_inbox/ into the right rag/sources/<product>/uploads/<class>/ folder (and audits/competitive/ for competitor analysis). Classifies each file by filename + extension, shows a routing plan, waits for OK, then moves. Auto-creates new product folder skeletons (e.g. keysight-<sku>/) when a new SKU is detected. Use when you have a stack of manuals, transcripts, decks, screen photos, and vendor docs to drop into the corpus without manually sorting them.
+description: Sort a pile of mixed files dropped into rag/_inbox/ into the right rag/sources/<product>/uploads/<class>/ folder (and audits/competitive/ for competitor analysis). Recursively scans subfolders, uses parent folder names as classification hints, classifies by filename + extension, shows a routing plan, waits for OK, then moves. Auto-creates new product folder skeletons (e.g. keysight-<sku>/) when a new SKU is detected, auto-unzips archives, batches prompts for generic-named screenshots. Use when you have a stack of manuals, transcripts, recordings, decks, screen photos, and vendor docs to drop into the corpus without manually sorting them.
 ---
 
 # RAG intake
 
-Turns the "dump it all in one place" workflow into routed corpus uploads. Drop anything into `rag/_inbox/`, run `/rag-intake`, confirm the routing plan, files land in the right `uploads/<class>/` folder.
+Turns the "dump it all in one place" workflow into routed corpus uploads. Drop anything into `rag/_inbox/` — flat files, whole folders, zipped folders — run `/rag-intake`, confirm the routing plan, files land in the right `uploads/<class>/` folder.
 
-This skill **only sorts and moves**. Per-class processing (`/document-screens` etc.) runs after.
+This skill **only sorts and moves**. Per-class processing (`/document-screens`, etc.) runs after. No content conversion, no OCR, no transcription — those are downstream jobs.
 
 ## Inputs
 
-The user provides:
-- Files dropped into `rag/_inbox/` at the repo root. Anything — PDFs, transcripts (.docx/.vtt/.srt/.txt), slide decks (.pptx/.key), screen photos (.png/.jpg), API specs (.yaml/.json), competitor docs.
+The user provides any mix of:
+- Flat files dropped into `rag/_inbox/`.
+- Whole folders dropped in (Finder drag, archive extracted in place, etc.) — the skill recurses.
+- `.zip` archives — the skill offers to unzip and re-intake the contents.
 
-Optional:
-- `--dry-run` to print the routing plan and exit without moving anything.
-- `--strict` to fail loudly on any ambiguous file rather than asking — useful when invoking from a script.
+Supported asset types (filename + extension routing):
+- PDFs, transcripts (`.docx`/`.doc`/`.vtt`/`.srt`/`.txt`), slide decks (`.pptx`/`.key`/`.ppt`), screen photos (`.png`/`.jpg`/`.jpeg`/`.webp`/`.heic`), recordings (`.m4a`/`.mp3`/`.wav`/`.mp4`/`.mov`/`.webm`), API specs (`.yaml`/`.yml`/`.json` with openapi/swagger marker), spreadsheets (`.xlsx`/`.csv`), Figma/Sketch/AI/CAD artifacts (`.fig`/`.sketch`/`.ai`/`.dwg`/`.dxf`), Markdown notes (`.md`).
+
+Optional flags (passed as the first arg, never confused with filenames):
+- `--dry-run` — print the routing plan and exit without moving anything.
+- `--strict` — fail loudly on any ambiguous file rather than asking; useful for scripted invocations.
 
 ## Hard rules
 
 1. **Never silently misroute.** Every file's destination must appear in the routing plan, and the user must say go before any `mv`. If a file is ambiguous (no clear product, no clear class), surface it as a question — do not best-guess.
 2. **Corpus vs. audit boundary is load-bearing.** Vendor-authored manuals/datasheets go into `rag/sources/<vendor>-<sku>/uploads/pdfs/` (corpus, as-is). Tek-authored comparison decks/matrices/critiques go into `audits/competitive/<YYYY-MM-DD>-<slug>/assets/` (audit, interpretation, disposable). Crossing this line rots the corpus.
-3. **Auto-create new product folder skeletons.** When a filename surfaces a new SKU (e.g. `keysight-b2961a`), scaffold `rag/sources/<sku>/uploads/{pdfs,transcripts,photos,artifacts,api-specs}/.gitkeep` before the move. Include this in the plan so the user sees what's being created.
+3. **Auto-create new product folder skeletons.** When a filename or parent folder surfaces a new SKU (e.g. `keysight-b2961a`), scaffold `rag/sources/<sku>/uploads/{pdfs,transcripts,recordings,photos,artifacts,api-specs}/.gitkeep` before the move. Include this in the plan so the user sees what's being created.
 4. **The inbox is gitignored.** Files in `rag/_inbox/` never get committed. Same applies to everything that lands under `uploads/`. Only the skeleton `.gitkeep` files and processed markdown make it to git.
-5. **One file → one destination.** Never copy. Always `mv`. After the run, the inbox is empty (or holds only files the user explicitly declined to route).
-6. **No content peeking on first pass.** Classification is filename + extension only. If that's not enough, ask. Do not open PDFs, parse docx XML, or run OCR — that's the job of the downstream processing skills.
+5. **One file → one destination.** Never copy. Always `mv`. After the run, the inbox is empty (or holds only files the user explicitly declined to route, plus emptied folders cleaned up).
+6. **No content peeking on first pass.** Classification is filename + extension + parent folder name only. If that's not enough, ask. Do not open PDFs, parse docx XML, run OCR, or transcribe audio — that's the job of the downstream processing skills.
+7. **Parent folder name is classification signal.** A file at `rag/_inbox/Keysight B2961A Manuals/foo.pdf` carries the same routing weight as a file literally named `Keysight B2961A foo.pdf`. The folder is a hint — the file inside still gets classified individually for class (extension still wins for `pdfs/` vs `photos/`).
+8. **Per-mv verify, continue-on-failure.** After each move, confirm the source is gone and the destination exists. If one `mv` fails, log it and continue with the rest — never abort the batch on a single failure.
 
 ## Process
 
 ### 1. Discover
 
 ```bash
-ls -la rag/_inbox/
+find rag/_inbox/ -type f \
+  ! -name '.gitkeep' \
+  ! -name 'README.md' \
+  ! -name '.DS_Store' \
+  ! -name 'Thumbs.db' \
+  ! -name 'Icon?' \
+  ! -name '._*' \
+  ! -name '~$*' \
+  ! -path '*/__MACOSX/*' \
+  ! -path '*/.AppleDouble/*' \
+  ! -path '*/.Spotlight-V100/*' \
+  ! -path '*/.Trashes/*' \
+  ! -path '*/.fseventsd/*'
 ```
 
-Skip `.gitkeep` and `.DS_Store`. If empty, report "no files to route" and exit.
+Junk-delete the macOS/Windows clutter rather than asking. Anything legitimate that remains gets classified.
+
+**Empty inbox** → report "no files to route" and exit.
+
+**iCloud placeholder files** (`*.icloud`) — these are stubs pointing to cloud-stored content; `mv`-ing them moves the stub, not the file. Detect by extension and report them at the top of the plan with a note: "Force-download in Finder, then re-run intake."
+
+**Folders left behind after files move** — `find rag/_inbox/ -type d -empty -delete` at the end of the execute step, but never delete `rag/_inbox/` itself.
 
 ### 2. Classify each file
 
-Two dimensions per file: **product** and **class**.
+Three dimensions per file: **product**, **class**, and (sometimes) **audit override**.
 
-#### Product detection (filename keywords, case-insensitive)
+#### Product detection (filename + parent folder keywords, case-insensitive)
+
+Use both the filename AND every parent folder name above it (up to `_inbox/`). Folder hint wins ties — if a file inside `Keysight B2961A/` has no SKU in its own name, the parent folder routes it to `keysight-b2961a/`.
 
 | Match | Product folder |
 |---|---|
 | `tekexpress`, `tek-express`, `tekrx` | `rag/sources/tek-express/` |
 | `2450` (and not `2450-`+something-else) | `rag/sources/2450-ec/` |
-| `keysight` + a model token (e.g. `B2961A`, `B2901B`, `33500B`, kebabbed to `keysight-b2961a`) | `rag/sources/keysight-<sku>/` (auto-create if missing) |
-| `agilent` + a model token | `rag/sources/agilent-<sku>/` (treat as same product family lineage; auto-create if missing) |
-| Two or more product names in the filename, or any of `vs`, `versus`, `comparison`, `compet`, `matrix`, `benchmark` | **Audit** — see Audit detection below |
-| No product marker | **Ask the user** which product, or whether it's product-agnostic |
+| `keysight` + model token (`B2961A`, `B2901B`, `33500B`, etc., kebabbed to `keysight-b2961a`) | `rag/sources/keysight-<sku>/` (auto-create if missing) |
+| `agilent` + model token | `rag/sources/agilent-<sku>/` (treat as same product family lineage; auto-create if missing) |
+| Two or more product names in the file or folder path, OR any of `vs`, `versus`, `comparison`, `compet`, `matrix`, `benchmark` | **Audit** — see Audit detection below |
+| No product marker in file OR folder path | **Ask the user** which product, or whether it's product-agnostic |
 
 #### Class detection (extension + filename keywords, case-insensitive)
 
 | Extension | Default class | Override keywords |
 |---|---|---|
-| `.pdf` | `uploads/pdfs/` | If filename contains `transcript`, route to `uploads/transcripts/` instead |
-| `.docx`, `.doc` | `uploads/transcripts/` | If filename contains `manual`, `guide`, `spec`, `datasheet` → `uploads/artifacts/` (Word manuals are unusual; flag in plan) |
-| `.vtt`, `.srt`, `.txt` | `uploads/transcripts/` | If filename contains `openapi`, `swagger` → `uploads/api-specs/` |
+| `.pdf` | `uploads/pdfs/` | `transcript` → `uploads/transcripts/` |
+| `.docx`, `.doc` | `uploads/transcripts/` | `manual`/`guide`/`spec`/`datasheet` → `uploads/artifacts/` (flag in plan) |
+| `.vtt`, `.srt`, `.txt` | `uploads/transcripts/` | `openapi`/`swagger` → `uploads/api-specs/` |
 | `.pptx`, `.key`, `.ppt` | `uploads/artifacts/` | — |
-| `.png`, `.jpg`, `.jpeg`, `.webp`, `.heic` | `uploads/photos/` | — (hardware photos still go to `photos/`; the document-screens skill handles the split) |
-| `.yaml`, `.yml`, `.json` | **Ask** | If filename contains `openapi`, `swagger`, `api`, route to `uploads/api-specs/` without asking |
-| `.ai`, `.sketch`, `.fig`, `.zip`, `.dwg`, `.dxf` | `uploads/artifacts/` | — |
+| `.png`, `.jpg`, `.jpeg`, `.webp`, `.heic`, `.tiff`, `.bmp`, `.gif` | `uploads/photos/` | — (hardware photos still go to `photos/`; `document-screens` handles the split) |
+| `.m4a`, `.mp3`, `.wav`, `.aac`, `.ogg`, `.flac` | `uploads/recordings/` | — (transcription happens downstream) |
+| `.mp4`, `.mov`, `.webm`, `.mkv`, `.avi` | `uploads/recordings/` | — (audio extraction + transcription happens downstream) |
+| `.yaml`, `.yml`, `.json` | **Ask** | If filename contains `openapi`/`swagger`/`api` → `uploads/api-specs/` without asking |
+| `.xlsx`, `.csv`, `.xls`, `.numbers` | `uploads/artifacts/` | If filename contains `comparison`/`matrix`/`vs`/`benchmark` → `audits/competitive/<>/assets/` |
+| `.md` | `uploads/artifacts/` | If filename contains `audit`/`analysis`/`review`/`critique` → ask whether it's a draft audit report (route to `audits/` location) |
+| `.ai`, `.sketch`, `.fig`, `.dwg`, `.dxf` | `uploads/artifacts/` | — |
+| `.zip`, `.tar.gz`, `.tgz`, `.7z`, `.rar` | **Special** — see Section 2.5 below |
 | Anything else | **Ask** | — |
 
 #### Audit detection (overrides product routing)
 
 Any of these trigger an audit destination instead of corpus:
-- Filename matches two or more product names (e.g. `TekExpress-vs-Keysight-B2961A.pptx`).
+- File or parent folder name contains two or more product names (e.g. `TekExpress-vs-Keysight-B2961A.pptx`, or a `Comparisons/` folder containing both Tek and competitor files).
 - Filename contains `vs`, `versus`, `comparison`, `compet`, `matrix`, `benchmark`.
 - Filename contains `audit` or `analysis` AND a competitor name.
 
 Destination: `audits/competitive/<YYYY-MM-DD>-<slug>/assets/<original-filename>`.
 - `<YYYY-MM-DD>` is today's date.
-- `<slug>` is kebab-cased from the dominant comparison subject in the filename (e.g. `tek-express-vs-keysight-b2961a`).
+- `<slug>` is kebab-cased from the dominant comparison subject (e.g. `tek-express-vs-keysight-b2961a`).
 - If multiple competitive-analysis files arrive in the same intake run, group them under the same audit folder when their slugs would match; otherwise create separate folders.
+
+### 2.5. Special handling
+
+These cases need an interactive decision before they hit the routing plan:
+
+#### Archive auto-unzip (`.zip`, `.tar.gz`, `.7z`, `.rar`)
+
+For each archive: offer "Unzip and re-intake the contents?" (default yes). If yes:
+```bash
+unzip -d "rag/_inbox/<archive-stem>/" "rag/_inbox/<archive>.zip"
+rm "rag/_inbox/<archive>.zip"
+```
+Then re-discover. Contents land in a subfolder named after the archive, which feeds into the recursive scan and the folder-name classification hint.
+
+For encrypted/password-protected archives: do not prompt for password. Ask whether to route the archive as-is into `uploads/artifacts/` (where downstream skills can't consume it) or hold in `_inbox/` for manual handling.
+
+#### Generic-name screenshot batch
+
+If 3+ files match a generic-screenshot pattern (`Screenshot 2026-MM-DD at H.MM.SS PM.png`, `Screen Shot YYYY-MM-DD…`, `IMG_NNNN.{jpg,png,heic}`, `DSC_NNNN.{jpg,png}`, `Snipaste_…`) AND have no parent folder hint, **batch-ask once**: "N generic screenshots found — same product for all? [tek-express / 2450-ec / new SKU / per-file]". Apply the answer to the whole batch, not one prompt per file.
+
+#### iCloud placeholder
+
+Already handled in Discover — report at top of plan as "needs force-download in Finder, then re-run". Never `mv` a `.icloud` stub.
+
+#### Large file warning (>500 MB)
+
+For any single file >500 MB, include a warning line in the plan: `⚠ <filename> is <size> MB — confirm this isn't a misplaced install image / ISO / DMG before saying go.` Vendor full-install packages get dropped by accident. Still routable if the user confirms.
 
 ### 3. Build the routing plan
 
-A Markdown table with columns: `Filename | Detected product | Class | Destination | Action`.
+A Markdown table with columns: `Original path | Detected product | Class | Destination | Action`.
 
-`Action` is one of: `move`, `new-skeleton + move` (auto-create product folder), `new-audit + move` (auto-create audit folder), `ask`.
+- `Original path` shows the file relative to `_inbox/` (e.g. `Keysight B2961A Manuals/quickstart.pdf`) so the parent-folder hint is visible.
+- `Action` is one of: `move`, `new-skeleton + move` (auto-create product folder), `new-audit + move` (auto-create audit folder), `unzip + reintake`, `ask`, `warn`.
 
-Group the rows by destination. Any `ask` rows go in a separate **Needs input** section at the bottom of the plan with the specific question.
+Group the rows by destination. Sections in this order:
+
+1. **Auto-route (will execute on `go`)** — clean moves.
+2. **Warnings (will execute on `go` if not overridden)** — large files, iCloud notes, encrypted archives.
+3. **New folders to create** — list of `rag/sources/<sku>/` and `audits/competitive/<>/` that will be scaffolded.
+4. **Archives to unzip-and-reintake** — list with file count if known.
+5. **Needs input** — every `ask` row with the specific question.
+6. **Refused at intake** — anything matching the refused-types list (see Section 5).
 
 ### 4. Wait for confirmation
 
 Print the plan. Stop. Wait for the user to:
-- Say `go` (or `yes`, `ok`, `do it`, `merge`) — execute the plan.
-- Say `skip <filename>` to leave specific files in `_inbox/`.
+- Say `go` (or `yes`, `ok`, `do it`) — execute the plan.
+- Say `skip <filename or pattern>` to leave specific files in `_inbox/`.
 - Override a row by saying e.g. `route foo.pdf to keysight-33500b/uploads/pdfs/`.
 - Cancel with `cancel` / `no` / `stop`.
 
-For any `ask` rows, the user must answer before the plan can execute. If `--strict` was passed, error out instead.
+For any `ask` rows, the user must answer before the plan can execute. If `--strict` was passed, error out on those instead.
 
 ### 5. Execute
 
-For each row:
+For each row in dependency order (new-skeleton/new-audit first, then unzip, then moves):
 
 ```bash
-# If new-skeleton, scaffold first:
-mkdir -p rag/sources/<sku>/uploads/{pdfs,transcripts,photos,artifacts,api-specs}/
-touch rag/sources/<sku>/uploads/{pdfs,transcripts,photos,artifacts,api-specs}/.gitkeep
+# 5a. If new-skeleton, scaffold first:
+mkdir -p "rag/sources/<sku>/uploads/"{pdfs,transcripts,recordings,photos,artifacts,api-specs}/
+touch "rag/sources/<sku>/uploads/"{pdfs,transcripts,recordings,photos,artifacts,api-specs}/.gitkeep
 
-# If new-audit, scaffold first:
-mkdir -p audits/competitive/<YYYY-MM-DD>-<slug>/assets/
-touch audits/competitive/<YYYY-MM-DD>-<slug>/assets/.gitkeep
+# 5b. If new-audit, scaffold first:
+mkdir -p "audits/competitive/<YYYY-MM-DD>-<slug>/assets/"
+touch "audits/competitive/<YYYY-MM-DD>-<slug>/assets/.gitkeep"
 
-# Then move:
-mv "rag/_inbox/<file>" "<destination>"
+# 5c. Unzip-and-reintake (run before the main moves):
+unzip -d "rag/_inbox/<stem>/" "rag/_inbox/<archive>"
+rm "rag/_inbox/<archive>"
+# Then re-discover and re-build the plan for the new files; merge into the main plan.
+
+# 5d. Move, verify, log:
+src="rag/_inbox/<relative-path>"
+dest="<destination>"
+mv "$src" "$dest" && [ ! -e "$src" ] && [ -e "$dest" ] && echo "moved: $src → $dest"
+# On failure: log and continue. Do not abort the batch.
+
+# 5e. After all moves, clean up emptied folders:
+find rag/_inbox/ -mindepth 1 -type d -empty -delete
 ```
 
-Quote every path — filenames frequently contain spaces, parens, or ampersands.
+Quote every path — filenames frequently contain spaces, parens, ampersands, em-dashes, and emojis.
 
 ### 6. Report
 
 Print the final disposition table with status per row (`moved`, `skipped`, `failed: <reason>`). Run `git status` and include its output so the user can confirm:
 - All routed files are gitignored (no untracked uploads).
-- Any auto-created `.gitkeep` skeletons show as untracked (those need to be committed if the new product folder is being introduced).
+- Any auto-created `.gitkeep` skeletons show as untracked (those need to be committed if a new product folder is being introduced).
 
 Suggest next steps based on what landed:
 - Files in `uploads/photos/` → `/document-screens <product>`
 - Files in `uploads/pdfs/` → `/document-pdf <product> <filename>`
 - Files in `uploads/transcripts/` → `/document-walkthrough <product> <filename>`
+- Files in `uploads/recordings/` → no auto-skill yet; transcribe externally first, then drop the transcript back through `/rag-intake`.
+- Files in `uploads/api-specs/` → `/document-api <product> <filename>`
 - Files in `audits/competitive/` → no auto-skill yet; write `report.md` by hand.
 
 ## Edge cases
 
 | Case | Behavior |
 |---|---|
-| File extension recognized but product unclear | Ask: "Which product?" Offer the existing product folders as a numbered list plus "new product (specify SKU)". |
-| Two files in the same intake have identical filenames | Append `-2`, `-3` etc. to the destination filename. Note in the plan. |
+| File extension recognized but product unclear from both filename and parent folder | Ask: "Which product?" Offer existing product folders as a numbered list plus "new product (specify SKU)" plus "skip (leave in _inbox/)". |
+| Two files would land at the same destination path | Append `-2`, `-3`, etc. to the destination filename. Note in the plan. |
 | Filename includes a date prefix (`20260601-meeting.docx`) | Strip prefixes for keyword detection but preserve the original filename on disk. |
 | New SKU detected but the kebab form is ambiguous (e.g. `B2961A-7USB` could be a single SKU or two) | Ask for confirmation before scaffolding. Wrong skeletons are cheap to delete but cluttering. |
-| File looks like a duplicate of something already in the destination | Check filename + size. If both match, ask whether to overwrite, rename, or skip. |
-| File is a `.DS_Store`, `Thumbs.db`, or `__MACOSX/` folder | Delete it without asking. |
-| Encrypted ZIPs or password-protected PDFs | Detect with a quick header check, ask whether to route as-is (will be unusable to processing skills) or hold in `_inbox/`. |
+| File looks like a duplicate of something already in the destination (same filename + size) | Ask whether to overwrite, rename, or skip. |
+| File is a `.DS_Store`, `Thumbs.db`, `__MACOSX/`, `.AppleDouble/`, `._foo`, `Icon\r`, or `~$foo.docx` Office lock file | Delete without asking. |
+| Empty file (0 bytes) | Flag in plan, skip by default — usually a corrupted drag or stub. |
+| Encrypted ZIP or password-protected PDF | Detect with a quick header check, ask whether to route as-is (will be unusable to processing skills) or hold in `_inbox/` for manual unlock. |
+| Symbolic link (`mv` would move the link, not the target) | Resolve to the real path; if the target is reachable, copy-then-delete instead of mv. If unreachable, skip with warning. |
+| iCloud placeholder (`*.icloud`) | Never `mv`. Report in plan as "force-download in Finder, then re-run intake". |
+| Hidden file (leading `.`, not in the junk skip list) | Skip by default; ask if `--strict` would have flagged it. |
+| Filename longer than 200 chars | Truncate to 200, preserve extension, note in plan. |
+| File literally named `--dry-run.pdf` or `--strict.csv` | Always parse flags positionally (must be first arg, before any filename); filenames after the first arg are treated as filenames even if they start with `--`. |
+
+## Refused at intake
+
+These never route into the corpus or audits. Detect, list under "Refused at intake" in the plan, skip without asking:
+
+| Type | Reason |
+|---|---|
+| `.exe`, `.app`, `.dmg`, `.pkg`, `.msi`, `.deb`, `.rpm` | Executables; not corpus material. |
+| `.py`, `.js`, `.ts`, `.tsx`, `.jsx`, `.cs`, `.java`, `.cpp`, `.h`, `.go`, `.rb`, `.php` | Source code; lives in actual repos, not the corpus. |
+| Any path containing `node_modules/`, `.git/`, `dist/`, `build/`, `.next/`, `target/`, `venv/` | Accidental drags of working trees. |
+| `.iso`, `.img`, `.vmdk`, `.qcow2` | Disk images; way too large for corpus. |
+| `.lock`, `package-lock.json`, `yarn.lock`, `Gemfile.lock`, `Cargo.lock` | Build artifacts. |
+
+## Out of scope (for downstream skills)
+
+This skill explicitly does NOT do:
+
+- **Format conversion** (HEIC → JPG, DOCX → MD, PPTX → MD). Downstream skills handle this — `document-screens` uses `sips` for image downscaling, `document-pdf` extracts text, `document-walkthrough` parses .docx.
+- **OCR for scanned PDFs.** `document-pdf` assumes a text layer; if missing, OCR is a manual step before re-intake.
+- **Audio/video transcription.** Recordings land in `uploads/recordings/` and wait for external transcription (Whisper, Otter.ai, Teams export). The resulting transcript file gets dropped back through `/rag-intake`.
+- **PDF password unlock.** Liability + asks for credentials. Manual unlock + re-intake.
+- **Content peek for classification.** Filename + extension + parent folder name is the speed/predictability contract. If filename is wrong, the user overrides the row.
+- **Curation.** Routing only; whether a file is "worth" adding to the corpus is the user's call.
+- **`index.md` regeneration.** That's the per-product processing skills' job.
+- **Reverse moves.** No "undo intake". To re-route a file, `mv` it manually or drop it back into `_inbox/` and re-run.
 
 ## Output template
 
 ```markdown
-## Routing plan — <N> file(s) found
+## Routing plan — <N> file(s) found across <M> folder(s)
 
 ### Auto-route (will execute on `go`)
-| Filename | Product | Class | Destination | Action |
+| Original path | Product | Class | Destination | Action |
 |---|---|---|---|---|
-| ... | ... | ... | `rag/sources/.../uploads/.../<file>` | move |
+| `Tek Express Screens/0. Options.png` | tek-express | photos | `rag/sources/tek-express/uploads/photos/0._Options.png` | move |
+| ... | ... | ... | ... | ... |
 
-### Needs input
-- `<filename>` — <specific question>
+### Warnings
+- ⚠ `big-vendor-pack.zip` is 850 MB — confirm this isn't a misplaced install image before `go`.
+- ⚠ `IMG_0042.png.icloud` is an iCloud stub — force-download in Finder, then re-run intake.
 
 ### New folders to create
-- `rag/sources/<new-sku>/` (full uploads/ skeleton)
-- `audits/competitive/<date>-<slug>/`
+- `rag/sources/keysight-b2961a/` (full uploads/ skeleton)
+- `audits/competitive/2026-06-25-tek-express-vs-keysight-b2961a/`
+
+### Archives to unzip and re-intake
+- `keysight-product-docs.zip` (will extract into `rag/_inbox/keysight-product-docs/` then re-discover)
+
+### Needs input
+- `Untitled.docx` — no product marker in filename or folder. Which product?
+- `feature-matrix.xlsx` — looks like a Tek vs. Keysight comparison; confirm before routing to `audits/competitive/`.
+
+### Refused at intake (auto-skipped)
+- `setup.exe` — executable
+- `my-notes/.git/HEAD` — accidental repo path
 
 Reply `go` to execute, `skip <file>` to hold any back, or override individual rows.
 ```
@@ -161,26 +285,24 @@ Reply `go` to execute, `skip <file>` to hold any back, or override individual ro
 After execution:
 
 ```markdown
-## Done
+## Done — <X> moved, <Y> skipped, <Z> failed
 
-| Filename | Destination | Status |
+| Original path | Destination | Status |
 |---|---|---|
 | ... | ... | moved |
+| ... | — | skipped (held in _inbox/) |
+| ... | ... | failed: <reason> |
 
-`git status` shows: <summary>
+`git status` shows:
+- <N> new untracked .gitkeep files (commit if scaffolding new product folders)
+- 0 untracked binaries (everything correctly gitignored ✓)
 
 Next steps:
-- <product> has new photos → `/document-screens <product>`
+- tek-express has new photos → `/document-screens tek-express`
+- tek-express has a new transcript → `/document-walkthrough tek-express "TekExpress deep dive.docx"`
+- keysight-b2961a is a new product folder — commit the skeleton: `git add rag/sources/keysight-b2961a/`
 - ...
 ```
-
-## What this skill does NOT do
-
-- Process file content. That's `/document-screens`, `/document-pdf`, `/document-walkthrough`, etc.
-- Extract metadata, OCR, or peek inside binaries.
-- Move files OUT of `uploads/` (one-way intake only).
-- Create or modify `index.md` (that's the per-product processing skills' job).
-- Decide whether a file is "worth" adding. Routing only; curation is the user's call.
 
 ## See also
 
