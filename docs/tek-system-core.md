@@ -638,17 +638,21 @@ Qual and quant accessible through the same MCP surface as everything else. Any A
 
 ## Content System
 
-Files-as-CMS. Content lives as markdown and JSON in git; the **schema is derived from the design system's components, not authored separately**. This is the death of the SaaS CMS for Tek's surfaces — and the same files-as-source thesis the rest of this architecture already runs on, applied to editorial content.
+**The death of the SaaS CMS, and the metamorphosis of the design system into the thing that replaces it.**
+
+Files-as-CMS. Content lives as markdown and JSON in git; the **schema is derived from the design system's components, not authored separately**. This is the same files-as-source thesis the rest of this architecture already runs on — turned on editorial content, where it ends an era.
+
+Headless was the last real breakthrough — Contentful, Sanity, the decoupling of content from presentation. It was right for its moment and it is now the ceiling. Every step of the CMS era added weight: a database, a vendor, a schema you rebuild in someone's UI, a mapping you re-maintain in every frontend, a subscription that renews whether you ship or not. This step runs the tape backwards. The store collapses to files — markdown, the most utilitarian thing there is: small, free, diffable, limitless. The schema collapses into the design system, which already exists. The SaaS CMS isn't replaced feature-for-feature. It's *dissolved* — there's nothing left for it to be the home of.
 
 ### The thesis: kill the duplicated schema
 
-A SaaS CMS (Contentful, Sanity, Strapi) bundles three things: a content store, a content model, and an editing UI. The part teams assume is the value is the store — the database. It isn't. Files in git are a better store: versioned, diffable, branchable, free, portable, no vendor.
+A SaaS CMS (Contentful, Sanity, Strapi) sells three things bundled: a content store, a content model, and an editing UI. The part everyone assumes is the value is the store — the database. It isn't. Files in git are the better store, and it isn't close: versioned, diffable, branchable, free, portable, no vendor, no renewal.
 
-The genuinely expensive part is the **content model**, and a SaaS CMS makes you define it *twice and maintain the mapping by hand forever* — once in the CMS UI, once again in every consuming frontend that maps `entry.fields.heroTitle` onto a real component. That hand-maintained mapping is the slog, the cost, and the drift.
+The part that is genuinely expensive is the **content model** — and a SaaS CMS makes you build it *twice and maintain the seam by hand forever.* Once in the vendor's UI, once again in every frontend that maps `entry.fields.heroTitle` onto a real component. That hand-maintained seam is the whole tax: the slog, the cost, and the drift. It is the exact career-long frustration this system exists to end — paying, repeatedly, to re-state something you already know.
 
-Tek can collapse it. The design system already has a **formally defined, 1:1, token-backed component contract** spanning Figma → code → Qt (→ WPF, → React, → HTML). So a content entry's schema doesn't get *authored* — it gets *derived* from the component's prop contract. The schema for a Hero entry **is** the Hero component's contract. One source. Generated, not maintained.
+Tek collapses it. The design system already holds a **formally defined, 1:1, token-backed component contract** spanning Figma → code → Qt (→ WPF, → React, → HTML). So a content entry's schema is not *authored* — it is *derived* from the component's prop contract. The schema for a Hero entry **is** the Hero component's contract. One source. Generated, never maintained.
 
-That is the metamorphosis. Not "files replace the database" — that's the easy 20%. **The schema stops being a separate thing you own.** Most teams can't do this because they lack the token→Figma→code closure. Tek has it. That's why the SaaS CMS dies here specifically.
+That is the metamorphosis, and it's worth being precise about what changes. "Files replace the database" is the easy, boring 20% — anyone can do that. The real event: **the content model stops being a thing you own at all.** It becomes a shadow the design system casts. Most teams structurally cannot do this — they have no token→Figma→code closure for a schema to fall out of. Tek built exactly that closure first, on purpose. The SaaS CMS dies here specifically because here, and almost nowhere else, there is something ready to absorb its only real job.
 
 ### Prior art — standing on solid ground
 
