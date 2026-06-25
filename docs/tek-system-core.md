@@ -13,6 +13,7 @@ The premise: codified, versioned, queryable systems compound. AI tools amplify t
 - [PRD System](#prd-system) — product requirements as version-controlled artifacts
 - [DEV System](#dev-system) — architectural rules codified so AI produces production code
 - [UXR & Analytics](#uxr--analytics) — qualitative and quantitative user signal
+- [Content System](#content-system) — files-as-CMS, schema derived from the design system
 - [Appendix: Notes for Bill](#appendix-notes-for-bill) — leadership-facing framing, kept in personal voice
 - [Appendix: Why the Design System works as the proof point](#appendix-why-the-design-system-works-as-the-proof-point)
 
@@ -632,6 +633,69 @@ Extend the event taxonomy to a second product. Cross-product questions become an
 
 **Phase 5 — Joined retrieval.**
 Qual and quant accessible through the same MCP surface as everything else. Any AI tool grounds in real user data, not just specs and requirements.
+
+---
+
+## Content System
+
+Files-as-CMS. Content lives as markdown and JSON in git; the **schema is derived from the design system's components, not authored separately**. This is the death of the SaaS CMS for Tek's surfaces — and the same files-as-source thesis the rest of this architecture already runs on, applied to editorial content.
+
+### The thesis: kill the duplicated schema
+
+A SaaS CMS (Contentful, Sanity, Strapi) bundles three things: a content store, a content model, and an editing UI. The part teams assume is the value is the store — the database. It isn't. Files in git are a better store: versioned, diffable, branchable, free, portable, no vendor.
+
+The genuinely expensive part is the **content model**, and a SaaS CMS makes you define it *twice and maintain the mapping by hand forever* — once in the CMS UI, once again in every consuming frontend that maps `entry.fields.heroTitle` onto a real component. That hand-maintained mapping is the slog, the cost, and the drift.
+
+Tek can collapse it. The design system already has a **formally defined, 1:1, token-backed component contract** spanning Figma → code → Qt (→ WPF, → React, → HTML). So a content entry's schema doesn't get *authored* — it gets *derived* from the component's prop contract. The schema for a Hero entry **is** the Hero component's contract. One source. Generated, not maintained.
+
+That is the metamorphosis. Not "files replace the database" — that's the easy 20%. **The schema stops being a separate thing you own.** Most teams can't do this because they lack the token→Figma→code closure. Tek has it. That's why the SaaS CMS dies here specifically.
+
+### Prior art — standing on solid ground
+
+The file-based half is proven: **Astro Content Collections, Keystatic, TinaCMS, Contentlayer, Decap** have all validated git-backed MD+JSON content with typed schemas. Borrow their solved problems. What none of them have is Tek's back half — the design-system-as-rendering-contract and a RAG that knows the whole system. Spend the novelty budget there, not on re-deriving a markdown content store.
+
+### Structure
+
+```
+/content
+  /pages
+    home.json              ← page = ordered list of section refs + props
+    products/scopes.json
+  /entries
+    /hero-launch-2026
+      en.md                ← one entry = one folder, one md per locale
+      de.md
+      ja.md
+      meta.json            ← entry-level structured fields
+  /assets
+    hero-launch-2026.png   ← referenced by path from md/json
+```
+
+- **A page** is a JSON file: an ordered list of section references, each naming a component and its props.
+- **An entry** is a folder. Markdown carries prose; `meta.json` carries structured fields. Images are referenced by path, never embedded.
+- **Locale, personalization, and A/B variants are the same mechanism** — sibling files in the entry folder (`en.md`, `de.md`; or `default.md`, `variant-b.md`). One pattern, not three.
+
+### The three keystones — where the real work is
+
+The store is the easy part. These three are load-bearing and easy to underestimate:
+
+1. **The schema layer is the whole game.** "JSON references MD" holds until `home.json` slots a `Button` into a region that only accepts `Card`, or passes a prop the component doesn't have. Without a contract validated *at build time*, this rebuilds the broken-reference problem a SaaS CMS actually solved. Win condition: a schema **emitted from the component definitions** (Zod / JSON Schema), so authoring is typed and a bad reference fails the build, not production. Same move as Style Dictionary failing on an undeclared variable — a binding artifact downstream of the doc.
+
+2. **Don't reinvent the editor.** "Management is not one place" is the right philosophy, but a PM hand-editing raw JSON+MD in GitHub is a friction wall that kills adoption. **Keystatic and TinaCMS already are "git-backed files + a schema-driven editing UI."** The Claude-spins-the-UI idea is better long-term — but evaluate those first, so going custom is a choice, not a discovery. This is the source-friction lesson from the Token Push plugin: automate the source-to-substrate hop or the system doesn't get used.
+
+3. **Rendering is the payoff — name it.** One content file renders to HTML *and* Qt *and* WPF *only* because the component libraries are 1:1. That's what a SaaS CMS can't give: it hands you JSON and you still hand-map per framework. The DEV system's component-structure conventions are what make that mapping mechanical instead of manual. This bullet isn't a peer of the others — it's half the engine.
+
+### Same DNA as the corpus
+
+The Knowledge Corpus is *documentation*-as-data; the Content System is *content*-as-data. Same intake instinct, same chunked-markdown-with-frontmatter shape, same files-as-source thesis. Whatever frontmatter and validation conventions the content system settles on should be stolen from the corpus, not invented as a second grammar. And the dual-purpose payoff the corpus already describes applies here verbatim: a product description written once renders on the site *and* embeds for AI retrieval. One source of truth across human readers and AI agents.
+
+### Where it fits the five systems
+
+This is the rendering-and-publishing counterpart to the systems above: the Design System supplies the schema and the components, the DEV system supplies the per-target rendering contract, the Corpus shares the file grammar and the retrieval surface. It earns its place for **curated, structured, multi-surface content** — marketing pages, product pages, persona-facing copy — exactly the overlap the corpus's CMS-integration section flags as worth authoring. It is not for raw manuals and specs; those still go straight to ingestion.
+
+### Phase 1 deliverable
+
+Pick one page — a product page is the obvious one. Define its `page.json` against two or three existing `@tektronix/ui` components, with a schema generated from those components' contracts so a bad prop fails the build. Render it once to HTML. Demo: change a token, watch the page restyle; add a locale file, watch the page localize — with zero CMS, zero vendor, and the schema you never had to write by hand.
 
 ---
 
