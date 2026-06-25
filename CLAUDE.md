@@ -138,3 +138,11 @@ These are repo-level rules that apply to anyone touching this codebase — human
 3. [README.md](./README.md) — repo structure, token pipeline, type scale, fonts, install/usage, Figma node map
 4. [CONTRIBUTING.md](./CONTRIBUTING.md) — pipeline detail, token rules, review and approval, local dev
 5. [docs/tek-system-core.md](./docs/tek-system-core.md) — the five-system architecture
+
+### If you're touching corpus work specifically
+
+1. This file
+2. [corpus/README.md](./corpus/README.md) — layout, subjects-are-folders, idempotence, completion criteria, undo, scaling
+3. The skill SKILL.md for the asset class you're working on (under [`.claude/skills/`](./.claude/skills/)): `corpus-intake`, `document-screens`, `document-pdf`, `document-walkthrough`, `document-hardware`, `document-api`, `document-repo`
+4. The canonical format-lock reference for that class (each skill names its own; for screens it's `corpus/sources/2450-ec/screens/home.md`)
+5. [audits/README.md](./audits/README.md) — corpus-vs-audit boundary, design-additions / competitive / prototype audit types

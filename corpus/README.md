@@ -11,23 +11,29 @@ Two downstream uses today:
 
 ## Layout
 
+**Subjects are folders.** A "subject" is anything we corpus: a Tek product (`2450-ec`), a competitor product (`keysight-b2961a`), an internal service (`dev-core-api`), or a code repo (`tek-design-system`). All use the same `uploads/<class>/` schema. Cross-subject joins happen at retrieval time via `applies_to:` frontmatter, not folder hierarchy.
+
 ```
 corpus/
 ├── _inbox/                       drop zone for unsorted assets — routed by /corpus-intake
 └── sources/
-    └── <product-id>/              e.g. 2450-ec/  (SKU, kebab)
-        ├── uploads/               local-only dump zone
+    └── <subject-id>/              e.g. 2450-ec/, keysight-b2961a/, dev-core-api/
+        ├── uploads/               local-only dump zone — gitignored
         │   ├── photos/            screen + hardware photos
-        │   ├── pdfs/              manuals, quick-start guides, spec sheets
+        │   ├── pdfs/              manuals, quick-start guides, spec sheets, .chm help files
         │   ├── transcripts/       walkthrough transcripts (text — .docx, .vtt, .srt, .txt)
-        │   ├── recordings/        meeting audio/video (.m4a, .mp3, .mp4, .mov) — transcribe externally then re-intake the transcript
         │   ├── artifacts/         CAD, AI, slide decks, spreadsheets, anything else
         │   └── api-specs/         OpenAPI / Swagger / similar
-        ├── screens/               one .md per screen + downscaled image
-        └── index.md               cross-asset index (generated)
+        ├── screens/               one .md per UI screen + downscaled image (document-screens)
+        ├── hardware/              one .md per hardware view + downscaled image (document-hardware)
+        ├── docs/<doc-id>/         chunked manual / guide markdown (document-pdf)
+        ├── walkthroughs/          per-flow transcript chunks (document-walkthrough)
+        ├── api/<snapshot-id>/     versioned API spec snapshots (document-api)
+        ├── code/<snapshot-id>/    versioned code-module snapshots (document-repo)
+        └── index.md               cross-asset index (regenerated on every processing-skill run)
 ```
 
-Future asset-class output folders (`hardware/`, `docs/<doc-id>/`, `walkthroughs/`, `artifacts/`) land alongside `screens/` as their processing skills come online.
+**Audio/video recordings are refused at corpus-intake.** Transcribe externally (Whisper, Otter.ai, Teams export), then re-intake the resulting `.vtt`/`.txt`/`.docx` transcript. A `/document-recording` skill is on the high-priority follow-up list to remove this friction.
 
 ## Workflow
 
@@ -51,13 +57,13 @@ Markdown is the RAG payload. PDFs and other binaries stay in `uploads/` and are 
 
 After an asset is processed, the original in `uploads/` can be deleted from local disk — the markdown + downscaled reference are the artifact.
 
-## Cross-product applicability
+## Cross-subject applicability
 
-When an asset applies to more than one product (e.g. a manual that covers 2450-EC, 2460-EC, and 2461-EC), the markdown declares the full list in frontmatter as `applies_to: [<sku>, …]`. Families are an emergent property of `applies_to`, not a folder hierarchy. Products are folders; cross-product joins happen at retrieval time.
+When an asset applies to more than one subject (e.g. a manual that covers 2450-EC, 2460-EC, and 2461-EC), the markdown declares the full list in frontmatter as `applies_to: [<id>, …]`. Families are an emergent property of `applies_to`, not a folder hierarchy. Subjects are folders; cross-subject joins happen at retrieval time.
 
 ## Competitor products
 
-Non-Tek vendor products use the same schema as Tek products — they are still *products*. Their folder name is `<vendor>-<sku>/` (e.g. `keysight-b2961a/`), and `uploads/` accepts the vendor's own manuals, datasheets, and other as-is reference material exactly as it does for Tek.
+Non-Tek vendor products use the same schema as Tek subjects — they are still corpus subjects. Their folder name is `<vendor>-<sku>/` (e.g. `keysight-b2961a/`), and `uploads/` accepts the vendor's own manuals, datasheets, and other as-is reference material exactly as it does for Tek. **Default to a full corpus folder** for every competitor product we have substantive material on — symmetric treatment with our own products.
 
 The corpus is for *as-is* legacy artifact dumps only. Tek-authored comparative analysis (competitive decks, feature matrices, UX critiques of a competitor's product) is **interpretation**, not corpus — it lives under `audits/competitive/` and is dated/disposable like any other audit.
 
@@ -83,3 +89,53 @@ When a corpus consumer needs a current view (e.g. CD wants to redesign a screen)
 The canonical reference is `sources/2450-ec/screens/home.md`. Subsequent screens — and any other class-specific skill — must mirror its frontmatter shape and body section order; class-specific fields extend the base schema rather than replacing it.
 
 **Locked body sections for screen `.md`:** Purpose → Controls inventory → State variations → Visible text (verbatim) → Confidence notes → Manual references → Source photo. **No `Design system mapping` section.** That lives in `audits/prototype/<YYYY-MM-DD>-<slug>/`, generated by `prototype-qa`.
+
+## Idempotence — processing skills are safe to re-run
+
+Every `document-*` skill is idempotent. Re-running on the same product (or the same single photo via `--photo`) regenerates the output from the current state of `uploads/`. There is no append mode and no skip-already-done mode — output is always derived from inputs.
+
+In practice that means:
+- If you fix a confidence note or relabel a control by hand-editing the .md, **don't re-run the skill** without copying your edit back into the source photo or transcript first; the re-run will overwrite your hand-edit.
+- If you drop a corrected source photo into `uploads/photos/`, re-running `document-screens` for that product will pick it up and regenerate the affected screen .md.
+- If you add a new manual chunk via `document-pdf`, screen `.md` files get their `Manual references` sections automatically back-updated.
+
+## Process completion — how to know a screen (or chunk) is done
+
+A processed asset is ready to commit when all of the following hold:
+
+- [ ] Markdown committed to `<subject>/<output-class>/<id>.md`
+- [ ] Paired downscaled image committed (for screens / hardware) — text on the LCD legible at 100% zoom in a browser
+- [ ] `Confidence notes` section is substantive and reflects what the source photo actually shows; no boilerplate
+- [ ] No fabricated controls, labels, or values — anything not derivable from the source is flagged in confidence notes
+- [ ] Cross-references resolve: every `[link](path)` opens to a real file
+- [ ] `index.md` regenerated (every processing skill does this; verify the entry exists)
+- [ ] `git status` shows no untracked binaries (everything under `uploads/` correctly gitignored)
+- [ ] **No `Design system mapping` section** — that's a separate audit produced on-demand by `prototype-qa`
+
+**Manual pairing** (linking screens to manual chunks) is a separate pass. Until `/pair-manual` ships, the social rule is: whoever processes the second of (screens, manual) for a subject does the pairing as part of their work. Confidence notes flagging "manual pairing pending" stay as honest status until then.
+
+## Undo and recovery
+
+The corpus is markdown — every change is recoverable.
+
+- **Bad output from a skill run**: fix in place (edit the `.md`) or `git checkout HEAD -- <path>` to revert; re-run the skill with the inputs corrected if the root cause was the source.
+- **Whole product folder went sideways**: `git revert <commit>` or, on an unpushed branch, `git restore --source HEAD~1 -- corpus/sources/<subject>/`.
+- **Source photo or transcript was wrong**: the originals stay in `uploads/` (local-only), so you can swap and re-run; nothing about the corpus pipeline assumes one-shot processing.
+
+There is no "undo intake" — once `corpus-intake` moves a file, it's at the destination. To re-route, `mv` it manually or drop it back into `_inbox/` and re-run.
+
+## Scaling notes
+
+The current structure works comfortably at the POC scale (≤10 subjects, ≤100 screens, ≤20 chunks per manual). Inflection points to watch for:
+
+- **At ~50 subjects** the flat `sources/` listing becomes hard to browse. Consider grouping by vendor or product line (e.g. `sources/keithley/`, `sources/tektronix/`) — but every reorg is a path-update cost, so defer until friction is concrete.
+- **At ~500 screens per subject** the per-product `screens/` folder becomes hard to browse in Finder/VS Code. Consider sub-grouping (`screens/setup/`, `screens/results/`) — affects `screen_id` conventions.
+- **At any size** retrieval relies on `applies_to:` frontmatter for cross-subject queries; never invent a "product-family" folder hierarchy. Families are emergent.
+
+## Read order — if you're touching corpus work specifically
+
+1. This file (corpus layout, idempotence, completion criteria, undo)
+2. The skill SKILL.md for the class you're working on: [`corpus-intake`](../.claude/skills/corpus-intake/SKILL.md), [`document-screens`](../.claude/skills/document-screens/SKILL.md), [`document-pdf`](../.claude/skills/document-pdf/SKILL.md), [`document-walkthrough`](../.claude/skills/document-walkthrough/SKILL.md), [`document-hardware`](../.claude/skills/document-hardware/SKILL.md), [`document-api`](../.claude/skills/document-api/SKILL.md), [`document-repo`](../.claude/skills/document-repo/SKILL.md)
+3. The canonical reference file for that class — for screens it's `sources/2450-ec/screens/home.md`; each skill names its own canonical
+4. [`audits/README.md`](../audits/README.md) for the corpus-vs-audit boundary
+5. [`docs/tek-system-core.md`](../docs/tek-system-core.md) for the broader Knowledge Corpus → retrieval architecture (Phase 2)
