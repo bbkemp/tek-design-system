@@ -278,13 +278,1485 @@ Default path: `audits/code/<YYYY-MM-DD>.md`. Override via `output-dir`.
 
 ---
 
+## corpus-intake
+
+_Sort a pile of mixed files dropped into corpus/_inbox/ into the right corpus/sources/<product>/uploads/<class>/ folder (and audits/competitive/ for competitor analysis). Recursively scans subfolders, uses parent folder names as classification hints, classifies by filename + extension, shows a routing plan, waits for OK, then moves. Auto-creates new product folder skeletons (e.g. keysight-<sku>/) when a new SKU is detected, auto-unzips archives, batches prompts for generic-named screenshots. Use when you have a stack of manuals, transcripts, recordings, decks, screen photos, and vendor docs to drop into the corpus without manually sorting them._
+
+# Corpus intake
+
+Turns the "dump it all in one place" workflow into routed corpus uploads. Drop anything into `corpus/_inbox/` — flat files, whole folders, zipped folders — run `/corpus-intake`, confirm the routing plan, files land in the right `uploads/<class>/` folder.
+
+This skill **only sorts and moves**. Per-class processing (`/document-screens`, etc.) runs after. No content conversion, no OCR, no transcription — those are downstream jobs.
+
+## Inputs
+
+The user provides any mix of:
+- Flat files dropped into `corpus/_inbox/`.
+- Whole folders dropped in (Finder drag, archive extracted in place, etc.) — the skill recurses.
+- `.zip` archives — the skill offers to unzip and re-intake the contents.
+
+Supported asset types (filename + extension routing):
+- PDFs, transcripts (`.docx`/`.doc`/`.vtt`/`.srt`/`.txt`), slide decks (`.pptx`/`.key`/`.ppt`), screen photos (`.png`/`.jpg`/`.jpeg`/`.webp`/`.heic`), recordings (`.m4a`/`.mp3`/`.wav`/`.mp4`/`.mov`/`.webm`), API specs (`.yaml`/`.yml`/`.json` with openapi/swagger marker), spreadsheets (`.xlsx`/`.csv`), Figma/Sketch/AI/CAD artifacts (`.fig`/`.sketch`/`.ai`/`.dwg`/`.dxf`), Markdown notes (`.md`).
+
+Optional flags (passed as the first arg, never confused with filenames):
+- `--dry-run` — print the routing plan and exit without moving anything.
+- `--strict` — fail loudly on any ambiguous file rather than asking; useful for scripted invocations.
+
+## Hard rules
+
+1. **Never silently misroute.** Every file's destination must appear in the routing plan, and the user must say go before any `mv`. If a file is ambiguous (no clear product, no clear class), surface it as a question — do not best-guess.
+2. **Corpus vs. audit boundary is load-bearing.** Vendor-authored manuals/datasheets go into `corpus/sources/<vendor>-<sku>/uploads/pdfs/` (corpus, as-is). Tek-authored comparison decks/matrices/critiques go into `audits/competitive/<YYYY-MM-DD>-<slug>/assets/` (audit, interpretation, disposable). Crossing this line rots the corpus.
+3. **Auto-create new product folder skeletons.** When a filename or parent folder surfaces a new SKU (e.g. `keysight-b2961a`), scaffold `corpus/sources/<sku>/uploads/{pdfs,transcripts,photos,artifacts,api-specs}/.gitkeep` before the move. Include this in the plan so the user sees what's being created.
+4. **The inbox is gitignored.** Files in `corpus/_inbox/` never get committed. Same applies to everything that lands under `uploads/`. Only the skeleton `.gitkeep` files and processed markdown make it to git.
+5. **One file → one destination.** Never copy. Always `mv`. After the run, the inbox is empty (or holds only files the user explicitly declined to route, plus emptied folders cleaned up).
+6. **No content peeking on first pass.** Classification is filename + extension + parent folder name only. If that's not enough, ask. Do not open PDFs, parse docx XML, run OCR, or transcribe audio — that's the job of the downstream processing skills.
+7. **Parent folder name is classification signal.** A file at `corpus/_inbox/Keysight B2961A Manuals/foo.pdf` carries the same routing weight as a file literally named `Keysight B2961A foo.pdf`. The folder is a hint — the file inside still gets classified individually for class (extension still wins for `pdfs/` vs `photos/`).
+8. **Per-mv verify, continue-on-failure.** After each move, confirm the source is gone and the destination exists. If one `mv` fails, log it and continue with the rest — never abort the batch on a single failure.
+
+## Process
+
+### 1. Discover
+
+```bash
+find corpus/_inbox/ -type f \
+  ! -name '.gitkeep' \
+  ! -name 'README.md' \
+  ! -name '.DS_Store' \
+  ! -name 'Thumbs.db' \
+  ! -name 'Icon?' \
+  ! -name '._*' \
+  ! -name '~$*' \
+  ! -path '*/__MACOSX/*' \
+  ! -path '*/.AppleDouble/*' \
+  ! -path '*/.Spotlight-V100/*' \
+  ! -path '*/.Trashes/*' \
+  ! -path '*/.fseventsd/*'
+```
+
+Junk-delete the macOS/Windows clutter rather than asking. Anything legitimate that remains gets classified.
+
+**Empty inbox** → report "no files to route" and exit.
+
+**iCloud placeholder files** (`*.icloud`) — these are stubs pointing to cloud-stored content; `mv`-ing them moves the stub, not the file. Detect by extension and report them at the top of the plan with a note: "Force-download in Finder, then re-run intake."
+
+**Folders left behind after files move** — `find corpus/_inbox/ -type d -empty -delete` at the end of the execute step, but never delete `corpus/_inbox/` itself.
+
+### 2. Classify each file
+
+Three dimensions per file: **product**, **class**, and (sometimes) **audit override**.
+
+#### Product detection (filename + parent folder keywords, case-insensitive)
+
+Use both the filename AND every parent folder name above it (up to `_inbox/`). Folder hint wins ties — if a file inside `Keysight B2961A/` has no SKU in its own name, the parent folder routes it to `keysight-b2961a/`.
+
+| Match | Product folder |
+|---|---|
+| `tekexpress`, `tek-express`, `tekrx` | `corpus/sources/tek-express/` |
+| `2450` (and not `2450-`+something-else) | `corpus/sources/2450-ec/` |
+| `keysight` + model token (`B2961A`, `B2901B`, `33500B`, etc., kebabbed to `keysight-b2961a`) | `corpus/sources/keysight-<sku>/` (auto-create if missing) |
+| `agilent` + model token | `corpus/sources/agilent-<sku>/` (treat as same product family lineage; auto-create if missing) |
+| Two or more product names in the file or folder path, OR any of `vs`, `versus`, `comparison`, `compet`, `matrix`, `benchmark` | **Audit** — see Audit detection below |
+| No product marker in file OR folder path | **Ask the user** which product, or whether it's product-agnostic |
+
+#### Class detection (extension + filename keywords, case-insensitive)
+
+| Extension | Default class | Override keywords |
+|---|---|---|
+| `.pdf` | `uploads/pdfs/` | `transcript` → `uploads/transcripts/` |
+| `.docx`, `.doc` | `uploads/transcripts/` | `manual`/`guide`/`spec`/`datasheet` → `uploads/artifacts/` (flag in plan) |
+| `.vtt`, `.srt`, `.txt` | `uploads/transcripts/` | `openapi`/`swagger` → `uploads/api-specs/` |
+| `.pptx`, `.key`, `.ppt` | `uploads/artifacts/` | — |
+| `.png`, `.jpg`, `.jpeg`, `.webp`, `.heic`, `.tiff`, `.bmp`, `.gif` | `uploads/photos/` | — (hardware photos still go to `photos/`; `document-screens` handles the split) |
+| `.m4a`, `.mp3`, `.wav`, `.aac`, `.ogg`, `.flac`, `.mp4`, `.mov`, `.webm`, `.mkv`, `.avi` | **Refused at intake** — see Section 2.6 | — |
+| `.chm` | `uploads/pdfs/` | — (Compiled HTML Help; treated as manual/reference doc for downstream processing) |
+| `.yaml`, `.yml`, `.json` | **Ask** | If filename contains `openapi`/`swagger`/`api` → `uploads/api-specs/` without asking |
+| `.xlsx`, `.csv`, `.xls`, `.numbers` | `uploads/artifacts/` | If filename contains `comparison`/`matrix`/`vs`/`benchmark` → `audits/competitive/<>/assets/` |
+| `.md` | `uploads/artifacts/` | If filename contains `audit`/`analysis`/`review`/`critique` → ask whether it's a draft audit report (route to `audits/` location) |
+| `.ai`, `.sketch`, `.fig`, `.dwg`, `.dxf` | `uploads/artifacts/` | — |
+| `.zip`, `.tar.gz`, `.tgz`, `.7z`, `.rar` | **Special** — see Section 2.5 below |
+| Anything else | **Ask** | — |
+
+#### Audit detection (overrides product routing)
+
+Any of these trigger an audit destination instead of corpus:
+- File or parent folder name contains two or more product names (e.g. `TekExpress-vs-Keysight-B2961A.pptx`, or a `Comparisons/` folder containing both Tek and competitor files).
+- Filename contains `vs`, `versus`, `comparison`, `compet`, `matrix`, `benchmark`.
+- Filename contains `audit` or `analysis` AND a competitor name.
+
+Destination: `audits/competitive/<YYYY-MM-DD>-<slug>/assets/<original-filename>`.
+- `<YYYY-MM-DD>` is today's date.
+- `<slug>` is kebab-cased from the dominant comparison subject (e.g. `tek-express-vs-keysight-b2961a`).
+- If multiple competitive-analysis files arrive in the same intake run, group them under the same audit folder when their slugs would match; otherwise create separate folders.
+
+### 2.5. Special handling
+
+These cases need an interactive decision before they hit the routing plan:
+
+#### Archive auto-unzip (`.zip`, `.tar.gz`, `.7z`, `.rar`)
+
+For each archive: offer "Unzip and re-intake the contents?" (default yes). If yes:
+```bash
+unzip -d "corpus/_inbox/<archive-stem>/" "corpus/_inbox/<archive>.zip"
+rm "corpus/_inbox/<archive>.zip"
+```
+Then re-discover. Contents land in a subfolder named after the archive, which feeds into the recursive scan and the folder-name classification hint.
+
+For encrypted/password-protected archives: do not prompt for password. Ask whether to route the archive as-is into `uploads/artifacts/` (where downstream skills can't consume it) or hold in `_inbox/` for manual handling.
+
+#### Generic-name screenshot batch
+
+If 3+ files match a generic-screenshot pattern (`Screenshot 2026-MM-DD at H.MM.SS PM.png`, `Screen Shot YYYY-MM-DD…`, `IMG_NNNN.{jpg,png,heic}`, `DSC_NNNN.{jpg,png}`, `Snipaste_…`) AND have no parent folder hint, **batch-ask once**: "N generic screenshots found — same product for all? [tek-express / 2450-ec / new SKU / per-file]". Apply the answer to the whole batch, not one prompt per file.
+
+#### iCloud placeholder
+
+Already handled in Discover — report at top of plan as "needs force-download in Finder, then re-run". Never `mv` a `.icloud` stub.
+
+#### Large file warning (>500 MB)
+
+For any single file >500 MB, include a warning line in the plan: `⚠ <filename> is <size> MB — confirm this isn't a misplaced install image / ISO / DMG before saying go.` Vendor full-install packages get dropped by accident. Still routable if the user confirms.
+
+### 2.6. Audio/video recordings — refused at intake
+
+Audio (`.m4a`/`.mp3`/`.wav`/`.aac`/`.ogg`/`.flac`) and video (`.mp4`/`.mov`/`.webm`/`.mkv`/`.avi`) files are **refused at intake**. They land in the "Refused at intake" section of the plan with a message like:
+
+> `Meeting recording 2026-06-25.m4a` — transcribe externally first (Whisper, Otter.ai, Teams export), then drop the resulting `.vtt`/`.txt`/`.docx` transcript into `_inbox/` and re-run intake. A `/document-recording` skill is on the high-priority follow-up list to remove this friction.
+
+The file stays in `_inbox/` for the user to handle (transcribe + re-intake, or move out manually). Never auto-create an `uploads/recordings/` folder; never move audio/video into the corpus.
+
+Rationale: until `/document-recording` ships, audio/video in `uploads/recordings/` is a corpus dead-end — no downstream skill consumes it. Explicit refusal is more honest than a silent orphan.
+
+### 3. Build the routing plan
+
+A Markdown table with columns: `Original path | Detected product | Class | Destination | Action`.
+
+- `Original path` shows the file relative to `_inbox/` (e.g. `Keysight B2961A Manuals/quickstart.pdf`) so the parent-folder hint is visible.
+- `Action` is one of: `move`, `new-skeleton + move` (auto-create product folder), `new-audit + move` (auto-create audit folder), `unzip + reintake`, `ask`, `warn`.
+
+Group the rows by destination. Sections in this order:
+
+1. **Auto-route (will execute on `go`)** — clean moves.
+2. **Warnings (will execute on `go` if not overridden)** — large files, iCloud notes, encrypted archives.
+3. **New folders to create** — list of `corpus/sources/<sku>/` and `audits/competitive/<>/` that will be scaffolded.
+4. **Archives to unzip-and-reintake** — list with file count if known.
+5. **Needs input** — every `ask` row with the specific question.
+6. **Refused at intake** — anything matching the refused-types list (see Section 5).
+
+### 4. Wait for confirmation
+
+Print the plan. Stop. Wait for the user to:
+- Say `go` (or `yes`, `ok`, `do it`) — execute the plan.
+- Say `skip <filename or pattern>` to leave specific files in `_inbox/`.
+- Override a row by saying e.g. `route foo.pdf to keysight-33500b/uploads/pdfs/`.
+- Cancel with `cancel` / `no` / `stop`.
+
+For any `ask` rows, the user must answer before the plan can execute. If `--strict` was passed, error out on those instead.
+
+### 5. Execute
+
+For each row in dependency order (new-skeleton/new-audit first, then unzip, then moves):
+
+```bash
+# 5a. If new-skeleton, scaffold first:
+mkdir -p "corpus/sources/<sku>/uploads/"{pdfs,transcripts,photos,artifacts,api-specs}/
+touch "corpus/sources/<sku>/uploads/"{pdfs,transcripts,photos,artifacts,api-specs}/.gitkeep
+
+# 5b. If new-audit, scaffold first:
+mkdir -p "audits/competitive/<YYYY-MM-DD>-<slug>/assets/"
+touch "audits/competitive/<YYYY-MM-DD>-<slug>/assets/.gitkeep"
+
+# 5c. Unzip-and-reintake (run before the main moves):
+unzip -d "corpus/_inbox/<stem>/" "corpus/_inbox/<archive>"
+rm "corpus/_inbox/<archive>"
+# Then re-discover and re-build the plan for the new files; merge into the main plan.
+
+# 5d. Move, verify, log:
+src="corpus/_inbox/<relative-path>"
+dest="<destination>"
+mv "$src" "$dest" && [ ! -e "$src" ] && [ -e "$dest" ] && echo "moved: $src → $dest"
+# On failure: log and continue. Do not abort the batch.
+
+# 5e. After all moves, clean up emptied folders:
+find corpus/_inbox/ -mindepth 1 -type d -empty -delete
+```
+
+Quote every path — filenames frequently contain spaces, parens, ampersands, em-dashes, and emojis.
+
+### 6. Report
+
+Print the final disposition table with status per row (`moved`, `skipped`, `failed: <reason>`). Run `git status` and include its output so the user can confirm:
+- All routed files are gitignored (no untracked uploads).
+- Any auto-created `.gitkeep` skeletons show as untracked (those need to be committed if a new product folder is being introduced).
+
+Suggest next steps based on what landed:
+- Files in `uploads/photos/` → `/document-screens <product>`
+- Files in `uploads/pdfs/` → `/document-pdf <product> <filename>`
+- Files in `uploads/transcripts/` → `/document-walkthrough <product> <filename>`
+- Files in `uploads/recordings/` → no auto-skill yet; transcribe externally first, then drop the transcript back through `/corpus-intake`.
+- Files in `uploads/api-specs/` → `/document-api <product> <filename>`
+- Files in `audits/competitive/` → no auto-skill yet; write `report.md` by hand.
+
+## Edge cases
+
+| Case | Behavior |
+|---|---|
+| File extension recognized but product unclear from both filename and parent folder | Ask: "Which product?" Offer existing product folders as a numbered list plus "new product (specify SKU)" plus "skip (leave in _inbox/)". |
+| Two files would land at the same destination path | Append `-2`, `-3`, etc. to the destination filename. Note in the plan. |
+| Filename includes a date prefix (`20260601-meeting.docx`) | Strip prefixes for keyword detection but preserve the original filename on disk. |
+| New SKU detected but the kebab form is ambiguous (e.g. `B2961A-7USB` could be a single SKU or two) | Ask for confirmation before scaffolding. Wrong skeletons are cheap to delete but cluttering. |
+| File looks like a duplicate of something already in the destination (same filename + size) | Ask whether to overwrite, rename, or skip. |
+| File is a `.DS_Store`, `Thumbs.db`, `__MACOSX/`, `.AppleDouble/`, `._foo`, `Icon\r`, or `~$foo.docx` Office lock file | Delete without asking. |
+| Empty file (0 bytes) | Flag in plan, skip by default — usually a corrupted drag or stub. |
+| Encrypted ZIP or password-protected PDF | Detect with a quick header check, ask whether to route as-is (will be unusable to processing skills) or hold in `_inbox/` for manual unlock. |
+| Symbolic link (`mv` would move the link, not the target) | Resolve to the real path; if the target is reachable, copy-then-delete instead of mv. If unreachable, skip with warning. |
+| iCloud placeholder (`*.icloud`) | Never `mv`. Report in plan as "force-download in Finder, then re-run intake". |
+| Hidden file (leading `.`, not in the junk skip list) | Skip by default; ask if `--strict` would have flagged it. |
+| Filename longer than 200 chars | Truncate to 200, preserve extension, note in plan. |
+| File literally named `--dry-run.pdf` or `--strict.csv` | Always parse flags positionally (must be first arg, before any filename); filenames after the first arg are treated as filenames even if they start with `--`. |
+
+## Refused at intake
+
+These never route into the corpus or audits. Detect, list under "Refused at intake" in the plan, skip without asking:
+
+| Type | Reason |
+|---|---|
+| `.exe`, `.app`, `.dmg`, `.pkg`, `.msi`, `.deb`, `.rpm` | Executables; not corpus material. |
+| `.py`, `.js`, `.ts`, `.tsx`, `.jsx`, `.cs`, `.java`, `.cpp`, `.h`, `.go`, `.rb`, `.php` | Source code; lives in actual repos, not the corpus. |
+| Any path containing `node_modules/`, `.git/`, `dist/`, `build/`, `.next/`, `target/`, `venv/` | Accidental drags of working trees. |
+| `.iso`, `.img`, `.vmdk`, `.qcow2` | Disk images; way too large for corpus. |
+| `.lock`, `package-lock.json`, `yarn.lock`, `Gemfile.lock`, `Cargo.lock` | Build artifacts. |
+
+## Out of scope (for downstream skills)
+
+This skill explicitly does NOT do:
+
+- **Format conversion** (HEIC → JPG, DOCX → MD, PPTX → MD). Downstream skills handle this — `document-screens` uses `sips` for image downscaling, `document-pdf` extracts text, `document-walkthrough` parses .docx.
+- **OCR for scanned PDFs.** `document-pdf` assumes a text layer; if missing, OCR is a manual step before re-intake.
+- **Audio/video transcription.** Recordings land in `uploads/recordings/` and wait for external transcription (Whisper, Otter.ai, Teams export). The resulting transcript file gets dropped back through `/corpus-intake`.
+- **PDF password unlock.** Liability + asks for credentials. Manual unlock + re-intake.
+- **Content peek for classification.** Filename + extension + parent folder name is the speed/predictability contract. If filename is wrong, the user overrides the row.
+- **Curation.** Routing only; whether a file is "worth" adding to the corpus is the user's call.
+- **`index.md` regeneration.** That's the per-product processing skills' job.
+- **Reverse moves.** No "undo intake". To re-route a file, `mv` it manually or drop it back into `_inbox/` and re-run.
+
+## Output template
+
+```markdown
+## Routing plan — <N> file(s) found across <M> folder(s)
+
+### Auto-route (will execute on `go`)
+| Original path | Product | Class | Destination | Action |
+|---|---|---|---|---|
+| `Tek Express Screens/0. Options.png` | tek-express | photos | `corpus/sources/tek-express/uploads/photos/0._Options.png` | move |
+| ... | ... | ... | ... | ... |
+
+### Warnings
+- ⚠ `big-vendor-pack.zip` is 850 MB — confirm this isn't a misplaced install image before `go`.
+- ⚠ `IMG_0042.png.icloud` is an iCloud stub — force-download in Finder, then re-run intake.
+
+### New folders to create
+- `corpus/sources/keysight-b2961a/` (full uploads/ skeleton)
+- `audits/competitive/2026-06-25-tek-express-vs-keysight-b2961a/`
+
+### Archives to unzip and re-intake
+- `keysight-product-docs.zip` (will extract into `corpus/_inbox/keysight-product-docs/` then re-discover)
+
+### Needs input
+- `Untitled.docx` — no product marker in filename or folder. Which product?
+- `feature-matrix.xlsx` — looks like a Tek vs. Keysight comparison; confirm before routing to `audits/competitive/`.
+
+### Refused at intake (auto-skipped)
+- `setup.exe` — executable
+- `my-notes/.git/HEAD` — accidental repo path
+
+Reply `go` to execute, `skip <file>` to hold any back, or override individual rows.
+```
+
+After execution:
+
+```markdown
+## Done — <X> moved, <Y> skipped, <Z> failed
+
+| Original path | Destination | Status |
+|---|---|---|
+| ... | ... | moved |
+| ... | — | skipped (held in _inbox/) |
+| ... | ... | failed: <reason> |
+
+`git status` shows:
+- <N> new untracked .gitkeep files (commit if scaffolding new product folders)
+- 0 untracked binaries (everything correctly gitignored ✓)
+
+Next steps:
+- tek-express has new photos → `/document-screens tek-express`
+- tek-express has a new transcript → `/document-walkthrough tek-express "TekExpress deep dive.docx"`
+- keysight-b2961a is a new product folder — commit the skeleton: `git add corpus/sources/keysight-b2961a/`
+- ...
+```
+
+## See also
+
+- [`document-screens`](../document-screens/SKILL.md) — runs after photos land in `uploads/photos/`.
+- [`document-pdf`](../document-pdf/SKILL.md) — runs after manuals land in `uploads/pdfs/`.
+- [`document-walkthrough`](../document-walkthrough/SKILL.md) — runs after transcripts land in `uploads/transcripts/`.
+- [`document-api`](../document-api/SKILL.md) — runs after API specs land in `uploads/api-specs/`.
+- [`document-hardware`](../document-hardware/SKILL.md) — runs against `uploads/photos/` for hardware shots.
+- [`corpus/README.md`](../../../corpus/README.md) — corpus layout, conventions, corpus-vs-audit boundary.
+- [`audits/README.md`](../../../audits/README.md) — audit layout including `audits/competitive/`.
+
+---
+
+## document-api
+
+_Process an OpenAPI / Swagger spec into chunked, versioned corpus markdown — one .md per endpoint cluster (typically one resource), plus _index.md and a service-level index. Use when given a spec URL or a local .json/.yaml at corpus/sources/<service-id>/uploads/api-specs/. Output is a versioned snapshot under corpus/sources/<service-id>/api/<snapshot-id>/. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa._
+
+# Document API
+
+Turns an OpenAPI / Swagger spec into structured corpus markdown — one chunk per endpoint cluster (typically a REST resource). Output is the **public contract** of the service at a point in time: paths, methods, request/response schemas, auth, examples. Snapshots accumulate; new versions of the spec produce new dated folders.
+
+The format is **locked** by the first processed spec: `corpus/sources/dev-core-api/api/v1.0-2026-05-12/`. Mirror its frontmatter shape and body section order exactly for any future API.
+
+## Inputs
+
+- A spec URL (e.g. `https://dev-core.platform.tek-api.com/api/v1/openapi`), OR a local file at `corpus/sources/<service-id>/uploads/api-specs/<filename>.json|.yaml`. Either form gets saved to `uploads/api-specs/` (gitignored) before processing.
+- Implicit: `service-id` — the corpus subject id. Derived from the spec's `info.title` (kebab) or the URL hostname (`dev-core-api`).
+
+Optional:
+- `--snapshot-id <slug>` to override the default. Default: `<spec.info.version>-<YYYY-MM-DD>` (e.g. `v1.0-2026-05-12`).
+- `--resource <name>` to scope to a single resource group (e.g. `products`). Default: all resources.
+
+## Hard rules
+
+1. **Format is locked.** Mirror the first snapshot's frontmatter shape and body section order.
+2. **Verbatim from the spec where possible.** Endpoint summaries, parameter names, schemas, examples come straight from the OpenAPI document — paraphrase only in `## Summary`. The spec is the contract; preserve fidelity.
+3. **Versioned, not durable.** Every run writes to a new snapshot folder under `api/<snapshot-id>/`. Old snapshots stay for historical queries — "how did the products API look at v1.0?".
+4. **One `.md` per endpoint cluster, not per endpoint.** A cluster is one resource's set of related paths (e.g. `products-list-create.md` covers `GET /products` + `POST /products`; `products-detail.md` covers `GET/PATCH/PUT/DELETE /products/{id}`). Within a chunk, each endpoint is a `### ` heading. For deeply-nested resources (e.g. `/products/{id}/files`), the nested path gets its own chunk (`products-files.md`).
+5. **No design system mapping in chunks.** Mirrors the corpus-vs-audit rule from `document-screens` / `document-pdf` / `document-repo`. The corpus describes the API as-is; interpretation lives in `audits/`.
+6. **Cross-link via frontmatter.** When an endpoint drives a screen action (`POST /buffers/{id}/save` triggered by a Save tile on a corpus screen), declare it in `related_screens` and the screen's controls `action` field can cite the endpoint. Do **not** silently back-update screen `.md` — the correspondence is fuzzy; surface candidates in `## Cross-references` instead.
+
+## Process
+
+### 1. Fetch and stash the spec
+
+```bash
+curl -sS "https://<host>/<spec-path>" \
+  -o corpus/sources/<service-id>/uploads/api-specs/openapi.json
+```
+
+If the spec requires auth, read credentials from env vars (`<SERVICE>_TOKEN` etc.) and pass via `-H "Authorization: Bearer $TOKEN"`. Never accept pasted credentials; the user configures them on their machine.
+
+### 2. Identify service-id, snapshot-id, and auth scheme
+
+- **service-id** — kebab. From `info.title` (`"Platform API"` → `platform-api`) or from the hostname (`dev-core.platform.tek-api.com` → `dev-core-api`). Pick the one that disambiguates from other corpus subjects.
+- **snapshot-id** — `<info.version>-<YYYY-MM-DD>`. Today's date is when the spec was fetched, not when it was published.
+- **Auth scheme** — read `components.securitySchemes`. Note the scheme name(s) in each endpoint chunk's frontmatter.
+
+### 3. Group endpoints into clusters
+
+Walk `paths` and group by **resource** (the segment after the version prefix, e.g. `/api/v1/<resource>/...`). Within a resource, split by path shape:
+
+| Cluster | Paths it covers |
+|---|---|
+| `<resource>-list-create` | `GET /resource`, `POST /resource` |
+| `<resource>-detail` | `GET/PATCH/PUT/DELETE /resource/{id}` |
+| `<resource>-<subresource>` | `/resource/{id}/<subresource>/...` |
+| `<resource>-<action>` | `POST /resource/{id}/<verb>` (custom actions like `/revoke`, `/accept`) |
+
+For a resource with only one or two paths, collapse into a single chunk: `<resource>.md`. Aim for chunks of 200–800 lines.
+
+### 4. Generate `module_id` (chunk filename)
+
+Kebab. Pattern: `<resource>[-<cluster-suffix>]`. Examples:
+
+| Cluster | `module_id` |
+|---|---|
+| `GET/POST /api/v1/products` | `products-list-create` |
+| `GET/PATCH/PUT/DELETE /api/v1/products/{id}` | `products-detail` |
+| `GET/POST /api/v1/products/{id}/files`, `DELETE …/{file_id}` | `products-files` |
+| `POST /api/v1/licenses/oklib/checkout` (custom action) | `licenses-checkout` |
+| `GET /api/v1/entitlements` (single endpoint resource) | `entitlements` |
+
+### 5. Extract content per cluster
+
+For each endpoint in the cluster, pull from the spec:
+
+- `summary` and `description`
+- `parameters` (path, query, header) with their types and descriptions
+- `requestBody` schema (`$ref` resolved one level — show the schema name and its required fields)
+- `responses` for each status code (resolve `$ref`s the same way)
+- `security` requirements
+- Any `example` or `examples` blocks — extract verbatim
+
+### 6. Write chunks
+
+Path: `corpus/sources/<service-id>/api/<snapshot-id>/<module_id>.md`
+
+#### Frontmatter
+
+```yaml
+---
+class: api-endpoint-cluster
+service: <service-id>
+snapshot: <snapshot-id>
+spec_version: <info.version>
+spec_url: <fetched URL>
+fetched_date: <YYYY-MM-DD>
+module_id: <kebab>
+module_title: <human-readable>
+resource: <resource segment>
+endpoints:
+  - { method: GET, path: /api/v1/products, summary: "List products" }
+  - { method: POST, path: /api/v1/products, summary: "Create product" }
+auth_required: true|false
+auth_schemes: [<scheme-name>, …]
+applies_to: [<service-id>]
+related_screens: [<screen-id>, …]
+related_modules: [<code-module-id>, …]
+---
+```
+
+#### Body sections, in this exact order
+
+1. **`# <module_title>` heading** — short, human-readable.
+2. **`## Summary`** — one short paragraph paraphrasing what this cluster does and why a consumer queries it.
+3. **`## Endpoints`** — table: Method, Path, Summary. One row per endpoint in the cluster.
+4. **`## Authentication`** — auth requirements, scheme name, header format. Cite the spec's top-level Auth description if relevant.
+5. **`### <METHOD> <path>`** subsections — one per endpoint. Each subsection contains:
+   - One-paragraph description (from `description` or `summary`).
+   - **Parameters** table (name, in, type, required, description).
+   - **Request body** schema name + required fields list (resolve one `$ref` level).
+   - **Responses** table (status, description, schema).
+   - **Example** code block (verbatim from the spec if provided).
+6. **`## Cross-references`** — bulleted list of related corpus entries (screens whose controls trigger these endpoints, code modules that implement or consume them).
+7. **`## Confidence notes`** — bulleted list of items where the spec is ambiguous (missing examples, unresolved `$ref`s, deprecated endpoints, undocumented behaviors). Omit if nothing uncertain.
+
+### 7. Write `_index.md`
+
+After the snapshot is processed, write `corpus/sources/<service-id>/api/<snapshot-id>/_index.md`:
+
+```markdown
+# <service-id> — API snapshot <snapshot-id>
+
+**Service:** `<service-id>` · **Spec version:** `<info.version>` · **Fetched:** <YYYY-MM-DD> · **Spec URL:** <url>
+
+Generated <YYYY-MM-DD> by `document-api` skill.
+
+## Auth
+
+(Top-level auth description from `info.description` if present, condensed.)
+
+## Resources in this snapshot
+
+| Resource | Cluster chunks |
+|---|---|
+| products | [products-list-create](./products-list-create.md), [products-detail](./products-detail.md), [products-files](./products-files.md) |
+| … | … |
+
+## Pending resources
+
+(Resources in the spec but not yet chunked, with a brief one-liner per.)
+```
+
+### 8. Write or update the service-level `index.md`
+
+Same shape as `document-repo`'s service index — list all snapshots in time order.
+
+## Output
+
+```
+corpus/sources/<service-id>/api/<snapshot-id>/
+├── _index.md
+├── <module_id-1>.md
+├── <module_id-2>.md
+└── …
+corpus/sources/<service-id>/index.md          (created or updated)
+```
+
+The source spec stays in `uploads/api-specs/` (gitignored). The skill never modifies anything outside `corpus/sources/<service-id>/`.
+
+## Required tools
+
+- **Bash** with `curl` and `python3` (or `jq`) — for fetching and parsing the spec.
+- **Read** — for the spec file and existing markdown.
+- **Write** — for new chunks and index files.
+- **Edit** — for updating the service-level `index.md` on subsequent snapshots.
+
+## Workflow rules from CLAUDE.md that apply here
+
+- Branch → PR; never commit to `main`. `feat(rag):` for new corpus content; `feat(skills):` for skill changes.
+- Never commit the source spec — it's in `uploads/`, gitignored.
+- Auth: never accept pasted credentials. Read from env vars.
+
+## Operational notes
+
+- **Idempotence.** Within a snapshot ID, re-running regenerates chunks from the current spec. **Across snapshot IDs, runs accumulate** — old snapshots stay forever for historical queries. To overwrite a snapshot, pass the same `--snapshot-id` flag explicitly.
+- **Output dir creation.** The skill creates `corpus/sources/<service-id>/api/<snapshot-id>/` if missing — `mkdir -p` is fine. First snapshot for a service works without pre-scaffolding.
+- **`index.md` regenerates** on every run with the service-level snapshot table updated.
+
+## Notes
+
+- **Why cluster by resource instead of per endpoint?** Per-endpoint chunks fragment context (`GET /products` and `POST /products` share their entire conceptual frame); a consumer asking "how do I work with products?" wants both. Per-resource keeps the unit coherent.
+- **Why versioned, not durable?** APIs evolve; the spec at `v1.0` is not the spec at `v2.0`. Versioned snapshots let queries pin to a specific contract.
+- **What about Swagger UI HTML pages?** Don't bother parsing the rendered HTML. Find the underlying spec URL (look at the `<script>` block; common paths: `/openapi.json`, `/swagger.json`, `/api/v1/openapi`). The JSON/YAML spec is the input.
+- **What about private APIs?** Auth via env vars (`DEV_CORE_TOKEN`, etc.). The user configures auth on their machine; the skill reads from env. Never accept pasted credentials.
+- **Spec drift between snapshot and live API?** The corpus pins to the snapshot's contract. If the live API drifts, rerun the skill to produce a new snapshot — old one stays for historical queries.
+
+---
+
+## document-hardware
+
+_Document the physical hardware of a Tek product — front panel, rear panel, accessories, connectors, indicators — from photos. Use when given photos at corpus/sources/<product>/uploads/photos/ showing the device itself (not its UI screen). Produces one .md + downscaled image per distinct hardware view under corpus/sources/<product>/hardware/, mirroring the locked observation format from document-screens. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa._
+
+# Document hardware
+
+Turns photos of a Tek device's physical hardware — front panel, rear panel, accessories, connector close-ups — into structured per-view markdown. Twin of `document-screens`: same locked-observation pattern, different anatomy. Where `document-screens` enumerates UI controls (buttons, readouts, tabs), `document-hardware` enumerates ports, jacks, indicators, hardkeys, knobs, and physical features.
+
+The format is **locked** by the first processed hardware view: `corpus/sources/2450-ec/hardware/front-panel.md`. Mirror its frontmatter shape and body section order exactly for any future hardware view.
+
+## Inputs
+
+- Photos in `corpus/sources/<product-id>/uploads/photos/` showing the physical device. The same photo set used for `document-screens` may also contain hardware-relevant content (the bezel surrounding the LCD); the same photo can yield two chunks — one screen `.md`, one hardware `.md` — referencing different downscaled images cropped or framed differently.
+
+Optional:
+- `--view <front-panel | rear-panel | side | closeup-<feature>>` to scope to one view per invocation.
+- `--photo <filename>` to specify which raw photo to use.
+
+## Hard rules
+
+1. **Format is locked.** Mirror `front-panel.md`'s frontmatter shape and body section order.
+2. **Confidence over completeness.** Mark uncertain labels, dimensions, or feature interpretations in `## Confidence notes` rather than guessing. Hardware photos often have glare, perspective distortion, or visible-but-unlabeled features.
+3. **One `.md` per distinct view, not per photo.** Multiple photos of the same front panel from different angles become one `front-panel.md`; the canonical photo is the clearest; others contribute to `## Feature variations` if anything substantive differs.
+4. **`uploads/` is gitignored.** Never commit raw photos. Downscaled hardware reference image (max 1600 px long edge) goes in `hardware/`.
+5. **No design system mapping in chunks.** Physical hardware doesn't map to web DS components anyway. Same corpus-vs-audit rule as the other corpus skills.
+6. **Cross-link via frontmatter.** Where the same physical feature appears in a screen `.md` as a hardware-bezel control (`btn-home`, `terminals`, `output-led`, etc.), declare `related_screens: [<screen-id>]` and the screen's `related_hardware: [<part-id>]` (set in a follow-up edit if needed).
+
+## Process
+
+### 1. Discover and select
+
+```bash
+ls corpus/sources/<product>/uploads/photos/
+```
+
+Pick the clearest photo for each view you intend to document. Same selection criteria as `document-screens`:
+1. No human hand or obstruction across the device's labeled features.
+2. Sharp focus on the parts you'll enumerate (bezel labels, port nomenclature).
+3. Even lighting, minimal glare.
+4. Full hardware visible (don't crop important features).
+
+For a Tek instrument, the standard set of hardware views is:
+
+| View | What it captures |
+|---|---|
+| `front-panel` | LCD bezel, hardkeys, knob, terminals, USB ports, power button, LED. |
+| `rear-panel` | AC inlet, ground screw, communication ports (USB-B, LAN, GPIB, trigger I/O), interlock, line-voltage selector. |
+| `side` | Cooling vents, handle attachment, model badge. |
+| `closeup-<feature>` | Detail shot — e.g. `closeup-terminals` (banana jack cluster), `closeup-interlock`, `closeup-bnc-array`. |
+
+### 2. Generate `part_id`
+
+Kebab. The view name above is usually the id (`front-panel`, `rear-panel`, `closeup-terminals`, etc.). For close-ups, prefix with `closeup-` to keep them sorted next to the parent view.
+
+### 3. Downscale
+
+```bash
+sips -Z 1600 -s format jpeg -s formatOptions 85 \
+  corpus/sources/<product>/uploads/photos/<canonical-photo> \
+  --out corpus/sources/<product>/hardware/<part-id>.jpg
+```
+
+Re-read the downscaled image; confirm every label is still legible. If a critical label is illegible at the downscale, choose a different source photo or document the illegibility in `## Confidence notes`.
+
+### 4. Transcribe and structure
+
+Write `corpus/sources/<product>/hardware/<part_id>.md` matching the locked frontmatter and body section order.
+
+#### Frontmatter
+
+```yaml
+---
+class: hardware-view
+product: <product-id>
+software_version: <if applicable; usually null for hardware>
+part_id: <kebab>
+part_title: <human readable: "Front panel", "Rear panel", "Banana jack cluster">
+view: front-panel | rear-panel | side | closeup-<feature>
+image: <part_id>.jpg
+source_photo: uploads/photos/<original-filename>
+dimensions: <if visible/documented from manual: WxHxD or "TBD">
+features:
+  - id: <kebab>
+    label: <as printed on the device, or "" if unlabeled>
+    type: hardkey | knob | terminal | port | indicator | vent | screw | badge | display | other
+    location: <one-line spatial description — "upper-left of bezel">
+    function: <what it does — observable behavior, not interpretation>
+applies_to: [<product-id>, …]
+related_screens: [<screen-id>, …]
+related_modules: []
+---
+```
+
+#### Body sections, in this exact order
+
+1. **`# <part_title>` heading** — short, possibly with the view qualifier ("Front panel — 2450-EC").
+2. **`## Purpose`** — one paragraph. What role this hardware view plays in the device.
+3. **`## Feature inventory`** — prose walkthrough of every entry in `features[]`, region by region. Reference each feature by `` `id` ``.
+4. **`## Visible text (verbatim)`** — every label, model number, certification marking, value transcribed exactly. Highest-signal RAG payload for hardware queries.
+5. **`## Feature variations`** — variants across the product family (e.g. 2450 vs. 2461 might differ in current rating; same physical bezel layout but different markings).
+6. **`## Confidence notes`** — bulleted list of unverified items. Hardware-specific examples: illegible certification markings, ambiguous port labels at the downscale resolution, unmarked features.
+7. **`## Manual references`** — placeholder until manual-pairing, OR (if a `docs/<doc-id>/<chunk>.md` already documents this view) explicit citations.
+8. **`## Source photo`** — which file in `uploads/photos/` was selected and why.
+
+### 5. Cross-link to screens
+
+If a screen `.md` exists with hardware-bezel controls (`btn-home`, `terminals`, `output-led`, etc.), declare `related_screens: [<screen-id>]` in this chunk's frontmatter, and follow up with an edit to the screen `.md` adding `related_hardware: [<part-id>]`. The screen documents what the user *interacts with*; the hardware chunk documents what the user *touches*.
+
+### 6. Update `index.md`
+
+Add or update the **Documented hardware** section in `corpus/sources/<product>/index.md`:
+
+```markdown
+## Documented hardware
+
+| part_id | part_title | view |
+|---|---|---|
+| [front-panel](hardware/front-panel.md) | Front panel | front-panel |
+```
+
+## Output
+
+```
+corpus/sources/<product>/hardware/
+├── <part-id>.md
+├── <part-id>.jpg
+└── …
+corpus/sources/<product>/index.md   (updated)
+corpus/sources/<product>/screens/<screen-id>.md   (back-updated `related_hardware` frontmatter, if cross-linked)
+```
+
+## Required tools
+
+- **Read** — for images and existing markdown.
+- **Bash** — for `sips`, `ls`, `mkdir`.
+- **Write** — for new markdown.
+- **Edit** — for frontmatter back-updates.
+
+## Workflow rules from CLAUDE.md that apply here
+
+- Branch → PR; never commit to `main`. `feat(rag):` for new corpus content.
+- No raw photos in commits. The downscaled hardware reference image is committed; the source raw photo stays in `uploads/`, gitignored.
+- Match existing patterns. Mirror `document-screens` body section order exactly where applicable.
+
+## Operational notes
+
+- **Idempotence.** Re-running this skill on the same product regenerates hardware .md files from the current state of `uploads/photos/`. Hand-edited content gets overwritten — preserve via source comments before re-running.
+- **Output dir creation.** The skill creates `corpus/sources/<subject>/hardware/` if missing — `mkdir -p` is fine. First invocation works without pre-scaffolding.
+- **`index.md` regenerates** on every run.
+- **`sips` is macOS-only.** Image downscaling uses `sips` (built-in on macOS). On Linux/Windows, substitute `magick` (ImageMagick) with equivalent flags.
+
+## Notes
+
+- **Why a separate skill from `document-screens`?** Same input class (photos) but different *anatomy*. A screen has controls + state; a hardware view has ports + dimensions + indicators. The structured fields differ enough that two skills are clearer than one polymorphic skill.
+- **Can the same photo yield both a screen `.md` and a hardware `.md`?** Yes — photo-262 of the 2450-EC shows both the LCD content (→ `home.md`) and the bezel surrounding it (→ `front-panel.md`). Two chunks, two downscaled images (or one shared image referenced from both).
+- **What about exploded views, schematics, mechanical drawings?** Those are technical artifacts; use `document-artifact` (planned P2) instead.
+- **What about videos / GIFs of physical operation (e.g. inserting a probe)?** Out of scope. Walkthroughs go through `document-walkthrough` (planned P2).
+
+---
+
+## document-pdf
+
+_Process a manual or guide (PDF) into chunked, cross-linked markdown for the RAG corpus. Use when given a PDF at corpus/sources/<product>/uploads/pdfs/. Produces _index.md plus one .md per top-level heading under corpus/sources/<product>/docs/<doc-id>/, and back-updates the Manual references section in any corpus screen .md files the chunks cross-link to. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa._
+
+# Document PDF
+
+Turns a manufacturer manual, quick-start guide, or spec sheet into structured per-section markdown for the RAG corpus. Output is the **as-is dump** of the document's content — durable, write-once, source-grounded. Interpretation (DS mapping, design briefs) lives separately under `audits/`.
+
+The format is **locked** by the first processed manual: `corpus/sources/2450-ec/docs/user-manual/`. Mirror its frontmatter and body section order exactly for any future PDF.
+
+## Inputs
+
+- A PDF at `corpus/sources/<product-id>/uploads/pdfs/<filename>.pdf`. The product folder must already have a `screens/` directory if cross-linking back to corpus screens is expected (otherwise the skill will write chunks but skip the back-update step).
+
+Optional:
+- `--doc-id <kebab>` to override the automatic doc-id derivation (default: derived from the filename or cover page — e.g. `user-manual`, `quickstart`, `spec-sheet`).
+- `--section <range>` to process only specified sections (e.g. `--section 1` or `--section 1-3`). Default: all sections. For first runs or large manuals, scope to a single section to validate the format.
+
+## Hard rules
+
+1. **Format is locked. Do not deviate from `corpus/sources/2450-ec/docs/user-manual/`.** Mirror its frontmatter shape and body section order; class-specific fields extend the base rather than replacing it.
+2. **Verbatim where possible.** Manuals are authoritative source-of-truth. Procedures, definitions, warnings, and notes get transcribed *as-written*, reformatted as clean Markdown (numbered lists for steps, blockquotes for notes/warnings, code spans for filenames and TSP commands). Do not paraphrase unless explicitly under `## Summary`.
+3. **Confidence over completeness.** If a passage is illegible (scanned PDF artifact), table is structurally ambiguous, or a figure caption is unclear, mark it in **Confidence notes** rather than guessing.
+4. **`uploads/` is gitignored.** Never commit the source PDF; only the extracted markdown. Image extraction (figures) is allowed but optional — for the first pass, name the figures by caption and skip the binary.
+5. **No design system mapping in chunks.** Same hard rule as `document-screens`. Do not reference `tek-*` primitives or compare against DS-v2 in chunk markdown. The corpus is DS-agnostic.
+6. **Cross-link via frontmatter, not prose.** When a chunk references a corpus screen, declare it in `related_screens: [<screen-id>]`. The skill's back-update step rewrites the screen's Manual references section to cite the chunk.
+
+## Process
+
+### 1. Parse the cover and copyright pages
+
+Read pages 1-3 of the PDF. Extract:
+- `doc_title` — full title as printed on the cover.
+- `doc_number` — manufacturer document number (e.g. `077110403`).
+- `doc_date` — publication date (e.g. `2020-03` for "March 2020").
+- `applies_to` — SKU list, parsed from the cover ("Models X, Y, and Z") or from a "Compatibility" section. Use kebab SKU IDs (e.g. `[2450-ec, 2460-ec, 2461-ec]`).
+
+If `--doc-id` is not provided, infer it from the title:
+- "User's Manual" → `user-manual`
+- "Quick Start Guide" → `quickstart`
+- "Specifications" / "Datasheet" → `spec-sheet`
+- "Reference Manual" → `reference-manual`
+
+### 2. Parse the Table of Contents
+
+Walk the TOC. Identify:
+- **Section boundaries** — typically numbered (`Section 1`, `Section 2`, etc.) or chapter-style.
+- **Top-level headings within each section** — these become chunk boundaries.
+- **Nested sub-headings** — these become `## ` headers inside the chunk's body, NOT separate chunks (unless a sub-heading cross-links to a corpus screen and warrants isolation; see *Granularity*).
+
+### 3. Granularity — one `.md` per coherent topic
+
+A chunk is one logical unit a user might query for. Heuristics:
+- A procedure with numbered steps → its own chunk.
+- A concept overview with definitions → its own chunk.
+- A reference table (parameters, ranges, default values) → its own chunk.
+- A sub-heading that contains *only a screen description* and would naturally cross-link to a corpus screen → its own chunk, even if it lives under a broader section in the TOC.
+
+Aim for chunks of roughly 300–1500 tokens. Smaller is better for retrieval, but don't fragment a single coherent procedure.
+
+### 4. Generate `section_id` (chunk filename)
+
+Kebab-case, descriptive but short. **Drop section numbers from filenames** — the TOC order is preserved in `_index.md`, and renumbered manual revisions shouldn't force a file rename. Examples:
+
+| Manual heading | Chunk filename |
+|---|---|
+| Introduction | `introduction.md` |
+| Getting started | `getting-started.md` |
+| Cable assembly details | `cable-assembly.md` |
+| Connections and usage | `connections-and-usage.md` |
+| Home and Menu screen overview | `home-and-menu-overview.md` |
+| Run the cyclic voltammetry test application | `cyclic-voltammetry-run.md` |
+| Test application parameters | `cyclic-voltammetry-parameters.md` |
+
+If two sections have the same heading text (rare but possible), disambiguate with the parent section: `<parent>-<heading>.md`.
+
+### 5. Extract chunk content
+
+For each chunk, read the relevant page range from the PDF (use the `Read` tool with `pages: "<start>-<end>"`). Transcribe content into the locked body sections (below). Image figures: keep the caption text in body; mention the figure by name; skip the binary unless image extraction is requested explicitly.
+
+### 6. Write chunk files
+
+Path: `corpus/sources/<product>/docs/<doc-id>/<section_id>.md`
+
+#### Frontmatter
+
+```yaml
+---
+class: doc-section
+doc_id: <doc-id>
+doc_title: <full title from cover>
+doc_number: <manufacturer doc number>
+doc_date: <YYYY-MM>
+applies_to: [<sku>, …]
+section_id: <kebab>
+section_title: <heading as printed>
+parent_section: <parent section_id, or null>
+page_range: "<start logical page> to <end logical page>"
+related_screens: [<screen-id>, …]
+related_hardware: [<hardware-id>, …]
+---
+```
+
+#### Body sections, in this exact order
+
+1. **`# <section-title>` heading** — match the manual's heading text exactly.
+2. **`## Summary`** — one short paragraph paraphrasing what the section covers and what a reader will leave knowing. Optimized for retrieval matching; not a substitute for the verbatim content below.
+3. **`## Content`** — verbatim manual text, reformatted as clean Markdown:
+   - Procedures with numbered steps → ordered list.
+   - Bulleted enumerations → unordered list.
+   - Warnings → `> ⚠ **WARNING:** …` blockquote.
+   - Cautions → `> ⚠ **CAUTION:** …` blockquote.
+   - Notes → `> **NOTE:** …` blockquote.
+   - Tables → Markdown tables.
+   - Filenames, TSP commands, on-screen labels → backticks.
+   - Figure references → `*Figure N: <caption>*` inline (skip the image itself unless extracting).
+4. **`## Cross-references`** — bulleted list of in-doc references (other sections by `section_id`), corpus screens (`screens/<screen-id>.md`), and corpus hardware (`hardware/<id>.md`) the section mentions or relies on. Mirror these in frontmatter `related_screens` / `related_hardware`. Omit the section if nothing to cross-reference.
+5. **`## Confidence notes`** — bulleted list of items that are uncertain (illegible passages, ambiguous tables, missing figures, scanned-PDF artifacts). Omit if nothing uncertain.
+
+### 7. Write `_index.md`
+
+After every doc is processed, write `corpus/sources/<product>/docs/<doc-id>/_index.md` summarizing the document:
+
+```markdown
+# <doc-title>
+
+**Doc ID:** `<doc-id>` · **Doc number:** `<doc_number>` · **Published:** <doc_date> · **Applies to:** <SKU list>
+
+Generated <YYYY-MM-DD> by `document-pdf` skill from `uploads/pdfs/<filename>.pdf`.
+
+## Sections
+
+| Section | Pages | Chunks |
+|---|---|---|
+| Section 1: Introduction | 1-1 to 1-11 | [introduction](./introduction.md), [getting-started](./getting-started.md), [cable-assembly](./cable-assembly.md), [connections-and-usage](./connections-and-usage.md), [home-and-menu-overview](./home-and-menu-overview.md) |
+| Section 2: Cyclic voltammetry | 2-1 to 2-17 | … |
+| … | … | … |
+
+## Processed in this pass
+
+When the skill is invoked with `--section <range>`, list only the sections processed; mark others as `pending`.
+```
+
+### 8. Back-update screen `.md` Manual references
+
+For each chunk with `related_screens: [<screen-id>, …]`, open `corpus/sources/<product>/screens/<screen-id>.md` and replace the **`## Manual references`** section's content with citations to the chunks:
+
+```markdown
+## Manual references
+
+- **`<chunk-section-title>`** ([`docs/<doc-id>/<section-id>.md`](../docs/<doc-id>/<section-id>.md), <doc-id> pp. <page-range>) — <one-line note on what the chunk covers about this screen>.
+- …
+```
+
+Keep the section header verbatim (`## Manual references`); replace only the body. If the screen `.md` is the FIRST one for this corpus, drop the original `> Pending. …` placeholder.
+
+If no chunks reference a given screen, leave its Manual references section as-is (placeholder).
+
+## Output
+
+For one PDF processed:
+
+```
+corpus/sources/<product>/docs/<doc-id>/
+├── _index.md
+├── <section-id-1>.md
+├── <section-id-2>.md
+└── …
+corpus/sources/<product>/screens/<screen-id>.md   (back-updated Manual references, if cross-linked)
+```
+
+Nothing written outside of `corpus/sources/<product>/`.
+
+## Required tools
+
+- **Read** — for PDF pages (use `pages: "<start>-<end>"`) and existing markdown.
+- **Write** — for new chunk files and `_index.md`.
+- **Edit** — for back-updating screen `.md` Manual references.
+- **Bash** — for `ls` of uploads and confirming output paths.
+
+## Workflow rules from CLAUDE.md that apply here
+
+- Branch → PR; never commit to `main`. Feature branch with `feat(skills):` for new skill work or `feat(rag):` for new corpus content.
+- No raw uploads in commits. The source PDF is gitignored; only the extracted markdown is committed.
+- Match existing patterns. The format is locked to `corpus/sources/2450-ec/docs/user-manual/` — do not improvise.
+
+## Operational notes
+
+- **Idempotence.** Re-running this skill on the same PDF regenerates the chunks from the current source. The Manual-references back-update overwrites the previous version. If you've hand-edited a chunk and want to preserve those edits, copy them out before re-running. Otherwise, re-runs are safe.
+- **Output dir creation.** The skill creates `corpus/sources/<subject>/docs/<doc-id>/` if missing — `mkdir -p` is fine. First invocation works without pre-scaffolding.
+- **`index.md` regenerates** on every run with a new "Documented manuals" section. See `corpus/README.md` § Process completion.
+- **Scanned PDFs need OCR first.** This skill assumes a text-extractable PDF. If the manual is a scanned image with no text layer, run `pdftotext` or `tesseract` (or similar) externally to produce a text-layered version, then re-run.
+
+## Notes
+
+- **Why chunk-per-topic, not chunk-per-page?** Pages are a layout artifact; topics are the semantic unit. Embedding a chunk that covers a coherent procedure or concept retrieves better than embedding an arbitrary page slice.
+- **Why drop section numbers from filenames?** Manuals get renumbered between revisions. Topic-named files survive renumbering; the `_index.md` carries the order.
+- **Why `applies_to` per-chunk and not per-doc?** The vast majority of chunks share the doc's `applies_to`. But occasionally a section will narrow to a single SKU ("Model 2461-EC only: …"). Putting `applies_to` per-chunk keeps the join precise.
+- **Why a separate `_index.md` instead of just using the parent `index.md`?** The product's top-level `index.md` is the cross-asset graph (screens + docs + hardware + …). The per-doc `_index.md` is a within-doc TOC. Different audiences, different content.
+- **What if the PDF is a scanned image with no text layer?** OCR first (`pdftotext`, `tesseract`, or similar) before invoking this skill. The skill assumes a text-extractable PDF.
+- **Image extraction?** Not in scope for the first pass. When added later, save renders alongside the markdown as `<section-id>-figure-<N>.png` and inline-reference in `## Content`.
+
+---
+
+## document-repo
+
+_Process a source code repository into chunked, versioned corpus markdown — public-surface and module summaries, not implementation bodies. Use when given a local repo path or a GitHub URL. Output is a versioned snapshot under corpus/sources/<service-id>/code/<snapshot-id>/, one .md per major module plus _index.md. Re-run on new releases to add fresh snapshots; old ones stay for historical queries. Does not extract implementation details, tests, or generated files — those live in the live repo, queryable via grep at retrieval time._
+
+# Document repo
+
+Turns a source code repository into structured corpus markdown — the **public contract** and **module map**, not the implementation. The corpus answers "what does this expose, how do I consume it, and where is it" — not "how does it work line by line." Implementation is volatile; the public surface is the stable, queryable contract.
+
+The format is **locked** by the first processed repo's snapshot: `corpus/sources/tek-design-system/code/<first-snapshot>/`. Mirror its frontmatter shape and body section order for any future repo.
+
+## Inputs
+
+- A local repo path (e.g. `.` for the current repo) OR a GitHub URL.
+- Implicit: `service-id` — the corpus subject id. Derived from the repo's name (`tek-design-system`, `bench`, `user-portal`). Kebab, unique within the org. Org-namespace only if collisions happen.
+
+Optional:
+- `--snapshot-id <slug>` to override the default snapshot folder name. Default: `<YYYY-MM-DD>-<short-sha>` (e.g. `2026-05-12-85a6857`). Always-latest mode (`--snapshot-id main`) overwrites the previous snapshot — useful for active development; lossy for history.
+- `--depth <N>` to control module-map traversal depth (default 3).
+- `--include <glob>` / `--exclude <glob>` to scope what counts as a "module."
+
+## Hard rules
+
+1. **Format is locked.** Mirror the first repo snapshot's frontmatter shape and body section order; class-specific fields extend the base rather than replacing it.
+2. **Public surface only.** Extract exports, types, props, attributes, slots, events, tokens, CLI options, environment variables, build scripts. Do **not** extract function bodies, test suites, generated files (`dist/`, `node_modules/`), lockfiles, or anything in `.gitignore`. The implementation is volatile; the source repo is the truth at query time.
+3. **Versioned, not durable.** Every run writes to a new snapshot folder under `code/<snapshot-id>/`. Snapshots accumulate; do not overwrite. The latest pointer is implicit in the most recent snapshot folder.
+4. **One `.md` per module, not per file.** A module is a unit a consumer reasons about (a package, a top-level dir, a published component). Sub-files appear in the chunk's `## Module map`, not as separate chunks — unless the sub-unit has its own public surface (e.g. one `tek-*` Web Component per chunk for a component library).
+5. **No design system mapping in chunks.** Mirrors the corpus-vs-audit rule from `document-screens` / `document-pdf`. The corpus describes what code exists; interpretation (DS audits, dependency graphs) lives under `audits/` via dedicated audit skills.
+6. **Cross-link via frontmatter, not prose.** When a code module is the implementation of a documented screen, API, or hardware part, declare it in `related_screens` / `related_apis` / `related_hardware`. Audit skills that walk these graphs depend on the frontmatter being structured.
+
+## Process
+
+### 1. Identify the service and snapshot
+
+- `service-id` — repo name in kebab. Defaults to the local folder name or the GitHub repo slug.
+- `commit` — `git rev-parse --short HEAD` (or the explicit ref the user passed).
+- `commit_date` — `git show -s --format=%cs HEAD` (ISO `YYYY-MM-DD`).
+- `tag` — `git describe --exact-match --tags 2>/dev/null` (null if HEAD isn't tagged).
+- `snapshot-id` — `<commit_date>-<short-sha>` (e.g. `2026-05-12-85a6857`).
+
+### 2. Identify modules
+
+A **module** is a coherent unit of public contract. Heuristics, in priority order:
+
+1. **Monorepo packages.** If the root has a `workspaces:` declaration (npm/yarn/pnpm) or a `members:` (Cargo), each workspace is a module. Module id: `packages-<name>` for npm packages under `packages/`, or the workspace path kebab-ed.
+2. **Top-level directories with their own role.** Directories at the root that contain executable code or generated artifacts (e.g. `qt/`, `figma-token-push/`, `scripts/`) are modules.
+3. **Published components inside a component library package.** If a monorepo package is a component library (one component per directory, each with a public custom-element or class), each component is a sub-module. Module id: `<package-id>-<component-name>` (e.g. `packages-ui-button`).
+4. **Single-package repos.** A repo with one `package.json` at the root is one module unless it has a clear `src/<area>/` structure exposing distinct public surfaces.
+
+Skip:
+- `node_modules/`, `dist/`, `build/`, `target/`, generated folders.
+- `__tests__/`, `*.test.*`, `*.spec.*`, `tests/`, `test/`.
+- Lockfiles (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `Cargo.lock`).
+- Anything in `.gitignore` (do not extract gitignored files even if they exist in the working tree).
+- Drafts, prototypes, scratch directories that aren't part of the public contract — declare these in `_index.md` as "non-module dirs" so a reader knows they exist but they don't get their own chunk.
+
+### 3. Generate `module_id` (chunk filename)
+
+Kebab. Avoid filesystem nesting; flatten with hyphens so all chunks sit at the same depth under the snapshot folder.
+
+| Module | `module_id` |
+|---|---|
+| `packages/tokens` | `packages-tokens` |
+| `packages/ui` | `packages-ui` |
+| `packages/ui/src/button` (component sub-module) | `packages-ui-button` |
+| `qt/` | `qt` |
+| `figma-token-push/` | `figma-token-push` |
+| `scripts/` | `scripts` |
+
+### 4. Extract the public surface, per module
+
+For each module, read **only what's needed to describe the public contract**. Specifically:
+
+- The module's `README.md` if present (full content; this is a key authoritative source).
+- The module's manifest: `package.json` / `Cargo.toml` / `pyproject.toml` / `setup.py`.
+- The module's entry point: `index.ts`, `index.js`, `mod.rs`, `__init__.py`, etc. Read only the exports — top-of-file `export { … }`, `pub use`, etc.
+- For each public symbol, read its JSDoc / docstring / typedoc header comment. Skip the body.
+- For component libraries: read the top-of-file comment block in each component (props, slots, events, tokens consumed). Skip the rendering logic.
+- For build / CLI tools: read the script's argument parsing or the README's "Options" section.
+- For Web Components: extract custom element tag name, observed attributes, slots, events, CSS custom properties consumed.
+- For language layers other than TS/JS (e.g. Qt C++ headers, QSS stylesheets): extract symbol declarations from headers, selector lists from stylesheets, public function signatures.
+
+Do **not** read implementation bodies. Resist the urge to summarize what the code does internally — that's the source's job.
+
+### 5. Write chunks
+
+Path: `corpus/sources/<service-id>/code/<snapshot-id>/<module_id>.md`
+
+#### Frontmatter
+
+```yaml
+---
+class: code-module
+service: <service-id>
+snapshot: <snapshot-id>
+commit: <short-sha>
+commit_date: <YYYY-MM-DD>
+tag: <tag at HEAD, or null>
+module_id: <kebab>
+module_title: <human-readable, e.g. "@bbkemp/tokens" or "Qt translation layer">
+module_path: <relative path from repo root>
+language: <ts | js | python | rust | qt-cpp | qss | qml | mixed>
+package_name: <if a published package, e.g. "@bbkemp/tokens"; else null>
+package_version: <if a published package; else null>
+applies_to: [<service-id>, …]
+related_screens: [<screen-id>, …]
+related_apis: [<endpoint-id>, …]
+related_hardware: [<hardware-id>, …]
+related_modules: [<module_id>, …]
+---
+```
+
+#### Body sections, in this exact order
+
+1. **`# <module_title>` heading** — short, human-readable.
+2. **`## Summary`** — one short paragraph paraphrasing the module's role. Optimized for retrieval matching.
+3. **`## Purpose`** — one paragraph: what role this module plays in the service, why it exists, who consumes it. Derive from README if present.
+4. **`## Public surface`** — the contract a consumer relies on. Format varies by module type:
+   - Library / package: `### Exports` list with names, type signatures, and one-liner docs. `### Peer dependencies` if any.
+   - Web Component: `### Custom element`, `### Attributes`, `### Slots`, `### Events`, `### Tokens consumed` (CSS custom properties from `--tek-*`).
+   - Build tool / CLI: `### Commands` / `### Options`.
+   - Stylesheet layer: `### Selectors` / `### Tokens consumed`.
+   - C/C++ header: `### Constants` / `### Macros` / `### Functions`.
+5. **`## How to consume`** — install, import, instantiate. Verbatim example from README or top-of-file comment if available; otherwise the smallest legible example. Code fenced.
+6. **`## Module map`** — bulleted list of files / sub-directories with one-line role descriptions. Reference sibling chunks where they exist.
+7. **`## Cross-references`** — bulleted list of related corpus entries (screens, apis, hardware, other modules) the module relates to. Mirror these in frontmatter `related_*` arrays.
+8. **`## Confidence notes`** — bulleted list of items that are unverified (missing README, ambiguous public surface, generated file masquerading as source). Omit if nothing uncertain.
+
+### 6. Write `_index.md`
+
+After every snapshot, write `corpus/sources/<service-id>/code/<snapshot-id>/_index.md`:
+
+```markdown
+# <service-id> — code snapshot <snapshot-id>
+
+**Service:** `<service-id>` · **Commit:** `<short-sha>` (<commit_date>) · **Tag:** `<tag or "none">`
+
+Generated <YYYY-MM-DD> by `document-repo` skill from <repo-path-or-url>.
+
+## Module map
+
+(ASCII or bulleted tree showing the module hierarchy. Reference each chunk by relative link.)
+
+## Modules in this snapshot
+
+| Module | Path | Language | Published as | Version |
+|---|---|---|---|---|
+| [packages-tokens](./packages-tokens.md) | `packages/tokens` | ts | `@bbkemp/tokens` | 1.0.16 |
+| [packages-ui](./packages-ui.md) | `packages/ui` | ts | `@bbkemp/ui` | 1.0.12 |
+| … | … | … | … | … |
+
+## Non-module directories
+
+(Directories at root that exist but were intentionally not chunked — drafts, prototypes, audits, generated dirs. Brief one-liner per.)
+```
+
+### 7. Update the service-level `index.md`
+
+Write or update `corpus/sources/<service-id>/index.md` to list all snapshots:
+
+```markdown
+# <service-id> — service index
+
+## Code snapshots
+
+| Snapshot | Commit | Tag | Date | Modules |
+|---|---|---|---|---|
+| [2026-05-12-85a6857](./code/2026-05-12-85a6857/_index.md) | `85a6857` | none | 2026-05-12 | 5 |
+
+## API snapshots
+(populated by document-api)
+
+## Hardware
+(populated by document-hardware)
+```
+
+### 8. Cross-link back to dependent corpus entries (optional, low-confidence)
+
+When a code module is the implementation of a documented screen, API, or hardware part — e.g. a `tek-button` component is the Figma DS Button — the chunk's frontmatter declares `related_*`. **Do not silently back-update** screen `.md` files based on guessed correlations; the matches are too fuzzy. Surface candidate cross-links in the chunk's `## Cross-references` section instead, with a confidence note if uncertain.
+
+This is different from `document-pdf`'s back-update — manuals reference screens with high confidence; code modules implement screens with looser correspondence.
+
+## Output
+
+For one repo processed at one snapshot:
+
+```
+corpus/sources/<service-id>/code/<snapshot-id>/
+├── _index.md
+├── <module_id-1>.md
+├── <module_id-2>.md
+└── …
+corpus/sources/<service-id>/index.md          (created or updated)
+```
+
+Nothing written outside of `corpus/sources/<service-id>/`. The source repo is never modified.
+
+## Required tools
+
+- **Bash** — for `git rev-parse`, `git describe`, `git show`, `ls`, `find`, `grep`.
+- **Read** — for source files, READMEs, manifests.
+- **Write** — for new chunks and `_index.md`.
+- **Edit** — for updating the service-level `index.md` when a new snapshot is added.
+
+## Workflow rules from CLAUDE.md that apply here
+
+- Branch → PR; never commit to `main`. `feat(rag):` for new corpus content; `feat(skills):` for skill changes.
+- Never commit generated artifacts. Only the extracted markdown.
+- Match existing patterns. The format is locked to the first snapshot — do not improvise.
+
+## Operational notes
+
+- **Idempotence.** Within a snapshot ID, re-running regenerates module summaries from the current source. **Across snapshot IDs, runs accumulate** — old snapshots persist for historical queries. To overwrite, pass the same `--snapshot-id` flag explicitly (or use `--snapshot-id main` for a mutable current-view snapshot).
+- **Output dir creation.** The skill creates `corpus/sources/<service-id>/code/<snapshot-id>/` if missing — `mkdir -p` is fine.
+- **`index.md` regenerates** on every run with the service-level snapshot table updated.
+
+## Notes
+
+- **Why versioned snapshots instead of overwriting?** Code is volatile; the corpus is queryable. Asking "how did the API look at v1.0.16?" requires the snapshot to persist. Disk grows linearly with releases; sweep old snapshots manually when stale.
+- **Why not extract everything?** A full source dump is a less useful corpus than the public contract. Implementation details belong in the live repo, not a stale snapshot. The skill's value is the *summary layer*, not the *mirror layer*.
+- **Why "service-id" instead of "product-id"?** A product is a SKU (`2450-ec`); a service is a piece of software (`tek-design-system`, `dev-core-api`). Both are corpus subjects; folders work the same way. The `applies_to` tag connects them when a service supports a product.
+- **What about constantly-evolving local development?** The `--snapshot-id main` flag overwrites the previous snapshot — useful when you want a "current" view that mutates as you commit. Lossy; only use when history doesn't matter.
+- **What about private repos?** Same as document-pdf — auth lives on your machine (SSH keys, gh tokens) and the skill reads from there. Never accept pasted credentials.
+- **Generated files (dist/, etc.)?** Skipped. The build is reproducible from source; the corpus doesn't need both. If a downstream consumer needs the compiled output, they `npm install` it.
+
+---
+
+## document-screens
+
+_Document every screen of an existing piece of Tek software as structured markdown for the org-wide RAG. Use when given a folder of raw photos / screenshots under corpus/sources/<product>/uploads/photos/ — produces one .md + downscaled image per unique screen in screens/, with frontmatter, controls inventory, and verbatim text. Optionally process a single photo for testing. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa._
+
+# Document screens
+
+Turns raw photos of an existing product UI into a consistent, LLM-optimized corpus of per-screen markdown. Two downstream uses:
+
+1. Feed the org-wide MCP RAG with high-signal references.
+2. Hand Claude Code a complete picture of a legacy UI when refactoring it onto the design system (cd→cc handoff, like User Portal).
+
+The format is **locked** by `corpus/sources/2450-ec/screens/home.md`. That file is the canonical reference; mirror its frontmatter shape and body sections exactly.
+
+## Inputs
+
+The user provides:
+- A product folder under `corpus/sources/<product-id>/`, e.g. `2450-ec`. The folder must contain `uploads/photos/<photos>` and an empty (or partially populated) `screens/`.
+
+Optional:
+- `--photo <filename>` to process a single photo (validation / one-off mode).
+- `--screen-id <kebab>` to override automatic ID assignment.
+
+## Hard rules
+
+1. **Format is locked. Do not deviate from `home.md`.** If you think the format needs to change, surface the proposal in the response and stop — do not edit the format unilaterally. The whole point of locking it is downstream reproducibility.
+2. **Confidence over completeness.** If a label, value, or behavior is not legible or not derivable from the photo, mark it in **Confidence notes** rather than fabricating. Hallucinated controls are worse than missing controls — they poison the RAG.
+3. **One `.md` per unique screen, not per photo.** Multiple photos of the same screen with different state become **State variations** within a single `.md`. See *Clustering*.
+4. **`uploads/` is gitignored.** Never commit anything under `uploads/`. Only the downscaled image in `screens/` and the markdown.
+5. **No design system mapping in screen `.md`.** Do not reference `tek-*` primitives, propose new primitives, or compare against DS-v2 in any part of the screen markdown. The corpus describes the legacy device as-is; DS mapping is a separate, dated, disposable audit produced on-demand by [`prototype-qa`](../prototype-qa/SKILL.md). Mixing the two rots the corpus the moment DS-v2 evolves.
+
+## Process
+
+### 1. Discover
+
+```bash
+ls corpus/sources/<product>/uploads/photos/
+```
+
+Read every photo (or only the one passed via `--photo`). The Read tool accepts JPEGs/PNGs and returns them as visual content.
+
+### 2. Cluster (multi-photo mode only)
+
+Group photos by **screen identity**, not by photo. Two photos belong to the same screen when:
+
+- The visible UI chrome (top status bar, tabs, region layout, hardware bezel labels) is the same.
+- They differ only in user-changeable **state** — function selection, output ON/OFF, displayed value, range, overlay visibility, theme.
+
+Two photos belong to *different* screens when:
+
+- A modal/dialog overlay is present in one and not the other (the modal is its own screen).
+- A fundamentally different region layout is visible (e.g. Home dual-readout vs. Graph plot view).
+- A different navigation level (e.g. Menu tree vs. terminal page in Menu).
+
+For each cluster, pick **one canonical photo** to downscale and reference. Selection criteria, in order:
+
+1. No human hand, finger, or other obstruction across the LCD.
+2. Sharp focus, no motion blur.
+3. Even lighting, minimal screen glare.
+4. Full hardware bezel visible (left and right buttons, knob, terminals).
+5. Screen in its "rest" or most informative state for that cluster.
+
+The other photos in the cluster contribute **State variations** content but are not committed.
+
+### 3. Generate `screen_id`
+
+Kebab-case, descriptive but short. Avoid the product name (the folder already provides it). Match the device's own navigation labels where possible.
+
+| Pattern | Examples |
+|---|---|
+| Top-level views | `home`, `menu`, `quickset`, `help` |
+| Function-bearing views with one canonical layout | `graph`, `histogram`, `digits` |
+| Sub-screens reached via tab or breadcrumb | `graph-data`, `graph-scale`, `menu-source` |
+| Modal/dialog overlays | `measure-range`, `calculation-settings`, `buffer-picker` |
+| Numeric editors triggered by tile-tap | `source-edit`, `limit-edit` |
+
+If two screens have the same role across products (every product has a Home), prefer the same `screen_id` so cross-product RAG retrieval works.
+
+### 4. Downscale the canonical photo
+
+```bash
+sips -Z 1600 -s format jpeg -s formatOptions 85 \
+  corpus/sources/<product>/uploads/photos/<canonical-photo> \
+  --out corpus/sources/<product>/screens/<screen-id>.jpg
+```
+
+`-Z 1600` resizes the long edge to 1600 px while preserving aspect ratio. `formatOptions 85` is a quality compromise: text on the LCD must remain crisply legible at 100% zoom in a browser — verify this before continuing. Re-read the downscaled image and confirm every value/label still reads.
+
+### 5. Transcribe and structure
+
+Write `screens/<screen-id>.md` matching the **exact** frontmatter and body section order of `home.md`. Reproduced inline:
+
+#### Frontmatter
+
+```yaml
+---
+software: <product display name, e.g. "2450-EC">
+software_version: <visible from screen, else TBD>
+screen_id: <kebab>
+screen_title: <as labeled on screen, or short noun phrase>
+screen_type: readout | menu | config | dialog | graph | status
+image: <screen-id>.jpg
+source_photo: uploads/photos/<original-filename>
+function_state: <function/state context if relevant, else omit>
+navigation_path: [<top>, <sub>, <screen-title>]
+parent_screens: [<screen-id>, …]
+child_screens: [<screen-id>, …]
+controls:
+  - id: <kebab>
+    label: <as shown, or empty string for unlabeled hardware>
+    type: button | toggle | dropdown | input | tab | softkey | hardkey | readout | indicator | knob | terminal | port
+    state: enabled | disabled | active
+    action: <what it does — observable behavior, with manual-checkable items flagged>
+---
+```
+
+#### Body sections, in this exact order
+
+1. **`# <screen-title>` heading** — short, possibly with a state qualifier (e.g. "Home — Measure Current 2-Wire").
+2. **`## Purpose`** — one paragraph. What this screen is for, where it sits in the nav, what the user does here.
+3. **`## Controls inventory`** — prose walkthrough of every entry in `controls[]`, region by region, top-to-bottom, left-to-right. Reference each control by `` `id` `` (backticks). Group hardware bezel into one paragraph at the end.
+4. **`## State variations`** — if visible across other photos in the cluster (or knowable from the device): function changes, output ON/OFF, overlays, themes. Cross-reference other photos by filename (`uploads/photos/photo-XXX_…jpeg`) and name future child screens by `screen_id`.
+5. **`## Visible text (verbatim)`** — every label, value, unit, and status string transcribed exactly. Group by region. This block is the highest-signal RAG payload — terms a user types into a search ("what does AZERO mean") are most likely to land here.
+6. **`## Confidence notes`** — bulleted list of every transcription, behavior, or interpretation that is uncertain. Be explicit about *what* is unverified and *why* (illegible at this resolution / unconfirmed in this single shot / requires manual). The manual-pairing pass works through this list.
+7. **`## Manual references`** — placeholder until the manual-pairing pass: `> Pending. Manual will be paired in a later pass (<product> User's Manual, sections covering …).`
+8. **`## Source photo`** — which file in `uploads/photos/` was selected and why; brief disposition of other candidates that were not selected.
+
+**Do not include a `## Design system mapping` section.** See Hard rule 5.
+
+### 6. Update `index.md`
+
+After every screen pass, regenerate `corpus/sources/<product>/index.md`:
+
+```markdown
+# <product display name> — screen index
+
+Generated <YYYY-MM-DD>.
+
+## Screen graph
+
+<ASCII or bulleted tree showing parent → child relationships, derived from each screen's parent_screens / child_screens frontmatter.>
+
+## All screens
+
+| screen_id | screen_title | screen_type | function_state |
+|---|---|---|---|
+| home | Home | readout | MEASURE CURRENT 2-WIRE |
+| graph | Graph | graph | — |
+| … | … | … | … |
+```
+
+If processing a single photo, regeneration is still cheap — do it.
+
+## Output
+
+Per screen processed:
+
+```
+corpus/sources/<product>/screens/<screen-id>.md
+corpus/sources/<product>/screens/<screen-id>.jpg
+corpus/sources/<product>/index.md          (regenerated)
+```
+
+Nothing is written outside of `corpus/sources/<product>/`.
+
+## Required tools
+
+- **Read** — for images and existing markdown.
+- **Bash** — for `sips` (downscaling), `ls`, `mkdir`.
+- **Write** — for new markdown.
+- **Edit** — for `index.md` regeneration when it already exists.
+
+## Workflow rules from CLAUDE.md that apply here
+
+- Branch → PR; never commit to `main`. The skill produces files; committing them happens in a feature branch with a Conventional-Commit message (`feat(rag):`).
+- No raw photos or `manual.pdf` in commits. The product's `.gitignore` rules already enforce this; do not stage them.
+- Match existing patterns. The format is locked to `home.md` — do not improvise.
+
+## Operational notes
+
+- **Idempotence.** Re-running this skill on the same product regenerates output from the current state of `uploads/photos/`. There's no append mode and no skip-already-done mode. If you've hand-edited a screen .md and want to preserve those edits, copy them back into the source photo's confidence notes before re-running. Otherwise, re-runs are safe and intended.
+- **Output dir creation.** The skill creates `corpus/sources/<subject>/screens/` if missing — `mkdir -p` is fine. First invocation on a subject works without any pre-scaffolding.
+- **`index.md` is regenerated by every processing-skill run** — see `corpus/README.md` § Process completion for the per-asset done-criteria checklist.
+- **`sips` is macOS-only.** Image downscaling uses `sips` (built-in on macOS). On Linux/Windows, substitute `magick` (ImageMagick) with equivalent `-resize 1600x1600\>` and `-quality 85` flags.
+
+## Notes
+
+- **Why one canonical photo per screen, not all of them?** RAG retrieval is keyed on screen, not on photo. Multiple photos of the same screen produce noise in retrieval. State variations are captured in prose, which is what an LLM consumes anyway.
+- **Why a downscaled image at all, if the markdown is the RAG payload?** For human reviewers and for the hand-off conversation when a designer or developer asks "what did this look like." It also lets a multimodal LLM verify a transcription claim against the actual image.
+- **Why is "Visible text (verbatim)" a separate section instead of inline?** Direct keyword retrieval. A user searching "AZERO" or "+105.000 µA" should get a hit even if no other prose mentions the value.
+- **Why include hardware bezel buttons in `controls[]`?** They are part of the user's interaction with the screen — leaving them out misrepresents how the screen is operated. They are flagged as out-of-scope for the web DS in the mapping section.
+- **What if the manual is available?** Drop `manual.pdf` into `corpus/sources/<product>/`. It is gitignored. A separate manual-pairing pass cross-references screen markdown with manual sections; that is not this skill.
+
+---
+
+## document-walkthrough
+
+_Process a recorded walkthrough transcript (text, VTT, SRT, or speaker-attributed dialogue) into structured flow markdown — steps with timestamps, screens visited, friction notes, and architectural annotations from the narrator. Use when given a transcript at corpus/sources/<product>/uploads/transcripts/. Produces one .md per distinct user flow under corpus/sources/<product>/walkthroughs/, cross-linked to screens/hardware/APIs. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa._
+
+# Document walkthrough
+
+Turns a recorded walkthrough — typically a screen-record + voiceover by an engineer, support agent, or product manager demonstrating a user flow — into structured corpus markdown. The transcript is the input; the output is a flow `.md` that captures the user's intent, the steps they take, the screens they visit, where they get stuck, and any architectural or historical context the narrator volunteers.
+
+The format is **locked** by `corpus/sources/tek-express/walkthroughs/tek-products-walkthrough.md` (and the three sibling files in that folder — `_index.md`, `ds-architecture-presentation.md`, `desktop-integration-strategy.md`, `ux-feedback-and-open-questions.md`). Mirror its frontmatter shape and body section order exactly for any future walkthrough.
+
+## Inputs
+
+- A transcript file at `corpus/sources/<product-id>/uploads/transcripts/<filename>`. Supported formats:
+  - **Plain text** (`.txt`, `.md`) — flowing narrative.
+  - **WebVTT** (`.vtt`) — common output from screen-record tools (Loom, Riverside, automatic captions).
+  - **SubRip** (`.srt`) — same shape as VTT.
+  - **Speaker-attributed dialogue** (e.g. `Bryan: …\nClaude: …\n`) — multi-person walkthroughs.
+  - **Markdown with timestamps** (`[01:23] Speaker: …`) — common manual-transcription format.
+
+Optional:
+- `--flow-id <kebab>` to override the derived id.
+- `--video <filename>` if a paired video file is available locally for reference (gitignored, never committed; used only to cross-check timestamps).
+
+## Hard rules
+
+1. **Format is locked** by `corpus/sources/tek-express/walkthroughs/tek-products-walkthrough.md`. Mirror its frontmatter and body section order exactly.
+2. **Verbatim where possible.** Narrator quotes that explain *why* the product behaves this way are high-RAG-value — preserve them word-for-word in `## Annotations`. Step descriptions get paraphrased for clarity in `## Steps`, but the original transcript line(s) for each step are quoted inline.
+3. **One `.md` per distinct user flow, not per recording.** A 30-minute recording that covers three flows yields three `.md` files; a 5-minute recording that covers one flow yields one.
+4. **Cross-link via frontmatter.** When the narrator visits a documented screen, declare `screens_visited: [<screen-id>, …]` in frontmatter (ordered as visited) and `related_screens` for screens conceptually relevant but not directly shown. Same for hardware and APIs.
+5. **Friction goes in its own section.** Confusion, errors, workarounds, "where did that go?" moments — capture verbatim in `## Friction notes`. Designers reading the corpus for redesign work will mine this section first.
+6. **No design system mapping in chunks.** Same corpus-vs-audit rule as the other skills. Suggestions like "this dialog should use a tek-modal" don't belong in a walkthrough chunk — they're audit content.
+7. **`uploads/` stays gitignored.** Source transcript (and any paired video) never commits.
+
+## Process
+
+### 1. Identify the flow(s)
+
+Read the transcript. Recognize natural flow boundaries:
+
+- A new task introduction ("OK, now let's set up a new sweep").
+- A return to a known root screen (Home / dashboard).
+- A long pause or topic switch.
+- Narrator says "and that's how you [verb] [object]" — flow complete.
+
+For each flow, generate a `flow_id` (kebab, descriptive). Examples: `cv-test-setup`, `import-csv`, `connect-instrument`, `recover-lost-password`.
+
+### 2. Pull metadata from the transcript
+
+- `flow_title` — human readable, derived from the narrator's stated task.
+- `recorded_by` — speaker identity if attributed (`Bryan Kemp`) or role (`unknown narrator`).
+- `recorded_date` — if mentioned by the narrator or in the file's metadata; else `null`.
+- `duration` — total length of the source recording if known.
+- `transcript_source` — the relative path under `uploads/transcripts/`.
+
+### 3. Walk the flow
+
+For each flow, identify:
+
+- **Goal** — what the user is trying to accomplish.
+- **Starting state** — what screen / context the flow begins in.
+- **Steps** — discrete actions the user takes. Each step gets:
+  - A timestamp if the transcript has them (`[01:23]`).
+  - A one-sentence action description.
+  - The screen visited or interacted with (cross-reference to `screens/<screen-id>.md` where it exists).
+  - The verbatim transcript line(s) that motivated this step, quoted as a sub-bullet.
+- **Friction** — points where the narrator hesitates, expresses confusion, hits an error, or applies a workaround. Quote verbatim.
+- **Annotations** — narrator voiceover that explains *why* — architectural decisions, historical context, "this only exists because of [reason]," "we should change this but haven't gotten to it." High-value for redesign work.
+
+### 4. Cross-reference
+
+Map every screen the user visits to its `screens/<screen-id>.md` if documented; if not, list it in `## Pending references` so the corpus owner knows what screen-doc gaps to fill. Same for API endpoints (the narrator may mention "this calls `POST /accounts`") and hardware features.
+
+### 5. Write the chunk
+
+Path: `corpus/sources/<product>/walkthroughs/<flow_id>.md`
+
+#### Frontmatter
+
+```yaml
+---
+class: walkthrough
+product: <product-id>
+flow_id: <kebab>
+flow_title: <human readable>
+recorded_by: <name or role>
+recorded_date: <YYYY-MM-DD, or null>
+duration: <mm:ss, or null>
+transcript_source: uploads/transcripts/<filename>
+screens_visited:
+  - <screen-id>           # ordered as visited
+  - <screen-id>
+applies_to: [<product-id>, …]
+related_screens: [<screen-id>, …]    # conceptually relevant, not necessarily visited
+related_apis: [<endpoint-id>, …]
+related_hardware: [<part-id>, …]
+---
+```
+
+#### Body sections, in this exact order
+
+1. **`# <flow-title>` heading** — short.
+2. **`## Summary`** — one short paragraph, paraphrasing what the user is doing and why.
+3. **`## Goal`** — the user's stated or evident intent. One sentence.
+4. **`## Starting state`** — the screen / context the flow begins from.
+5. **`## Steps`** — numbered list. Each step:
+   - `**Step N — [timestamp if present]** — <one-sentence action>. Screen: [<screen-id>](../screens/<screen-id>.md).`
+   - Sub-bullet with the verbatim transcript line(s) in quotes.
+6. **`## Friction notes`** — bulleted list of pain points, verbatim quotes. Empty if none observed.
+7. **`## Annotations`** — narrator voiceover that explains *why*. Quote verbatim with attribution.
+8. **`## Cross-references`** — relations to other corpus content.
+9. **`## Pending references`** — screens / APIs / hardware mentioned by the narrator but not yet documented in the corpus. Each as a one-liner so the next pass knows what to fill in.
+10. **`## Confidence notes`** — inaudible passages, ambiguous step boundaries, narrator slips, anything uncertain.
+
+### 6. Update `index.md`
+
+Add a "Documented walkthroughs" section to `corpus/sources/<product>/index.md`:
+
+```markdown
+## Documented walkthroughs
+
+| flow_id | flow_title | duration | screens visited |
+|---|---|---|---|
+| [cv-test-setup](walkthroughs/cv-test-setup.md) | Cyclic voltammetry test setup | 4:32 | home → graph → graph-data |
+```
+
+## Output
+
+```
+corpus/sources/<product>/walkthroughs/<flow_id>.md
+corpus/sources/<product>/index.md          (updated)
+```
+
+The source transcript stays in `uploads/transcripts/` (gitignored).
+
+## Required tools
+
+- **Read** — for the transcript and existing markdown.
+- **Write** — for new walkthrough chunks.
+- **Edit** — for updating the product-level `index.md`.
+
+## Workflow rules from CLAUDE.md that apply here
+
+- Branch → PR; never commit to `main`. `feat(rag):` for new corpus content.
+- Never commit transcripts or paired videos — they're in `uploads/`, gitignored.
+- Match existing patterns. Mirror the locked observation format the other `document-*` skills established.
+
+## Operational notes
+
+- **Idempotence.** Re-running this skill on the same transcript regenerates chunks from the current source. Hand-edited annotations get overwritten on re-run — copy edits back into a source-transcript comment block before re-running if you want them preserved.
+- **Output dir creation.** The skill creates `corpus/sources/<subject>/walkthroughs/` if missing — `mkdir -p` is fine. First invocation works without pre-scaffolding.
+- **`index.md` regenerates** on every run with an updated "Documented walkthroughs" section.
+
+## Notes
+
+- **Why a separate "Friction notes" section instead of folding into Steps?** Friction is the redesign goldmine. Designers reading the corpus for "what's broken about this product" want a single section to read; they don't want to scan ten steps for the ones the user struggled with.
+- **Why preserve narrator voiceover verbatim in Annotations?** "Why does it work this way?" answers tend to be the highest-value, lowest-frequency content in any walkthrough. Paraphrasing loses the nuance.
+- **What if the transcript has multiple speakers (e.g. a user being interviewed)?** Attribute each quote in `## Annotations` (e.g. `**Bryan:** "…"`). Speaker confusion goes in Confidence notes.
+- **What about screen recordings without voiceover?** Skip this skill — there's no narrator content to capture. If the video has only on-screen action, use `document-screens` against keyframe extractions instead.
+- **Sensitive information in transcripts** (credentials, customer names, internal product names not yet announced)? Redact in the chunk and flag in Confidence notes. Better: tell the narrator to redact before recording. Never paste credentials into the chunk even if they're in the source transcript.
+
+---
+
 ## figma-design-qa
 
-_Audit a Figma file or frame for components and styles that bypass the design system. Flags raw shapes that should be tek components and hardcoded values that should reference Figma Variables. Outputs a clean shareable Markdown report._
+_Audit a Figma file or frame for design-system violations — raw shapes where tek-* components exist, unbound color/spacing/radius/stroke-weight values where DS variables exist, and text nodes without published text styles applied. Companion to the `tek-figma-build` skill which prevents the violations at write time. Outputs a shareable Markdown report._
 
 # Figma design QA
 
-Audits a Figma file (or scoped frame) and reports anything that isn't using the DS-v2 components and Variables. The output is a self-contained Markdown report intended to be shared with the design team.
+Audits a Figma file (or scoped frame) and reports anything that isn't using the DS-v2 components, Variables, and Styles. The output is a self-contained Markdown report intended to be shared with the design team.
+
+This skill is the **detection** layer. The matching **prevention** layer is `tek-figma-build` (MANDATORY before every `use_figma` write) + the PreToolUse hook on `use_figma`. Together they enforce CLAUDE.md Hard Constraint 9 / CHARTER Rule 22: every property bound, every text node styled, every component used.
 
 ## Inputs
 
@@ -306,18 +1778,29 @@ Optional: an `output-dir` override (default: `audits/figma/`).
    - Is it an instance of a non-DS component (e.g., `Button/Old`, `Modal v1`)? → flag as **non-DS component**
    - Is it a raw rectangle / group / text that visually resembles a DS component (button shape with label, input shape with placeholder, modal shape with header)? → flag as **detached**, with the recommended `tek-*` component
 
-3. **Variable / token coverage check.** For each styled property, use `get_variable_defs` and `get_design_context` to confirm it references a Variable:
-   - Fills, strokes → color Variable
-   - Effects (shadows, blurs) → effect/blur Variable
-   - Typography (family, size, line-height, weight) → font Variable
-   - Padding, gap, item-spacing → spacing Variable
-   - Corner radius → border Variable
+3. **Variable / token coverage check.** For each styled property on every node, check whether it's bound to a Variable. Use `get_variable_defs` for an inventory; for deeper checking, walk via a `use_figma` script that inspects `node.boundVariables[propName]` directly. The check covers:
 
-   Hardcoded values are flagged with node ID and the suggested token.
+   | Category | Properties to inspect | Library namespace |
+   |---|---|---|
+   | **Color** | `fills[*]`, `strokes[*]`, effect colors | `color/*` semantic; `colors/brand/*` primitive |
+   | **Spacing** | `itemSpacing`, `paddingLeft`, `paddingRight`, `paddingTop`, `paddingBottom` | `🏹 spacing/sNN` (DS-v2 has s00..s33) |
+   | **Border radius** | `topLeftRadius`, `topRightRadius`, `bottomLeftRadius`, `bottomRightRadius` (also surfaces as `cornerRadius` when uniform) | `📐 borders/radius/NN` (DS-v2 has none, 01..16, full) |
+   | **Stroke weight** | `strokeWeight`, plus per-side variants (`strokeTopWeight`, etc.) | `📐 borders/width/NN` (DS-v2 has none, 01..16) |
+   | **Opacity** | `opacity` | none currently — flag as candidate for new token if patterns repeat |
+   | **Effects** | shadows, blurs — color + radius + spread | effect tokens (if shipped) |
 
-4. **Mode parity.** If the node has light-mode counterparts (paired frames, `[data-theme="light"]` variants), confirm the same components and Variables are used in both. Flag mode-specific raw values.
+   Hardcoded values are flagged with node ID, current value, and the suggested token. Use a snap tolerance to identify "close-but-wrong" cases — e.g. `paddingLeft: 23` when `spacing/s11` is 24 — and flag them as **off-by-snap** (worse than no token because it suggests a guess rather than ignorance).
 
-5. **Compose report.** Write to `audits/figma/<YYYY-MM-DD>-<slug>.md`. Slug = audited node name, kebab-case, alphanumeric only. Create the directory if missing.
+4. **Text style coverage check.** For each `TEXT` node, confirm `textStyleId` is set to a published style. Walk via `use_figma` if the metadata-level inspection misses it. The check:
+
+   - `node.textStyleId !== ""` → OK (note which style)
+   - `node.textStyleId === ""` + `fontName + fontSize` set inline → flag as **unstyled text**, with the suggested style based on (family, weight, size). Search styles by category (`body`, `heading`, `bold`, `mono`) — NOT `typography` which returns empty.
+
+   The DS-v2 published text styles to match against: `text/heading/regular/{2xs..5xl}`, `text/regular/{xs..5xl}`, `text/bold/{xs..5xl}`, `text/mono/{xs..xl}`, `text/light/{lg, …}`. Family is a hard match; weight allows close-match (Medium ↔ Regular, SemiBold ↔ Bold).
+
+5. **Mode parity.** If the node has light-mode counterparts (paired frames, `[data-theme="light"]` variants), confirm the same components, Variables, and Styles are used in both. Flag mode-specific raw values.
+
+6. **Compose report.** Write to `audits/figma/<YYYY-MM-DD>-<slug>.md`. Slug = audited node name, kebab-case, alphanumeric only. Create the directory if missing.
 
 ## Report template
 
@@ -332,9 +1815,15 @@ Optional: an `output-dir` override (default: `audits/figma/`).
 |---|---|
 | Layers audited | N |
 | Component coverage | X% (`<componentized>/<total>` non-trivial layers are DS instances) |
-| Token coverage | Y% (`<tokenized>/<styled_props>` styled properties reference a Variable) |
+| Color binding | X% (`<bound>/<colored_props>` fills/strokes bound to color variables) |
+| Spacing binding | X% (`<bound>/<spacing_props>` itemSpacing/padding bound to spacing variables) |
+| Radius binding | X% (`<bound>/<radius_props>` corner radii bound to radius variables) |
+| Stroke weight binding | X% (`<bound>/<stroke_props>` strokeWeight bound to width variables) |
+| Text style coverage | X% (`<styled>/<text_nodes>` TextNodes with textStyleId set) |
 | Detached elements | N |
 | Hardcoded values | N |
+| Off-by-snap values | N |
+| Unstyled text nodes | N |
 | Non-DS components | N |
 
 ## Detached elements
@@ -346,8 +1835,19 @@ Elements that look like DS components but are raw shapes.
 
 ## Hardcoded values
 
-| Node | Property | Current value | Suggested token |
-|---|---|---|---|
+Properties with raw numbers/colors where the library has a matching variable.
+
+| Node | Property | Current value | Suggested token | Severity |
+|---|---|---|---|---|
+
+(Severity: `exact-match-missed` = library has the exact value; `off-by-snap` = close but not exact, flag as guess; `no-match` = genuinely new, candidate for additions audit)
+
+## Unstyled text nodes
+
+`TextNode`s with inline `fontName + fontSize` instead of a published text style applied via `textStyleId`.
+
+| Node | Family | Weight | Size | Suggested text style |
+|---|---|---|---|---|
 
 ## Non-DS components
 
@@ -373,8 +1873,9 @@ Default: `audits/figma/<YYYY-MM-DD>-<slug>.md`. The user may pass `output-dir` t
 
 - Skip `visible: false` layers unless asked.
 - Skip intentional bespoke art (logos, illustrations, marketing imagery).
-- "Wrong token" (close but not exact match) is a stronger signal than "no token at all" — call them out separately if you find any.
-- Do not auto-fix anything — this skill produces a report, not edits. Designers act on the report in Figma.
+- **Off-by-snap is the strongest signal.** A raw `23px` when the library has `spacing/s11 = 24px` is worse than `no-match` — it tells you a human (or AI) guessed instead of binding. Always surface these first.
+- Auto-fix is out of scope for this skill — it produces a report only. **For automatic retrofit**, use a `use_figma` script that enumerates library variables and snaps with `setBoundVariable` / `setTextStyleIdAsync`. See the 2026-06-04 Tek Express retrofit (PR #68) for the canonical pattern.
+- The complementary prevention layer is the `tek-figma-build` skill — MANDATORY-prerequisite before any `use_figma` write. design-qa catches what slipped past the prevention layer; both together enforce CHARTER Rule 22 / CLAUDE.md Hard Constraint 9.
 
 ---
 
@@ -455,7 +1956,7 @@ The issue is labeled `figma-mcp-watch` so you can filter/triage easily.
 
 ## prototype-qa
 
-_Compare a prototype (Figma frame or local HTML) against the design system and classify every distinct UI element as existing-match, close-match, or new. Identifies design system gaps and produces a shareable Markdown report. Invoke prototype-screenshot-diff afterwards for visual close-match comparisons._
+_Compare a prototype (Figma frame, local HTML, or RAG corpus screen .md) against the design system and classify every distinct UI element as existing-match, close-match, or new. Identifies design system gaps and produces a shareable Markdown report. Invoke prototype-screenshot-diff afterwards for visual close-match comparisons. Output is a dated, disposable snapshot under audits/prototype/._
 
 # Prototype QA
 
@@ -466,10 +1967,13 @@ Given a prototype, classify every distinct UI element by its relationship to the
 ## Inputs
 
 The user provides one of:
-- A Figma URL pointing to a prototype frame
-- A path to a local HTML / TSX / JSX file in this repo (e.g., `prototypes/<name>/index.html`)
+- A Figma URL pointing to a prototype frame.
+- A path to a local HTML / TSX / JSX file in this repo (e.g., `prototypes/<name>/index.html`).
+- A path to a corpus screen `.md` or a folder of them in `corpus/sources/<product>/screens/`. The screen `.md` is a structured representation of a legacy UI — its `controls[]` frontmatter and `## Controls inventory` body are the element list. Audit it the same way you would a live Figma frame.
 
 Optional: `output-dir` (default `audits/prototype/`), `slug` (default derived from the input name).
+
+**For corpus screen `.md` inputs**, the audit fills a specific gap: the corpus describes the legacy device as-is and is intentionally DS-agnostic. The audit interprets it against current DS-v2. Output is disposable — rerun when DS-v2 evolves or when a new redesign briefing is needed; do not overwrite previous snapshots.
 
 ## Required tools
 
@@ -503,7 +2007,7 @@ No DS analogue. Candidate for addition or "not a DS component" (one-off marketin
 
 ## Process
 
-1. **Enumerate elements.** Walk the prototype and produce a flat list of distinct UI elements. Group repeated instances — one entry per element type (e.g., "primary button (3 instances)").
+1. **Enumerate elements.** Walk the prototype and produce a flat list of distinct UI elements. Group repeated instances — one entry per element type (e.g., "primary button (3 instances)"). For a corpus screen `.md`, the `controls[]` frontmatter array is the element list — each entry's `type` and `action` describe the element's role. Skip controls whose `type` is `hardkey | knob | terminal | port` (hardware bezel — out of scope for web).
 
 2. **Match against DS.** For each element, walk the DS-v2 component table. Score:
    - `existing` if all attributes/anatomy match
@@ -733,3 +2237,96 @@ Run through this checklist before approving any CC-authored change. Items are or
 - Cross-package ripple updates (item 7 — Qt, preview HTML).
 - Updating the README component/attribute table when a public attribute is added.
 - CHANGELOG entries on `patch`-level changes.
+
+---
+
+## tek-figma-build
+
+_MANDATORY prerequisite — load this skill BEFORE any `use_figma` tool call that writes to a Tek file. The Tek-specific layer on top of figma-use. Sets the four-point build rule (variables on every property, type styles on every text node, components instead of shapes, additions-audit for new tokens/components). Skipping this skill causes the exact paint-not-compose failure the design system exists to prevent._
+
+# Tek Figma Build
+
+Wraps `figma-use` / `figma-generate-design` with Tek-specific build discipline. The four-point rule below is non-negotiable and represents the **core ethos of the design system**.
+
+> Anything less than full token + style + component binding is a deviation; deviations are explicit (additions audit), never silent.
+
+## The four-point rule (Bryan, verbatim)
+
+1. **Apply ALL existing variables to every element that can use them.** Spacing, border radius, colors, stroke weights — every property that the library has a variable for, bind it. Raw numbers are forbidden where a variable exists.
+2. **All type must have a type style applied.** No raw `fontName + fontSize` pairs. Every `TextNode` uses a published text style.
+3. **USE THE COMPONENTS. If there is a component for it. Use it. Every single time.** Never draw a rectangle that represents a button when `tek-button` is in the library. Variant overrides (state, type, size) are the legitimate adjustments; replacing with a shape is not.
+4. **If a variable or component doesn't exist:**
+   - **Extremely close to an existing one → defer.** 23px → use the 24px spacing token. A dropdown with a different caret glyph → still use the dropdown component (the caret is an icon swap).
+   - **Genuinely new → bind what you can, add to the additions audit.** Use every variable that fits, every component that applies, then propose the new token / component / variant in the additions audit `.md` with an explicit `(PROPOSED: tek-spacing-…)` annotation in the layer name.
+
+## When to use this skill
+
+**Every time** you're about to call `use_figma` against a Tek file. No exceptions.
+
+- Building a screen → load this skill first
+- Updating a frame → load this skill first
+- Adding a new component → load this skill first
+- Even "just" duplicating an existing frame → load this skill first (you'll need to re-bind anything the clone broke)
+
+This skill loads after `figma-use` / `figma-generate-design`, not instead of them. They teach you HOW to call `use_figma`; this skill teaches you the Tek-specific rules for WHAT to bind once you're inside the call.
+
+## Discovery phase — do this once per session
+
+Before the first write, discover the full variable + style + component namespace:
+
+1. **Library subscription.** `get_libraries` — confirm the file subscribes to DS-v2 (fileKey `3wbYstse9TYKlPtCPpZH5X`). If not, subscribe first or import every needed asset via `importComponentByKeyAsync` / `importVariableByKeyAsync`.
+
+2. **Variable namespaces to fetch.** All of these exist in DS-v2 — do not guess; query:
+   - `search_design_system` for terms `color`, `spacing`, `borders`, `fonts`, `motion`
+   - Walk the returned variable trees and record IDs for: spacing scale (`s00`–`s12`), border radius scale (`radius/02`, `radius/03`, `radius/05`, `radius/full`, etc.), color variables (`color/canvas/background/*`, `color/input/border/*`, `color/button/*`, `colors/brand/*`, etc.), font size + family + line-height tokens.
+
+3. **Text styles to fetch.** DS-v2 has a full text style library — search `body`, `heading`, `regular`, `bold`, `mono` (NOT "typography" or "text style" — those return empty). Record the style IDs for `text/heading/regular/{2xs..5xl}`, `text/regular/{xs..5xl}`, `text/bold/{xs..5xl}`, `text/light/{xs..3xl}`, `text/mono/{xs..2xl}`.
+
+4. **Component namespace.** `search_design_system` returns the shipped tek-* component list. Record component-set keys for: Button, Selector (Checkbox/Radio), SelectorLabel, Input, Label, Modal, TextLink, Toggle, Footer, CharacterCount.
+
+## Binding rules during the write
+
+For every node you create or modify, walk this in order before moving to the next:
+
+**Fills / strokes →** `figma.variables.setBoundVariableForPaint({type:"SOLID",color:fallback}, "color", variable)`. Choose the most semantic match (`color/button/border/default` over `colors/neutral/700`). Raw hex only as the fallback inside the bound paint, never as a standalone fill.
+
+**Padding / item spacing / gap →** `node.setBoundVariableForLayoutMode(...)` for each of `paddingLeft`, `paddingRight`, `paddingTop`, `paddingBottom`, `itemSpacing` against the matching spacing variable. Pick the closest existing token (snap 23→24, 13→12, 7→8).
+
+**Corner radius / stroke weight →** `node.setBoundVariable("topLeftRadius", radiusVar)` (and the other three corners). Same for stroke weight if the library has a token.
+
+**Text →** `await node.setTextStyleIdAsync(textStyle.id)`. Never set `fontName` + `fontSize` + `lineHeight` + `letterSpacing` individually if a published style matches. If genuinely no style matches (rare — search exhaustively first), bind the per-property font variables instead, and flag in additions audit.
+
+**Components →** `componentSet.createInstance()` and then set variant properties via `instance.setProperties({Type:"Secondary", State:"Default"})`. Do not draw a frame that resembles the component. If the component lacks the variant you need, **add it to the additions audit as a variant proposal** — do not fork the component.
+
+## When something doesn't match
+
+The four-point rule says: defer to existing if close; flag new if genuinely new. The "extremely close" judgment call:
+
+- **Snap.** Spacing within ±2px of an existing token. Color within ΔE ≤ 5 of an existing semantic color. Radius within 1–2px. Stroke weight within 0.5px.
+- **Variant swap.** Same component shape but different content (caret glyph, icon, state). Use the component, swap the content.
+- **Flag as PROPOSED.** Structurally different shape, no close-enough match. Add to the additions audit `.md` with `(PROPOSED token: tek-…)` or `(PROPOSED component: tek-…)` in the layer name AND a row in the additions audit table.
+
+The additions audit is `audits/design-additions/<YYYY-MM-DD>-<slug>/<artifact>-redesign-additions.md` — see existing examples under `audits/design-additions/`.
+
+## Verification before declaring complete
+
+Before saying a frame is done, inspect:
+
+- [ ] Every `fills` array on every node references a variable (or is intentionally empty)
+- [ ] Every `strokes` array references a variable
+- [ ] Every layout property (`paddingLeft`, etc., `itemSpacing`) is bound where a token exists
+- [ ] Every `cornerRadius` is bound where a radius token exists
+- [ ] Every `TextNode` has `textStyleId` set (or has individual font properties bound to font variables)
+- [ ] Every node that represents a Tek component is an instance, not a frame mimicking it
+- [ ] Every node that introduces a new pattern is flagged in the layer name AND in the additions audit
+
+If any inspection bullet fails, the frame is not done. "I'll bind it in a later pass" is the failure pattern that produced the 2026-04-22 Riddick screens and the 2026-06-04 Tek Express setup-dut bundle. **No later passes.**
+
+## Related references
+
+- `bkai/CHARTER.md` Rule 22 — universal cross-LLM version of this rule
+- `bkai/design-system.md` — Tek anchor that loads at chat start
+- `tek-design-system/CLAUDE.md` Hard Constraint 9 — repo-level enforcement
+- `tek-design-system/CONTRIBUTING.md` § Building in Figma — workflow detail
+- `figma-design-qa` skill — automated QA pass that detects rule violations after the fact (use to verify completion)
+- `feedback_design_system_execution.md` in personal memory — receipts log
