@@ -26,7 +26,7 @@ The corpus captures the **as-is**. The redesign deliverable lives under `audits/
 - **`mAR 2023 ind Customer VOC.pptx`** — March 2023 India regional customer VOC.
 - **`GA VOC for Empathy Disc Guide Question Bank - GM v1.docx`** — empathy interview discussion guide / question bank (methodology, not transcript data).
 
-7 new manuals (`.pdf` + `.chm`) in `uploads/pdfs/` from the prior batch await `/document-pdf` processing. The new `AU VoC Sync up.docx` in `uploads/transcripts/` awaits `/document-walkthrough`. None of these are reflected in the documented-chunks tables below yet — `/refresh-index` will fold them in once processed.
+7 new manuals (`.pdf` + `.chm`) in `uploads/pdfs/` from the prior batch await `/document-pdf` processing. The new `AU VoC Sync up.docx` was processed via `/document-walkthrough` into 3 chunks (2026-06-23 meeting) — see the [Documented walkthroughs](#documented-walkthroughs) section below. The remaining batch-2 PPTX/DOCX/XLSX/CSV artifacts await `/document-deck` and `/document-spreadsheet` (both shipped this turn; processing pending).
 
 ## Application structure
 
@@ -118,15 +118,30 @@ A separate end-user-guide PDF is not yet in the corpus. If one is provided in th
 
 ## Documented walkthroughs
 
-The transcript is processed at `walkthroughs/` — **4 topic-clustered chunks** plus an index, covering the 23 April 2026 Design System follow-up discussion led by Bryan with Bill Israel, Mahesha Gl, Pranavi Chanda, Rick Kuhlman, Richard Patterson, Hemant Pardeshi, and Srevats Laxman. Every chunk carries `applies_to: [tek-express, tek-design-system]` since the conversation spans both subjects.
+Two meetings processed at `walkthroughs/`, **7 topic-clustered chunks** plus an [index](walkthroughs/_index.md).
+
+### 2026-04-23 — TekExpress Design System Follow-up Discussion
+
+4 chunks covering the cross-team DS follow-up: Bryan + Bill Israel + Mahesha + Pranavi + Rick + Richard + Hemant + Srevats. Every chunk carries `applies_to: [tek-express, tek-design-system]`.
 
 | Chunk | Topic | Time range |
 |---|---|---|
-| [_index](walkthroughs/_index.md) | Meeting metadata, participant table, chunk overview | (full meeting) |
 | [ds-architecture-presentation](walkthroughs/ds-architecture-presentation.md) | Bryan's DS overview — tokens, components, Figma → CSS pipeline, motion libraries (planned), release process | 0:18 – 9:00 |
 | [desktop-integration-strategy](walkthroughs/desktop-integration-strategy.md) | WPF integration approach; Mahesha's control-library proposal; Bill's incremental-adoption framing | 9:00 – 16:35 |
 | [tek-products-walkthrough](walkthroughs/tek-products-walkthrough.md) | Pranavi's combined demo of TekExpress (compliance app) and TekRx (receiver-test wizard) | 16:35 – 46:00 |
 | [ux-feedback-and-open-questions](walkthroughs/ux-feedback-and-open-questions.md) | Half-screen mode, container breakpoints, composite controls, chart-library re-implementation pain, mermaid diagrams | 46:00 – 1:04:00 |
+
+### 2026-06-23 — AU VoC Sync up
+
+3 chunks covering Subhasis Bera's product / customer / strategy briefing for the AU UX team. **Directly upstream of the 2026-06-25 batch 2 materials** in `uploads/artifacts/`. `applies_to: [tek-express, tek-flow]` because Subhasis discusses TekFlow in parallel.
+
+| Chunk | Topic | Time range |
+|---|---|---|
+| [personas-and-jobs-to-be-done](walkthroughs/personas-and-jobs-to-be-done.md) | The 3 personas (Guru Gus, Push-Button Pete, Midway Max) + the 4-stage JTBD landscape + the Clarius cautionary tale | 0:03 – ~12:00 |
+| [customer-market-and-platform-context](walkthroughs/customer-market-and-platform-context.md) | Customer landscape (humanoids, AI servers, EVs, Tesla, Meta Lab, JLR), the multi-interface compliance workflow (~600 interfaces per AMD AI server), cross-vendor parity vs. conformance differentiation | ~6:18 – ~30:00 |
+| [ui-redesign-mantras-and-transition-strategy](walkthroughs/ui-redesign-mantras-and-transition-strategy.md) | Three redesign mantras (guided customer engagement, Mazda-to-Jaguar / no manual to drive, bandwagon respect); deployment-friction wedge | ~54:53 – 1:00:39 |
+
+Mid-meeting segments (~12:00 – ~54:53) of the AU VoC discussion are **pending follow-up processing**.
 
 **Highest-RAG-value friction notes** from the transcript:
 
