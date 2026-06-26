@@ -259,6 +259,11 @@ Notices: `Not Intended For Public Release` · `Ready.`
 
 ## Manual references
 
+**TekExpress DDR Tx Application Help** (077-1648-04, August 2025) — [`docs/tek-express-ddr5-tx-user-manual/_index.md`](../docs/tek-express-ddr5-tx-user-manual/_index.md):
+
+- **`Setup panel — DUT tab and burst detection`** ([`setup-dut-panel.md`](../docs/tek-express-ddr5-tx-user-manual/setup-dut-panel.md), pp. 20–30) — authoritative reference for every DUT-tab control on this screen: Acquire / Pre-recorded radios, User Defined Acquisition, DUT ID (32-char limit + character restrictions), Device dropdown (DDR5 / LPDDR5-5X), Device Profile (Data Rate, WCK:CK ratio for LPDDR5-5X, derived WCK/Clock Frequencies), Burst Detection Method (Read Write / Write Only / Read Only / Visual Search) with full per-device parameter tables, Signal Probe Type, Filter Files Path De-Embed setup, TriMode Probe Setup, Voltage Settings (VDD, Vcent-DQ, Vcent-CA, Vcent-CS, VDD2, VDDQ, VOH).
+- **`Starting the application`** ([`starting-application.md`](../docs/tek-express-ddr5-tx-user-manual/starting-application.md), pp. 15–19) — chrome (Options ▼, Start/Stop, Pause/Continue, Clear, window controls, mini-view toggle) and the Options menu inventory that defines the title bar `btn-options` dropdown.
+
 Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
 - [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — audit entry for Setup › DUT (Step 1).
@@ -267,8 +272,6 @@ Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/
 - [`docs/ui-audit/icon-buttons.md`](../docs/ui-audit/icon-buttons.md) — DUT ID pencil, Session ellipsis.
 - [`docs/ui-audit/data-display.md`](../docs/ui-audit/data-display.md) — title bar, status bar, Device Profile group boxes.
 - [`docs/ui-audit/right-rail-toolbar.md`](../docs/ui-audit/right-rail-toolbar.md) — Start / Pause buttons.
-
-The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 Selected from `uploads/photos/`: **`1. Setup-DUT_Landing screen.png`** — chosen as the format-lock screen because it is the application's entry point, the audit PDF documents it as "Setup · Step 1 — Setup › DUT" with the most detail among Setup steps, and the screenshot shows the wizard in a meaningful state (one step active, three completed) that exercises the wizard-indicator state vocabulary. Source dimensions 1630 × 1274; downscaled to 1600 px long edge as `setup-dut.jpg` (314 KB).

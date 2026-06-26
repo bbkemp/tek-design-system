@@ -1,0 +1,145 @@
+---
+name: document-deck
+description: Process a slide deck (.pptx, .key, .ppt) into structured corpus markdown — one .md per coherent topic cluster (typically a section of the deck), with verbatim slide text, speaker notes when present, and chunk frontmatter for cross-references. Use when given a deck at corpus/sources/<subject>/uploads/artifacts/. Produces corpus/sources/<subject>/decks/<deck-id>/<section-id>.md chunks plus _index.md. Does not produce design system mapping — that's a separate, disposable audit via prototype-qa.
+---
+
+# Document deck
+
+Turns a slide deck — typically a synthesis or VOC summary deck — into chunked corpus markdown. The deck is the input; the output is one `.md` per coherent topic cluster (often a deck section) under `corpus/sources/<subject>/decks/<deck-id>/`. Mirrors `/document-pdf`'s chunking philosophy: topic-driven, not slide-driven.
+
+The format is **locked** by the first processed deck. Until that exists, this skill spec is the contract; mirror it exactly when the first deck lands.
+
+## Inputs
+
+The user provides:
+- A deck file at `corpus/sources/<subject>/uploads/artifacts/<filename>.{pptx,key,ppt}`.
+
+Optional:
+- `--deck-id <kebab>` to override the derived id (defaults to a kebab of the filename minus the extension).
+- `--section <slug>` to process only one cluster (useful for iteration).
+
+## Hard rules
+
+1. **Format is locked** by the first processed deck. Mirror its frontmatter shape and body section order exactly.
+2. **Verbatim slide text where possible.** Bullets, headings, table cells — preserve word-for-word in `## Slide content (verbatim)`. The deck is the source; paraphrase loses signal.
+3. **One `.md` per coherent topic cluster, not per slide.** A 50-slide deck that covers 6 topics yields 6 chunks. A 10-slide deck that covers one topic yields one.
+4. **Speaker notes are content, not decoration.** When present, they often carry the rationale, source attribution, or "what to say in the meeting." Capture them in `## Speaker notes` per chunk.
+5. **Cross-link via frontmatter.** When the deck references a documented screen, manual section, hardware view, or API, declare it in frontmatter (`related_screens`, `related_docs`, `related_hardware`, `related_apis`). The deck-as-input is interpretation-heavy; flag interpretive claims in `## Confidence notes` rather than hiding them.
+6. **No design system mapping in chunks.** Same corpus-vs-audit rule. Decks are corpus; "this deck implies tek-data-table should ship" is audit content.
+7. **`uploads/` stays gitignored.** Source deck never commits.
+
+## Process
+
+### 1. Discover
+
+```bash
+ls corpus/sources/<subject>/uploads/artifacts/<filename>.{pptx,key,ppt}
+```
+
+If the user passed `--deck-id`, use it. Otherwise derive: lowercase, kebab-case, drop extension, drop common noise (`_v1`, `_final`, `(by X)`, dates).
+
+### 2. Extract content
+
+For `.pptx`:
+
+```bash
+# Slide XML lives in ppt/slides/slide<N>.xml; speaker notes in ppt/notesSlides/notesSlide<N>.xml
+unzip -p "<deck>.pptx" "ppt/slides/slide${N}.xml" | tr -d '\n' | sed 's|<[^>]*>| |g' | sed 's|  *| |g'
+```
+
+Walk every slide. For each, capture:
+- Slide number
+- Title (first `<a:t>` text element of meaningful size)
+- Body text (subsequent `<a:t>` elements in document order)
+- Table cells if any (parse `<a:tbl>` blocks)
+- Speaker notes (corresponding `notesSlide<N>.xml`)
+
+For `.key` (Apple Keynote) and `.ppt` (legacy PowerPoint): see the per-format extraction in [`anthropic-skills:pptx`](https://github.com/anthropics/claude-skills) — invoke that skill for complex decks; this skill assumes `.pptx` as the primary format.
+
+### 3. Cluster into topic chunks
+
+Group slides by topic. Heuristics:
+
+- A new section title slide (large heading, often centered) starts a new cluster.
+- A repeated "header" pattern across N slides (e.g. "Customer X Feedback") suggests one cluster per N slides.
+- Speaker notes referencing the same concept across slides → same cluster.
+- Single-slide topics get their own cluster.
+
+For each cluster, pick a kebab-case section id (e.g. `customer-emea-feedback`, `feature-prioritization`, `next-steps`).
+
+### 4. Generate chunks
+
+For each cluster, write `corpus/sources/<subject>/decks/<deck-id>/<section-id>.md` matching this locked frontmatter + body:
+
+```yaml
+---
+class: deck-section
+deck_id: <kebab>
+deck_title: <verbatim deck title from slide 1 or filename>
+deck_author: <from cover slide if present, else unknown>
+deck_date: <from cover slide / filename if present, else unknown>
+section_id: <kebab>
+section_title: <verbatim section title>
+slide_range: <e.g. "12-15">
+related_screens: [<screen-id>, …]
+related_docs: [<doc-id>/<section-id>, …]
+related_hardware: [<part-id>, …]
+related_apis: [<api-id>, …]
+applies_to: [<subject>, …]
+---
+```
+
+Body sections (in fixed order):
+- `# <section-title>`
+- `## Summary` — 1-2 sentences capturing the cluster's intent
+- `## Slide content (verbatim)` — verbatim per-slide text, slide number as a sub-heading
+- `## Speaker notes` — verbatim notes per slide where present
+- `## Cross-references` — narrative links to other corpus chunks
+- `## Confidence notes` — anything uncertain, illegible, or interpretation-heavy
+
+### 5. Generate `_index.md`
+
+A deck-level table of contents:
+
+```markdown
+# <deck-title> — index
+
+**Source:** `uploads/artifacts/<filename>` · **Slides:** <N> · **Sections:** <M>
+
+| Section | Slides | Chunk |
+|---|---|---|
+| <section-title> | 1-3 | [<section-id>](./<section-id>.md) |
+| ... | ... | ... |
+```
+
+### 6. Update subject `index.md`
+
+Add a `## Documented decks` section (or extend the existing one) listing this deck and its chunks.
+
+## Edge cases
+
+| Case | Behavior |
+|---|---|
+| Deck has only a title slide and no content | Produce a single chunk with `section_id: title-only` and flag in Confidence notes. |
+| Deck has images / charts without text | Capture the slide title + any caption text, flag the visual content as "image-only, see source" in Confidence notes. Do NOT describe what the image shows speculatively. |
+| Deck has 100+ slides | Same chunking rules apply; expect 8-15 chunks for a thorough deck. |
+| Deck text is in a non-English language | Capture verbatim; add a `## Translation` section if a translation is provided (typically not). |
+| Deck has corrupted XML / `.pptx` won't unzip | Flag the failure; suggest re-export or hand-conversion. |
+
+## Operational notes
+
+- **Idempotence.** Re-running regenerates chunks from the current source. Hand-edits get overwritten — copy edits back into a source-slide comment block before re-running.
+- **Output dir creation.** The skill creates `corpus/sources/<subject>/decks/<deck-id>/` if missing — `mkdir -p` is fine.
+- **`index.md` regenerates** on every run with an updated "Documented decks" section.
+
+## What this skill does NOT do
+
+- **No design system mapping.** Audit territory.
+- **No image OCR or chart-data extraction.** Visual content gets flagged, not described.
+- **No cross-deck synthesis.** Each deck is its own chunk family; synthesis across decks is an audit job.
+
+## See also
+
+- [`document-pdf`](../document-pdf/SKILL.md) — same chunking philosophy for PDFs.
+- [`document-walkthrough`](../document-walkthrough/SKILL.md) — for transcript .docx files.
+- [`corpus/README.md`](../../../corpus/README.md) — corpus layout, idempotence, completion criteria.

@@ -199,14 +199,17 @@ Analyze form: `RISE` · `FALL` · `High Level` · `50` · `Mid Level` · `20` ·
 
 ## Manual references
 
+**TekExpress DDR Tx Application Help** (077-1648-04, August 2025) — [`docs/tek-express-ddr5-tx-user-manual/_index.md`](../docs/tek-express-ddr5-tx-user-manual/_index.md):
+
+- **`Setup panel — Configuration`** ([`setup-configuration.md`](../docs/tek-express-ddr5-tx-user-manual/setup-configuration.md), pp. 34–39) — the Configure dialog is the manual's Configuration tab. Documents Global Settings (Bandwidth, Record Length, Sample Rate, Retain Vertical Scale), Limits Editor, and the Measurements sub-tab with Analyze / CLOCK Ref Level sub-tabs. Per-device Measurements settings include DDR5 (Number of UI, Save worst case snapshot, Clock modulated with SSC, N start/stop, BER, Noise Compensation Auto/Manual, Superimpose DQS, Stop on Mask Hit, Vertical Scale, Mask Definition for Write Data Eye and Address Command Eye, Apply DFE/Gain/Threshold/Tap, Ref Levels Auto/Absolute/Percentage/High/Mid/Low/Hysteresis) and LPDDR5-5X (Window Size 200 default, Number of UI(M), Round Up tCK(avg), Superimpose WCK/RDQS, Vertical Scale, Mask Definition for Write Data Eye / Address Command Eye / Chip Select Eye, Ref Levels).
+- **`Setup panel — Test Selection and Acquisitions`** ([`setup-test-selection-and-acquisitions.md`](../docs/tek-express-ddr5-tx-user-manual/setup-test-selection-and-acquisitions.md), pp. 31–33) — the Acquire sub-tab on this dialog matches the Acquisitions wizard step in the manual; same Signal/Source mapping and Save-and-Analyze-In-Sequence semantics.
+
 Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
 - [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — state of Setup › Test Selection in the audit.
 - [`docs/ui-audit/navigation-components.md`](../docs/ui-audit/navigation-components.md) — tab bar (Global Settings / Measurements; Acquire / Analyze sub-tabs).
 - [`docs/ui-audit/form-inputs.md`](../docs/ui-audit/form-inputs.md) — mode radios, dropdowns, numeric inputs.
 - [`docs/ui-audit/inline-teal-pill-buttons.md`](../docs/ui-audit/inline-teal-pill-buttons.md) — Test Selection / Limits Editor jump buttons.
-
-The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photos
 
 - `uploads/photos/5. Setup-Test Selection_Config_Acquire tab.png` — Acquire sub-tab state.

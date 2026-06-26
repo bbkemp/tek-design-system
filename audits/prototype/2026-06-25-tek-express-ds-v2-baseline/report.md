@@ -171,3 +171,71 @@ This audit is **not** a roadmap commitment. It's a snapshot of where the design 
 Re-authored 2026-06-25 against the corpus at commit `<this-PR>`. Supersedes the original 2026-06-01 PR #65, which was closed without merging because its file paths referenced the pre-rename `rag/` layout and predated the recent corpus expansion. The analytical conclusions are preserved verbatim — same buckets, same counts, same priority ordering — with current paths, current context, and the new competitive-audit and keysight-d9040 references woven in.
 
 For format conventions, see [`audits/README.md`](../../README.md) § `prototype/`. For the `prototype-qa` skill that produced this audit, see [`.claude/skills/prototype-qa/SKILL.md`](../../../.claude/skills/prototype-qa/SKILL.md).
+
+---
+
+## Addendum — Strategic resolutions (2026-06-26)
+
+Decisions captured in chat on 2026-06-26 that affect how this baseline's findings should be read. The audit content above stands as the 2026-06-25 snapshot; the resolutions below are how the team is responding.
+
+### P0 — Chart library
+
+**Decision:** Design around it for now. Defer the library pick.
+
+**Implication for this audit:** `tek-plot` and `tek-axis` remain "no DS match" / new-primitive items. The Plots screen redesign is **deliberately blocked** rather than awaiting a forced library pick. Other screens proceed using existing DS-v2 primitives + placeholder plot affordances. Rick Kuhlman's 55:23 friction note ("we lose all the richness") is acknowledged as the eventual forcing function; this decision postpones the forcing, doesn't resolve it.
+
+### Persona model — Push-Button Pete future
+
+**Decision:** Design for **Midway Max + AI as primary**, **Pete as legacy**.
+
+**Implication for this audit:** Per Subhasis Bera's 2026-06-23 framing ([`corpus/sources/tek-express/walkthroughs/persona-evolution-physical-ai-and-voc-methodology.md`](../../../corpus/sources/tek-express/walkthroughs/persona-evolution-physical-ai-and-voc-methodology.md)), Push-Button Pete *"will no longer exist after a year or so"* as Midway Max + AI automation absorbs Pete's role. The redesign treats Midway Max + AI-augmented flows as the **dominant steady-state** and **does not build new Pete-specific surfaces**. The wizard save/replay loop (Subhasis's *"main prime reason for the money on the table"*) remains as a Pete-legacy affordance because the dollar-value justification stands; new affordances target Midway Max.
+
+### "Dashboard is Messy" — top customer complaint, multi-year
+
+**Decision:** Note as top complaint (no specific intervention this turn).
+
+**Context:** The complaint surfaces in the [TekFlow 2022-12 VOC Synthesis deck](../../../corpus/sources/tek-flow/decks/tekflow-voc-synthesis-2022-12/voc-summary-and-synthesis.md) ("− side" outcome) and is unchanged in this audit's `tek-data-table` + `tek-status-bar` P1 gaps. STM France raised the same training-burden concern in May 2021 ([`corpus/sources/tek-flow/decks/stm-france-tekflow-presentation/stm-customer-feedback.md`](../../../corpus/sources/tek-flow/decks/stm-france-tekflow-presentation/stm-customer-feedback.md)). Three customer cohorts across five years have surfaced the same dashboard friction.
+
+**Implication for this audit:** The redesign team is aware. No new audit action required — `tek-data-table` + `tek-status-bar` priority ranking stands.
+
+### Subject taxonomy — TekRx scaffolded
+
+**Decision:** Stand up `corpus/sources/tek-rx/` now ahead of first material.
+
+**Implication for this audit:** TekRx becomes its own corpus subject (scaffolded 2026-06-26). Future Rx-side material lands there rather than getting cross-routed into TekExpress or TekFlow. The audit's "Pending references" → "TekRx product" item is closed by the subject scaffold.
+
+### Subject taxonomy — Keysight D9020USBC + D9320USBC share subject
+
+**Decision:** Both SKUs live under `corpus/sources/keysight-d9020/`. Chunks declare `applies_to: [keysight-d9020]` only.
+
+**Implication for this audit:** Competitive material spans the D9020 family without forcing a per-SKU corpus split. No effect on the existing Tek-vs-Keysight competitive findings (the comparison is `tek-express` vs `keysight-d9040dppc` specifically).
+
+### Open / deferred to team
+
+These were surfaced in chat but explicitly held for team-level resolution:
+
+- **TekFlow ↔ TekExpress formal relationship** — sibling? successor? different product line? Evidence in this corpus says sibling (parallel-but-distinct VOC efforts under one product manager; explicit "deskew flow alignment" question from Inspur-CHN customers). PCIe 6.0 CEM as migration forcing function complicates the framing.
+- **Garuda's product positioning** — Rx counterpart to TekExpress? Independent line? Customer-facing or internal-only? Deferred.
+- **Tek VOC / User Research Library status** — kept isolated in `uxr/` for ongoing discussion.
+
+### Processing inventory landed 2026-06-26
+
+The audit's "Pending downstream processing" items have substantially moved this turn:
+
+| Asset class | Status | Notes |
+|---|---|---|
+| keysight-d9040 screens (36 photos) | ✓ 11 unique screens documented + 3 hardware views | Resource Arbiter Console, Resource Arbiter, Set Up, Select Tests, Configure, Run, Automate, Results, HTML Report, Preferences, Create Automation Commands |
+| TekExpress DDR5 Tx user manual | ✓ 15 chunks (full processing) | First full TekExpress manual in corpus |
+| TekExpress DisplayPortTx + 2.1 manuals | ✓ 6 + 5 chunks (substantive) | Both Calibre conversions of original CHM |
+| TekExpress AppEmulator manual | ✓ 11 chunks | Reference framework manual |
+| TekExpress PCI Express Online Help | ⏳ 3 chunks (partial, agent process-loss during long run) | Additional chunks queued for next focused turn |
+| Keysight D9020USBC MOI | ✓ 11 chunks (procedural) | At-a-Glance, Installing, Preparing, LFPS, 5G family (SSC/TP4/TP2/BLR/Jitter), 10G family (Skew/SCD-LBPS) |
+| Keysight D9020USBC Online Help | ⏳ Index stub (chunks pending) | Companion to MOI; UI navigation perspective |
+| TekFlow VOC Synthesis 2022-12 + EMEA + STM-France presentation + customer-feedback thread | ✓ 3 + 4 + 6 + 1 chunks | Locks `/document-deck` format for tek-flow |
+| AU VoC Sync up walkthrough (TekExpress) | ✓ 4 chunks across the meeting timeline | Personas, customer-market, persona-evolution+VOC-methodology, redesign mantras |
+| Designcon 2023 VOC + India March 2023 VOC + GA Empathy methodology | ✓ 6 + 4 + 1 chunks | Cross-product VOC material under tek-express |
+| Garuda UI-UX JIRA export (1230 issues) | ✓ 5 cluster chunks + _index | Blocker+Critical / Major / Minor+Trivial / by-status-open / by-status-closed |
+| Garuda VOS Synthesis XLSX | ✓ 2 data chunks + _index | JTBD (166 functional jobs) + Key Insights (3 external customer obs) |
+| .chm cleanup (TekExpress DisplayPortTx + Keysight Online Help) | ✓ Deleted; PDFs are canonical | Calibre conversions stay |
+
+This is the **largest single corpus-processing turn** so far. The redesign brief now has substantive grounded references on every TekExpress panel, the closest Keysight competitor, the TekFlow sibling product, and the Garuda Rx-test surface.
