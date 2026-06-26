@@ -10,9 +10,16 @@ This subject was scaffolded **2026-06-26** to correct a misroute discovered duri
 
 - **D9020USBC-USB3-Test-Software-MOI-latest.pdf** — Method of Implementation (procedural guide for running the USB3.2 compliance tests). **Moved from tek-express/uploads/pdfs/ this turn.**
 - **D9020USBC-USB3-Test-Software-Online-Help-latest.chm** — Compiled HTML Help (Windows binary). **Moved from tek-express/uploads/pdfs/ this turn.**
-- **D9020USBC-USB3-Test-Software-Online-Help-latest.pdf** — PDF conversion of the Online Help via Calibre. **Routed this turn from the inbox.**
+- **D9020USBC-USB3-Test-Software-Online-Help-latest.pdf** — PDF conversion of the Online Help via Calibre. **Processed 2026-06-26 via `/document-pdf` → see [`docs/d9020usbc-usb3-online-help/`](./docs/d9020usbc-usb3-online-help/_index.md), 11 chunks** (UI navigation + workflow walkthrough).
 
-When `/document-pdf` is run against the MOI and Online Help PDFs, this index will be regenerated to enumerate the resulting chunks.
+## Documented manuals
+
+| Manual | Doc id | Chunks |
+|---|---|---|
+| Method of Implementation (procedural test-by-test reference) | [d9020usbc-usb3-moi](./docs/d9020usbc-usb3-moi/_index.md) | 11 (At a Glance, Installing, Preparing, LFPS, 5G family × 5, 10G family × 2) |
+| Online Help (UI navigation + workflow walkthrough) | [d9020usbc-usb3-online-help](./docs/d9020usbc-usb3-online-help/_index.md) | 11 (At a Glance, Starting, Project, Set Up, Select Tests, Configure, Connect, Run, Automate, Results+Report, Exit+Preferences) |
+
+These two manuals are explicit companions per the source documentation. The MOI covers procedural test-by-test detail; the Online Help covers application UI navigation. Together they document the full surface of the D9020USBC/D9320USBC USB3.2 Compliance Test Application.
 
 ## Open questions (for the team)
 
