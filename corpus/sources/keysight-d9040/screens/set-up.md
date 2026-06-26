@@ -18,7 +18,7 @@ child_screens:
   - html-report
   - preferences
   - create-automation-commands
-related_hardware: []
+related_hardware: [bench-overview, dut-setup]
 controls:
   - id: window-titlebar
     label: "USB4 Test Application -- NEW PROJECT"

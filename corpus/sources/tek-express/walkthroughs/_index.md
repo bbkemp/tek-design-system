@@ -54,6 +54,18 @@ This meeting is **directly upstream of the 2026-06-25 batch 2 corpus material** 
 
 Mid-meeting segments (~12:00 – ~54:53) cover UI/UX deep-dive section 4 and customer-by-customer examples that are not yet chunked. **Pending follow-up processing.**
 
+### 3. Fortive Growth Accelerator empathy interview discussion guide (methodology document)
+
+**Source:** `uploads/artifacts/GA VOC for Empathy Disc Guide Question Bank - GM v1.docx` · **Type:** methodology document (not a recorded session) · **Author:** Fortive Growth Accelerator (GA) team · **Applies to:** `tek-express`, `tek-flow`
+
+Generic Fortive corporate VOC methodology — the discussion-guide / question-bank template that **every** Subhasis-authored empathy-map deck in the corpus is built on. Covers contextual + advice interview structure (ground rules → strong intro → snorkel-to-scuba body → wrap), the full question bank by category (Background, Responsibilities, Social / Emotional Jobs, IFD pain quantification, Persistent Questions, Initial Discovery, Customer Journeyline, Identifying Problems), and the "Customers don't buy the what, they buy the why" UVP-construction rule. Not Tek-specific — the worked example uses a US Cellular telecom domain.
+
+| Chunk | Topic |
+|---|---|
+| [empathy-discussion-guide-question-bank](./empathy-discussion-guide-question-bank.md) | Full methodology — ground rules · introduction script · snorkel-to-scuba body · wrap-up · question bank by category · UVP construction rule |
+
+This is the **methodology family parent** of the Subhasis-authored empathy-map decks at [`tek-express/decks/designcon-2023-voc-summary/`](../decks/designcon-2023-voc-summary/_index.md), [`tek-express/decks/india-customer-voc-2023-march/`](../decks/india-customer-voc-2023-march/_index.md), and [`tek-flow/decks/tekflow-voc-synthesis-2022-12/`](../../tek-flow/decks/tekflow-voc-synthesis-2022-12/_index.md). It is also the upstream template for the **Tek-specific** Tx-Rx Solutions Platform VOC guide PDF (pending `/document-pdf` processing).
+
 ## Pending references (across both meetings)
 
 - **TekRx product** — Pranavi demos it alongside TekExpress (2026-04-23) and Subhasis references TekFlow's relation to TekExpress (2026-06-23). TekFlow has its own subject; TekRx may need one if more material surfaces.

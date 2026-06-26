@@ -11,7 +11,7 @@ navigation_path: [Resource Arbiter]
 parent_screens:
   - resource-arbiter-console
 child_screens: []
-related_hardware: []
+related_hardware: [dut-setup]
 controls:
   - id: tab-resource-arbiter
     label: Resource Arbiter

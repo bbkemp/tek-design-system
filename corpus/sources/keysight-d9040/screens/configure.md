@@ -12,7 +12,7 @@ parent_screens:
   - select-tests
 child_screens:
   - connect
-related_hardware: []
+related_hardware: [bench-overview]
 controls:
   - id: tab-configure
     label: Configure

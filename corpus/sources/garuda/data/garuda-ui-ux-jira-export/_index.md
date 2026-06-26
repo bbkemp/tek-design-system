@@ -843,11 +843,37 @@
 
 *(showing first 200 of 578; remaining 378 pending future cluster processing)*
 
+## Cluster manifest
+
+All 1230 issues are now captured across the per-cluster verbatim row chunks below. The clusters intentionally overlap (priority-based + status-based) so retrieval can answer both "what's high-leverage" and "what's still open" without rebuilding the index.
+
+| Chunk | Cluster | Column | Rows | Notes |
+|---|---|---|---:|---|
+| [`blocker-and-critical.md`](./blocker-and-critical.md) | Blocker + Critical | Priority | 265 | Highest-leverage cluster (22% of total). Combined because Blocker pop (70) is small. Description limit ~500 chars. |
+| [`major-priority.md`](./major-priority.md) | Major | Priority | 537 | Day-to-day defects/improvements below show-stopper. Description limit ~500 chars. |
+| [`minor-and-trivial-priority.md`](./minor-and-trivial-priority.md) | Minor + Trivial | Priority | 428 | Polish-level backlog. Trivial pop is only 2, combined with Minor. Description limit ~400 chars. |
+| [`by-status-open.md`](./by-status-open.md) | Open | Status | 230 | "What's still pending right now" cluster — cross-listed with priority clusters above. Description limit ~500 chars. |
+| [`by-status-closed.md`](./by-status-closed.md) | Closed | Status | 578 | Historical signal — what shipped or got dropped. Description limit ~300 chars (tighter due to volume). |
+
+Cluster-to-priority cross-tab (Blocker + Critical + Major + Minor + Trivial = 1230 total, matches all-issues):
+
+| | Blocker | Critical | Major | Minor | Trivial | Total |
+|---|---:|---:|---:|---:|---:|---:|
+| Open | 8 | 29 | 64 | 128 | 1 | 230 |
+| In Progress | 0 | 3 | 3 | 3 | 0 | 9 |
+| Submitted | 0 | 18 | 40 | 42 | 1 | 101 |
+| Resubmitted | 0 | 2 | 3 | 1 | 0 | 6 |
+| Reopened | 0 | 0 | 1 | 0 | 0 | 1 |
+| Verified | 2 | 6 | 15 | 9 | 0 | 32 |
+| Resolved | 18 | 54 | 109 | 92 | 0 | 273 |
+| Closed | 42 | 83 | 302 | 151 | 0 | 578 |
+| **Total** | **70** | **195** | **537** | **426** | **2** | **1230** |
+
 ## Processing status
 
-- ✅ Index landed (this file)
-- 🟨 Per-cluster verbatim row chunks: pending — clusters anticipated by status (Blocker/Critical/Major/Minor) and by Issue Type (Defect, Story, Improvement) → grouping pass needed before per-cluster chunks land
-- 🟨 Cross-references to corpus screens (when Garuda screen corpus exists): pending — no `corpus/sources/garuda/screens/` documented yet
+- ✅ Index landed (this file) — global Status / Priority / Issue Type distributions + issue-list-by-status tables.
+- ✅ Per-cluster verbatim row chunks complete (see Cluster manifest above) — all 1230 issues represented at least once across the five chunks. Blocker + Critical issues are intentionally duplicated across the Priority and Status clusters since both lenses are independently useful.
+- 🟨 Cross-references to corpus screens (when Garuda screen corpus exists): pending — no `corpus/sources/garuda/screens/` documented yet. When screens land, the per-row `related_screens` frontmatter on each cluster can be back-filled via `/pair-manual`.
 
 ## Open questions for the team
 

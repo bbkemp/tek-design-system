@@ -52,14 +52,25 @@ State variations of already-documented screens that **do not** need a separate c
 
 ## Documented hardware
 
-None yet. Four photos in the set capture **physical bench layout** rather than software UI:
+Three hardware views documented from the four bench / setup photos in the initial intake (`IMG_6999`, `IMG_7001`, `IMG_7037`, `IMG_7038`).
 
-- `uploads/photos/IMG_6999.jpg` — Keysight Infiniium oscilloscope on the bench beside another monitor running the test app; gives scale and shows the cabling environment.
-- `uploads/photos/IMG_7001.jpg` — same bench from the operator's seat, with the scope in the foreground showing a Keysight 33500A waveform generator stacked on top and a laptop keyboard at the bottom of frame.
-- `uploads/photos/IMG_7037.jpg` — wider bench shot showing the laptop running the Resource Arbiter console, the AGGC2 box, and the Infiniium scope side-by-side.
-- `uploads/photos/IMG_7038.jpg` — laptop with the Resource Arbiter console window framed against a black AGGC2 fixture box.
+| part_id | part_title | view | source_photo |
+|---|---|---|---|
+| [scope-detail](hardware/scope-detail.md) | Keysight Infiniium MXR-Series scope — front view | scope-detail | IMG_7001.jpg |
+| [bench-overview](hardware/bench-overview.md) | Test bench — overview | bench-overview | IMG_6999.jpg |
+| [dut-setup](hardware/dut-setup.md) | Host laptop and DUT fixture | dut-setup | IMG_7038.jpg |
 
-These would land under `corpus/sources/keysight-d9040/hardware/` if processed by `/document-hardware`. They are **not** documented here because the skill scope is software screens, and the four photos do not document a single hardware view well enough to anchor a chunk. Rerun `document-hardware` once dedicated hardware photos (front panel, rear panel, AGGC2 detail, fixture closeups) land in `uploads/photos/`.
+The fourth photo (**IMG_7037**) is a second bench-overview frame from a different angle (laptop showing the Resource Arbiter console instead of the test app splash); it is folded into `bench-overview.md` as a companion source rather than getting its own chunk, since it documents the same hardware view as `IMG_6999` and `IMG_6999` is the stronger framing.
+
+### Pending hardware views — candidates not yet in `uploads/photos/`
+
+| Pending view | Notes |
+|---|---|
+| `rear-panel` of scope | AC inlet, LAN, GPIB, trigger I/O, AUX-out, calibration outputs of the Infiniium MXR-Series. |
+| `closeup-scope-model-badge` | Lower-left scope bezel close-up to resolve the specific MXR-Series model (`MXR604A`, etc.) — currently TBD. |
+| `closeup-dut-fixture` | Close-up of the black AGGC2-style fixture in `dut-setup.md` to resolve port count, LED labels, asset sticker, and confirm specific model. |
+| `closeup-wgen-model-badge` | Close-up of the Keysight Trueform waveform generator badge to resolve `33500A` vs `33600A` and the specific channel-count model. |
+| `rack-detail` | Closer view of the gray rack-mount chassis stack in the background of `bench-overview.md` — to identify the AGGC2 enclosure (if rack-mounted) vs. supporting mainframes. |
 
 ## Paired manual sections
 

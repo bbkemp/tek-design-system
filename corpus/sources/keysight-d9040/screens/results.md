@@ -12,7 +12,7 @@ parent_screens:
   - run
 child_screens:
   - html-report
-related_hardware: []
+related_hardware: [bench-overview]
 controls:
   - id: tab-results
     label: Results

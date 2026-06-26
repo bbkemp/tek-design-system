@@ -12,7 +12,7 @@ parent_screens:
   - configure
 child_screens:
   - results
-related_hardware: []
+related_hardware: [bench-overview]
 controls:
   - id: tab-run
     label: Run

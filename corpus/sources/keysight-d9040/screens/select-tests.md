@@ -12,7 +12,7 @@ parent_screens:
   - set-up
 child_screens:
   - configure
-related_hardware: []
+related_hardware: [bench-overview]
 controls:
   - id: menu-tools-open
     label: Tools (menu)

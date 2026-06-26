@@ -11,7 +11,7 @@ navigation_path: [Resource Arbiter, Console]
 parent_screens: []
 child_screens:
   - resource-arbiter
-related_hardware: []
+related_hardware: [dut-setup]
 controls:
   - id: window-titlebar
     label: ResourceArbiter - Shortcut
