@@ -26,7 +26,19 @@ The corpus captures the **as-is**. The redesign deliverable lives under `audits/
 - **`mAR 2023 ind Customer VOC.pptx`** — March 2023 India regional customer VOC.
 - **`GA VOC for Empathy Disc Guide Question Bank - GM v1.docx`** — empathy interview discussion guide / question bank (methodology, not transcript data).
 
-7 new manuals (`.pdf` + `.chm`) in `uploads/pdfs/` from the prior batch await `/document-pdf` processing. The new `AU VoC Sync up.docx` was processed via `/document-walkthrough` into 3 chunks (2026-06-23 meeting) — see the [Documented walkthroughs](#documented-walkthroughs) section below. The remaining batch-2 PPTX/DOCX/XLSX/CSV artifacts await `/document-deck` and `/document-spreadsheet` (both shipped this turn; processing pending).
+**Manuals in `uploads/pdfs/`** (after 2026-06-26 retroactive routing fix — see Confidence notes below):
+- `TekExpress AppEmulator (1).pdf` (NEW this turn, Tektronix-branded)
+- `TekExpress DisplayPortTx 2.1.chm` + `TekExpress DisplayPortTx 2.1 - Unknown.pdf` (PDF converted from .chm via Calibre)
+- `TekExpress DisplayPortTx.chm` + `TekExpress DisplayPortTx.pdf` (PDF converted from .chm via Calibre)
+- `TekExpress PCI Express Online Help.pdf`
+- `TekExpress_DDR5_Tx_UserManual_ENG-US_077-1648-04_077164804.pdf` — **processed 2026-06-26 via `/document-pdf` into [`docs/tek-express-ddr5-tx-user-manual/`](./docs/tek-express-ddr5-tx-user-manual/_index.md), 15 chunks.**
+- `UI-app-emulator-audit.pdf` — already processed at [`docs/ui-audit/`](./docs/ui-audit/_index.md).
+
+The `AU VoC Sync up.docx` was processed via `/document-walkthrough` into 3 chunks (2026-06-23 meeting) — see the [Documented walkthroughs](#documented-walkthroughs) section below. The remaining batch-2 PPTX/DOCX (Designcon 2023, mAR 2023 India VOC, GA Empathy Question Bank) await `/document-deck` and `/document-spreadsheet` processing (both skills shipped 2026-06-26).
+
+### Confidence notes — retroactive routing fix (2026-06-26)
+
+PR #86's batch-1 intake routed `D9020USBC-USB3-Test-Software-MOI-latest.pdf` + `D9020USBC-USB3-Test-Software-Online-Help-latest.chm` to **this** subject's `uploads/pdfs/` based on filename heuristics ("D9020USBC USB3 Test Software" sounded like a TekExpress USB3 variant). The 2026-06-26 content scan (running the new content-scan behavior from PR #88 against the Calibre-converted PDF) revealed the cover reads "**Keysight** D9020USBC/D9320USBC USB3.2 Compliance Test Application · © Keysight Technologies 2026" — a competitor product. Both files moved to the new `keysight-d9020` subject this turn; they were never processed against tek-express docs, so no chunks needed retraction.
 
 ## Application structure
 
@@ -114,7 +126,29 @@ The audit PDF is processed at `docs/ui-audit/` — **10 chunks** covering the sc
 | [data-display](docs/ui-audit/data-display.md) | Data tables, group boxes, text areas, empty state, status bar, title bar |
 | [feedback-overlays](docs/ui-audit/feedback-overlays.md) | Modal alert dialog (the single blocking-overlay component) |
 
-A separate end-user-guide PDF is not yet in the corpus. If one is provided in the future it will land as `docs/user-manual/`.
+### TekExpress DDR Tx Compliance and Debug Automation — DDR5/LPDDR5-5X User Manual
+
+Processed at `docs/tek-express-ddr5-tx-user-manual/` — **13 substantive chunks + `_index.md` + `references-and-appendices`**, covering Welcome → Getting started → Setting up → Starting application → Setup panel (DUT, Test Selection, Acquisitions, Configuration, Preferences) → Status panel → Results panel → Reports panel → Saving/recalling test setups → SCPI Commands (the largest chunk by page count, pp. 56-166).
+
+| Chunk | Topic | Pages |
+|---|---|---|
+| [_index](docs/tek-express-ddr5-tx-user-manual/_index.md) | Manual TOC + processing metadata | (full doc) |
+| [welcome-and-help](docs/tek-express-ddr5-tx-user-manual/welcome-and-help.md) | Welcome, Getting help and support | 5-9 |
+| [getting-started](docs/tek-express-ddr5-tx-user-manual/getting-started.md) | Hardware and software requirements | 10-11 |
+| [setting-up-test-environment](docs/tek-express-ddr5-tx-user-manual/setting-up-test-environment.md) | Test environment setup | 12-14 |
+| [starting-application](docs/tek-express-ddr5-tx-user-manual/starting-application.md) | App controls, Options menu, Email settings | 15-19 |
+| [setup-dut-panel](docs/tek-express-ddr5-tx-user-manual/setup-dut-panel.md) | DUT tab + burst detection | 20-30 |
+| [setup-test-selection-and-acquisitions](docs/tek-express-ddr5-tx-user-manual/setup-test-selection-and-acquisitions.md) | Test Selection + Acquisitions | 31-33 |
+| [setup-configuration](docs/tek-express-ddr5-tx-user-manual/setup-configuration.md) | Global Settings, Measurements, Limits Editor | 34-39 |
+| [setup-preferences-panel](docs/tek-express-ddr5-tx-user-manual/setup-preferences-panel.md) | Preferences tab | 40-41 |
+| [status-panel](docs/tek-express-ddr5-tx-user-manual/status-panel.md) | Test Status, Log View | 42-45 |
+| [results-panel](docs/tek-express-ddr5-tx-user-manual/results-panel.md) | Results summary | 46-48 |
+| [reports-panel](docs/tek-express-ddr5-tx-user-manual/reports-panel.md) | Report generation + viewing | 49-53 |
+| [saving-recalling-test-setup](docs/tek-express-ddr5-tx-user-manual/saving-recalling-test-setup.md) | Save / recall workflow | 54-55 |
+| [scpi-commands](docs/tek-express-ddr5-tx-user-manual/scpi-commands.md) | Remote-control SCPI reference | 56-166 |
+| [references-and-appendices](docs/tek-express-ddr5-tx-user-manual/references-and-appendices.md) | Manual back-matter | (back) |
+
+This manual is the first product-specific TekExpress user guide in the corpus. The remaining PDFs in `uploads/pdfs/` (DisplayPortTx, DisplayPortTx 2.1, PCI Express Online Help, AppEmulator) await follow-up `/document-pdf` runs.
 
 ## Documented walkthroughs
 

@@ -226,6 +226,12 @@ Chrome (consistent with setup-dut.md): `TekExpress AppEmulator — (9346)*` · `
 
 ## Manual references
 
+**TekExpress DDR Tx Application Help** (077-1648-04, August 2025) — [`docs/tek-express-ddr5-tx-user-manual/_index.md`](../docs/tek-express-ddr5-tx-user-manual/_index.md):
+
+- **`Setup panel — Test Selection and Acquisitions`** ([`setup-test-selection-and-acquisitions.md`](../docs/tek-express-ddr5-tx-user-manual/setup-test-selection-and-acquisitions.md), pp. 31–33) — full Test Selection tab semantics: Deselect All / Select All, the per-device measurement tree (Figure 16 for DDR5, Figure 17 for LPDDR5-5X), Test Description pane behavior. Note: the application "automatically selects all required tests when in Compliance mode" — the Compliance mode toggle is not visible on this screen and may be exposed via SCPI `TEKEXP:MODE` only.
+- **`Setup panel — Configuration`** ([`setup-configuration.md`](../docs/tek-express-ddr5-tx-user-manual/setup-configuration.md), pp. 34–39) — measurements selected here drive what appears on the Configuration tab's Measurements tree and what limits the Limits Editor exposes.
+- **`SCPI Commands`** ([`scpi-commands.md`](../docs/tek-express-ddr5-tx-user-manual/scpi-commands.md), pp. 56–166) — `TEKEXP:SELECT TEST,"<TestName>",<True|False>` and `TEKEXP:SELECT TEST,"<ALL>"` programmatic equivalents.
+
 Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
 - [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — audit entry for Setup › Test Selection (Step 2).
@@ -233,8 +239,6 @@ Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/
 - [`docs/ui-audit/form-inputs.md`](../docs/ui-audit/form-inputs.md) — checkbox tree (4 parents, 5 children, 9 nodes total).
 - [`docs/ui-audit/inline-teal-pill-buttons.md`](../docs/ui-audit/inline-teal-pill-buttons.md) — Deselect All / Select Required / Select All; Show MOI / Schematic / Configure.
 - [`docs/ui-audit/data-display.md`](../docs/ui-audit/data-display.md) — Test Description text area.
-
-The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/4. Setup-Test Selection.png`. The three Test Selection Config dialog screenshots (5, 6, 7) are documented separately in [setup-test-selection-config.md](./setup-test-selection-config.md).

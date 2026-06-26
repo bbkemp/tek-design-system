@@ -89,13 +89,16 @@ Background (chrome, partial): `TekExpress AppEmulator — (9346)*` · `Setup` ·
 
 ## Manual references
 
+**TekExpress DDR Tx Application Help** (077-1648-04, August 2025) — [`docs/tek-express-ddr5-tx-user-manual/_index.md`](../docs/tek-express-ddr5-tx-user-manual/_index.md):
+
+- **`Setup panel — DUT tab and burst detection`** ([`setup-dut-panel.md`](../docs/tek-express-ddr5-tx-user-manual/setup-dut-panel.md), pp. 20–30) — the DUT-tab "Comments icon (to the right of the DUT ID field)" row in Table 6 explicitly documents this dialog: "Opens Comments dialog box to enter text to add to the report. Maximum size is 256 characters. To enable or disable comments appearing on the test report, see Select report options."
+- **`Reports panel`** ([`reports-panel.md`](../docs/tek-express-ddr5-tx-user-manual/reports-panel.md), pp. 49–53) — "Include user comments" control on the Report View tab gates whether this dialog's text appears in the rendered report.
+
 Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
 - [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — this dialog is a state of Setup › DUT in the audit, not enumerated separately.
 - [`docs/ui-audit/form-inputs.md`](../docs/ui-audit/form-inputs.md) — multi-line text area.
 - [`docs/ui-audit/inline-teal-pill-buttons.md`](../docs/ui-audit/inline-teal-pill-buttons.md) — Clear / Copy / Paste / Cancel / OK buttons.
-
-The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/2. Setup-DUT_Comments popup.png`. Companion to the Setup › DUT format-lock screenshot — same window, with the Comments dialog visible.

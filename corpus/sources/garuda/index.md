@@ -6,12 +6,16 @@ This subject was scaffolded **2026-06-25** as part of the 2026-06-25 batch 2 int
 
 ## Status
 
-**Newly scaffolded. No chunks processed yet.** `uploads/artifacts/` holds:
+`uploads/artifacts/` holds the source material:
 
-- **UI-UX filtered trial.csv** — JIRA export of Garuda project tickets filtered to UI/UX feedback. Includes Requirements + Stories (e.g. *"Technology applications need a list of supported instruments within the GUI"*, *"Test creation screen modifications"*). Customer context: DDR5Rx test bench at Intel Folsom + Micron.
-- **Garuda_VOS Synthesis.xlsx** — Voice-of-Stakeholder synthesis spreadsheet for the Garuda project.
+- **UI-UX filtered trial.csv** — JIRA export of Garuda project tickets filtered to UI/UX feedback. 1230 issues across 8 statuses (Closed 578, Resolved 273, Open 230, Submitted 101, Verified 32, In Progress 9, Resubmitted 6, Reopened 1). Customer context: DDR5Rx test bench at Intel Folsom + Micron. **Processed 2026-06-26 via `/document-spreadsheet` → see [`data/garuda-ui-ux-jira-export/`](./data/garuda-ui-ux-jira-export/_index.md).**
+- **Garuda_VOS Synthesis.xlsx** — Voice-of-Stakeholder synthesis spreadsheet for the Garuda project. **Pending `/document-spreadsheet` processing.**
 
-When a `/document-csv` or `/document-xlsx` skill exists (neither shipped today; CSV-from-JIRA is a candidate for one), this index will enumerate the resulting chunks.
+## Documented data exports
+
+| Export | Source | Chunks |
+|---|---|---|
+| [garuda-ui-ux-jira-export](./data/garuda-ui-ux-jira-export/_index.md) | UI-UX filtered trial.csv | `_index.md` + 1 cluster chunk (`blocker-and-critical.md`, 265 issues = 70 Blocker + 195 Critical) so far. Remaining 965 lower-priority issues await per-cluster runs. |
 
 ## Open questions (for the team)
 

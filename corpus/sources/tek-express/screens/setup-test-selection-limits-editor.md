@@ -104,13 +104,16 @@ Bottom: `OK`.
 
 ## Manual references
 
+**TekExpress DDR Tx Application Help** (077-1648-04, August 2025) — [`docs/tek-express-ddr5-tx-user-manual/_index.md`](../docs/tek-express-ddr5-tx-user-manual/_index.md):
+
+- **`Setup panel — Configuration`** ([`setup-configuration.md`](../docs/tek-express-ddr5-tx-user-manual/setup-configuration.md), pp. 34–39) — Limits Editor is described in Table 11 Common parameters: "Displays the upper and lower limits for the applicable measurement using different types of comparisons." Columns visible in the manual's embedded Limits Editor figure: TestName, Details, Compare String, Low Limit, Compare String, High Limit. Reset, Save, OK buttons. The "Save-Recall-Limits feature" noted in `welcome-and-help` key features is what makes this editor's edits survive across sessions.
+- **`Welcome and key features`** ([`welcome-and-help.md`](../docs/tek-express-ddr5-tx-user-manual/welcome-and-help.md), pp. 5–9) — "Limits will be updated per measurements as per Data Rate selected. Limits for Custom Data Rate will be updated to closest data rate of the measurements. Save-Recall-Limits features added."
+
 Cross-references to the UI Component Audit ([`docs/ui-audit/_index.md`](../docs/ui-audit/_index.md), May 2026):
 
 - [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md) — state of Setup › Test Selection.
 - [`docs/ui-audit/data-display.md`](../docs/ui-audit/data-display.md) — limits-editor table.
 - [`docs/ui-audit/inline-teal-pill-buttons.md`](../docs/ui-audit/inline-teal-pill-buttons.md) — OK button.
-
-The audit PDF is itself a UI component inventory rather than a user manual. A separate user-guide PDF, if it surfaces, will land as `docs/user-manual/` chunks in a future pass and back-update this section again.
 ## Source photo
 
 `uploads/photos/7. Setup-Test Selection_Config_Limits Editor.png` — captured with the Limits Editor overlaying the Configure dialog. The User Defined Mode radio and the Configure dialog's controls are partially visible behind.
