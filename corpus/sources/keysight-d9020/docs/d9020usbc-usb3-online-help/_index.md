@@ -2,23 +2,40 @@
 
 **Doc ID:** `d9020usbc-usb3-online-help` · **Applies to:** `keysight-d9020` · **Software version:** 4.0.0.0 · **© Keysight Technologies 2026** · **Source:** `uploads/pdfs/D9020USBC-USB3-Test-Software-Online-Help-latest.pdf` (Calibre conversion of the original `.chm`; gitignored)
 
-## Status — pending substantive processing
+Generated **2026-06-26** by the `document-pdf` skill.
 
-This Online Help is the **UI navigation / application reference** companion to the procedural [`d9020usbc-usb3-moi`](../d9020usbc-usb3-moi/_index.md). The MOI covers *how to run each test*; this Online Help covers *how to use the application UI* (Resource Arbiter, Setup, Run, Results, Reports, Preferences, Automation).
+The Online Help is the **UI navigation / application reference** companion to the procedural [`d9020usbc-usb3-moi`](../d9020usbc-usb3-moi/_index.md). The MOI covers *how to run each test*; this Online Help covers *how to use the application UI* across the 8-tab workflow (Set Up → Select Tests → Configure → Connect → Run → Automate → Results → HTML Report) plus project management and exit handling.
 
-Chunks are **not yet authored**. The processing path (when continued) should mirror the MOI's chunk-per-major-topic shape with chunks for each application surface: Resource Arbiter / Setup / Select Tests / Configure / Connect / Run / Automate / Results / HTML Report / Preferences / Create Automation Commands.
+## Sections
 
-## What's already documented from this software
+| Section | Chunk |
+|---|---|
+| Keysight D9020USBC/D9320USBC USB3.2 Automated Testing — At a Glance | [at-a-glance](./at-a-glance.md) |
+| Starting the D9020USBC/D9320USBC USB3.2 Test Application | [starting-the-test-application](./starting-the-test-application.md) |
+| Creating or Opening a Test Project | [creating-or-opening-test-project](./creating-or-opening-test-project.md) |
+| Setting Up the Test Environment | [setting-up-test-environment](./setting-up-test-environment.md) |
+| Selecting Tests | [selecting-tests](./selecting-tests.md) |
+| Configuring Tests | [configuring-tests](./configuring-tests.md) |
+| Verifying Physical Connections | [verifying-physical-connections](./verifying-physical-connections.md) |
+| Running Tests | [running-tests](./running-tests.md) |
+| Configuring Automation in the Test Application | [configuring-automation](./configuring-automation.md) |
+| Viewing Results + Viewing HTML Test Report | [viewing-results-and-report](./viewing-results-and-report.md) |
+| Exiting the Test Application + Additional Settings | [exiting-and-additional-settings](./exiting-and-additional-settings.md) |
 
-The `keysight-d9040` sibling corpus has **11 documented UI screens** at [`../../../keysight-d9040/screens/`](../../../keysight-d9040/screens/) covering the same Keysight test-application framework (Resource Arbiter Console, Resource Arbiter, Set Up, Select Tests, Configure, Run, Automate, Results, HTML Report, Preferences, Create Automation Commands). The D9020USBC application shares this framework — every screen documented for `keysight-d9040` describes UI surfaces that also appear in the D9020USBC variant, with USB3.2-specific test names instead of USB4 / DisplayPort test names. Until this Online Help is processed, **the `keysight-d9040` screens corpus is the closest available reference** for D9020USBC UI behavior.
+## Relationship to corpus
+
+The **Keysight test-application framework** (D9020USBC / D9040USBC / D9040DPPC / D9050PCC etc.) is shared. UI surfaces for the framework are documented at [`../../../keysight-d9040/screens/`](../../../keysight-d9040/screens/) — 11 canonical screen `.md` files documenting Set Up, Select Tests, Configure, Run, Automate, Results, HTML Report, Preferences, Create Automation Commands (modal), Resource Arbiter, and Resource Arbiter Console. **USB3.2-specific test names appear in the Select Tests tree at run time; everything else mirrors the D9040USBC screens.**
+
+This Online Help's 11 chunks heavily cross-reference those screens — when a chunk says "documented at `keysight-d9040/screens/X.md`," that screen is the canonical UI reference for the surface.
 
 ## Cross-references
 
 - **Companion MOI** at [`../d9020usbc-usb3-moi/_index.md`](../d9020usbc-usb3-moi/_index.md) — the procedural test-by-test reference (11 chunks covering LFPS, 5G SSC/TP4/TP2/BLR/Jitter, 10G Skew/SCD).
 - **Sibling `keysight-d9040` screens corpus** at [`../../../keysight-d9040/screens/`](../../../keysight-d9040/screens/) — UI documentation for the shared framework.
-- **Competitive comparison** at [`audits/competitive/2026-06-25-tek-express-vs-keysight-d9040dppc/`](../../../../../audits/competitive/2026-06-25-tek-express-vs-keysight-d9040dppc/) — covers Tek-vs-Keysight at the platform level.
+- **Competitive comparison** at [`audits/competitive/2026-06-25-tek-express-vs-keysight-d9040dppc/`](../../../../../audits/competitive/2026-06-25-tek-express-vs-keysight-d9040dppc/) — covers Tek-vs-Keysight at the platform level. Multiple chunks here cross-reference specific competitive dimensions (Project zip import/export, Email notification, Compliance/Debug mode flagging, etc.).
 
 ## Confidence notes
 
-- This _index.md is a **placeholder pending substantive `/document-pdf` processing.** The PDF is on disk and gitignored. The first run produced no chunks (background-agent process loss); the second run is queued for a focused turn.
-- When chunks land, this _index.md will be regenerated with a per-chunk TOC.
+- 11 chunks cover the 12 TOC entries (Viewing Results + Viewing HTML Test Report folded into one chunk; Exiting + Additional Settings folded into one chunk).
+- Page-range information is not transcribed because the source CHM-to-PDF conversion does not carry consistent page numbers (some chunks are short standalone topic pages).
+- Heavy reliance on cross-references to the `keysight-d9040/screens/` corpus is deliberate — the framework is shared and the screen documentation is authoritative; this chunk family adds the USB3.2-specific narrative + workflow-walkthrough perspective.
