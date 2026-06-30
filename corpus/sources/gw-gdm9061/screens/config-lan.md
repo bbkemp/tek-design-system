@@ -170,7 +170,7 @@ Softkeys: `Page Up` · `Page Down` · `PREV` · `NEXT` · `Enter` · `Exit Menu`
 
 ## Manual references
 
-> Pending. Manual will be paired in a later pass (GDM9061 User's Manual — LAN configuration: DHCP/static IP, Web/Telnet/TCP services).
+- **`Configure Interface`** ([`docs/user-manual/configure-interface.md`](../docs/user-manual/configure-interface.md), `user-manual` pp. 232-245) — the LAN/Ethernet block: `DHCP`, `IP Address` / `Subnet` / `Gateway` / `DNS1` / `DNS2`, `MAC Address`, `LanConnDelay`, and the Protocol services (`Web` / `Telnet` / `Telnet Port` / `Telnet ECHO` / `TCP` / `TCP Port`, default ports 3000/3001). (The earlier part of the same chunk, pp. 212-229, backs [`config-interface`](config-interface.md).)
 
 ## Source photo
 

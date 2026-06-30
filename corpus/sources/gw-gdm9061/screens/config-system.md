@@ -158,7 +158,9 @@ Softkeys: `Page Up` · `Page Down` · `PREV` · `NEXT` · `Enter` · `Exit Menu`
 
 ## Manual references
 
-> Pending. Manual will be paired in a later pass (GDM9061 User's Manual — System configuration: sound, date/time, save/recall, calibration, firmware, security).
+- **`Configure System`** ([`docs/user-manual/configure-system.md`](../docs/user-manual/configure-system.md), `user-manual` pp. 143-161) — every field on this tab: `Beep`, `Key Sound`, `Date`, `Time`, `TimeSync`, `Save&Load`, `Calibration`, `Security`.
+- **`System & Firmware`** ([`docs/user-manual/system-and-firmware.md`](../docs/user-manual/system-and-firmware.md), `user-manual` pp. 139-142) — `View System Info` and `Firmware Update`, behind the `SystemInfo` / `Firmware` (and related `Calibration`) `Open` buttons.
+- **`Status Bar`** ([`docs/user-manual/status-bar.md`](../docs/user-manual/status-bar.md), `user-manual` pp. 21-23) — the shared top status bar.
 
 ## Source photo
 

@@ -47,9 +47,26 @@ The 29 captures collapsed to 10 screens; the non-canonical captures are document
 
 None. This set contains only on-screen UI captures (no device/front-panel photos). Drop hardware photos into `uploads/photos/` and run `document-hardware` to add them.
 
+## Documented manuals
+
+| Doc | Pages processed | Chunks | Index |
+|---|---|---|---|
+| [Dual Measurement Multimeter GDM-9060/9061 User Manual](docs/user-manual/_index.md) (Rev. G, 2024-03) | 21-246 of 384 | 16 | [`docs/user-manual/_index.md`](docs/user-manual/_index.md) |
+
+Processed every section the 10 screens map to plus the shared foundation (status bar, measurement functions, trigger/filter, math/statistics, compare/pass-fail, the menu/display config, and the remote/LAN interface). The reference long-tail — full SCPI Command Set + Status System (pp. 252-346), Web Control, Specifications, Dual Measurement, Diode/Capacitance/Temperature, Relative/Hold, 4094/User Mode + External Trigger, and the Fuse/Battery/Defaults appendix — is listed as **pending** in the doc `_index.md`.
+
 ## Paired manual sections
 
-Pending. No GDM9061 manual has been processed yet. Every screen's **Manual references** section is a placeholder; run `document-pdf` on the GDM9061 User's Manual, then `pair-manual gw-gdm9061` to cross-link.
+All 10 screens' **Manual references** sections are populated (no remaining placeholders). Each manual chunk cross-links back via `related_screens`. Strongest pairings:
+
+- `measurement` ← status-bar, basic-measurement-overview, voltage/current/resistance/continuity/frequency, trigger-and-filter, math-measurement, display-setting, screenshot-and-log
+- `statistics` ← math-measurement (STAT), compare-mode (COMP/pass-fail), screenshot-and-log
+- `trendchart` / `histogram` ← display-setting, math-measurement
+- `range-select` ← voltage-measurement, resistance-measurement (range tables)
+- `config-system` ← configure-system, system-and-firmware · `config-display` ← configure-display, display-setting
+- `config-interface` ← configure-interface (pp. 212-229) · `config-lan` ← configure-interface LAN block (pp. 232-245)
+
+Re-run `/pair-manual gw-gdm9061` after any future doc pass to extend the links.
 
 ## How this index is regenerated
 

@@ -155,7 +155,8 @@ Softkeys: `Page Up` · `Page Down` · `PREV` · `NEXT` · `Enter` · `Exit Menu`
 
 ## Manual references
 
-> Pending. Manual will be paired in a later pass (GDM9061 User's Manual — Display configuration: backlight, font color, language).
+- **`Configure Display`** ([`docs/user-manual/configure-display.md`](../docs/user-manual/configure-display.md), `user-manual` pp. 162-180) — every field on this tab: `BackLight` (Brightness/AutoOff/AutoOffTime), `Font Color` (1ST/2ND/Math), Display Mode, `Antialiasing`, Additional Info, and `Language`.
+- **`Display Setting`** ([`docs/user-manual/display-setting.md`](../docs/user-manual/display-setting.md), `user-manual` pp. 189-210) — the related `Digit` and Display-mode settings (Number / Bar / TrendChart / Histogram).
 
 ## Source photo
 
