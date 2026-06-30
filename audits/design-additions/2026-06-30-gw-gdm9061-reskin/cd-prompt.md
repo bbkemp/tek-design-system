@@ -236,6 +236,32 @@ The test: a GW Instek GDM9061 operator should recognize **every screen instantly
 
 ---
 
+## §A — Direct fetch URLs (use if the repo isn't mounted in your session)
+
+If you don't have `bbkemp/tek-design-system` checked out, fetch the corpus directly — the repo is **public**, so these raw URLs need no auth. Read the index first, then each screen's `.md` (verbatim text + controls) and `.jpg` (geometric ground truth), then the manual chunks a screen cites.
+
+**Subject index**
+- https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/index.md
+
+**Screens — `.md` (text/controls) and `.jpg` (geometry)** — same path, swap the extension:
+- https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/measurement.md · https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/measurement.jpg
+- https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/measurement-alt.md · https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/measurement-alt.jpg
+- https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/range-select.md · https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/range-select.jpg
+- https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/trendchart.md · https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/trendchart.jpg
+- https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/histogram.md · https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/histogram.jpg
+- https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/statistics.md · https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/statistics.jpg
+- https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/config-system.md · https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/config-system.jpg
+- https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/config-display.md · https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/config-display.jpg
+- https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/config-interface.md · https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/config-interface.jpg
+- https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/config-lan.md · https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/screens/config-lan.jpg
+
+**Manual — doc index + 16 chunks** (base `https://raw.githubusercontent.com/bbkemp/tek-design-system/main/corpus/sources/gw-gdm9061/docs/user-manual/`):
+- `_index.md` · `status-bar.md` · `basic-measurement-overview.md` · `voltage-measurement.md` · `current-measurement.md` · `resistance-measurement.md` · `continuity-test.md` · `frequency-period-measurement.md` · `trigger-and-filter.md` · `math-measurement.md` · `compare-mode.md` · `system-and-firmware.md` · `configure-system.md` · `configure-display.md` · `screenshot-and-log.md` · `display-setting.md` · `configure-interface.md`
+
+> If any raw URL 404s, the repo may have gone private since this brief was written — ping Bryan for access rather than guessing at the content.
+
+---
+
 ## §11 Provenance
 
 GDM9061 corpus subject documented 2026-06-30 (`/corpus-intake` + `/document-screens`, 29 captures → 10 screens), merged in [bbkemp/tek-design-system#98](https://github.com/bbkemp/tek-design-system/pull/98). The GW Instek GDM-9060/9061 User Manual (Rev. G) was then processed into 16 chunks and **paired to all 10 screens** ([bbkemp/tek-design-system#100](https://github.com/bbkemp/tek-design-system/pull/100)) — so each screen's Manual references now cite the manual sections that back it (see §2 #4). This prompt reuses the hard-constraint / read-order / three-artifact structure of the [2026-06-26 TekExpress token-refresh brief](../2026-06-26-tek-express-token-refresh/cd-prompt.md), tightened to a **paint-only reskin**: where the TekExpress brief let CD compose and instantiate freely within a layout, this one freezes layout and spacing entirely and limits CD to font (Geist), color (incl. button states), and radius.
