@@ -162,7 +162,19 @@ Other functions/values seen across the cluster: `AC Voltage` · `2-Wire OHM` · 
 
 ## Manual references
 
-> Pending. Manual will be paired in a later pass (GDM9061 User's Manual, sections covering basic DC/AC voltage, resistance/continuity, and frequency measurement plus the display/softkey reference).
+- **`Status Bar`** ([`docs/user-manual/status-bar.md`](../docs/user-manual/status-bar.md), `user-manual` pp. 21-23) — the full legend for the shared top status bar (LOC/Remote, the RS-232/USB-CDC/USB-TMC/LAN/GPIB interface icon, error, rear-panel switch, Shift, 1st/2nd function-menu, Digital I/O User/4094, flash-drive, Beep/Key sound, internet, clock).
+- **`Basic Measurement Overview`** ([`docs/user-manual/basic-measurement-overview.md`](../docs/user-manual/basic-measurement-overview.md), `user-manual` pp. 28-30) — measurement-type selection, the refresh-rate / `Speed` softkey, and Auto/Single triggering (the `Trig:Auto` / `Trig:SIN` indicators).
+- **`AC/DC Voltage Measurement`** ([`docs/user-manual/voltage-measurement.md`](../docs/user-manual/voltage-measurement.md), `user-manual` pp. 31-37) — the VDC/mVDC/mVAC functions, range table, and the `Speed` / `Auto Zero` / `Input R` / `DCV Ratio` softkeys.
+- **`AC/DC Current Measurement`** ([`docs/user-manual/current-measurement.md`](../docs/user-manual/current-measurement.md), `user-manual` pp. 38-41) — current functions and ranges (GDM-9061 adds the 10 A range).
+- **`2W/4W Resistance Measurement`** ([`docs/user-manual/resistance-measurement.md`](../docs/user-manual/resistance-measurement.md), `user-manual` pp. 42-45) — the `2-Wire OHM` function and range table.
+- **`Continuity Test`** ([`docs/user-manual/continuity-test.md`](../docs/user-manual/continuity-test.md), `user-manual` pp. 46-48) — the `Continuity` function, `OPEN` indication, and `BeepVol` / `Threshold` softkeys.
+- **`Frequency/Period Measurement`** ([`docs/user-manual/frequency-period-measurement.md`](../docs/user-manual/frequency-period-measurement.md), `user-manual` pp. 50-54) — the `Frequency` function with the `Period` sub-readout and `GateTime` / `InJack` / `TimeOut` / `AC Range` softkeys.
+- **`Trigger and Filter Setting`** ([`docs/user-manual/trigger-and-filter.md`](../docs/user-manual/trigger-and-filter.md), `user-manual` pp. 86-95) — the trigger modes behind the `Trig:Auto`/`Trig:SIN` pill and the `Filter` pill.
+- **`Math Measurement`** ([`docs/user-manual/math-measurement.md`](../docs/user-manual/math-measurement.md), `user-manual` pp. 95-118) — the math/`MathDisp` functions reachable from this screen.
+- **`Display Setting`** ([`docs/user-manual/display-setting.md`](../docs/user-manual/display-setting.md), `user-manual` pp. 189-210) — the `Display` softkey's Number / TrendChart / Histogram modes and the `Digit` setting.
+- **`Screenshot & Log`** ([`docs/user-manual/screenshot-and-log.md`](../docs/user-manual/screenshot-and-log.md), `user-manual` pp. 181-188) — the `Log Mode` / `FileName` / `Name` / `OverWrite` softkeys seen in the log-menu state.
+
+> Note: `OverLoad` over-range behavior is not described in the per-function sections (pp. 42-45 etc.); see this screen's Confidence notes — it likely lives in a display-indicators/specs section not yet processed.
 
 ## Source photo
 

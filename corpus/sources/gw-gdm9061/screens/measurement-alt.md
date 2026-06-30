@@ -106,7 +106,10 @@ Softkeys: `Range` `Auto` · `Speed` `Slow` · `Input Z` `Auto` · `Relatively` `
 
 ## Manual references
 
-> Pending. Manual will be paired in a later pass (GDM9061 User's Manual — confirm whether an alternate/classic display theme is documented).
+- **`Status Bar`** ([`docs/user-manual/status-bar.md`](../docs/user-manual/status-bar.md), `user-manual` pp. 21-23) — the status-bar icon legend (this theme's top bar shows a different subset, but the underlying indicators are the same).
+- **`AC/DC Voltage Measurement`** ([`docs/user-manual/voltage-measurement.md`](../docs/user-manual/voltage-measurement.md), `user-manual` pp. 31-37) — the DCV function shown in this capture (`-0.63992 VDC`).
+
+> Note: the manual does not separately document this alternate chrome (`DCV / Auto Trigger / Shift` with `Input Z` / `Relatively` / `History` softkeys). Whether it is a selectable theme, a legacy firmware skin, or a related-model display is unresolved — see this screen's Confidence notes.
 
 ## Source photo
 

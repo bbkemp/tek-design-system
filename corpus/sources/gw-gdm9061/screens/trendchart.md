@@ -102,7 +102,10 @@ No-input variation: `● +000.2114 mVDC` · `(1299)` · `Log Mode` `Capture` · 
 
 ## Manual references
 
-> Pending. Manual will be paired in a later pass (GDM9061 User's Manual — TrendChart display, scaling, and statistics).
+- **`Display Setting`** ([`docs/user-manual/display-setting.md`](../docs/user-manual/display-setting.md), `user-manual` pp. 189-210) — the Trend Chart display mode with `VScale`, `HScale` (Count/Recent), and the `Stop&View` cursor/statistics inspection.
+- **`Math Measurement`** ([`docs/user-manual/math-measurement.md`](../docs/user-manual/math-measurement.md), `user-manual` pp. 95-118) — the STAT statistics (Min/Max/Average/Peak-Peak/STDEV/Count) shown in the trend's stats box.
+- **`Screenshot & Log`** ([`docs/user-manual/screenshot-and-log.md`](../docs/user-manual/screenshot-and-log.md), `user-manual` pp. 181-188) — the logging/capture state seen in the no-input variation.
+- **`Status Bar`** ([`docs/user-manual/status-bar.md`](../docs/user-manual/status-bar.md), `user-manual` pp. 21-23) — the shared top status bar.
 
 ## Source photo
 

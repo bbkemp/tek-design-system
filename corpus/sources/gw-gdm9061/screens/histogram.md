@@ -99,7 +99,9 @@ Softkeys: `Digit` `Auto` · `Display` `Histogram` · `Bins` `100` · `HScale` `A
 
 ## Manual references
 
-> Pending. Manual will be paired in a later pass (GDM9061 User's Manual — Histogram display, bins, and statistics).
+- **`Display Setting`** ([`docs/user-manual/display-setting.md`](../docs/user-manual/display-setting.md), `user-manual` pp. 189-210) — the Histogram display mode with the `Bins` table, `HScale` (Auto/Manual), and View Setup Class.
+- **`Math Measurement`** ([`docs/user-manual/math-measurement.md`](../docs/user-manual/math-measurement.md), `user-manual` pp. 95-118) — the STAT statistics (Min/Max/Average/Peak-Peak/STDEV/Count) shown in the histogram's stats box.
+- **`Status Bar`** ([`docs/user-manual/status-bar.md`](../docs/user-manual/status-bar.md), `user-manual` pp. 21-23) — the shared top status bar.
 
 ## Source photo
 

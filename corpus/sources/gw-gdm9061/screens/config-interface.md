@@ -150,7 +150,7 @@ Softkeys: `Page Up` · `Page Down` · `PREV` · `NEXT` · `Enter` · `Exit Menu`
 
 ## Manual references
 
-> Pending. Manual will be paired in a later pass (GDM9061 User's Manual — Interface configuration: LAN/USB/RS232, SCPI).
+- **`Configure Interface`** ([`docs/user-manual/configure-interface.md`](../docs/user-manual/configure-interface.md), `user-manual` pp. 212-229) — interface selection and the fields on this tab: RS-232 (`BaudRate` / `FlowCtrl` / `TalkMode` / TX terminator `EndOfLine` / `Separation`), `USB` `Protocol` (USBTMC), and the `SCPI ID` `Identity`. (The same chunk's LAN/Ethernet block, pp. 232-245, backs [`config-lan`](config-lan.md).)
 
 ## Source photo
 
