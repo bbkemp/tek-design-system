@@ -93,7 +93,10 @@ Log-save toast: `[Log]SCREEN29.bmp Save Ok`.
 
 ## Manual references
 
-> Pending. Manual will be paired in a later pass (GDM9061 User's Manual — Math: Statistics and Compare/Pass-Fail, limit and beep settings).
+- **`Math Measurement`** ([`docs/user-manual/math-measurement.md`](../docs/user-manual/math-measurement.md), `user-manual` pp. 95-118) — the STAT math display (Min/Max/Average/Peak-Peak/STDEV/Count) and the `Function` / `MathDisp` softkeys behind this screen.
+- **`Application: Compare Mode`** ([`docs/user-manual/compare-mode.md`](../docs/user-manual/compare-mode.md), `user-manual` pp. 122-128) — the COMP / pass-fail state: High/Low limits, Pass/Fail outputs, `BeepMode` / `BeepVol`, and the EOM signal (the red-fail readout in the COMP variation).
+- **`Screenshot & Log`** ([`docs/user-manual/screenshot-and-log.md`](../docs/user-manual/screenshot-and-log.md), `user-manual` pp. 181-188) — the capture/save behavior behind the `[Log]…Save Ok` toast variation (manual confirms the `SCREEN00`–`SCREEN99` naming).
+- **`Status Bar`** ([`docs/user-manual/status-bar.md`](../docs/user-manual/status-bar.md), `user-manual` pp. 21-23) — the shared top status bar.
 
 ## Source photo
 

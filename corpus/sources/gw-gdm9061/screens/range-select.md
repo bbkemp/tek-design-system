@@ -83,7 +83,9 @@ Readout (carried from measurement): `+000.1485` · `mVDC` · `DC Voltage` · `Tr
 
 ## Manual references
 
-> Pending. Manual will be paired in a later pass (GDM9061 User's Manual — range selection per function).
+- **`Basic Measurement Overview`** ([`docs/user-manual/basic-measurement-overview.md`](../docs/user-manual/basic-measurement-overview.md), `user-manual` pp. 28-30) — how functions and ranges are selected from the measurement screen.
+- **`AC/DC Voltage Measurement`** ([`docs/user-manual/voltage-measurement.md`](../docs/user-manual/voltage-measurement.md), `user-manual` pp. 31-37) — the DC Voltage range table (Auto / 100mV / 1V / 10V / 100V / 1000V) shown by this picker.
+- **`2W/4W Resistance Measurement`** ([`docs/user-manual/resistance-measurement.md`](../docs/user-manual/resistance-measurement.md), `user-manual` pp. 42-45) — the per-function range list for resistance, an example of how the picker contents change by function.
 
 ## Source photo
 
