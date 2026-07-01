@@ -1,4 +1,5 @@
 ---
+provenance: observed
 class: doc-section
 doc_id: user-manual
 doc_title: "Models 2450-EC, 2460-EC, and 2461-EC Potentiostats and Galvanostats User's Manual"

@@ -1,4 +1,5 @@
 ---
+provenance: observed
 class: code-module
 service: tek-design-system
 snapshot: 2026-05-12-85a6857

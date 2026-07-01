@@ -1,4 +1,5 @@
 ---
+provenance: observed
 class: hardware-view
 product: keysight-d9040
 software_version: TBD

@@ -1,4 +1,5 @@
 ---
+provenance: observed
 class: api-endpoint-cluster
 service: dev-core-api
 snapshot: v1.0-2026-05-12

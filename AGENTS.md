@@ -722,6 +722,7 @@ Path: `corpus/sources/<service-id>/api/<snapshot-id>/<module_id>.md`
 
 ```yaml
 ---
+provenance: observed
 class: api-endpoint-cluster
 service: <service-id>
 snapshot: <snapshot-id>
@@ -904,6 +905,7 @@ For each cluster, write `corpus/sources/<subject>/decks/<deck-id>/<section-id>.m
 
 ```yaml
 ---
+provenance: observed
 class: deck-section
 deck_id: <kebab>
 deck_title: <verbatim deck title from slide 1 or filename>
@@ -1049,6 +1051,7 @@ Write `corpus/sources/<product>/hardware/<part_id>.md` matching the locked front
 
 ```yaml
 ---
+provenance: observed
 class: hardware-view
 product: <product-id>
 software_version: <if applicable; usually null for hardware>
@@ -1225,6 +1228,7 @@ Path: `corpus/sources/<product>/docs/<doc-id>/<section_id>.md`
 
 ```yaml
 ---
+provenance: observed
 class: doc-section
 doc_id: <doc-id>
 doc_title: <full title from cover>
@@ -1432,6 +1436,7 @@ Path: `corpus/sources/<service-id>/code/<snapshot-id>/<module_id>.md`
 
 ```yaml
 ---
+provenance: observed
 class: code-module
 service: <service-id>
 snapshot: <snapshot-id>
@@ -1662,6 +1667,7 @@ Write `screens/<screen-id>.md` matching the **exact** frontmatter and body secti
 
 ```yaml
 ---
+provenance: observed
 software: <product display name, e.g. "2450-EC">
 software_version: <visible from screen, else TBD>
 screen_id: <kebab>
@@ -1836,6 +1842,7 @@ For each cluster, write `corpus/sources/<subject>/data/<export-id>/<cluster-id>.
 
 ```yaml
 ---
+provenance: observed
 class: data-export-cluster
 export_id: <kebab>
 export_title: <derived from filename / spreadsheet metadata>
@@ -1986,6 +1993,7 @@ Path: `corpus/sources/<product>/walkthroughs/<flow_id>.md`
 
 ```yaml
 ---
+provenance: observed
 class: walkthrough
 product: <product-id>
 flow_id: <kebab>

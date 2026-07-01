@@ -1,4 +1,5 @@
 ---
+provenance: observed
 class: doc-section
 doc_id: tek-express-app-emulator
 doc_title: "TekExpress AppEmulator Application Help"

@@ -1,4 +1,5 @@
 ---
+provenance: observed
 class: doc-section
 doc_id: tek-express-ddr5-tx-user-manual
 doc_title: "TekExpress DDR Tx Compliance and Debug Automation Software Application Help"

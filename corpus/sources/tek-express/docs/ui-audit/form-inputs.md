@@ -1,4 +1,5 @@
 ---
+provenance: observed
 class: doc-section
 doc_id: ui-audit
 doc_title: "TekExpress AppEmulator — UI Component Report"

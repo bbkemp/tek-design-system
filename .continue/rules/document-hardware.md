@@ -72,6 +72,7 @@ Write `corpus/sources/<product>/hardware/<part_id>.md` matching the locked front
 
 ```yaml
 ---
+provenance: observed
 class: hardware-view
 product: <product-id>
 software_version: <if applicable; usually null for hardware>

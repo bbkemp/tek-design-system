@@ -95,6 +95,7 @@ Write `screens/<screen-id>.md` matching the **exact** frontmatter and body secti
 
 ```yaml
 ---
+provenance: observed
 software: <product display name, e.g. "2450-EC">
 software_version: <visible from screen, else TBD>
 screen_id: <kebab>

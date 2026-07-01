@@ -1,4 +1,5 @@
 ---
+provenance: observed
 class: data-export-index
 export_id: garuda-vos-synthesis
 export_title: Garuda Voice-of-Stakeholder synthesis

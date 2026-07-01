@@ -1,4 +1,5 @@
 ---
+provenance: observed
 class: hardware-view
 product: 2450-ec
 software_version: TBD

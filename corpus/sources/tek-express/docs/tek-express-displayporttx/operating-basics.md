@@ -1,4 +1,5 @@
 ---
+provenance: observed
 class: doc-section
 doc_id: tek-express-displayporttx
 doc_title: "TekExpress DisplayPort Tx Automated Test Solution Software — Printable Help"

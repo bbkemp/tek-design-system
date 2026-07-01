@@ -79,6 +79,7 @@ Path: `corpus/sources/<product>/walkthroughs/<flow_id>.md`
 
 ```yaml
 ---
+provenance: observed
 class: walkthrough
 product: <product-id>
 flow_id: <kebab>
