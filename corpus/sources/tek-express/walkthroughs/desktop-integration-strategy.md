@@ -1,4 +1,5 @@
 ---
+provenance: observed
 class: walkthrough
 product: tek-express
 flow_id: desktop-integration-strategy

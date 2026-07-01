@@ -74,6 +74,7 @@ For each cluster, write `corpus/sources/<subject>/decks/<deck-id>/<section-id>.m
 
 ```yaml
 ---
+provenance: observed
 class: deck-section
 deck_id: <kebab>
 deck_title: <verbatim deck title from slide 1 or filename>

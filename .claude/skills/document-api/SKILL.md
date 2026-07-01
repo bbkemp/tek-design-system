@@ -88,6 +88,7 @@ Path: `corpus/sources/<service-id>/api/<snapshot-id>/<module_id>.md`
 
 ```yaml
 ---
+provenance: observed
 class: api-endpoint-cluster
 service: <service-id>
 snapshot: <snapshot-id>

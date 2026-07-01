@@ -1,4 +1,5 @@
 ---
+provenance: observed
 class: doc-section
 doc_id: d9020usbc-usb3-moi
 doc_title: "Keysight D9020USBC/D9320USBC USB3.2 Compliance Test Application — Methods of Implementation"

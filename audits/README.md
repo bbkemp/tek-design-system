@@ -2,6 +2,22 @@
 
 Shareable Markdown reports produced by the QA skills under `.claude/skills/`. Each report is self-contained and intended to be handed to design or dev as-is.
 
+## Provenance — everything here is `authored-analysis`
+
+Every artifact under `audits/` is **interpretation**, not observed fact, and is tagged as such so it can never be mistaken for corpus signal. The convention is defined authoritatively in [`corpus/README.md` § Provenance tagging](../corpus/README.md#provenance-tagging--observed-vs-authored-analysis). For audits specifically:
+
+1. **Frontmatter** carries `provenance: authored-analysis`, `authored_by: [...]` (people and/or AI agents), and `authored_date:`.
+2. **A visible banner** opens the file, so a reader skimming the body still sees the tag. Template:
+
+   ```markdown
+   > ## ⚠️ Authored analysis — not corpus
+   > **This document is interpretation, authored by <authors> on <date>.** It is opinion and synthesis, not observed fact. The system of record is the cited corpus entries (`provenance: observed`). When this analysis and a corpus entry disagree, the corpus wins — and this file should be corrected.
+   ```
+
+3. **Cite corpus sources.** Every factual claim about a product should be traceable to a `provenance: observed` corpus chunk; the rankings and verdicts are the authored judgment to argue with.
+
+This applies equally to UXR synthesis (`uxr/`) and any future analytics-analysis surface — see the corpus README for why summaries-of-real-data are still `authored-analysis`.
+
 ## Layout
 
 ```

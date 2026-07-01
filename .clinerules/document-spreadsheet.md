@@ -74,6 +74,7 @@ For each cluster, write `corpus/sources/<subject>/data/<export-id>/<cluster-id>.
 
 ```yaml
 ---
+provenance: observed
 class: data-export-cluster
 export_id: <kebab>
 export_title: <derived from filename / spreadsheet metadata>

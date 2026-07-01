@@ -1,4 +1,5 @@
 ---
+provenance: observed
 class: doc-section
 doc_id: tek-express-displayporttx-2-1
 doc_title: "TekExpress DisplayPort 2.1 Application Help"

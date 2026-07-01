@@ -92,6 +92,7 @@ Path: `corpus/sources/<service-id>/code/<snapshot-id>/<module_id>.md`
 
 ```yaml
 ---
+provenance: observed
 class: code-module
 service: <service-id>
 snapshot: <snapshot-id>

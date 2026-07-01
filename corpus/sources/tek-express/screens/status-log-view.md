@@ -1,4 +1,5 @@
 ---
+provenance: observed
 software: TekExpress AppEmulator
 software_version: TBD
 screen_id: status-log-view

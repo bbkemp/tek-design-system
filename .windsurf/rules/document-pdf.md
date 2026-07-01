@@ -88,6 +88,7 @@ Path: `corpus/sources/<product>/docs/<doc-id>/<section_id>.md`
 
 ```yaml
 ---
+provenance: observed
 class: doc-section
 doc_id: <doc-id>
 doc_title: <full title from cover>
