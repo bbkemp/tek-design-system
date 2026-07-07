@@ -176,15 +176,17 @@ Icons: the DS has no icon set yet. Use **Lucide** (stroke 1.5) sparingly and not
 
 Responsiveness is **container-level, not viewport-level**: use `container-type: inline-size` + `@container` rules. Viewport `@media` is forbidden except `prefers-color-scheme` and `print`.
 
-## §3 Reference implementations — study before designing
+## §3 Reference implementations — the visual ground truth
 
-Three live prototypes built on this exact system. Open them, interact, and **view source** — they demonstrate the token-binding pattern (`var(--tek-*, fallback)`), the bridge-pattern primitives, and the dark surface tiering you're expected to match:
+You have no access to the Figma library or the component packages, so these three live prototypes are **the canonical visual representation of the Tek Design System** for this task. What the system *looks like* — surfaces, type, density, states, chrome — is defined by these pages, not by your interpretation of the token tables in §2. §2 gives you the vocabulary; these give you the look. When a visual judgment call comes up (how heavy a border reads, how a hover feels, how dense a form should be), resolve it by matching what these prototypes do.
+
+Open all three before designing anything, interact with them, and **view source** — they also demonstrate the token-binding pattern (`var(--tek-*, fallback)`), the bridge-pattern primitives, and the dark surface tiering you're expected to match:
 
 1. **TekExpress** — https://bbkemp.github.io/tek-design-system/prototypes/tek-express/ — desktop test-automation app: title bar / side-nav / wizard / form panel / status bar. The closest analog to a configuration GUI; treat its form idioms (fields, dropdowns, group-boxes, toggles) as canonical.
 2. **Tek Bench** — https://bbkemp.github.io/tek-design-system/prototypes/bench/ — interactive bench prototype: denser instrument-style chrome, status pills, data displays.
 3. **my.tek** — https://bbkemp.github.io/tek-design-system/prototypes/my-tek/ — asset-hub web app: cards, tables, and navigation at web-app density.
 
-The test for your alts: set them next to these three and they should read as siblings from the same product family.
+The test for your alts: set them next to these three and they should read as siblings from the same product family. If an alt looks right against §2's tables but wrong against these three pages, the pages win — fix the alt.
 
 ## §4 Three-artifact contract — the deliverable
 
