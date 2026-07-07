@@ -26,9 +26,11 @@ These rules hold the design system together. Violating any of them produces exac
 
 Every color, font property, spacing value, border width, and radius resolves to `var(--tek-*, <fallback>)` using the vocabulary in §2. If no token fits, bind to the **closest** one and log the gap in `cd-additions.md` — never leave a value un-tokenized, and never invent a new `--tek-*` name without flagging it. Include the token definitions from §2 as a `:root` block in each HTML file so the prototypes render standalone.
 
-### 1.2 Components, not shapes
+### 1.2 Components, not shapes — use what exists; invent only on the rails
 
-Interactive elements are **`tek-*` Web Components**, never bare styled HTML:
+The governing rule, in one line: **if the design system has it, use it — every time. If it doesn't, you may create something new, but it must be built *from* the system (its tokens, its type, its patterns) and flagged as a proposal — never a one-off that ignores the rails.** A new component should look like it was always part of DS-v2, waiting to be shipped.
+
+Concretely, interactive elements are **`tek-*` Web Components**, never bare styled HTML:
 
 - If DS-v2 ships the component (§2.7 shipped list), instantiate it — express it as that custom element (`<tek-button>`, `<tek-input>`, …) styled per its documented states. Never paint a `<button>` or `<input>` that mimics one.
 - If the element you need is one of the **proposed primitives** (§2.8), keep the `tek-*` custom-element name and style its internals with tokens — that's the bridge pattern until the real primitive ships.
@@ -193,6 +195,8 @@ The test for your alts: set them next to these three and they should read as sib
 1. **One HTML file per alt** (or one file with an alt switcher in a small dev/Tweaks panel — your call, document it). Self-contained: token `:root` block inlined, Google Fonts for Archivo/Geist/Geist Mono, no other external dependencies.
 2. **`cd-notes.md`** — per alt: its one-sentence thesis, what you kept/changed from the source GUI and why, which screenshots each screen maps to, which tokens you bound where, anything ambiguous in the source you had to interpret, open questions for the DS team.
 3. **`cd-additions.md`** — every gap: each proposed component or token you needed that isn't in §2, with anatomy, states, closest existing primitive, rationale, and a ✓/⚠ confidence flag. If empty, write `none` — the file is the contract. This file is what the Tek Design System team reviews first.
+
+**Also surface the additions audit inside the artifact itself:** in the Tweaks/dev panel (alongside the alt switcher), include a visible "Proposed additions" list — every new component and token from `cd-additions.md`, one line each with its ✓/⚠ flag. The TekExpress reference prototype (§3) established this pattern and it's what makes review fast: a reviewer opens the prototype and sees at a glance exactly what the design is asking the system to absorb, without digging through source.
 
 ## §5 Verification checklist — run before declaring done
 
