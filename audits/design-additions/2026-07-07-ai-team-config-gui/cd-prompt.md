@@ -2,29 +2,52 @@
 
 **Date:** 2026-07-07 · **Requested by:** Richard Patterson · **Target:** pre-release configuration GUI from the AI team · **Review:** Tek Design System team (Bryan Kemp)
 
-> **How to use this (for Richard):** Paste everything below the divider into Claude Design as your first message, **along with screenshots of the current configuration GUI** (every screen/state you have) and a one-paragraph description of what the software does. The prompt is fully self-contained — the entire Tek Design System (tokens, type scale, colors, components, rules) is embedded, so Claude Design needs no library access, no repo access, and no package installs. When the alts come back, send them to Bryan's team for review **together with the two markdown files the prompt requires** (`cd-notes.md`, `cd-additions.md`) — those files are how the review happens.
+> ## How to use this (for Richard)
+>
+> **What to attach, all in your first message** — this prompt is built so Claude Design never has to guess or fetch anything:
+>
+> 1. **Your wireframes and/or screenshots** of the configuration GUI — every screen and state you have — plus a one-paragraph description of what the software does.
+> 2. **The Tek DS kit** (Bryan sends these files with this prompt):
+>    - `tek.complete.css` — the real, generated design-token stylesheet. This is the canonical token source.
+>    - `tek-express.html`, `bench.html`, `my-tek.html` — the three reference prototypes as self-contained files. These are the visual ground truth.
+>    - Three screenshots of those prototypes (quick visual anchor before the model reads the source).
+>
+> **Driving Claude Design** (the lessons we learned the hard way):
+> - Approve the checkpoints. The prompt forces Claude to stop twice (inventory, then one format-lock screen) before building everything. Reply with corrections or "OK" — don't skip these; they're where bad rounds get caught cheap.
+> - **Iterate, never restart.** Ask for fixes as edits to the existing artifact ("change X on the Network screen"). If Claude proposes rebuilding from scratch, say no.
+> - One change (or one screen) per message. Small asks produce good output; "fix everything" produces regressions.
+> - When it's done, download the HTML artifact and the two markdown artifacts and send all three to Bryan's team — the markdown files are how the review happens, not optional extras.
+>
+> **One check before you upload:** this is pre-release material — confirm with Bryan which Claude account/workspace is appropriate for it before attaching anything.
 
 ---
 
 # Build 2–3 design alternates of a configuration GUI on the Tek Design System
 
-You are redesigning a **pre-release configuration GUI** (screenshots attached) as **2–3 distinct design alternates ("alts")**, each built on the **Tek Design System v2 (DS-v2)** — Tektronix's token-driven, framework-agnostic design system. The full design system is embedded in this prompt (§2). Live reference implementations are linked in §3.
+You are redesigning a **pre-release configuration GUI** (wireframes/screenshots attached) as **2–3 distinct design alternates ("alts")**, each built on the **Tek Design System v2 (DS-v2)** — Tektronix's token-driven, framework-agnostic design system. Everything you need is attached or embedded in this prompt: the token stylesheet, three reference prototypes, and the full system context in §2. Do not invent anything the attachments can answer.
 
 ## §0 Mission
 
-1. **Read the attached screenshots first.** They are the source of truth for what the GUI contains: every screen, control, label, field, and value. Inventory them before designing anything.
-2. **Produce 2–3 alts** as self-contained HTML prototypes. Alts may differ in **layout, information architecture, grouping, and navigation** — they may NOT differ in token discipline, typography, or component vocabulary. Every alt is 100% Tek DS.
-3. **Bind every visual value to a DS token**: `var(--tek-*, <fallback>)` for every color, font family, font size, line height, spacing, border width, and border radius. The token vocabulary is in §2. No raw hex, no raw px (fallbacks inside `var()` are the only place raw values appear).
-4. **Preserve the GUI's content verbatim.** Every setting name, option, value, unit, and label comes from the screenshots. Do not invent, rename, "improve," or drop settings. If a label is ambiguous in the screenshot, flag it in `cd-notes.md` — don't guess silently.
-5. **Deliver the three-artifact contract** (§4): one HTML file per alt, plus `cd-notes.md` and `cd-additions.md`.
+1. **Read the attachments first.** Inventory every screen, control, field, option, and label from the wireframes/screenshots before designing anything. Read the three attached reference prototypes (§3) before making any visual decision.
+2. **Follow the working protocol in §4** — two checkpoints before full build-out. Do not build all alts in one pass.
+3. **Produce 2–3 alts** in a single self-contained HTML artifact with an alt switcher (§5). Alts may differ in **layout, information architecture, grouping, and navigation** — they may NOT differ in token discipline, typography, or component vocabulary. Every alt is 100% Tek DS.
+4. **Bind every visual value to a DS token**: `var(--tek-*, <fallback>)` for every color, font family, font size, line height, spacing, border width, and border radius. The attached `tek.complete.css` is the canonical source (§1.1). No raw hex, no raw px.
+5. **Deliver the three-artifact contract** (§5): the HTML artifact, `cd-notes.md`, `cd-additions.md`.
+
+### How to read the source material — screenshots vs wireframes
+
+- **Screenshots of a real, styled GUI** define both content and layout intent. Preserve labels, values, units, and control inventory verbatim.
+- **Wireframes** define **structure and the control inventory only** — which screens exist, which settings live where, what type of control each one is. The *visual design* (surfaces, type, spacing, states, chrome) comes 100% from the design system and the reference prototypes, never from the wireframe's boxes and greys. Do not reproduce wireframe aesthetics.
+- Wireframe labels are canonical **unless obviously placeholder** ("Setting 1", "Lorem", "TBD"). Never ship placeholder text: flag each one in `cd-notes.md` and substitute a clearly-marked provisional label (e.g. `Model endpoint ⚠︎`).
+- Either way: do not invent, drop, or **rename** settings. Regrouping and reordering them is exactly what alts are for; renaming them is not.
 
 ## §1 Hard constraints — do not violate
 
 These rules hold the design system together. Violating any of them produces exactly the drift the system exists to prevent.
 
-### 1.1 Tokens always
+### 1.1 Tokens always — the attached stylesheet is canon
 
-Every color, font property, spacing value, border width, and radius resolves to `var(--tek-*, <fallback>)` using the vocabulary in §2. If no token fits, bind to the **closest** one and log the gap in `cd-additions.md` — never leave a value un-tokenized, and never invent a new `--tek-*` name without flagging it. Include the token definitions from §2 as a `:root` block in each HTML file so the prototypes render standalone.
+Every color, font property, spacing value, border width, and radius resolves to `var(--tek-*, <fallback>)`. The attached **`tek.complete.css`** is the generated, canonical token sheet: **copy its sections 1 and 2 (primitives + semantic dark defaults) verbatim into a `<style>` block in the artifact** — do not retype tokens by hand, do not include section 3 (the OS light-mode override; this round is dark-only). The tables in §2 are the same data in readable form — use them to *choose* tokens; use the CSS file to *define* them. If no token fits a value you need, bind to the **closest** one and log the gap in `cd-additions.md` — never leave a value un-tokenized, and never invent a new `--tek-*` name without flagging it.
 
 ### 1.2 Components, not shapes — use what exists; invent only on the rails
 
@@ -33,7 +56,7 @@ The governing rule, in one line: **if the design system has it, use it — every
 Concretely, interactive elements are **`tek-*` Web Components**, never bare styled HTML:
 
 - If DS-v2 ships the component (§2.7 shipped list), instantiate it — express it as that custom element (`<tek-button>`, `<tek-input>`, …) styled per its documented states. Never paint a `<button>` or `<input>` that mimics one.
-- If the element you need is one of the **proposed primitives** (§2.8), keep the `tek-*` custom-element name and style its internals with tokens — that's the bridge pattern until the real primitive ships.
+- If the element you need is one of the **proposed primitives** (§2.8), keep the `tek-*` custom-element name and style its internals with tokens — that's the bridge pattern until the real primitive ships. The attached `tek-express.html` demonstrates this pattern throughout; copy its approach.
 - If the element is genuinely new (not in either list), name it `tek-<something>`, build it token-bound, and add a full entry to `cd-additions.md` (anatomy, states, closest existing primitive, rationale, ✓/⚠ confidence flag).
 
 ### 1.3 Typography is fixed
@@ -48,7 +71,7 @@ No other typeface, no raw `font-family`/`font-size` declarations — bind to the
 
 ### 1.4 Dark canvas is the default
 
-The system is dark-mode-first: `#1e1e1e` canvas, raised `#181818` chrome, `#252525` input surfaces, hairline `0.5px` dividers. Build the alts dark. (A light mode exists as a token-override layer; do not design for it in this round.)
+The system is dark-mode-first: `#1e1e1e` canvas, raised `#181818` chrome, `#252525` input surfaces, hairline `0.5px` dividers. Build the alts dark, even if the wireframes are white — wireframe lightness is not a design decision (§0). Do not include a light mode this round.
 
 ### 1.5 Tek Blue is an accent, not a surface
 
@@ -56,15 +79,19 @@ The system is dark-mode-first: `#1e1e1e` canvas, raised `#181818` chrome, `#2525
 
 ### 1.6 Alts are honest alternatives
 
-Each alt should make a real, distinct IA/layout argument (e.g. one conservative single-page form, one grouped/tabbed, one wizard/guided) — not the same layout with different colors. State each alt's thesis in one sentence at the top of `cd-notes.md`. What must NOT vary across alts: tokens, type, component vocabulary, dark canvas, content.
+Each alt should make a real, distinct IA/layout argument (e.g. one conservative single-page form, one grouped/tabbed, one wizard/guided) — not the same layout with different colors. State each alt's thesis in one sentence at the top of `cd-notes.md`. What must NOT vary across alts: tokens, type, component vocabulary, dark canvas, the set of settings and their names.
 
-### 1.7 This is a visual prototype, not the product
+### 1.7 Plain HTML — no framework, no build step
 
-Light interactivity only where it demonstrates the design (tab switching, dropdown open/close, toggle flips, an alt-switcher if you build all alts into one file). No real configuration logic, no persistence, no network calls.
+The artifact is **plain HTML/CSS/JS in a single file**: no React, no JSX, no bundler, no imports beyond the Google Fonts links. `tek-*` elements are plain custom-element tags styled by CSS targeting the element name (the attached prototypes show exactly this). This is required for the Tek review-and-drop pipeline.
+
+### 1.8 This is a visual prototype, not the product
+
+Light interactivity only, where it demonstrates the design: the alt switcher, tab/section switching, dropdown open/close, toggle flips. No real configuration logic, no persistence, no network calls.
 
 ## §2 The Tek Design System — full embedded context
 
-This is the complete DS-v2 surface. CSS custom properties follow the pattern `--tek-<category>-<path>`, e.g. `colors.neutral.800` → `--tek-colors-neutral-800`, `spacing.s05` → `--tek-spacing-s05`, `borders.radius.03` → `--tek-borders-radius-03`.
+This is the complete DS-v2 surface, mirroring the attached `tek.complete.css`. CSS custom properties follow the pattern `--tek-<category>-<path>`, e.g. `colors.neutral.800` → `--tek-colors-neutral-800`, `spacing.s05` → `--tek-spacing-s05`, `borders.radius.03` → `--tek-borders-radius-03`.
 
 ### 2.1 Color primitives
 
@@ -174,49 +201,72 @@ These are documented, reviewed proposals that don't ship yet. Use the custom-ele
 
 Icons: the DS has no icon set yet. Use **Lucide** (stroke 1.5) sparingly and note it in `cd-additions.md`.
 
-### 2.9 Layout & responsiveness
+### 2.9 Layout & responsiveness (nice-to-have this round)
 
-Responsiveness is **container-level, not viewport-level**: use `container-type: inline-size` + `@container` rules. Viewport `@media` is forbidden except `prefers-color-scheme` and `print`.
+If you add responsive behavior, it is **container-level, not viewport-level**: `container-type: inline-size` + `@container` rules. Viewport `@media` is forbidden except `prefers-color-scheme` and `print`. A fixed-width desktop layout with no responsiveness is acceptable for this round — don't spend effort here at the cost of the core screens.
 
-## §3 Reference implementations — the visual ground truth
+## §3 Reference prototypes — the visual ground truth
 
-You have no access to the Figma library or the component packages, so these three live prototypes are **the canonical visual representation of the Tek Design System** for this task. What the system *looks like* — surfaces, type, density, states, chrome — is defined by these pages, not by your interpretation of the token tables in §2. §2 gives you the vocabulary; these give you the look. When a visual judgment call comes up (how heavy a border reads, how a hover feels, how dense a form should be), resolve it by matching what these prototypes do.
+You have no access to the Figma library or the component packages, so the three **attached** prototype files are **the canonical visual representation of the Tek Design System** for this task. What the system *looks like* — surfaces, type, density, states, chrome — is defined by these, not by your interpretation of the token tables in §2. §2 gives you the vocabulary; these give you the look. When a visual judgment call comes up (how heavy a border reads, how a hover feels, how dense a form should be), resolve it by matching what these prototypes do.
 
-Open all three before designing anything, interact with them, and **view source** — they also demonstrate the token-binding pattern (`var(--tek-*, fallback)`), the bridge-pattern primitives, and the dark surface tiering you're expected to match:
+**Read all three attached files — markup and CSS, not just a glance — before designing anything:**
 
-1. **TekExpress** — https://bbkemp.github.io/tek-design-system/prototypes/tek-express/ — desktop test-automation app: title bar / side-nav / wizard / form panel / status bar. The closest analog to a configuration GUI; treat its form idioms (fields, dropdowns, group-boxes, toggles) as canonical.
-2. **Tek Bench** — https://bbkemp.github.io/tek-design-system/prototypes/bench/ — interactive bench prototype: denser instrument-style chrome, status pills, data displays.
-3. **my.tek** — https://bbkemp.github.io/tek-design-system/prototypes/my-tek/ — asset-hub web app: cards, tables, and navigation at web-app density.
+1. **`tek-express.html`** (also live at https://bbkemp.github.io/tek-design-system/prototypes/tek-express/) — desktop test-automation app: title bar / side-nav / wizard / form panel / status bar. The closest analog to a configuration GUI; treat its form idioms (fields, dropdowns, group-boxes, toggles) and its bridge-pattern `tek-*` styling as canonical.
+2. **`bench.html`** (live at https://bbkemp.github.io/tek-design-system/prototypes/bench/) — interactive bench prototype: denser instrument-style chrome, status pills, data displays.
+3. **`my-tek.html`** (live at https://bbkemp.github.io/tek-design-system/prototypes/my-tek/) — asset-hub web app: cards, tables, and navigation at web-app density.
 
-The test for your alts: set them next to these three and they should read as siblings from the same product family. If an alt looks right against §2's tables but wrong against these three pages, the pages win — fix the alt.
+If you are able to fetch URLs, you may also open the live versions and the repo (https://github.com/bbkemp/tek-design-system) for extra context — but the attachments are sufficient and authoritative. **In your Checkpoint-0 reply (§4), state explicitly which attachments you received and read, and whether you could additionally load the live URLs — no pretending.**
 
-## §4 Three-artifact contract — the deliverable
+The test for your alts: set them next to these three and they should read as siblings from the same product family. If an alt looks right against §2's tables but wrong against these prototypes, the prototypes win — fix the alt.
 
-1. **One HTML file per alt** (or one file with an alt switcher in a small dev/Tweaks panel — your call, document it). Self-contained: token `:root` block inlined, Google Fonts for Archivo/Geist/Geist Mono, no other external dependencies.
-2. **`cd-notes.md`** — per alt: its one-sentence thesis, what you kept/changed from the source GUI and why, which screenshots each screen maps to, which tokens you bound where, anything ambiguous in the source you had to interpret, open questions for the DS team.
-3. **`cd-additions.md`** — every gap: each proposed component or token you needed that isn't in §2, with anatomy, states, closest existing primitive, rationale, and a ✓/⚠ confidence flag. If empty, write `none` — the file is the contract. This file is what the Tek Design System team reviews first.
+## §4 Working protocol — two checkpoints before full build
 
-**Also surface the additions audit inside the artifact itself:** in the Tweaks/dev panel (alongside the alt switcher), include a visible "Proposed additions" list — every new component and token from `cd-additions.md`, one line each with its ✓/⚠ flag. The TekExpress reference prototype (§3) established this pattern and it's what makes review fast: a reviewer opens the prototype and sees at a glance exactly what the design is asking the system to absorb, without digging through source.
+Do not build everything in one pass. This sequence is mandatory:
 
-## §5 Verification checklist — run before declaring done
+**Checkpoint 0 — inventory and theses (no design yet).** Reply with:
+1. Your extracted inventory from the wireframes/screenshots: every screen, and per screen every setting/control with its type (text field, dropdown, toggle, …). Mark any label you believe is placeholder (§0).
+2. A one-sentence thesis per proposed alt (2–3).
+3. Your source report: which attachments you received and read, and whether the live URLs loaded (§3).
 
-- [ ] Every screen/state from the source screenshots is represented in every alt; no settings invented, renamed, or dropped
-- [ ] All labels/values/units match the screenshots verbatim
+**Wait for approval.** The reviewer will correct the inventory and pick/adjust the theses.
+
+**Checkpoint 1 — format lock.** Build **one screen of one alt only** — the most representative screen — fully finished: tokens bound, components instantiated, states working. This sets the quality bar and catches drift while it's cheap to fix. **Wait for approval.**
+
+**Full build.** Expand to the remaining screens and alts, matching the approved format-lock screen. Deliver per §5.
+
+## §5 Three-artifact contract — the deliverable
+
+1. **One self-contained HTML artifact** containing all alts, with an **alt switcher** in a small dev/Tweaks panel (plain HTML per §1.7; token `:root` copied from the attached `tek.complete.css` per §1.1; Google Fonts links for Archivo/Geist/Geist Mono; no other external dependencies).
+2. **`cd-notes.md`** — produce as a **separate markdown artifact** named exactly `cd-notes.md`: per alt, its one-sentence thesis, what you kept/changed from the source and why, which wireframe/screenshot each screen maps to, which tokens you bound where, every placeholder label you flagged, anything ambiguous you had to interpret, open questions for the DS team.
+3. **`cd-additions.md`** — a **separate markdown artifact** named exactly `cd-additions.md`: every gap — each proposed component or token you needed that isn't in §2, with anatomy, states, closest existing primitive, rationale, and a ✓/⚠ confidence flag. If empty, write `none` — the file is the contract. This file is what the Tek Design System team reviews first.
+
+**Also surface the additions audit inside the artifact itself:** in the dev/Tweaks panel (alongside the alt switcher), include a visible "Proposed additions" list — every new component and token from `cd-additions.md`, one line each with its ✓/⚠ flag. A reviewer opens the prototype and sees at a glance exactly what the design is asking the system to absorb, without digging through source.
+
+## §6 Verification checklist — run before declaring done
+
+- [ ] Checkpoint 0 and Checkpoint 1 both happened and were approved before full build
+- [ ] Every screen/setting from the source inventory is represented in every alt; nothing invented, dropped, or renamed (regrouping/reordering is fine)
+- [ ] No placeholder text shipped — every flagged label is in `cd-notes.md` with a marked provisional substitute
+- [ ] The token `:root` is copied verbatim from the attached `tek.complete.css` (sections 1–2, dark only)
 - [ ] Every color resolves to `var(--tek-color*-…, fallback)` — including hover/active/disabled/focus on every interactive element
 - [ ] Every font family/size/line-height resolves to a `var(--tek-fonts-…)` token; Archivo headings/buttons, Geist body, Geist Mono numerics; no other family anywhere
 - [ ] Every spacing, border width, and radius resolves to its `var(--tek-…)` token; no raw px outside fallbacks
 - [ ] Interactive elements are `tek-*` custom elements (shipped §2.7 or bridge §2.8), not bare styled HTML
+- [ ] Plain HTML/CSS/JS single file — no React, no build step, no external dependencies beyond Google Fonts
 - [ ] Dark canvas tiering: 900 chrome / 800 canvas / 700 surfaces; hairline 0.5px dividers; Tek Blue as accent only
-- [ ] Any responsive behavior uses `@container`, not viewport `@media`
-- [ ] 2–3 alts, each with a distinct stated thesis
-- [ ] `cd-notes.md` + `cd-additions.md` written
+- [ ] Set next to the three reference prototypes, each alt reads as a sibling (§3 — the prototypes win any conflict)
+- [ ] 2–3 alts, each with a distinct stated thesis; alt switcher works
+- [ ] Dev/Tweaks panel shows the "Proposed additions" list matching `cd-additions.md`
+- [ ] `cd-notes.md` + `cd-additions.md` delivered as separate markdown artifacts
 
-## §6 What success looks like
+## §7 What success looks like
 
-Someone who uses the current configuration GUI opens any alt and finds every setting they know, unchanged in meaning — while a Tek designer sees only Tek: Archivo/Geist type, DS colors on every surface and state, DS radii and spacing, everything traceable to a `--tek-*` token. The alts disagree with each other about layout and IA in interesting, reviewable ways, and `cd-additions.md` hands the DS team a clean, honest list of exactly what the system would need to absorb this product for real.
+Someone who sketched the original wireframes opens any alt and finds every setting they specified, unchanged in meaning — while a Tek designer sees only Tek: Archivo/Geist type, DS colors on every surface and state, DS radii and spacing, everything traceable to a `--tek-*` token. The alts disagree with each other about layout and IA in interesting, reviewable ways, and `cd-additions.md` hands the DS team a clean, honest list of exactly what the system would need to absorb this product for real.
 
 ---
 
 ## Provenance (repo-side, not part of the paste)
 
-Structure reuses the hard-constraint / three-artifact pattern of the [2026-06-26 TekExpress token-refresh brief](../2026-06-26-tek-express-token-refresh/cd-prompt.md) and the [2026-06-30 GDM9061 reskin brief](../2026-06-30-gw-gdm9061-reskin/cd-prompt.md), with the full DS-v2 context embedded inline (à la the original 2026-06 CD onboarding) because the recipient has no Claude Design team access, no repo access, and no Figma library subscription. Token values snapshot: `@bbkemp/tokens` as of 2026-07-07 (`main` @ 17f9b9d). If tokens change, regenerate §2 rather than hand-editing.
+Structure reuses the hard-constraint / three-artifact pattern of the [2026-06-26 TekExpress token-refresh brief](../2026-06-26-tek-express-token-refresh/cd-prompt.md) and the [2026-06-30 GDM9061 reskin brief](../2026-06-30-gw-gdm9061-reskin/cd-prompt.md), with the full DS-v2 context embedded inline because the recipient has no Claude Design team access, no repo access, and no Figma library subscription.
+
+Post-scrutiny revision (2026-07-07): the GDM9061 ("Dragon Storm") round outsourced its ground truth to GitHub links and produced nothing landable, so this prompt delivers ground truth **by attachment** — `packages/tokens/dist/tek.complete.css` plus the three prototype `index.html` files travel with the prompt; live URLs are secondary and CD must report what it actually loaded (§3/§4). Added: wireframe-vs-screenshot input modes (§0), a two-checkpoint working protocol (§4), plain-HTML/no-React requirement (§1.7), copy-the-CSS-verbatim rule (§1.1), and a Claude-Design driving guide in the recipient preamble. **Attachment kit for the sender:** `packages/tokens/dist/tek.complete.css`, `prototypes/tek-express/index.html` (76 KB), `prototypes/bench/index.html` (416 KB), `prototypes/my-tek/index.html` (2.2 MB — if upload limits bite, this is the one to replace with screenshots), plus a screenshot of each. Token values snapshot: `@bbkemp/tokens` at `main` @ 17f9b9d. If tokens change, re-send the regenerated CSS rather than hand-editing.
