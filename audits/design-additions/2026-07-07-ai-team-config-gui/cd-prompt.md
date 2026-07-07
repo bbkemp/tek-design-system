@@ -16,7 +16,8 @@
 > - Approve the checkpoints. The prompt forces Claude to stop twice (inventory, then one format-lock screen) before building everything. Reply with corrections or "OK" — don't skip these; they're where bad rounds get caught cheap.
 > - **Iterate, never restart.** Ask for fixes as edits to the existing artifact ("change X on the Network screen"). If Claude proposes rebuilding from scratch, say no.
 > - One change (or one screen) per message. Small asks produce good output; "fix everything" produces regressions.
-> - When it's done, download the HTML artifact and the two markdown artifacts and send all three to Bryan's team — the markdown files are how the review happens, not optional extras.
+> - When it's done, check that `cd-notes.md` ends with a Self-QA results table (the prompt requires Claude to review its own output against the full checklist before delivering — §4). If the table isn't there, reply "run the Self-QA pass from §4" and wait for the fixed version.
+> - Then download the HTML artifact and the two markdown artifacts and send all three to Bryan's team — the markdown files are how the review happens, not optional extras. Because the compliance QA is already done and documented, the team's review focuses on `cd-additions.md` (the judgment calls), which keeps the turnaround short.
 >
 > **One check before you upload:** this is pre-release material — confirm with Bryan which Claude account/workspace is appropriate for it before attaching anything.
 
@@ -232,17 +233,19 @@ Do not build everything in one pass. This sequence is mandatory:
 
 **Checkpoint 1 — format lock.** Build **one screen of one alt only** — the most representative screen — fully finished: tokens bound, components instantiated, states working. This sets the quality bar and catches drift while it's cheap to fix. **Wait for approval.**
 
-**Full build.** Expand to the remaining screens and alts, matching the approved format-lock screen. Deliver per §5.
+**Full build.** Expand to the remaining screens and alts, matching the approved format-lock screen.
+
+**Self-QA — review your own output before delivering.** You are the first reviewer, not the last: audit the finished artifact against every line of the §6 checklist and against the attached reference prototypes, as if reviewing someone else's work. This is a real pass, not a claim — mechanically search your own code for violations (raw hex outside `var()` fallbacks, raw px, bare `<button>`/`<input>`/`<select>`, any font-family that isn't Archivo/Geist/Geist Mono, colors not bound to a token) and visually compare each alt against the prototypes. Fix everything you find, then record the pass in `cd-notes.md` as a table: each checklist item, pass/fail, and what you fixed. An unchecked item with no explanation means the deliverable is not done. Then deliver per §5.
 
 ## §5 Three-artifact contract — the deliverable
 
 1. **One self-contained HTML artifact** containing all alts, with an **alt switcher** in a small dev/Tweaks panel (plain HTML per §1.7; token `:root` copied from the attached `tek.complete.css` per §1.1; Google Fonts links for Archivo/Geist/Geist Mono; no other external dependencies).
-2. **`cd-notes.md`** — produce as a **separate markdown artifact** named exactly `cd-notes.md`: per alt, its one-sentence thesis, what you kept/changed from the source and why, which wireframe/screenshot each screen maps to, which tokens you bound where, every placeholder label you flagged, anything ambiguous you had to interpret, open questions for the DS team.
+2. **`cd-notes.md`** — produce as a **separate markdown artifact** named exactly `cd-notes.md`: per alt, its one-sentence thesis, what you kept/changed from the source and why, which wireframe/screenshot each screen maps to, which tokens you bound where, every placeholder label you flagged, anything ambiguous you had to interpret, open questions for the DS team — plus the **Self-QA results table** from §4 (every §6 checklist item: pass/fail and what was fixed).
 3. **`cd-additions.md`** — a **separate markdown artifact** named exactly `cd-additions.md`: every gap — each proposed component or token you needed that isn't in §2, with anatomy, states, closest existing primitive, rationale, and a ✓/⚠ confidence flag. If empty, write `none` — the file is the contract. This file is what the Tek Design System team reviews first.
 
 **Also surface the additions audit inside the artifact itself:** in the dev/Tweaks panel (alongside the alt switcher), include a visible "Proposed additions" list — every new component and token from `cd-additions.md`, one line each with its ✓/⚠ flag. A reviewer opens the prototype and sees at a glance exactly what the design is asking the system to absorb, without digging through source.
 
-## §6 Verification checklist — run before declaring done
+## §6 Verification checklist — the Self-QA pass (§4) runs every line of this
 
 - [ ] Checkpoint 0 and Checkpoint 1 both happened and were approved before full build
 - [ ] Every screen/setting from the source inventory is represented in every alt; nothing invented, dropped, or renamed (regrouping/reordering is fine)
