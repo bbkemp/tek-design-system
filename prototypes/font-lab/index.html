@@ -4,62 +4,93 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mono Type Tester</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0b; --panel: #17181a; --line: #2a2c30; --ink: #f2f3f5;
-    --muted: #8a9099; --accent: #ff8a00; --green: #38d15a; --red: #ff3b30;
-    --yellow: #ffd23a; --cyan: #4cd3e6; --base: 16px;
+    /* Tek DS tokens (dark) — mirrors @bbkemp/tokens; inlined for this standalone GitHub Pages page */
+    --tek-colors-neutral-900:#181818; --tek-colors-neutral-800:#1e1e1e; --tek-colors-neutral-700:#252525;
+    --tek-colors-neutral-600:#333333; --tek-colors-neutral-500:#454545; --tek-colors-neutral-400:#7b7b7b;
+    --tek-colors-neutral-300:#979797; --tek-colors-neutral-100:#cccccc;
+    --tek-colors-neutral-white:#ffffff; --tek-colors-neutral-black:#000000;
+    --tek-colors-brand-tek-blue:#33baea;
+    --tek-colors-ui-success-green:#42b54c; --tek-colors-ui-error-red:#e74848; --tek-colors-ui-warning-yellow:#e0b732;
+    --tek-fonts-family-geist:'Geist'; --tek-fonts-family-archivo:'Archivo'; --tek-fonts-family-mono:'Geist Mono';
+    --tek-borders-radius-03:5px; --tek-borders-radius-04:7px; --tek-borders-radius-05:11px;
+
+    /* tester palette + type, all sourced from DS tokens above */
+    --page: var(--tek-colors-neutral-900);
+    --panel: var(--tek-colors-neutral-800);
+    --field: var(--tek-colors-neutral-700);
+    --sunken: var(--tek-colors-neutral-black);
+    --bg: var(--tek-colors-neutral-black);
+    --line: var(--tek-colors-neutral-600);
+    --ink: var(--tek-colors-neutral-white);
+    --muted: var(--tek-colors-neutral-400);
+    --accent: var(--tek-colors-brand-tek-blue);
+    --green: var(--tek-colors-ui-success-green);
+    --red: var(--tek-colors-ui-error-red);
+    --yellow: var(--tek-colors-ui-warning-yellow);
+    --cyan: var(--tek-colors-brand-tek-blue);
+    --r-sm: var(--tek-borders-radius-03);
+    --r-md: var(--tek-borders-radius-04);
+    --r-lg: var(--tek-borders-radius-05);
+    --sans: var(--tek-fonts-family-geist), ui-sans-serif, system-ui, sans-serif;
+    --head: var(--tek-fonts-family-archivo), var(--tek-fonts-family-geist), sans-serif;
+    --base: 16px;
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0; background: #101114; color: var(--ink);
-    font-family: ui-sans-serif, system-ui, sans-serif; font-size: 13px;
+    margin: 0; background: var(--page); color: var(--ink);
+    font-family: var(--sans); font-size: 13px;
+    padding-right: 304px; /* layout: matches rail width */
   }
   header {
-    position: sticky; top: 0; z-index: 5; background: #141518;
+    position: sticky; top: 0; z-index: 5; background: var(--panel);
     border-bottom: 1px solid var(--line); padding: 12px 16px;
   }
-  h1 { font-size: 15px; margin: 0; font-weight: 600; letter-spacing: .01em; }
+  h1 { font-family: var(--head); font-size: 15px; margin: 0; font-weight: 600; letter-spacing: .01em; }
   .controls { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: flex-end; margin-top: 12px; }
   .ctl { display: flex; flex-direction: column; gap: 3px; }
   .ctl label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
   .ctl output { color: var(--ink); font-variant-numeric: tabular-nums; }
-  input[type=range] { width: 168px; }
+  input[type=range] { width: 168px; accent-color: var(--accent); }
   select, input[type=text] {
-    background: #202226; color: var(--ink); border: 1px solid var(--line);
-    border-radius: 6px; padding: 5px 8px; font: inherit;
+    background: var(--field); color: var(--ink); border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 5px 8px; font: inherit;
   }
   button {
-    background: #202226; color: var(--ink); border: 1px solid var(--line);
-    border-radius: 6px; padding: 5px 9px; font: inherit; cursor: pointer;
+    background: var(--field); color: var(--ink); border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 5px 9px; font: inherit; cursor: pointer;
   }
-  button:hover { border-color: #4a4d52; }
-  button.on { background: var(--accent); color: #101114; border-color: var(--accent); }
+  button:hover { border-color: var(--tek-colors-neutral-500); }
+  button.on { background: var(--accent); color: var(--tek-colors-neutral-black); border-color: var(--accent); }
   .seg { display: inline-flex; }
   .seg button { border-radius: 0; border-right: 0; }
-  .seg button:first-child { border-radius: 6px 0 0 6px; }
-  .seg button:last-child { border-radius: 0 6px 6px 0; border-right: 1px solid var(--line); }
+  .seg button:first-child { border-radius: var(--r-md) 0 0 var(--r-md); }
+  .seg button:last-child { border-radius: 0 var(--r-md) var(--r-md) 0; border-right: 1px solid var(--line); }
   .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
   .featstr {
     font-family: ui-monospace, monospace; font-size: 12px; color: var(--cyan);
-    background: #0e0f11; border: 1px solid var(--line); border-radius: 6px;
+    background: var(--sunken); border: 1px solid var(--line); border-radius: var(--r-md);
     padding: 6px 8px; min-width: 240px;
   }
   .status { color: var(--muted); font-size: 11px; }
   .status.ok { color: var(--green); }  .status.err { color: var(--red); }
   main { padding: 20px 16px 80px; }
   .stage {
-    background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+    background: var(--bg); border: 1px solid var(--line); border-radius: var(--r-lg);
     padding: 24px; max-width: 1100px; margin: 0 auto;
     font-family: var(--test-font, ui-monospace, monospace);
     font-feature-settings: var(--feat, normal);
     letter-spacing: var(--ls, 0);
     font-variant-numeric: tabular-nums;
   }
-  .stage.light { background: #f4f5f6; color: #101114; }
+  .stage.light { background: var(--tek-colors-neutral-white); color: var(--tek-colors-neutral-black); }
   .tier { border-top: 1px dashed var(--line); padding: 16px 0; }
   .tier:first-child { border-top: 0; padding-top: 0; }
-  .tlabel { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 10px;
+  .tlabel { font-family: var(--sans); font-size: 10px;
     color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
   .disamb { font-size: calc(var(--base) * 2.3); line-height: 1.5; word-spacing: .3em; }
   .disamb .hl { color: var(--yellow); }
@@ -71,21 +102,20 @@
   .ramp div { line-height: 1.35; }
   #cmpRows > div { padding: 10px 0; border-top: 1px dashed var(--line); }
 
-  body { padding-right: 304px; }
   aside.rail {
     position: fixed; top: 0; right: 0; width: 304px; height: 100vh; overflow: auto;
-    background: #141518; border-left: 1px solid var(--line); z-index: 20;
+    background: var(--panel); border-left: 1px solid var(--line); z-index: 20;
     padding: 14px 16px 48px; font-size: 12px;
   }
-  aside.rail h2 { font-size: 13px; margin: 0 0 2px; }
+  aside.rail h2 { font-family: var(--head); font-size: 13px; margin: 0 0 2px; }
   aside.rail .hint { color: var(--muted); font-size: 11px; margin-bottom: 14px; line-height: 1.4; }
   aside.rail .grp { margin-bottom: 14px; }
   aside.rail label.ck { display: flex; align-items: center; gap: 7px; padding: 3px 0; cursor: pointer; color: var(--ink); }
   aside.rail label.ck input { accent-color: var(--accent); margin: 0; }
-  aside.rail .ssgrp { max-height: 170px; overflow: auto; border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+  aside.rail .ssgrp { max-height: 170px; overflow: auto; border: 1px solid var(--line); border-radius: var(--r-md); padding: 4px 8px; }
   aside.rail textarea {
-    width: 100%; background: #0e0f11; color: var(--ink); border: 1px solid var(--line);
-    border-radius: 6px; padding: 8px; font-family: ui-monospace, monospace; font-size: 11px; line-height: 1.5; resize: vertical;
+    width: 100%; background: var(--sunken); color: var(--ink); border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 8px; font-family: ui-monospace, monospace; font-size: 11px; line-height: 1.5; resize: vertical;
   }
   aside.rail #klOut { color: var(--cyan); }
   aside.rail .btns { display: flex; gap: 6px; margin-top: 6px; }
