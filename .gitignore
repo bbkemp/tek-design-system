@@ -2,7 +2,6 @@
 .vscode/settings.json
 node_modules/
 # dist/ is committed by CI so `git pull` gives you ready-to-use built files
-package-lock.json
 .claude/*
 !.claude/skills/
 !.claude/settings.json

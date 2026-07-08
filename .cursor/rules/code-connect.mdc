@@ -37,7 +37,7 @@ All from the Figma MCP server:
 | Field | Value |
 |---|---|
 | `label` | Always `"Web Components"` for `tek-*` components — never `"React"` (the repo's hard constraint #1 forbids React) |
-| `componentName` | The TypeScript class name (e.g. `TekButton`) or, for page-level mappings, the HTML filename (e.g. `signin.html`) |
+| `componentName` | The TypeScript class name (e.g. `TekButton`) or, for page-level mappings, the HTML file path (e.g. `prototypes/sign-in/index.html`) |
 | `source` | Path relative to repo root (e.g. `packages/ui/src/button/button.ts`) |
 
 ## Process — single mapping

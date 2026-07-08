@@ -19,7 +19,7 @@
      EVERY token resolves to its CSS fallback value. There's no visible error in the
      console — just a broken page that looks "almost right." Could we add an onerror
      handler or a build-check script that warns devs? I wasted 20 minutes on this. -->
-<link rel="stylesheet" href="./packages/tokens/dist/tek.complete.css">
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
 
 <!--
   @bbkemp/ui — Web Components
@@ -28,7 +28,7 @@
 -->
 <!-- WHY: signin.html uses ?v=3 cache-busting on this script, signup.html does not.
      Which is correct? If we need cache-busting, shouldn't it be automated or consistent? -->
-<script type="module" src="./packages/ui/dist/tek-ui.js"></script>
+<script type="module" src="../../packages/ui/dist/tek-ui.js"></script>
 
 <!-- WHY: signin.html imports AutoAnimate but signup.html does not.
      Is AutoAnimate required for these pages or optional? The README says it's for
@@ -282,7 +282,7 @@ tek-modal { flex-shrink: 0; }
 
         <div class="signin-row">
           <span>Already have an account?</span>
-          <tek-text-link href="signin.html">Sign in</tek-text-link>
+          <tek-text-link href="index.html">Sign in</tek-text-link>
         </div>
 
       </div>

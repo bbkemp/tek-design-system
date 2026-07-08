@@ -2,6 +2,11 @@
 
 All notable changes to the Tek Design System are documented here.
 
+> **Maintained through v1.0.10 (2026-04-08), then frozen.** Later history lives in
+> Conventional Commit messages and merged PRs. Per-package changelogs arrive with the
+> planned Changesets migration (see `docs/tek-system-core.md` Part 4). This file is kept
+> because the v1.0.10 fix rationales below aren't recorded anywhere else.
+
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 Versioning follows [Semantic Versioning](https://semver.org/).
 

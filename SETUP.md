@@ -71,6 +71,8 @@ import '@bbkemp/ui';  // registers all tek-* custom elements
 document.documentElement.setAttribute('data-theme', 'light'); // or 'dark'
 ```
 
+Full import options and component usage live in [README.md → Using tokens](./README.md#using-tokens) and [Using Web Components](./README.md#using-web-components).
+
 ---
 
 ## Step 4 — Verify GitHub Actions publishing is enabled
@@ -148,10 +150,10 @@ npm run build --workspace=packages/ui
 # Or Python:
 python3 -m http.server 3000
 
-# 3. Open in browser
-# http://localhost:5500/signin.html        (Live Server)
-# http://localhost:5500/signup.html
-# http://localhost:5500/component-library.html
+# 3. Open in browser (Live Server, port 5500)
+# http://localhost:5500/prototypes/sign-in/index.html
+# http://localhost:5500/prototypes/sign-in/signup.html
+# http://localhost:5500/prototypes/component-library/index.html
 ```
 
 ---
@@ -172,10 +174,10 @@ tek-design-system/
 │   └── publish-ui.yml      triggers on ui/src/** changes
 ├── figma-token-push/   Token Push plugin source
 ├── qt/                 Qt/QSS translation layer (not required for web)
-├── img/                Static assets (logos, background video)
-├── component-library.html
-├── signin.html
-└── signup.html
+├── wpf/                WPF/XAML translation layer (not required for web)
+└── prototypes/
+    ├── sign-in/            sign in + create account reference pages (img/, page-layout.css)
+    └── component-library/  live component reference
 ```
 
 ---
@@ -184,22 +186,4 @@ tek-design-system/
 
 **DS-v2:** https://www.figma.com/design/3wbYstse9TYKlPtCPpZH5X/DS-v2
 
-| Component | Node ID |
-|---|---|
-| Checkbox | 730:16982 |
-| Radio | 780:10148 |
-| Toggle | 780:10026 |
-| SelectorLabel | 780:9896 |
-| Selector | 7002:378 |
-| Input | 7003:495 |
-| CharacterCount | 7011:143 |
-| TextLink | 7011:150 |
-| Button | 202:2605 |
-| Modal | 7003:2158 |
-| Footer | 7003:2168 |
-| Sign In — Mobile (dark) | 7134:600 |
-| Sign In — Tablet (dark) | 7135:638 |
-| Sign In — Desktop (dark) | 7134:598 |
-| Sign In — Mobile (light) | 7148:1177 |
-| Sign In — Tablet (light) | 7148:1185 |
-| Sign In — Desktop (light) | 7148:1193 |
+The full node-to-source map lives in [README.md → Figma source](./README.md#figma-source) — one canonical copy, kept current there.

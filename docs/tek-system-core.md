@@ -256,7 +256,7 @@ Published from CI only on tag push, via GitHub Packages.
 ### Tooling
 
 - **Token Push Figma plugin** (v5, ES5). Local-only Figma plugin. Commits four token files atomically with a concurrency group on the publish workflow. Handles emoji-prefixed collection names. Designer pushes from inside Figma; CI handles the rest.
-- **Reference HTML pages** at the repo root: `signin.html`, `signup.html`, `component-library.html`. Pixel-perfect integration tests against the real built packages. Dark and light modes.
+- **Reference HTML pages** under `prototypes/`: `sign-in/index.html`, `sign-in/signup.html`, `component-library/index.html`. Pixel-perfect integration tests against the real built packages. Dark and light modes.
 - **Versioning:** patch auto via CI on every publish. Minor and major manual.
 
 ### What's shipped
@@ -858,7 +858,7 @@ The other systems should look for their equivalent. PRDs could have a "Push PRD"
 
 ### Reference pages as integration tests
 
-`signin.html`, `signup.html`, and `component-library.html` import directly from `packages/*/dist/`. They use the real built packages. Break a component, the page breaks. Not unit tests; integration tests with real user contexts.
+The sign-in pages (`prototypes/sign-in/`) import directly from `packages/*/dist/` (`prototypes/component-library/index.html` still uses inline definitions — conversion is an open item). They use the real built packages. Break a component, the page breaks. Not unit tests; integration tests with real user contexts.
 
 The other systems need the same: a small, real, end-to-end demonstration that exercises the production artifact. PRDs render through the docs site. The corpus answers a question with citations. Analytics produces a dashboard. ADRs are linked from a generated component file.
 
