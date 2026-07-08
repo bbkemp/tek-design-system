@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iosevka glyph tester — GDM9061 reskin</title>
+<style>
+  :root {
+    --bg: #0a0a0b; --panel: #17181a; --line: #2a2c30; --ink: #f2f3f5;
+    --muted: #8a9099; --accent: #ff8a00; --green: #38d15a; --red: #ff3b30;
+    --yellow: #ffd23a; --cyan: #4cd3e6; --base: 16px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #101114; color: var(--ink);
+    font-family: ui-sans-serif, system-ui, sans-serif; font-size: 13px;
+  }
+  header {
+    position: sticky; top: 0; z-index: 5; background: #141518;
+    border-bottom: 1px solid var(--line); padding: 12px 16px;
+  }
+  h1 { font-size: 14px; margin: 0 0 2px; font-weight: 600; }
+  .sub { color: var(--muted); font-size: 12px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: flex-end; margin-top: 12px; }
+  .ctl { display: flex; flex-direction: column; gap: 3px; }
+  .ctl label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .ctl output { color: var(--ink); font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 150px; }
+  select, input[type=text], input[type=number] {
+    background: #202226; color: var(--ink); border: 1px solid var(--line);
+    border-radius: 6px; padding: 5px 8px; font: inherit;
+  }
+  button {
+    background: #202226; color: var(--ink); border: 1px solid var(--line);
+    border-radius: 6px; padding: 5px 9px; font: inherit; cursor: pointer;
+  }
+  button:hover { border-color: #4a4d52; }
+  button.on { background: var(--accent); color: #101114; border-color: var(--accent); }
+  .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .featstr {
+    font-family: ui-monospace, monospace; font-size: 12px; color: var(--cyan);
+    background: #0e0f11; border: 1px solid var(--line); border-radius: 6px;
+    padding: 6px 8px; min-width: 260px;
+  }
+  main { padding: 20px 16px 80px; }
+  .stage {
+    background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+    padding: 24px; max-width: 1100px; margin: 0 auto;
+    font-family: var(--test-font, ui-monospace, "SF Mono", Menlo, monospace);
+    font-feature-settings: var(--feat, normal);
+    font-weight: var(--wt, 400);
+    letter-spacing: var(--ls, 0);
+    font-variant-numeric: tabular-nums;
+  }
+  .stage.light { background: #f4f5f6; color: #101114; }
+  .tier { border-top: 1px dashed var(--line); padding: 16px 0; }
+  .tier:first-child { border-top: 0; padding-top: 0; }
+  .tlabel { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 10px;
+    color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  .disamb { font-size: calc(var(--base) * 2.3); line-height: 1.5; word-spacing: .3em; }
+  .disamb .hl { color: var(--yellow); }
+  .readout { font-size: calc(var(--base) * 3.6); line-height: 1.15; }
+  .readout .unit { font-size: calc(var(--base) * 1.4); color: var(--muted); }
+  .readout .red { color: var(--red); }
+  .cfg { font-size: calc(var(--base) * 1.15); line-height: 1.9; }
+  .cfg .k { color: var(--muted); }
+  .small { font-size: calc(var(--base) * 0.85); line-height: 1.7; color: inherit; }
+  .ramp div { line-height: 1.35; }
+  .status { color: var(--muted); font-size: 12px; margin-left: 4px; }
+  .status.ok { color: var(--green); }
+  .status.err { color: var(--red); }
+  code { font-family: ui-monospace, monospace; color: var(--cyan); }
+  .drop { outline: 2px dashed var(--accent); outline-offset: -6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Iosevka glyph tester — GDM9061 reskin</h1>
+  <div class="sub">Build your Iosevka, then load a <code>.woff2</code> below (or drag it anywhere on the page). Flip <code>cv10</code> / <code>ss##</code> / raw features live and eyeball the real readouts. Nothing leaves your machine.</div>
+
+  <div class="controls">
+    <div class="ctl">
+      <label>Load font file(s) — .woff2 / .ttf</label>
+      <div class="row">
+        <input type="file" id="file" accept=".woff2,.woff,.ttf,.otf" multiple>
+        <span id="status" class="status">no font loaded — showing system mono</span>
+      </div>
+    </div>
+    <div class="ctl">
+      <label>Active face</label>
+      <select id="face"><option value="">(system mono)</option></select>
+    </div>
+    <div class="ctl">
+      <label>Size <output id="szv">16px</output></label>
+      <input type="range" id="sz" min="8" max="40" value="16">
+    </div>
+    <div class="ctl">
+      <label>Weight <output id="wtv">400</output></label>
+      <input type="range" id="wt" min="100" max="900" step="10" value="400">
+    </div>
+    <div class="ctl">
+      <label>Letter-spacing <output id="lsv">0.00em</output></label>
+      <input type="range" id="ls" min="-0.03" max="0.15" step="0.005" value="0">
+    </div>
+    <div class="ctl">
+      <label>Background</label>
+      <button id="bg">Dark (instrument)</button>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="ctl">
+      <label>Zero shape (cv10)</label>
+      <div class="row" id="zeros">
+        <button data-feat="" class="on">default</button>
+        <button data-feat='"cv10" 1'>unslashed (1)</button>
+        <button data-feat='"cv10" 2'>slashed (2)</button>
+        <button data-feat='"cv10" 6'>dotted (6)</button>
+        <button data-feat='"cv10" 7'>long-dotted (7)</button>
+        <button data-feat='"zero" 1'>std slash</button>
+      </div>
+    </div>
+    <div class="ctl">
+      <label>Stylistic set</label>
+      <select id="ss">
+        <option value="">(none)</option>
+      </select>
+    </div>
+    <div class="ctl" style="flex:1; min-width:280px;">
+      <label>Extra raw font-feature-settings (advanced — appended)</label>
+      <input type="text" id="raw" placeholder='e.g. "cv26" 6, "cv07" 3'>
+    </div>
+    <div class="ctl">
+      <label>Applied</label>
+      <div class="featstr" id="featstr">normal</div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="stage" id="stage">
+    <div class="tier">
+      <div class="tlabel">Disambiguation — the pairs that bite on a dense LCD</div>
+      <div class="disamb"><span class="hl">0</span> O o Q D &nbsp; <span class="hl">1</span> l I i | j &nbsp; 8 B 6 &nbsp; 5 S &nbsp; 2 Z z &nbsp; 9 g q &nbsp; a &amp; @ &nbsp; ( ) [ ] { } &lt; &gt; &nbsp; . , : ; &nbsp; - ~ =</div>
+    </div>
+
+    <div class="tier">
+      <div class="tlabel">Zeros in context (the whole reason we're here)</div>
+      <div class="disamb">00 O0 0O &nbsp; 100.000 &nbsp; 03000 &nbsp; 0022246AFECA &nbsp; 000.1826 &nbsp; +00.0000</div>
+    </div>
+
+    <div class="tier">
+      <div class="tlabel">Primary readouts (GDM9061 verbatim)</div>
+      <div class="readout">+01.53176 <span class="unit">VDC</span></div>
+      <div class="readout">&minus;0.63992 <span class="unit">VDC</span></div>
+      <div class="readout">+000.1826 <span class="unit">mVDC</span></div>
+      <div class="readout">003.5129 <span class="unit">&Omega;</span></div>
+      <div class="readout">6.46772 <span class="unit">Hz</span></div>
+      <div class="readout"><span class="red">OverLoad</span> <span class="unit">M&Omega;</span></div>
+      <div class="readout">OPEN</div>
+    </div>
+
+    <div class="tier">
+      <div class="tlabel">Config &amp; network values (config-lan / interface / system)</div>
+      <div class="cfg">
+        <span class="k">IP</span> 192.168.000.002 &nbsp;&nbsp; <span class="k">Subnet</span> 255.255.255.000<br>
+        <span class="k">Gateway</span> 192.168.000.000 &nbsp;&nbsp; <span class="k">DNS1</span> 172.016.001.252<br>
+        <span class="k">MAC</span> 0022246AFECA &nbsp;&nbsp; <span class="k">BaudRate</span> 115200 &nbsp;&nbsp; <span class="k">TCP Port</span> 03001<br>
+        <span class="k">Date</span> 2026 / 05 / 26 &nbsp;&nbsp; <span class="k">Time</span> 22:00:39 &nbsp;&nbsp; <span class="k">Count</span> 219
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tlabel">Softkeys &amp; stats (measurement / statistics)</div>
+      <div class="cfg">Range · Speed · Auto Zero · Input R · DCV Ratio · 2ND &nbsp;|&nbsp; A-Zero · Trig:Auto · Filter · 5/s<br>
+        MIN &minus;109.2136k · MAX +094.7200k · AVG +0299.232 · STD +09.02417k · COU 787</div>
+    </div>
+
+    <div class="tier">
+      <div class="tlabel">Size ramp — same string at instrument sizes</div>
+      <div class="ramp">
+        <div style="font-size:10px">10px  +000.1826 mVDC  192.168.000.002  0O8B6 1lI</div>
+        <div style="font-size:12px">12px  +000.1826 mVDC  192.168.000.002  0O8B6 1lI</div>
+        <div style="font-size:13px">13px  +000.1826 mVDC  192.168.000.002  0O8B6 1lI</div>
+        <div style="font-size:16px">16px  +000.1826 mVDC  192.168.000.002  0O8B6 1lI</div>
+        <div style="font-size:24px">24px  +000.1826 mVDC  0O8B6 1lI</div>
+        <div style="font-size:40px">40px  +01.53176  0O8B6</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage" id="compareCard" style="margin-top:20px;">
+    <div class="tlabel">Compare loaded faces — width &amp; slope · <span id="cmpCount"></span></div>
+    <input type="text" id="cmpFilter" placeholder="filter faces… e.g. Oblique · Condensed · Bold · Regular" style="width:100%;max-width:520px;margin:0 0 6px;">
+    <div id="compareRows"></div>
+  </div>
+</main>
+
+<script>
+  const $ = s => document.querySelector(s);
+  const stage = $('#stage');
+  const faces = {};
+  let zeroFeat = '';
+
+  // populate ss01..ss20
+  const ssSel = $('#ss');
+  for (let i = 1; i <= 20; i++) {
+    const t = 'ss' + String(i).padStart(2, '0');
+    const o = document.createElement('option'); o.value = t; o.textContent = t; ssSel.appendChild(o);
+  }
+
+  function composeFeatures() {
+    const parts = [];
+    if (zeroFeat) parts.push(zeroFeat);
+    if (ssSel.value) parts.push('"' + ssSel.value + '" 1');
+    const raw = $('#raw').value.trim();
+    if (raw) parts.push(raw);
+    const str = parts.join(', ');
+    stage.style.setProperty('--feat', str || 'normal');
+    $('#featstr').textContent = str || 'normal';
+    renderCompare();
+  }
+
+  function renderCompare() {
+    const rows = $('#compareRows');
+    rows.innerHTML = '';
+    const all = Object.keys(faces);
+    const q = ($('#cmpFilter').value || '').trim().toLowerCase();
+    const names = q ? all.filter(n => n.toLowerCase().includes(q)) : all;
+    $('#cmpCount').textContent = all.length ? (names.length + ' of ' + all.length + ' faces') : '';
+    if (!all.length) { rows.innerHTML = '<div class="tlabel">No faces loaded yet — drop .woff2 files or fix ./fonts/manifest.json.</div>'; return; }
+    if (!names.length) { rows.innerHTML = '<div class="tlabel">No faces match “' + q + '”.</div>'; return; }
+    const feat = $('#featstr').textContent;
+    const base = +$('#sz').value, wt = $('#wt').value, ls = $('#ls').value;
+    names.forEach(n => {
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'padding:10px 0;border-top:1px dashed var(--line);';
+      const lab = document.createElement('div');
+      lab.className = 'tlabel'; lab.textContent = n; lab.style.marginBottom = '4px';
+      const s = document.createElement('div');
+      s.textContent = '+01.53176  003.5129 Ω  192.168.000.002  0O8B6 1lI';
+      s.style.fontFamily = '"' + n + '", ui-monospace, monospace';
+      s.style.fontFeatureSettings = (feat === 'normal') ? 'normal' : feat;
+      s.style.fontWeight = wt;
+      s.style.letterSpacing = ls + 'em';
+      s.style.fontSize = (base * 1.7) + 'px';
+      s.style.fontVariantNumeric = 'tabular-nums';
+      s.style.whiteSpace = 'nowrap'; s.style.overflow = 'auto';
+      wrap.appendChild(lab); wrap.appendChild(s); rows.appendChild(wrap);
+    });
+  }
+
+  // zero preset buttons
+  $('#zeros').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    [...$('#zeros').children].forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    zeroFeat = b.dataset.feat || '';
+    composeFeatures();
+  });
+  ssSel.onchange = composeFeatures;
+  $('#raw').oninput = composeFeatures;
+  $('#cmpFilter').oninput = renderCompare;
+
+  // sliders
+  $('#sz').oninput = e => { stage.style.setProperty('--base', e.target.value + 'px'); $('#szv').textContent = e.target.value + 'px'; renderCompare(); };
+  $('#wt').oninput = e => { stage.style.setProperty('--wt', e.target.value); $('#wtv').textContent = e.target.value; renderCompare(); };
+  $('#ls').oninput = e => { stage.style.setProperty('--ls', e.target.value + 'em'); $('#lsv').textContent = (+e.target.value).toFixed(3) + 'em'; renderCompare(); };
+
+  // background toggle
+  $('#bg').onclick = () => {
+    stage.classList.toggle('light');
+    $('#compareCard').classList.toggle('light');
+    $('#bg').textContent = stage.classList.contains('light') ? 'Light' : 'Dark (instrument)';
+  };
+
+  // font loading via FontFace API
+  async function loadFiles(fileList) {
+    const status = $('#status');
+    for (const file of fileList) {
+      try {
+        const buf = await file.arrayBuffer();
+        const name = file.name.replace(/\.(woff2?|ttf|otf)$/i, '');
+        const ff = new FontFace(name, buf);
+        await ff.load();
+        document.fonts.add(ff);
+        faces[name] = ff;
+        if (![...$('#face').options].some(o => o.value === name)) {
+          const o = document.createElement('option'); o.value = name; o.textContent = name; $('#face').appendChild(o);
+        }
+        $('#face').value = name;
+        setFace(name);
+        status.textContent = 'loaded: ' + Object.keys(faces).join(', ');
+        status.className = 'status ok';
+      } catch (err) {
+        status.textContent = 'failed to load ' + file.name + ' — ' + err.message;
+        status.className = 'status err';
+      }
+    }
+    renderCompare();
+  }
+  function setFace(name) {
+    stage.style.setProperty('--test-font', name ? ('"' + name + '", ui-monospace, monospace') : 'ui-monospace, monospace');
+  }
+  $('#file').onchange = e => loadFiles(e.target.files);
+  $('#face').onchange = e => setFace(e.target.value);
+
+  // drag & drop anywhere
+  window.addEventListener('dragover', e => { e.preventDefault(); document.body.classList.add('drop'); });
+  window.addEventListener('dragleave', e => { if (e.target === document.documentElement) document.body.classList.remove('drop'); });
+  window.addEventListener('drop', e => {
+    e.preventDefault(); document.body.classList.remove('drop');
+    const files = [...e.dataTransfer.files].filter(f => /\.(woff2?|ttf|otf)$/i.test(f.name));
+    if (files.length) loadFiles(files);
+  });
+
+  composeFeatures();
+
+  // auto-load every font dropped into ./fonts (manifest.json written by the "seal the deal" step)
+  (async function autoload() {
+    try {
+      const res = await fetch('./fonts/manifest.json', { cache: 'no-store' });
+      if (!res.ok) return;
+      const list = await res.json();
+      const st = $('#status');
+      for (const fn of list) {
+        try {
+          const r = await fetch('./fonts/' + fn); if (!r.ok) continue;
+          const buf = await r.arrayBuffer();
+          const name = fn.replace(/\.(woff2?|ttf|otf)$/i, '');
+          const ff = new FontFace(name, buf); await ff.load(); document.fonts.add(ff); faces[name] = ff;
+          if (![...$('#face').options].some(o => o.value === name)) {
+            const o = document.createElement('option'); o.value = name; o.textContent = name; $('#face').appendChild(o);
+          }
+        } catch (e) { /* skip a bad file, keep going */ }
+      }
+      const names = Object.keys(faces);
+      if (names.length) {
+        $('#face').value = names[0]; setFace(names[0]);
+        st.textContent = 'auto-loaded ' + names.length + ' faces from ./fonts';
+        st.className = 'status ok';
+      }
+      renderCompare();
+    } catch (e) { /* no manifest yet — manual drag/picker still works */ }
+  })();
+</script>
+</body>
+</html>
