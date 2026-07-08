@@ -71,5 +71,5 @@ Not touched on purpose: `CHANGELOG.md` body entries and `corpus/sources/tek-desi
 ## Part 3 — Remaining open items
 
 - **Convert `prototypes/component-library/index.html` to real `packages/*/dist/` imports** so it becomes a true integration test. Its own follow-up PR — the inline definitions must be verified against current `packages/ui/src/` before swapping.
-- **AGENTS.md format** — revisit only if an AGENTS.md-consuming tool joins the workflow.
+- ~~**AGENTS.md format**~~ — **Resolved 2026-07-08**: `export-skills.mjs` now emits AGENTS.md as a ~11 KB index (per-skill description + path to canonical SKILL.md) with the full concatenation preserved at `docs/agents-full.md` for consumers that can't follow file paths.
 - **Binary growth** — revisit LFS/external hosting if clone size becomes a problem.
