@@ -33,7 +33,7 @@ echo "==> checking tools"
 command -v node >/dev/null || { echo "FATAL: need Node >= 18 (brew install node)"; exit 1; }
 command -v git  >/dev/null || { echo "FATAL: need git"; exit 1; }
 command -v ttfautohint >/dev/null || { echo "FATAL: need ttfautohint (brew install ttfautohint)"; exit 1; }
-python3 -c "import fontTools, brotli" 2>/dev/null || { echo "==> installing fonttools+brotli"; pip3 install --quiet --user fonttools brotli; }
+python3 -c "import fontTools, brotli" 2>/dev/null || { echo "==> installing fonttools+brotli"; python3 -m pip install --quiet --user fonttools brotli; }
 
 echo "==> cloning Iosevka into $WORK (shallow)"
 mkdir -p "$WORK"
@@ -98,18 +98,21 @@ menu = "oblique"
 css = "oblique"
 TOML
 
-echo "==> npm ci"
-npm ci
+[ -d node_modules ] || { echo "==> npm ci"; npm ci; }
 
-echo "==> building webfonts (126 faces — this is the slow part, grab a coffee)"
-npm run build -- "webfont::$FAMILY_KEY"
+if ls dist/"$FAMILY_KEY"/WOFF2/*.woff2 >/dev/null 2>&1 && [ -z "${REBUILD:-}" ]; then
+  echo "==> reusing existing webfont build (set REBUILD=1 to force a full rebuild)"
+else
+  echo "==> building webfonts (126 faces — this is the slow part, grab a coffee)"
+  npm run build -- "webfont::$FAMILY_KEY"
+fi
 
 echo "==> subsetting woff2 -> $WOFF2_OUT"
 mkdir -p "$WOFF2_OUT"
 rm -f "$WOFF2_OUT"/*.woff2
 n=0
 for f in dist/"$FAMILY_KEY"/WOFF2/*.woff2; do
-  pyftsubset "$f" \
+  python3 -m fontTools.subset "$f" \
     --flavor=woff2 \
     --layout-features='*' \
     --name-IDs='*' \
