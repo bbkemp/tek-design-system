@@ -11,9 +11,8 @@ A monorepo containing:
 - `packages/tokens/` — design tokens (Style Dictionary v3, custom DTCG parser, `size/px` transform). Currently published as `@bbkemp/tokens` on GitHub Packages.
 - `packages/ui/` — Web Components consumed by Tek products. Currently published as `@bbkemp/ui`.
 - `figma-token-push/` — local-only Figma plugin that commits four token files atomically, with a concurrency group on the publish workflow to prevent SHA races.
-- `qt/` — Qt translation layer (C++ header, QSS stylesheets, QML singleton). The reason the system is Web Components and not React.
 - `prototypes/` — Claude Design prototype drops (bench, my-tek, tek-express, font-lab) plus the HTML reference pages: `sign-in/` (sign in + create account — real built-package imports, pixel-perfect integration tests) and `component-library/` (live component reference; currently inline definitions).
-- `wpf/` — WPF translation layer (token ResourceDictionaries as XAML, Telerik overrides). Planned counterpart to `qt/`.
+- `docs/wpf/` — WPF translation layer: pipeline-generated token ResourceDictionaries (XAML), Telerik overrides, reference page. The desktop runtime consuming the tokens — and the reason the system is Web Components and not React.
 - `uxr/` — UXR / voice-of-customer library (provisional, markdown-only in git).
 - `scripts/` — repo automation (`export-skills.mjs` skill mirrors, `figma-mcp-watch.mjs`).
 
@@ -25,7 +24,7 @@ Primary maintainer: Bryan Kemp.
 
 These are the rules that hold the system together. Violating any of them produces drift the system explicitly exists to prevent.
 
-1. **Web Components only. Never React.** The consuming runtime is Qt. Non-negotiable.
+1. **Web Components only. Never React.** The consuming runtime is native desktop (WPF/XAML). Non-negotiable.
 2. **Tokens always.** Never hardcode hex, px, font sizes, font families, or radii. Use `var(--tek-*)` with a fallback: `var(--tek-spacing-s05, 8px)`. Token-adherence rules are spelled out in [CONTRIBUTING.md → Updating Web Components](./CONTRIBUTING.md#updating-web-components).
 3. **Figma is the source of truth.** Before writing or changing component code, look at the relevant Figma node. Do not assume existing code is correct. The Figma file is **DS-v2**, key `3wbYstse9TYKlPtCPpZH5X`. README has the node-to-source map.
 4. **TypeScript strict mode.** No `any` escape hatches.

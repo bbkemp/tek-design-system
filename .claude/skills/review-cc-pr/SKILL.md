@@ -43,7 +43,7 @@ Run through this checklist before approving any CC-authored change. Items are or
 
 ## 7. Cross-platform
 
-- [ ] If a token used by Qt was changed, `qt/TekTokens.h` and the corresponding `.qss` files were regenerated.
+- [ ] If tokens changed, `docs/wpf/*.xaml` was regenerated (`npm run build:tokens` does it automatically) and committed.
 
 ## 8. Build & preview
 
@@ -61,6 +61,6 @@ Run through this checklist before approving any CC-authored change. Items are or
 ## What CC tends to under-do
 
 - Mode parity (item 2).
-- Cross-package ripple updates (item 7 — Qt, preview HTML).
+- Cross-package ripple updates (item 7 — WPF XAML, preview HTML).
 - Updating the README component/attribute table when a public attribute is added.
 - CHANGELOG entries on `patch`-level changes.

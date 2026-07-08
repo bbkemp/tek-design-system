@@ -45,7 +45,7 @@ Optional:
 A **module** is a coherent unit of public contract. Heuristics, in priority order:
 
 1. **Monorepo packages.** If the root has a `workspaces:` declaration (npm/yarn/pnpm) or a `members:` (Cargo), each workspace is a module. Module id: `packages-<name>` for npm packages under `packages/`, or the workspace path kebab-ed.
-2. **Top-level directories with their own role.** Directories at the root that contain executable code or generated artifacts (e.g. `qt/`, `figma-token-push/`, `scripts/`) are modules.
+2. **Top-level directories with their own role.** Directories at the root that contain executable code or generated artifacts (e.g. `docs/wpf/`, `figma-token-push/`, `scripts/`) are modules.
 3. **Published components inside a component library package.** If a monorepo package is a component library (one component per directory, each with a public custom-element or class), each component is a sub-module. Module id: `<package-id>-<component-name>` (e.g. `packages-ui-button`).
 4. **Single-package repos.** A repo with one `package.json` at the root is one module unless it has a clear `src/<area>/` structure exposing distinct public surfaces.
 
@@ -65,7 +65,7 @@ Kebab. Avoid filesystem nesting; flatten with hyphens so all chunks sit at the s
 | `packages/tokens` | `packages-tokens` |
 | `packages/ui` | `packages-ui` |
 | `packages/ui/src/button` (component sub-module) | `packages-ui-button` |
-| `qt/` | `qt` |
+| `docs/wpf/` | `wpf` |
 | `figma-token-push/` | `figma-token-push` |
 | `scripts/` | `scripts` |
 
@@ -80,7 +80,7 @@ For each module, read **only what's needed to describe the public contract**. Sp
 - For component libraries: read the top-of-file comment block in each component (props, slots, events, tokens consumed). Skip the rendering logic.
 - For build / CLI tools: read the script's argument parsing or the README's "Options" section.
 - For Web Components: extract custom element tag name, observed attributes, slots, events, CSS custom properties consumed.
-- For language layers other than TS/JS (e.g. Qt C++ headers, QSS stylesheets): extract symbol declarations from headers, selector lists from stylesheets, public function signatures.
+- For language layers other than TS/JS (e.g. XAML ResourceDictionaries, C++ headers): extract symbol declarations from headers, selector lists from stylesheets, public function signatures.
 
 Do **not** read implementation bodies. Resist the urge to summarize what the code does internally — that's the source's job.
 

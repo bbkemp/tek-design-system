@@ -237,11 +237,11 @@ Tektronix's token-driven, framework-agnostic design system. v1.0.0 shipped. Live
 
 ### Stack
 
-- **Web Components** as the consumer-facing primitive. Required because the consuming runtime is Qt — React isn't an option.
-- **Style Dictionary v3** with a custom DTCG parser and `size/px` transform. Builds tokens into CSS, JS, and Qt outputs from one source.
-- **Token pipeline:** Figma Variables → W3C DTCG JSON → Style Dictionary → CSS / JS / Qt outputs.
+- **Web Components** as the consumer-facing primitive. Required because the consuming runtime is native desktop (WPF/XAML) — React isn't an option.
+- **Style Dictionary v3** with a custom DTCG parser and `size/px` transform. Builds tokens into CSS, JS, and WPF/XAML outputs from one source.
+- **Token pipeline:** Figma Variables → W3C DTCG JSON → Style Dictionary → CSS / JS / XAML outputs.
 - **Light/dark mode** via `prefers-color-scheme` and a `data-theme` attribute override.
-- **Qt translation layer:** C++ header (`TekTokens.h`), QSS stylesheets, QML singleton, reference HTML page. Same tokens, native to Qt.
+- **WPF translation layer** (`docs/wpf/`): XAML ResourceDictionaries (primitives, dark, light), Telerik overrides, reference HTML page. Same tokens, native to desktop. (The earlier Qt layer was retired 2026-07-08; it lives in git history.)
 - **GitHub Actions** for CI/CD with concurrency groups (resolved a publish-time SHA race).
 
 ### Packages
@@ -263,7 +263,7 @@ Published from CI only on tag push, via GitHub Packages.
 
 - v1.0.0 token system (primitives + semantic, dark + light modes).
 - v1.0.0 Web Component library (`tek-button`, `tek-input`, `tek-label`, `tek-character-count`, `tek-checkbox`, `tek-radio`, `tek-toggle`, `tek-selector`, `tek-modal`, `tek-footer`, `tek-text-link`).
-- Qt translation layer outputs.
+- WPF translation layer outputs.
 - Sign-in and sign-up reference pages.
 - Token Push plugin v5.
 
@@ -479,7 +479,7 @@ This is the same model as tokens and components, one layer up: architectural rul
 
 **1. Architectural Decision Records (ADRs)**
 
-Short markdown docs in `/docs/adr/` capturing why a pattern exists. "We use Web Components instead of React because Qt." "We use Style Dictionary v3 with a custom DTCG parser." "We use a concurrency group in the publish workflow because of the SHA race condition." Each ADR is dated, numbered, and has a status (proposed/accepted/superseded). When Claude Code is asked to add a new component, it reads the ADRs and produces code that respects prior decisions instead of relitigating them.
+Short markdown docs in `/docs/adr/` capturing why a pattern exists. "We use Web Components instead of React because the consuming runtime is native desktop." "We use Style Dictionary v3 with a custom DTCG parser." "We use a concurrency group in the publish workflow because of the SHA race condition." Each ADR is dated, numbered, and has a status (proposed/accepted/superseded). When Claude Code is asked to add a new component, it reads the ADRs and produces code that respects prior decisions instead of relitigating them.
 
 **2. Code structure and conventions (CONTRIBUTING.md)**
 
@@ -650,7 +650,7 @@ A SaaS CMS (Contentful, Sanity, Strapi) sells three things bundled: a content st
 
 The part that is genuinely expensive is the **content model** — and a SaaS CMS makes you build it *twice and maintain the seam by hand forever.* Once in the vendor's UI, once again in every frontend that maps `entry.fields.heroTitle` onto a real component. That hand-maintained seam is the whole tax: the slog, the cost, and the drift. It is the exact career-long frustration this system exists to end — paying, repeatedly, to re-state something you already know.
 
-Tek collapses it. The design system already holds a **formally defined, 1:1, token-backed component contract** spanning Figma → code → Qt (→ WPF, → React, → HTML). So a content entry's schema is not *authored* — it is *derived* from the component's prop contract. The schema for a Hero entry **is** the Hero component's contract. One source. Generated, never maintained.
+Tek collapses it. The design system already holds a **formally defined, 1:1, token-backed component contract** spanning Figma → code → WPF (→ React, → HTML). So a content entry's schema is not *authored* — it is *derived* from the component's prop contract. The schema for a Hero entry **is** the Hero component's contract. One source. Generated, never maintained.
 
 That is the metamorphosis, and it's worth being precise about what changes. "Files replace the database" is the easy, boring 20% — anyone can do that. The real event: **the content model stops being a thing you own at all.** It becomes a shadow the design system casts. Most teams structurally cannot do this — they have no token→Figma→code closure for a schema to fall out of. Tek built exactly that closure first, on purpose. The SaaS CMS dies here specifically because here, and almost nowhere else, there is something ready to absorb its only real job.
 
@@ -687,7 +687,7 @@ The store is the easy part. These three are load-bearing and easy to underestima
 
 2. **Don't reinvent the editor.** "Management is not one place" is the right philosophy, but a PM hand-editing raw JSON+MD in GitHub is a friction wall that kills adoption. **Keystatic and TinaCMS already are "git-backed files + a schema-driven editing UI."** The Claude-spins-the-UI idea is better long-term — but evaluate those first, so going custom is a choice, not a discovery. This is the source-friction lesson from the Token Push plugin: automate the source-to-substrate hop or the system doesn't get used.
 
-3. **Rendering is the payoff — name it.** One content file renders to HTML *and* Qt *and* WPF *only* because the component libraries are 1:1. That's what a SaaS CMS can't give: it hands you JSON and you still hand-map per framework. The DEV system's component-structure conventions are what make that mapping mechanical instead of manual. This bullet isn't a peer of the others — it's half the engine.
+3. **Rendering is the payoff — name it.** One content file renders to HTML *and* WPF *only* because the component libraries are 1:1. That's what a SaaS CMS can't give: it hands you JSON and you still hand-map per framework. The DEV system's component-structure conventions are what make that mapping mechanical instead of manual. This bullet isn't a peer of the others — it's half the engine.
 
 ### Same DNA as the corpus
 
@@ -820,7 +820,7 @@ The design system isn't just an existence proof that the model works. The specif
 
 ### One source, deterministic outputs
 
-Figma Variables → W3C DTCG JSON → Style Dictionary → CSS / JS / Qt. One input, multiple outputs, no manual translation between them. When the source changes, every output updates the same way. Translation drift — the failure mode of "we have a design system in Figma and another one in code" — can't happen.
+Figma Variables → W3C DTCG JSON → Style Dictionary → CSS / JS / XAML. One input, multiple outputs, no manual translation between them. When the source changes, every output updates the same way. Translation drift — the failure mode of "we have a design system in Figma and another one in code" — can't happen.
 
 The other systems should pick a single source per domain. The corpus has one source per document type. PRDs have one source (the markdown file). Analytics has one taxonomy. Compose; don't duplicate.
 

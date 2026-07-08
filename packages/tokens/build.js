@@ -295,12 +295,12 @@ console.log('✓ tek.complete.css written');
 // ═══════════════════════════════════════════════════════════════════════════
 // WPF / XAML Translation Layer
 // Generates ResourceDictionary files for WPF consumers.
-// Output: wpf/Tek.Tokens.Primitives.xaml, Tek.Tokens.Dark.xaml,
+// Output: docs/wpf/Tek.Tokens.Primitives.xaml, Tek.Tokens.Dark.xaml,
 //         Tek.Tokens.Light.xaml, Tek.Telerik.Overrides.xaml
 // ═══════════════════════════════════════════════════════════════════════════
 
 const path = require('path');
-const wpfDir = path.resolve(__dirname, '../../wpf');
+const wpfDir = path.resolve(__dirname, '../../docs/wpf');
 fs.mkdirSync(wpfDir, { recursive: true });
 
 // ── WPF transforms ──────────────────────────────────────────────────────
