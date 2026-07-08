@@ -17,7 +17,7 @@ The `.claude/skills/<name>/SKILL.md` files are the canonical source of truth for
 | Cline | `.clinerules/<name>.md` | per-rule, plain markdown |
 | Continue | `.continue/rules/<name>.md` | per-rule, name+description frontmatter |
 | GitHub Copilot | `.github/instructions/<name>.instructions.md` | per-rule, `applyTo` frontmatter |
-| Aider / Codex / Amp / Jules / Cody | `AGENTS.md` | single concatenated file |
+| Aider / Codex / Amp / Jules / Cody | `AGENTS.md` | slim index pointing at each SKILL.md; full concatenation at `docs/agents-full.md` for consumers that can't follow paths |
 
 ## How to run
 
