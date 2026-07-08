@@ -18,7 +18,7 @@ tek-design-system/
 │       ├── publish-tokens.yml    auto-publishes tokens on change
 │       └── publish-ui.yml        auto-publishes UI on change
 ├── figma-token-push/         Token Push Figma plugin (local dev, not published)
-├── qt/                       Qt/QSS translation layer (TekTokens.h, .qss files)
+├── docs/wpf/                 WPF/XAML translation layer (pipeline-generated ResourceDictionaries)
 ├── corpus/                      Structured-markdown corpus about Tek products, services, and competitors
 │   ├── sources/              per-subject corpora (screens, walkthroughs, docs, hardware, code, api)
 │   └── _inbox/               drop zone for unsorted assets, routed by /corpus-intake

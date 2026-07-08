@@ -10,7 +10,7 @@ _Add a new design token to the Tek Design System. Use when a designer or dev nee
 
 # Adding a design token
 
-Tokens flow Figma → JSON → CSS/Qt. The canonical source is Figma Variables, but tokens are sometimes added in code first and back-filled to Figma later. Both paths are valid; the back-fill step is mandatory.
+Tokens flow Figma → JSON → CSS/XAML. The canonical source is Figma Variables, but tokens are sometimes added in code first and back-filled to Figma later. Both paths are valid; the back-fill step is mandatory.
 
 ## Decide: primitive or semantic?
 
@@ -43,9 +43,9 @@ npm run build:tokens
 
 Confirm the token appears in `packages/tokens/dist/css/complete.css` under both `:root` (dark) and `[data-theme="light"]`.
 
-### 4. Qt translation
+### 4. WPF translation
 
-If the token is referenced by Qt, regenerate `qt/TekTokens.h` and the relevant `.qss`. Run the `qt-sync` skill or update by hand.
+`npm run build:tokens` regenerates `docs/wpf/*.xaml` automatically — confirm the new token appears there and the XAML files are included in the commit.
 
 ### 5. Back-fill to Figma
 
@@ -63,7 +63,7 @@ Per the README bump table:
 - [ ] DTCG path matches the CSS variable naming convention
 - [ ] Light mode counterpart added (semantic only)
 - [ ] `npm run build:tokens` produces the expected CSS
-- [ ] Qt files regenerated, if applicable
+- [ ] `docs/wpf/*.xaml` regenerated and committed
 - [ ] Back-filled in Figma DS-v2
 - [ ] CHANGELOG entry at the right bump level
 
@@ -166,7 +166,7 @@ By default, audit:
 - `prototypes/**/*.{html,css,ts,tsx,jsx}`
 
 Do **not** audit:
-- `qt/`, `wpf/` (separate translation layers)
+- `docs/wpf/` (separate translation layer)
 - `dist/`, `node_modules/`
 - `figma-token-push/` (plugin internals)
 
@@ -1389,7 +1389,7 @@ Optional:
 A **module** is a coherent unit of public contract. Heuristics, in priority order:
 
 1. **Monorepo packages.** If the root has a `workspaces:` declaration (npm/yarn/pnpm) or a `members:` (Cargo), each workspace is a module. Module id: `packages-<name>` for npm packages under `packages/`, or the workspace path kebab-ed.
-2. **Top-level directories with their own role.** Directories at the root that contain executable code or generated artifacts (e.g. `qt/`, `figma-token-push/`, `scripts/`) are modules.
+2. **Top-level directories with their own role.** Directories at the root that contain executable code or generated artifacts (e.g. `docs/wpf/`, `figma-token-push/`, `scripts/`) are modules.
 3. **Published components inside a component library package.** If a monorepo package is a component library (one component per directory, each with a public custom-element or class), each component is a sub-module. Module id: `<package-id>-<component-name>` (e.g. `packages-ui-button`).
 4. **Single-package repos.** A repo with one `package.json` at the root is one module unless it has a clear `src/<area>/` structure exposing distinct public surfaces.
 
@@ -1409,7 +1409,7 @@ Kebab. Avoid filesystem nesting; flatten with hyphens so all chunks sit at the s
 | `packages/tokens` | `packages-tokens` |
 | `packages/ui` | `packages-ui` |
 | `packages/ui/src/button` (component sub-module) | `packages-ui-button` |
-| `qt/` | `qt` |
+| `docs/wpf/` | `wpf` |
 | `figma-token-push/` | `figma-token-push` |
 | `scripts/` | `scripts` |
 
@@ -1424,7 +1424,7 @@ For each module, read **only what's needed to describe the public contract**. Sp
 - For component libraries: read the top-of-file comment block in each component (props, slots, events, tokens consumed). Skip the rendering logic.
 - For build / CLI tools: read the script's argument parsing or the README's "Options" section.
 - For Web Components: extract custom element tag name, observed attributes, slots, events, CSS custom properties consumed.
-- For language layers other than TS/JS (e.g. Qt C++ headers, QSS stylesheets): extract symbol declarations from headers, selector lists from stylesheets, public function signatures.
+- For language layers other than TS/JS (e.g. XAML ResourceDictionaries, C++ headers): extract symbol declarations from headers, selector lists from stylesheets, public function signatures.
 
 Do **not** read implementation bodies. Resist the urge to summarize what the code does internally — that's the source's job.
 
@@ -2901,7 +2901,7 @@ Run through this checklist before approving any CC-authored change. Items are or
 
 ## 7. Cross-platform
 
-- [ ] If a token used by Qt was changed, `qt/TekTokens.h` and the corresponding `.qss` files were regenerated.
+- [ ] If tokens changed, `docs/wpf/*.xaml` was regenerated (`npm run build:tokens` does it automatically) and committed.
 
 ## 8. Build & preview
 
@@ -2919,7 +2919,7 @@ Run through this checklist before approving any CC-authored change. Items are or
 ## What CC tends to under-do
 
 - Mode parity (item 2).
-- Cross-package ripple updates (item 7 — Qt, preview HTML).
+- Cross-package ripple updates (item 7 — WPF XAML, preview HTML).
 - Updating the README component/attribute table when a public attribute is added.
 - CHANGELOG entries on `patch`-level changes.
 

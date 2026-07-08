@@ -59,6 +59,15 @@ Not touched on purpose: `CHANGELOG.md` body entries and `corpus/sources/tek-desi
 
 8. **package-lock.json gitignored** — *Decision: commit it.* Done. **Resolved.**
 
+### Wave 3 — Qt retirement + WPF relocation (follow-up PR, same day)
+
+| Item | Action taken |
+|---|---|
+| `qt/` | **Deleted** (TekTokens.h, QSS files, qt-reference.html — preserved in git history). The org's desktop direction is WPF; Qt was a one-time generated drop with no pipeline writing to it. |
+| `wpf/` | **Moved to `docs/wpf/`** with the pipeline repointed: `packages/tokens/build.js` wpfDir and `publish-tokens.yml`'s `git add -f` path both updated. Verified by running `npm run build:tokens` — XAML regenerated into `docs/wpf/` byte-identical. |
+| "Why Web Components" rationale | Updated everywhere from "the consuming runtime is Qt" to "the consuming runtime is native desktop (WPF/XAML)": CLAUDE.md hard constraint #1, README, SETUP.md, tek-system-core.md (8 spots), and the `add-token` / `code-design-qa` / `document-repo` / `review-cc-pr` skills + regenerated mirrors. |
+| `document-repo` language enum | `qt-cpp | qss | qml` values kept — historical corpus snapshots (e.g. `2026-05-12-85a6857`) use them. |
+
 ## Part 3 — Remaining open items
 
 - **Convert `prototypes/component-library/index.html` to real `packages/*/dist/` imports** so it becomes a true integration test. Its own follow-up PR — the inline definitions must be verified against current `packages/ui/src/` before swapping.

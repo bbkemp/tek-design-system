@@ -7,7 +7,7 @@ alwaysApply: false
 
 # Adding a design token
 
-Tokens flow Figma → JSON → CSS/Qt. The canonical source is Figma Variables, but tokens are sometimes added in code first and back-filled to Figma later. Both paths are valid; the back-fill step is mandatory.
+Tokens flow Figma → JSON → CSS/XAML. The canonical source is Figma Variables, but tokens are sometimes added in code first and back-filled to Figma later. Both paths are valid; the back-fill step is mandatory.
 
 ## Decide: primitive or semantic?
 
@@ -40,9 +40,9 @@ npm run build:tokens
 
 Confirm the token appears in `packages/tokens/dist/css/complete.css` under both `:root` (dark) and `[data-theme="light"]`.
 
-### 4. Qt translation
+### 4. WPF translation
 
-If the token is referenced by Qt, regenerate `qt/TekTokens.h` and the relevant `.qss`. Run the `qt-sync` skill or update by hand.
+`npm run build:tokens` regenerates `docs/wpf/*.xaml` automatically — confirm the new token appears there and the XAML files are included in the commit.
 
 ### 5. Back-fill to Figma
 
@@ -60,6 +60,6 @@ Per the README bump table:
 - [ ] DTCG path matches the CSS variable naming convention
 - [ ] Light mode counterpart added (semantic only)
 - [ ] `npm run build:tokens` produces the expected CSS
-- [ ] Qt files regenerated, if applicable
+- [ ] `docs/wpf/*.xaml` regenerated and committed
 - [ ] Back-filled in Figma DS-v2
 - [ ] CHANGELOG entry at the right bump level

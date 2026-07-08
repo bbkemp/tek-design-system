@@ -16,7 +16,7 @@ By default, audit:
 - `prototypes/**/*.{html,css,ts,tsx,jsx}`
 
 Do **not** audit:
-- `qt/`, `wpf/` (separate translation layers)
+- `docs/wpf/` (separate translation layer)
 - `dist/`, `node_modules/`
 - `figma-token-push/` (plugin internals)
 

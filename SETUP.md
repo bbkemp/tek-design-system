@@ -173,8 +173,7 @@ tek-design-system/
 │   ├── publish-tokens.yml  triggers on tokens/src/** changes
 │   └── publish-ui.yml      triggers on ui/src/** changes
 ├── figma-token-push/   Token Push plugin source
-├── qt/                 Qt/QSS translation layer (not required for web)
-├── wpf/                WPF/XAML translation layer (not required for web)
+├── docs/wpf/           WPF/XAML translation layer (not required for web)
 └── prototypes/
     ├── sign-in/            sign in + create account reference pages (img/, page-layout.css)
     └── component-library/  live component reference
