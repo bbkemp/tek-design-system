@@ -70,6 +70,25 @@
   .cfg .k { color: var(--muted); }
   .ramp div { line-height: 1.35; }
   #cmpRows > div { padding: 10px 0; border-top: 1px dashed var(--line); }
+
+  body { padding-right: 304px; }
+  aside.rail {
+    position: fixed; top: 0; right: 0; width: 304px; height: 100vh; overflow: auto;
+    background: #141518; border-left: 1px solid var(--line); z-index: 20;
+    padding: 14px 16px 48px; font-size: 12px;
+  }
+  aside.rail h2 { font-size: 13px; margin: 0 0 2px; }
+  aside.rail .hint { color: var(--muted); font-size: 11px; margin-bottom: 14px; line-height: 1.4; }
+  aside.rail .grp { margin-bottom: 14px; }
+  aside.rail label.ck { display: flex; align-items: center; gap: 7px; padding: 3px 0; cursor: pointer; color: var(--ink); }
+  aside.rail label.ck input { accent-color: var(--accent); margin: 0; }
+  aside.rail .ssgrp { max-height: 170px; overflow: auto; border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+  aside.rail textarea {
+    width: 100%; background: #0e0f11; color: var(--ink); border: 1px solid var(--line);
+    border-radius: 6px; padding: 8px; font-family: ui-monospace, monospace; font-size: 11px; line-height: 1.5; resize: vertical;
+  }
+  aside.rail #klOut { color: var(--cyan); }
+  aside.rail .btns { display: flex; gap: 6px; margin-top: 6px; }
 </style>
 </head>
 <body>
@@ -191,6 +210,24 @@
   </div>
 </main>
 
+<aside class="rail" id="rail">
+  <h2>Keep list</h2>
+  <div class="hint">Tick what you want to ship — this is just your order ticket, it doesn't change the preview.</div>
+  <div id="klBody"></div>
+  <div class="grp">
+    <div class="tlabel">Notes</div>
+    <textarea id="klNotes" rows="2" placeholder="e.g. dotted zero, ss14 base, condensed for readouts"></textarea>
+  </div>
+  <div class="grp">
+    <div class="tlabel">Order summary (hand this to Claude)</div>
+    <textarea id="klOut" rows="10" readonly></textarea>
+    <div class="btns">
+      <button id="klCopy">Copy</button>
+      <button id="klClear">Clear</button>
+    </div>
+  </div>
+</aside>
+
 <script>
   const $ = s => document.querySelector(s);
 
@@ -302,6 +339,78 @@
   // init
   composeFeatures();
   applyFace();
+
+  // ---- Keep list (independent of the live preview) ----
+  (function keeplist() {
+    const kb = $('#klBody'), out = $('#klOut'), notes = $('#klNotes');
+    const KEY = 'fontlab-keeplist-v1';
+
+    function section(title) {
+      const d = document.createElement('div'); d.className = 'grp';
+      const t = document.createElement('div'); t.className = 'tlabel'; t.textContent = title;
+      d.appendChild(t); return d;
+    }
+    function ck(group, value, text) {
+      const l = document.createElement('label'); l.className = 'ck';
+      const i = document.createElement('input'); i.type = 'checkbox'; i.dataset.group = group; i.value = value;
+      const s = document.createElement('span'); s.textContent = text;
+      l.appendChild(i); l.appendChild(s); i.addEventListener('change', update);
+      return l;
+    }
+
+    const wG = section('Widths');
+    WIDTHS.forEach(w => wG.appendChild(ck('Widths', w.label + ' (' + w.num + ')', w.label + ' (' + w.num + ')')));
+    kb.appendChild(wG);
+
+    const gG = section('Weights');
+    WEIGHTS.forEach(w => gG.appendChild(ck('Weights', w.key + ' (' + w.num + ')', w.key + ' (' + w.num + ')')));
+    kb.appendChild(gG);
+
+    const slG = section('Slopes');
+    ['Upright', 'Oblique'].forEach(s => slG.appendChild(ck('Slopes', s, s)));
+    kb.appendChild(slG);
+
+    const ssWrap = section('Stylistic set');
+    const ssBox = document.createElement('div'); ssBox.className = 'ssgrp';
+    Object.keys(SS).forEach(tag => ssBox.appendChild(ck('Stylistic set', tag + ' — ' + SS[tag], tag + ' — ' + SS[tag])));
+    ssWrap.appendChild(ssBox); kb.appendChild(ssWrap);
+
+    const zG = section('Zero shape');
+    [...document.querySelectorAll('#zeros button')].forEach(b => {
+      const val = b.textContent + (b.dataset.feat ? ' (' + b.dataset.feat + ')' : '');
+      zG.appendChild(ck('Zero', val, val));
+    });
+    kb.appendChild(zG);
+
+    function update() {
+      const m = {};
+      kb.querySelectorAll('input:checked').forEach(i => { (m[i.dataset.group] = m[i.dataset.group] || []).push(i.value); });
+      const lines = ['IOSEVKA MONO — keep list'];
+      ['Widths', 'Weights', 'Slopes', 'Stylistic set', 'Zero'].forEach(g => { if (m[g] && m[g].length) lines.push(g + ': ' + m[g].join(', ')); });
+      if (notes.value.trim()) lines.push('Notes: ' + notes.value.trim());
+      out.value = lines.length > 1 ? lines.join('\n') : '(nothing selected yet)';
+      localStorage.setItem(KEY, JSON.stringify({
+        checked: [...kb.querySelectorAll('input:checked')].map(i => i.dataset.group + '|' + i.value),
+        notes: notes.value
+      }));
+    }
+    function restore() {
+      try {
+        const s = JSON.parse(localStorage.getItem(KEY) || '{}');
+        (s.checked || []).forEach(k => {
+          const idx = k.indexOf('|'); const g = k.slice(0, idx), v = k.slice(idx + 1);
+          const el = [...kb.querySelectorAll('input')].find(i => i.dataset.group === g && i.value === v);
+          if (el) el.checked = true;
+        });
+        if (s.notes) notes.value = s.notes;
+      } catch (e) {}
+      update();
+    }
+    notes.addEventListener('input', update);
+    $('#klCopy').onclick = () => { navigator.clipboard.writeText(out.value); $('#klCopy').textContent = 'Copied'; setTimeout(() => $('#klCopy').textContent = 'Copy', 1200); };
+    $('#klClear').onclick = () => { kb.querySelectorAll('input:checked').forEach(i => i.checked = false); notes.value = ''; update(); };
+    restore();
+  })();
 </script>
 </body>
 </html>
