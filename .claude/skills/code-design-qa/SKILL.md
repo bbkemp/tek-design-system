@@ -11,7 +11,7 @@ Audits the web targets of this repo for places that bypass `@bbkemp/tokens` and 
 
 By default, audit:
 - `packages/ui/src/**/*.{ts,css}`
-- Repo-root `*.html` (`signin.html`, `signup.html`, `component-library.html`, etc.)
+- Reference pages: `prototypes/sign-in/*.html`, `prototypes/component-library/index.html`
 - `prototypes/**/*.{html,css,ts,tsx,jsx}`
 
 Do **not** audit:

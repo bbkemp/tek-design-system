@@ -48,7 +48,7 @@ Run through this checklist before approving any CC-authored change. Items are or
 ## 8. Build & preview
 
 - [ ] `npm run build` passes.
-- [ ] `signin.html`, `signup.html`, and `component-library.html` still render correctly in both modes.
+- [ ] `prototypes/sign-in/index.html`, `prototypes/sign-in/signup.html`, and `prototypes/component-library/index.html` still render correctly in both modes.
 - [ ] `dist/` was not committed.
 
 ## What CC tends to over-engineer

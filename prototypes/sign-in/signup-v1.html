@@ -15,27 +15,31 @@
   In production: @import '@bbkemp/tokens/css/complete'
   Requires: npm run build --workspace=packages/tokens
 -->
-<link rel="stylesheet" href="./packages/tokens/dist/tek.complete.css">
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
 
 <!--
   @bbkemp/ui — Web Components
   In production: import '@bbkemp/ui'
   Requires: npm run build --workspace=packages/ui
 -->
-<script type="module" src="./packages/ui/dist/tek-ui.js"></script>
+<script type="module" src="../../packages/ui/dist/tek-ui.js?v=3"></script>
 
 <!-- AutoAnimate — ambient DOM transitions (light DOM only) -->
 <script src="https://cdn.jsdelivr.net/npm/@formkit/auto-animate@latest/index.umd.js"></script>
 
 <style>
 /* ============================================================
-   PAGE-LEVEL STYLES — MOBILE-FIRST (Dev 5)
-   Base styles target 320px. Everything enhances upward.
+   PAGE-LEVEL STYLES ONLY
    All design tokens come from tek.complete.css above.
+   This block is layout and page-specific only — no hardcoded
+   colors, fonts, or sizes that belong in the token system.
 ============================================================ */
 
-/* Safe global reset — does NOT bleed into shadow DOM :host */
+/* box-sizing safe to apply globally — does NOT affect shadow DOM :host padding */
 *, *::before, *::after { box-sizing: border-box; }
+/* margin/padding reset scoped to standard HTML elements only.
+   Custom elements (tek-*) define their own padding via :host in shadow DOM.
+   Putting padding:0 in * kills those styles because light DOM always beats :host. */
 body, h1, h2, h3, h4, h5, h6, p, ul, ol, li,
 blockquote, figure, figcaption, dl, dt, dd, pre { margin: 0; padding: 0; }
 
@@ -46,7 +50,6 @@ html, body {
 
 body {
   min-height: 100vh;
-  min-height: 100dvh; /* dynamic viewport height — respects mobile browser chrome */
   display: flex;
   flex-direction: column;
   font-family: var(--tek-fonts-family-geist);
@@ -73,20 +76,17 @@ body {
 .page-wrap {
   position: relative; z-index: 1;
   display: flex; flex-direction: column;
-  min-height: 100vh;
-  min-height: 100dvh;
-  width: 100%;
+  min-height: 100vh; width: 100%;
   container-type: inline-size;
   container-name: page;
 }
 
-/* ---- MOBILE BASE (320px) ---- */
 .wrap {
   flex: 1;
   display: flex; flex-direction: column;
   align-items: center;
-  gap: var(--tek-spacing-s13, 32px); /* tighter gap on small screens */
-  padding: var(--tek-spacing-s13, 32px) var(--tek-spacing-s09, 16px) var(--tek-spacing-s09, 16px);
+  gap: var(--tek-spacing-s17, 48px);
+  padding: var(--tek-spacing-s17, 48px) var(--tek-spacing-s13, 32px) var(--tek-spacing-s11, 24px);
   width: 100%; min-height: 1px;
 }
 
@@ -96,79 +96,33 @@ body {
   width: 100%; flex-shrink: 0;
 }
 
-.logo-lockup { display: flex; align-items: center; gap: var(--tek-spacing-s04, 6px); }
+.logo-lockup { display: flex; align-items: center; gap: var(--tek-spacing-s06, 10px); }
+.logo-icon   { height: 60px; width: auto; display: block; }
+.logo-type   { height: 26px; width: auto; display: block; }
 
-/* Mobile logo — 40px icon, scaled down for small screens */
-.logo-icon { height: 40px; width: auto; display: block; }
-.logo-type { height: 17px; width: auto; display: block; }
+tek-modal { flex-shrink: 0; }
 
-tek-modal { flex-shrink: 0; width: 100%; }
-
-/* Field wrapper: label stacked above input */
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--tek-spacing-s04, 6px);
-  width: 100%;
+.form-field-label {
+  font-family: var(--tek-fonts-family-geist);
+  font-size: var(--tek-fonts-text-size-md);
+  line-height: var(--tek-fonts-text-line-height-md);
+  letter-spacing: 0.01em;
+  font-weight: 400;
+  color: var(--tek-color-input-label-default);
 }
 
-/* Name fields — STACKED on mobile by default */
-.name-row {
-  display: flex;
-  flex-direction: column;
-  gap: var(--tek-spacing-s09, 16px);
-  width: 100%;
-}
-
-.name-row .field { width: 100%; }
-
-/* Sign-in link row */
-.signin-row {
+.form-label-row {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: var(--tek-spacing-s02, 4px);
-  font-family: var(--tek-fonts-family-geist);
-  font-size: var(--tek-fonts-text-size-xs);
-  line-height: var(--tek-fonts-text-line-height-xs);
-  color: var(--tek-color-input-helper-default);
-  min-height: 44px; /* touch target */
+  justify-content: space-between;
+  width: 100%;
 }
 
-/* Touch target — all interactive elements get at least 44px hit area */
-tek-selector,
-tek-checkbox,
-tek-toggle {
-  min-height: 44px;
-}
-
-/* ---- SMALL PHONE ENHANCEMENT (384px — Figma xs breakpoint) ---- */
-@container page (min-width: 384px) {
-  .wrap {
-    padding: var(--tek-spacing-s15, 40px) var(--tek-spacing-s11, 24px) var(--tek-spacing-s09, 16px);
-  }
-  .logo-icon { height: 52px; }
-  .logo-type { height: 22px; }
-}
-
-/* ---- TABLET (640px — Figma sm breakpoint) ---- */
 @container page (min-width: 640px) {
-  .wrap {
-    gap: var(--tek-spacing-s17, 48px);
-    padding: var(--tek-spacing-s17, 48px) var(--tek-spacing-s19, 64px) var(--tek-spacing-s11, 24px);
-  }
+  .wrap { padding: var(--tek-spacing-s17, 48px) var(--tek-spacing-s19, 64px) var(--tek-spacing-s11, 24px); }
   .logo-icon { height: 90px; }
   .logo-type { height: 38px; }
-
-  /* Name fields go side-by-side at tablet+ */
-  .name-row {
-    flex-direction: row;
-    gap: var(--tek-spacing-s05, 8px);
-  }
-  .name-row .field { flex: 1 1 0; min-width: 0; }
 }
-
-/* ---- DESKTOP (1280px — Figma xl breakpoint) ---- */
 @container page (min-width: 1280px) {
   .wrap {
     position: relative;
@@ -182,8 +136,6 @@ tek-toggle {
     left: var(--tek-spacing-s19, 64px);
     align-items: flex-start;
   }
-  .logo-icon { height: 128px; }
-  .logo-type { height: 52px; }
   tek-modal {
     --tek-modal-heading-size: var(--tek-fonts-heading-size-lg, 32px);
     --tek-modal-heading-line-height: var(--tek-fonts-heading-line-height-lg, 40px);
@@ -216,60 +168,50 @@ tek-toggle {
       <div id="signup-input-blocks" slot="input-blocks"
            style="display:flex;flex-direction:column;gap:var(--tek-spacing-s09,16px);width:100%;">
 
-        <!-- Name fields: stacked on mobile, side-by-side at 640px+ -->
-        <div class="name-row">
-          <div class="field">
-            <tek-label>First name</tek-label>
-            <tek-input placeholder="First" type="text"
-                       inputmode="text" autocomplete="given-name"
-                       style="display:block;width:100%"></tek-input>
+        <div style="display:flex;flex-direction:row;gap:var(--tek-spacing-s09,16px);width:100%;">
+          <div style="display:flex;flex-direction:column;gap:var(--tek-spacing-s04,6px);flex:1;">
+            <div class="form-field-label">First Name</div>
+            <tek-input placeholder="First name" type="text"
+                       autocomplete="given-name" style="display:block;width:100%"></tek-input>
           </div>
-          <div class="field">
-            <tek-label>Last name</tek-label>
-            <tek-input placeholder="Last" type="text"
-                       inputmode="text" autocomplete="family-name"
-                       style="display:block;width:100%"></tek-input>
+          <div style="display:flex;flex-direction:column;gap:var(--tek-spacing-s04,6px);flex:1;">
+            <div class="form-field-label">Last Name</div>
+            <tek-input placeholder="Last name" type="text"
+                       autocomplete="family-name" style="display:block;width:100%"></tek-input>
           </div>
         </div>
 
-        <div class="field">
-          <tek-label>Email</tek-label>
-          <tek-input placeholder="you@example.com" type="email"
-                     inputmode="email" autocomplete="email"
-                     style="display:block;width:100%"></tek-input>
+        <div style="display:flex;flex-direction:column;gap:var(--tek-spacing-s04,6px);">
+          <div class="form-field-label">Email</div>
+          <tek-input placeholder="Enter email" type="email"
+                     autocomplete="email" style="display:block;width:100%"></tek-input>
         </div>
 
-        <div class="field">
-          <tek-label helper-text="Must be at least 8 characters">Password</tek-label>
-          <tek-input placeholder="Create a password" type="password"
-                     autocomplete="new-password"
-                     style="display:block;width:100%"></tek-input>
+        <div style="display:flex;flex-direction:column;gap:var(--tek-spacing-s04,6px);">
+          <div class="form-label-row">
+            <span class="form-field-label">Password</span>
+          </div>
+          <tek-input placeholder="Enter password" type="password"
+                     autocomplete="new-password" style="display:block;width:100%"></tek-input>
+          <span class="form-field-label" style="font-size:var(--tek-fonts-text-size-sm);line-height:var(--tek-fonts-text-line-height-sm);color:var(--tek-color-input-label-default);opacity:0.7;">Must be 8+ characters</span>
         </div>
 
-        <div class="field">
-          <tek-label>Confirm password</tek-label>
+        <div style="display:flex;flex-direction:column;gap:var(--tek-spacing-s04,6px);">
+          <div class="form-field-label">Confirm Password</div>
           <tek-input placeholder="Re-enter password" type="password"
-                     autocomplete="new-password"
-                     style="display:block;width:100%"></tek-input>
+                     autocomplete="new-password" style="display:block;width:100%"></tek-input>
         </div>
 
-        <tek-selector id="terms-selector" type="checkbox"
-          label="I agree to the terms of service" style="width:100%"></tek-selector>
+        <tek-selector id="terms-checkbox" type="checkbox" label="I agree to the Terms of Service and Privacy Policy" style="width:100%"></tek-selector>
 
       </div>
 
       <div id="signup-action-blocks" slot="action-blocks"
-           style="width:100%;display:flex;flex-direction:column;gap:var(--tek-spacing-s07,12px);">
-
-        <tek-button id="create-btn" inactive style="width:100%;display:block">
-          Create Account
-        </tek-button>
-
-        <div class="signin-row">
-          <span>Already have an account?</span>
-          <tek-text-link href="signin.html">Sign in</tek-text-link>
-        </div>
-
+           style="width:100%;display:flex;flex-direction:column;gap:var(--tek-spacing-s06,10px);align-items:center;">
+        <tek-button id="signup-btn" inactive style="width:100%;display:block">Create Account</tek-button>
+        <span style="font-family:var(--tek-fonts-family-geist);font-size:var(--tek-fonts-text-size-md);line-height:var(--tek-fonts-text-line-height-md);color:var(--tek-color-input-label-default);">
+          Already have an account? <tek-text-link href="index.html">Sign in</tek-text-link>
+        </span>
       </div>
 
     </tek-modal>
@@ -293,10 +235,14 @@ document.getElementById('theme-toggle').addEventListener('tek-change', e => {
   document.documentElement.setAttribute('data-theme', e.detail.checked ? 'light' : 'dark');
 });
 
-/* Terms checkbox gates the Create Account button */
-document.getElementById('terms-selector').addEventListener('tek-change', e => {
-  const btn = document.getElementById('create-btn');
-  e.detail.checked ? btn.removeAttribute('inactive') : btn.setAttribute('inactive', '');
+/* Terms checkbox — enable/disable Create Account button */
+document.getElementById('terms-checkbox').addEventListener('tek-change', e => {
+  const btn = document.getElementById('signup-btn');
+  if (e.detail.checked) {
+    btn.removeAttribute('inactive');
+  } else {
+    btn.setAttribute('inactive', '');
+  }
 });
 
 /* AutoAnimate */

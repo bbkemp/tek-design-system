@@ -123,14 +123,14 @@ Adding a new top-level Figma Variables collection beyond `Primitives` and `Seman
    npm run build --workspace=packages/tokens   # if tokens also changed
    npm run build --workspace=packages/ui
    # VS Code Live Server (recommended) or: python3 -m http.server 3000
-   # then open signin.html / signup.html / component-library.html
+   # then open prototypes/sign-in/index.html / prototypes/sign-in/signup.html / prototypes/component-library/index.html
    ```
 3. Open a PR against `main`
 4. Merge — `publish-ui.yml` fires automatically
 
-`signin.html` and `signup.html` import from `packages/*/dist/` directly — if your component
+The sign-in pages (`prototypes/sign-in/`) import from `packages/*/dist/` directly — if your component
 change breaks those pages, you'll see it immediately during local testing.
-`component-library.html` currently uses inline component definitions for demo flexibility.
+`prototypes/component-library/index.html` currently uses inline component definitions for demo flexibility.
 
 **Token changes first:** If a component change also needs new tokens, push tokens first and
 confirm they published before updating the component.
@@ -215,7 +215,7 @@ Code Connect links Figma component instances to their source files so designers 
 | Radio | `packages/ui/src/radio/radio.ts` | Web Components |
 | Selector | `packages/ui/src/selector/selector.ts` | Web Components |
 | SelectorLabel | `packages/ui/src/selector-label/selector-label.ts` | Web Components |
-| Sign In (all viewports) | `signin.html` | Web Components |
+| Sign In (all viewports) | `prototypes/sign-in/index.html` | Web Components |
 | TextLink | `packages/ui/src/text-link/text-link.ts` | Web Components |
 | Toggle | `packages/ui/src/toggle/toggle.ts` | Web Components |
 

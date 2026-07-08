@@ -12,7 +12,10 @@ A monorepo containing:
 - `packages/ui/` — Web Components consumed by Tek products. Currently published as `@bbkemp/ui`.
 - `figma-token-push/` — local-only Figma plugin that commits four token files atomically, with a concurrency group on the publish workflow to prevent SHA races.
 - `qt/` — Qt translation layer (C++ header, QSS stylesheets, QML singleton). The reason the system is Web Components and not React.
-- Root-level HTML reference pages (`signin.html`, `signup.html`, `component-library.html`) — pixel-perfect integration tests against the real built packages.
+- `prototypes/` — Claude Design prototype drops (bench, my-tek, tek-express, font-lab) plus the HTML reference pages: `sign-in/` (sign in + create account — real built-package imports, pixel-perfect integration tests) and `component-library/` (live component reference; currently inline definitions).
+- `wpf/` — WPF translation layer (token ResourceDictionaries as XAML, Telerik overrides). Planned counterpart to `qt/`.
+- `uxr/` — UXR / voice-of-customer library (provisional, markdown-only in git).
+- `scripts/` — repo automation (`export-skills.mjs` skill mirrors, `figma-mcp-watch.mjs`).
 
 For repo structure, the token pipeline diagram, type scale, fonts, install/usage docs, and the full Figma node-to-source map: read [README.md](./README.md). Don't paraphrase what's there — link to it.
 
@@ -72,7 +75,7 @@ npm run build:tokens    # if tokens changed
 npm run build:ui        # if components changed
 ```
 
-Verify in a local server before claiming a fix works. VS Code Live Server (port 5500) is the canonical local-dev URL — open `signin.html`, `signup.html`, or `component-library.html`. These pages import from `packages/*/dist/` directly, so they exercise the real built packages and function as integration tests.
+Verify in a local server before claiming a fix works. VS Code Live Server (port 5500) is the canonical local-dev URL — open `prototypes/sign-in/index.html`, `prototypes/sign-in/signup.html`, or `prototypes/component-library/index.html`. The sign-in pages import from `packages/*/dist/` directly, so they exercise the real built packages and function as integration tests.
 
 **No confidence without proof.** Don't say "fixed" or "working" without demonstrable evidence — screenshot, snapshot, server output, passing test. Asserting something works without checking is the trust-breaker on this project.
 

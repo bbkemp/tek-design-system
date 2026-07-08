@@ -105,7 +105,7 @@ All from the Figma MCP server:
 | Field | Value |
 |---|---|
 | `label` | Always `"Web Components"` for `tek-*` components — never `"React"` (the repo's hard constraint #1 forbids React) |
-| `componentName` | The TypeScript class name (e.g. `TekButton`) or, for page-level mappings, the HTML filename (e.g. `signin.html`) |
+| `componentName` | The TypeScript class name (e.g. `TekButton`) or, for page-level mappings, the HTML file path (e.g. `prototypes/sign-in/index.html`) |
 | `source` | Path relative to repo root (e.g. `packages/ui/src/button/button.ts`) |
 
 ## Process — single mapping
@@ -162,7 +162,7 @@ Audits the web targets of this repo for places that bypass `@bbkemp/tokens` and 
 
 By default, audit:
 - `packages/ui/src/**/*.{ts,css}`
-- Repo-root `*.html` (`signin.html`, `signup.html`, `component-library.html`, etc.)
+- Reference pages: `prototypes/sign-in/*.html`, `prototypes/component-library/index.html`
 - `prototypes/**/*.{html,css,ts,tsx,jsx}`
 
 Do **not** audit:
@@ -2906,7 +2906,7 @@ Run through this checklist before approving any CC-authored change. Items are or
 ## 8. Build & preview
 
 - [ ] `npm run build` passes.
-- [ ] `signin.html`, `signup.html`, and `component-library.html` still render correctly in both modes.
+- [ ] `prototypes/sign-in/index.html`, `prototypes/sign-in/signup.html`, and `prototypes/component-library/index.html` still render correctly in both modes.
 - [ ] `dist/` was not committed.
 
 ## What CC tends to over-engineer

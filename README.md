@@ -27,13 +27,9 @@ tek-design-system/
 │   ├── design-additions/     Claude Design redesign briefs + gap analyses
 │   └── competitive/          Tek-authored competitor comparisons
 ├── .claude/skills/           Repo-scoped Claude Code skills (corpus-intake, document-*, prototype-qa, etc.)
-├── img/                      Static assets for preview pages
-│   ├── IconLogo.svg
-│   ├── TypeLogo.svg
-│   └── bg-mov.mp4
-├── component-library.html    live component reference (fully token-driven)
-├── signin.html               sign in page (responsive, dark/light mode)
-├── signup.html               create account page (responsive, dark/light mode)
+├── prototypes/               Prototype drops + reference pages (bench, my-tek, tek-express, font-lab)
+│   ├── sign-in/              sign in (index.html) + create account pages, with img/ + page-layout.css
+│   └── component-library/    live component reference (fully token-driven)
 ├── CHANGELOG.md
 ├── SETUP.md
 └── CONTRIBUTING.md
@@ -452,12 +448,12 @@ Breakpoints from Figma `Cxx` variables: xs=384px, sm=640px, xl=1280px.
 | Button | 202:2605 | `packages/ui/src/button/button.ts` |
 | Modal | 7003:2158 | `packages/ui/src/modal/modal.ts` |
 | Footer | 7003:2168 | `packages/ui/src/footer/footer.ts` |
-| Sign In — Mobile (dark) | 7134:600 | `signin.html` |
-| Sign In — Tablet (dark) | 7135:638 | `signin.html` |
-| Sign In — Desktop (dark) | 7134:598 | `signin.html` |
-| Sign In — Mobile (light) | 7148:1177 | `signin.html` (inherits from dark master) |
-| Sign In — Tablet (light) | 7148:1185 | `signin.html` (inherits from dark master) |
-| Sign In — Desktop (light) | 7148:1193 | `signin.html` (inherits from dark master) |
+| Sign In — Mobile (dark) | 7134:600 | `prototypes/sign-in/index.html` |
+| Sign In — Tablet (dark) | 7135:638 | `prototypes/sign-in/index.html` |
+| Sign In — Desktop (dark) | 7134:598 | `prototypes/sign-in/index.html` |
+| Sign In — Mobile (light) | 7148:1177 | `prototypes/sign-in/index.html` (inherits from dark master) |
+| Sign In — Tablet (light) | 7148:1185 | `prototypes/sign-in/index.html` (inherits from dark master) |
+| Sign In — Desktop (light) | 7148:1193 | `prototypes/sign-in/index.html` (inherits from dark master) |
 
 Code Connect mappings are managed via the Figma MCP in Claude Code. To update or add mappings, follow the [`code-connect` skill](./.claude/skills/code-connect/SKILL.md).
 
@@ -500,13 +496,13 @@ Then open any preview page via a local server (required for ES module imports):
 
 # Or use Python's built-in server:
 python3 -m http.server 3000
-# open http://localhost:3000/signin.html
-# open http://localhost:3000/signup.html
-# open http://localhost:3000/component-library.html
+# open http://localhost:3000/prototypes/sign-in/index.html
+# open http://localhost:3000/prototypes/sign-in/signup.html
+# open http://localhost:3000/prototypes/component-library/index.html
 ```
 
-`signin.html` and `signup.html` import from `./packages/tokens/dist/` and `./packages/ui/dist/` —
-they consume the real built packages and function as integration tests. `component-library.html`
+The sign-in pages (`prototypes/sign-in/`) import from `packages/tokens/dist/` and `packages/ui/dist/` —
+they consume the real built packages and function as integration tests. `prototypes/component-library/index.html`
 currently uses inline component definitions for demo flexibility.
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) and [CHANGELOG.md](./CHANGELOG.md).
