@@ -52,7 +52,9 @@
     border-bottom: 1px solid var(--line); padding: 12px 16px;
   }
   /* page title = text-header-regular-md (Archivo, 24/32, regular) */
-  h1 { font-family: var(--head); font-weight: 400; font-size: var(--tek-fonts-heading-size-md); line-height: var(--tek-fonts-heading-line-height-md); margin: 0; }
+  .titlerow { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+  h1 { font-family: 'Archivo', var(--tek-fonts-family-archivo), sans-serif; font-weight: 400; font-size: var(--tek-fonts-heading-size-md); line-height: var(--tek-fonts-heading-line-height-md); margin: 0; }
+  .titlerow .status { font-size: 12px; }
   .controls { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: flex-end; margin-top: 12px; }
   .ctl { display: flex; flex-direction: column; gap: 3px; }
   .ctl label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
@@ -78,6 +80,7 @@
     background: var(--sunken); border: 1px solid var(--line); border-radius: var(--r-md);
     padding: 6px 8px; min-width: 240px;
   }
+  .featstr .fv { color: var(--yellow); font-weight: 600; }
   .status { color: var(--muted); font-size: 11px; }
   .status.ok { color: var(--green); }  .status.err { color: var(--red); }
   main { padding: 20px 16px 80px; }
@@ -142,7 +145,10 @@
 </head>
 <body>
 <header>
-  <h1>Mono Type Builder</h1>
+  <div class="titlerow">
+    <h1>Mono Type Builder</h1>
+    <span id="status" class="status">loading…</span>
+  </div>
 
   <div class="controls">
     <div class="ctl">
@@ -173,24 +179,9 @@
       <label>Background</label>
       <button id="bg">Dark</button>
     </div>
-    <div class="ctl">
-      <label>&nbsp;</label>
-      <span id="status" class="status">loading…</span>
-    </div>
   </div>
 
   <div class="controls">
-    <div class="ctl">
-      <label>Zero shape (cv10)</label>
-      <div class="row" id="zeros">
-        <button data-feat="" class="on">default</button>
-        <button data-feat='"cv10" 1'>unslashed</button>
-        <button data-feat='"cv10" 2'>slashed</button>
-        <button data-feat='"cv10" 6'>dotted</button>
-        <button data-feat='"cv10" 7'>long-dotted</button>
-        <button data-feat='"zero" 1'>std slash</button>
-      </div>
-    </div>
     <div class="ctl">
       <label>Stylistic set (default ss14 · JetBrains Mono)</label>
       <select id="ss"><option value="">(plain — no set)</option></select>
@@ -223,8 +214,8 @@
       <div id="cvgrid"></div>
     </div>
     <div class="tier">
-      <div class="tlabel">Zeros in context</div>
-      <div class="disamb">00 O0 0O &nbsp; 100.000 &nbsp; 03000 &nbsp; 0022246AFECA &nbsp; 000.1826 &nbsp; +00.0000</div>
+      <div class="tlabel">Variants in context</div>
+      <div class="disamb">0123456789 &nbsp; 00 O0 0O +00.0000 &nbsp; a g i j k l m n q r t u w y f &nbsp; I G K M Q R &nbsp; $</div>
     </div>
     <div class="tier">
       <div class="tlabel">Mono type scale — proposed fonts.mono.* (10 → 72)</div>
@@ -330,7 +321,7 @@
   });
   $('#ss').value = 'ss14';   // default to the JetBrains base (plain build → it actually toggles)
 
-  let widthIdx = 4, weightIdx = 3, oblique = false, zeroFeat = '';   // Normal, Regular
+  let widthIdx = 4, weightIdx = 3, oblique = false;   // Normal, Regular
   const cvSel = {}, CVCHAR = {};   // grid char-variant overrides { cv36: 3 }, plus cv->char map
   let klUpdate = () => {};
   const stage = $('#stage');
@@ -358,13 +349,14 @@
 
   function composeFeatures() {
     const parts = [];
-    if (zeroFeat) parts.push(zeroFeat);
     Object.keys(cvSel).forEach(t => parts.push('"' + t + '" ' + cvSel[t]));
     if ($('#ss').value) parts.push('"' + $('#ss').value + '" 1');
     const raw = $('#raw').value.trim(); if (raw) parts.push(raw);
     const str = parts.join(', ');
     stage.style.setProperty('--feat', str || 'normal');
-    $('#featstr').textContent = str || 'normal';
+    $('#featstr').innerHTML = str
+      ? str.split(', ').map(p => p.replace(/^("[^"]+")\s+(.+)$/, '$1 <span class="fv">$2</span>')).join(', ')
+      : 'normal';
     renderCompare(); klUpdate();
   }
 
@@ -410,11 +402,6 @@
   $('#slUp').onclick = () => { oblique = false; $('#slUp').classList.add('on'); $('#slOb').classList.remove('on'); applyFace(); };
   $('#slOb').onclick = () => { oblique = true; $('#slOb').classList.add('on'); $('#slUp').classList.remove('on'); applyFace(); };
   $('#bg').onclick = () => { stage.classList.toggle('light'); $('#cmpCard').classList.toggle('light'); $('#bg').textContent = stage.classList.contains('light') ? 'Light' : 'Dark'; };
-  $('#zeros').addEventListener('click', e => {
-    const b = e.target.closest('button'); if (!b) return;
-    [...$('#zeros').children].forEach(x => x.classList.remove('on')); b.classList.add('on');
-    zeroFeat = b.dataset.feat || ''; composeFeatures();
-  });
   $('#ss').onchange = composeFeatures;
   $('#raw').oninput = composeFeatures;
 
@@ -457,20 +444,12 @@
     Object.keys(SS).forEach(tag => ssBox.appendChild(ck('Stylistic set', tag + ' — ' + SS[tag], tag + ' — ' + SS[tag])));
     ssWrap.appendChild(ssBox); kb.appendChild(ssWrap);
 
-    const zG = section('Zero shape');
-    [...document.querySelectorAll('#zeros button')].forEach(b => {
-      const val = b.textContent + (b.dataset.feat ? ' (' + b.dataset.feat + ')' : '');
-      zG.appendChild(ck('Zero', val, val));
-    });
-    kb.appendChild(zG);
-
     function update() {
       const m = {};
       kb.querySelectorAll('input:checked').forEach(i => { (m[i.dataset.group] = m[i.dataset.group] || []).push(i.value); });
       const lines = ['IOSEVKA MONO — keep list'];
-      ['Widths', 'Weights', 'Slopes', 'Stylistic set', 'Zero'].forEach(g => { if (m[g] && m[g].length) lines.push(g + ': ' + m[g].join(', ')); });
+      ['Widths', 'Weights', 'Slopes', 'Stylistic set'].forEach(g => { if (m[g] && m[g].length) lines.push(g + ': ' + m[g].join(', ')); });
       const cvbits = [];
-      if (zeroFeat) cvbits.push('0 [' + zeroFeat + ']');
       Object.keys(cvSel).forEach(t => cvbits.push((CVCHAR[t] || '?') + ' ["' + t + '" ' + cvSel[t] + ']'));
       if (cvbits.length) lines.push('Glyph variants: ' + cvbits.join(', '));
       if (notes.value.trim()) lines.push('Notes: ' + notes.value.trim());
@@ -502,7 +481,7 @@
   // ---- Character-variant grid (replaces the disambiguation strip) ----
   (function cvGrid() {
     const GLYPHS = [
-      {c:'1',cv:'cv01',n:9},{c:'2',cv:'cv02',n:4},{c:'3',cv:'cv03',n:3},{c:'4',cv:'cv04',n:12},{c:'5',cv:'cv05',n:12},{c:'6',cv:'cv06',n:3},{c:'7',cv:'cv07',n:12},{c:'8',cv:'cv08',n:3},{c:'9',cv:'cv09',n:3},
+      {c:'0',cv:'cv10',n:54},{c:'1',cv:'cv01',n:9},{c:'2',cv:'cv02',n:4},{c:'3',cv:'cv03',n:3},{c:'4',cv:'cv04',n:12},{c:'5',cv:'cv05',n:12},{c:'6',cv:'cv06',n:3},{c:'7',cv:'cv07',n:12},{c:'8',cv:'cv08',n:3},{c:'9',cv:'cv09',n:3},
       {c:'a',cv:'cv36',n:33},{c:'g',cv:'cv42',n:16},{c:'i',cv:'cv44',n:14},{c:'j',cv:'cv45',n:10},{c:'l',cv:'cv47',n:14},{c:'q',cv:'cv51',n:33},{c:'r',cv:'cv52',n:28},{c:'t',cv:'cv54',n:30},{c:'y',cv:'cv59',n:18},
       {c:'f',cv:'cv41',n:45},{c:'k',cv:'cv46',n:40},{c:'m',cv:'cv48',n:58},{c:'n',cv:'cv49',n:24},{c:'u',cv:'cv55',n:17},{c:'w',cv:'cv57',n:47},
       {c:'I',cv:'cv19',n:3},{c:'G',cv:'cv17',n:36},{c:'Q',cv:'cv26',n:11},{c:'R',cv:'cv27',n:30},{c:'M',cv:'cv23',n:12},{c:'K',cv:'cv21',n:32},
