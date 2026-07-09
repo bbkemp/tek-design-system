@@ -2,8 +2,9 @@
 # Build "Iosevka Mono" — Tek's custom mono — full matrix, subset for web.
 #
 # Produces the exploration set for the font-lab tester: sans, all 9 weights x
-# all 7 widths x {upright, oblique} = 126 faces, PLAIN base (no inherits) so the
-# ss##/cv## OpenType toggles actually work, ligatures off, spacing normal.
+# all 7 widths x {upright, oblique} x {mono, quasi-proportional} = 252 faces,
+# PLAIN base (no inherits) so the ss##/cv## OpenType toggles actually work,
+# ligatures off. Mono = spacing "normal"; QP = spacing "quasi-proportional".
 #
 # Keeps the 2.4 GB Iosevka clone in a scratch dir (~/.cache) — only the small
 # subset .woff2 land in the repo.
@@ -16,8 +17,12 @@
 # Re-run after editing the plan below; it reuses the clone and rebuilds.
 set -euo pipefail
 
-FAMILY_KEY="IosevkaMono"          # build-plan key + build target + dist dir + filename stem
-FAMILY_NAME="Iosevka Mono"        # display / installed family name
+# Two parallel builds — monospace + quasi-proportional — same matrix, only the
+# `spacing` key differs. Format: key|family|spacing. Web filenames stem from key.
+PLANS=(
+  "IosevkaMono|Iosevka Mono|normal"
+  "IosevkaMonoQP|Iosevka Mono QP|quasi-proportional"
+)
 IOSEVKA_REF="${IOSEVKA_REF:-}"    # optional: pin a release tag e.g. v33.2.7 (empty = latest)
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"   # prototypes/font-lab
@@ -47,78 +52,86 @@ fi
 cd "$WORK/Iosevka"
 BUILT_VER="$(git describe --tags --always 2>/dev/null || echo unknown)"
 
-echo "==> writing build plan (family: $FAMILY_NAME, plain base, 7 widths x 9 weights x 2 slopes)"
-cat > private-build-plans.toml <<TOML
-[buildPlans.$FAMILY_KEY]
-family = "$FAMILY_NAME"
-spacing = "normal"
+echo "==> writing build plans (mono + quasi-proportional, plain base, 7 widths x 9 weights x 2 slopes each)"
+
+emit_plan() {   # $1=key  $2=family  $3=spacing
+  cat <<TOML
+[buildPlans.$1]
+family = "$2"
+spacing = "$3"
 serifs = "sans"
 noCvSs = false
 exportGlyphNames = false
 noLigation = true
 
-[buildPlans.$FAMILY_KEY.widths.UltraCondensed]
+[buildPlans.$1.widths.UltraCondensed]
 shape = 416
 menu = 1
 css = "ultra-condensed"
-[buildPlans.$FAMILY_KEY.widths.ExtraCondensed]
+[buildPlans.$1.widths.ExtraCondensed]
 shape = 456
 menu = 2
 css = "extra-condensed"
-[buildPlans.$FAMILY_KEY.widths.Condensed]
+[buildPlans.$1.widths.Condensed]
 shape = 500
 menu = 3
 css = "condensed"
-[buildPlans.$FAMILY_KEY.widths.SemiCondensed]
+[buildPlans.$1.widths.SemiCondensed]
 shape = 548
 menu = 4
 css = "semi-condensed"
-[buildPlans.$FAMILY_KEY.widths.Normal]
+[buildPlans.$1.widths.Normal]
 shape = 600
 menu = 5
 css = "normal"
-[buildPlans.$FAMILY_KEY.widths.SemiExtended]
+[buildPlans.$1.widths.SemiExtended]
 shape = 658
 menu = 6
 css = "semi-expanded"
-[buildPlans.$FAMILY_KEY.widths.Extended]
+[buildPlans.$1.widths.Extended]
 shape = 720
 menu = 7
 css = "expanded"
 
-[buildPlans.$FAMILY_KEY.slopes.Upright]
+[buildPlans.$1.slopes.Upright]
 angle = 0
 shape = "upright"
 menu = "upright"
 css = "normal"
-[buildPlans.$FAMILY_KEY.slopes.Oblique]
+[buildPlans.$1.slopes.Oblique]
 angle = 9.4
 shape = "oblique"
 menu = "oblique"
 css = "oblique"
+
 TOML
+}
+
+{ for p in "${PLANS[@]}"; do IFS='|' read -r k f s <<< "$p"; emit_plan "$k" "$f" "$s"; done; } > private-build-plans.toml
 
 [ -d node_modules ] || { echo "==> npm ci"; npm ci; }
-
-if ls dist/"$FAMILY_KEY"/WOFF2/*.woff2 >/dev/null 2>&1 && [ -z "${REBUILD:-}" ]; then
-  echo "==> reusing existing webfont build (set REBUILD=1 to force a full rebuild)"
-else
-  echo "==> building webfonts (126 faces — this is the slow part, grab a coffee)"
-  npm run build -- "webfont::$FAMILY_KEY"
-fi
 
 echo "==> subsetting woff2 -> $WOFF2_OUT"
 mkdir -p "$WOFF2_OUT"
 rm -f "$WOFF2_OUT"/*.woff2
 n=0
-for f in dist/"$FAMILY_KEY"/WOFF2/*.woff2; do
-  python3 -m fontTools.subset "$f" \
-    --flavor=woff2 \
-    --layout-features='*' \
-    --name-IDs='*' \
-    --unicodes="$UNICODES" \
-    --output-file="$WOFF2_OUT/$(basename "$f")"
-  n=$((n+1))
+for p in "${PLANS[@]}"; do
+  IFS='|' read -r k f s <<< "$p"
+  if ls dist/"$k"/WOFF2/*.woff2 >/dev/null 2>&1 && [ -z "${REBUILD:-}" ]; then
+    echo "==> reusing existing $k build (set REBUILD=1 to force a full rebuild)"
+  else
+    echo "==> building $k webfonts (126 faces — the slow part, grab a coffee)"
+    npm run build -- "webfont::$k"
+  fi
+  for file in dist/"$k"/WOFF2/*.woff2; do
+    python3 -m fontTools.subset "$file" \
+      --flavor=woff2 \
+      --layout-features='*' \
+      --name-IDs='*' \
+      --unicodes="$UNICODES" \
+      --output-file="$WOFF2_OUT/$(basename "$file")"
+    n=$((n+1))
+  done
 done
 
 echo ""

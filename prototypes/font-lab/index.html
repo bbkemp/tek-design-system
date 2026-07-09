@@ -180,6 +180,10 @@
       <div class="seg"><button id="slUp" class="on">Upright</button><button id="slOb">Oblique</button></div>
     </div>
     <div class="ctl">
+      <label>Spacing</label>
+      <div class="seg"><button id="spMono" class="on">Mono</button><button id="spQP">Quasi-Prop</button></div>
+    </div>
+    <div class="ctl">
       <label>Background</label>
       <button id="bg">Dark</button>
     </div>
@@ -325,7 +329,7 @@
   });
   $('#ss').value = 'ss14';   // default to the JetBrains base (plain build → it actually toggles)
 
-  let widthIdx = 4, weightIdx = 3, oblique = false;   // Normal, Regular
+  let widthIdx = 4, weightIdx = 3, oblique = false, spacingQP = false;   // Normal, Regular, Mono
   const cvSel = {}, CVCHAR = {};   // grid char-variant overrides { cv36: 3 }, plus cv->char map
   let klUpdate = () => {};
   const stage = $('#stage');
@@ -334,7 +338,7 @@
     const wt = WEIGHTS[wj].key === 'Regular' ? '' : WEIGHTS[wj].key;   // Iosevka omits "Regular"
     let style = WIDTHS[wi].key + wt + (ob ? 'Oblique' : '');
     if (style === '') style = 'Regular';                               // Normal + Regular + Upright
-    return 'IosevkaMono-' + style;
+    return (spacingQP ? 'IosevkaMonoQP-' : 'IosevkaMono-') + style;    // QP = quasi-proportional build
   }
 
   // lazy-load a real static face on demand; cache the promise so we fetch each once
@@ -377,7 +381,8 @@
       stage.style.setProperty('--test-font', '"' + name + '", ui-monospace, monospace');
       st.textContent = name; st.className = 'status ok';
     } catch (e) {
-      st.textContent = name; st.className = 'status';
+      st.textContent = name + (spacingQP ? ' — QP faces not built yet (run build-fonts.sh)' : '');
+      st.className = 'status err';
     }
     renderCompare();
   }
@@ -408,6 +413,8 @@
   $('#ls').oninput = e => { stage.style.setProperty('--lsn', e.target.value / 100); $('#lsv').textContent = e.target.value + '%'; renderCompare(); };
   $('#slUp').onclick = () => { oblique = false; $('#slUp').classList.add('on'); $('#slOb').classList.remove('on'); applyFace(); };
   $('#slOb').onclick = () => { oblique = true; $('#slOb').classList.add('on'); $('#slUp').classList.remove('on'); applyFace(); };
+  $('#spMono').onclick = () => { spacingQP = false; $('#spMono').classList.add('on'); $('#spQP').classList.remove('on'); applyFace(); };
+  $('#spQP').onclick = () => { spacingQP = true; $('#spQP').classList.add('on'); $('#spMono').classList.remove('on'); applyFace(); };
   $('#bg').onclick = () => { stage.classList.toggle('light'); $('#cmpCard').classList.toggle('light'); $('#bg').textContent = stage.classList.contains('light') ? 'Light' : 'Dark'; };
   $('#ss').onchange = composeFeatures;
   $('#raw').oninput = composeFeatures;
@@ -446,11 +453,15 @@
     ['Upright', 'Oblique'].forEach(s => slG.appendChild(ck('Slopes', s, s)));
     kb.appendChild(slG);
 
+    const spG = section('Spacing');
+    ['Mono', 'Quasi-Proportional'].forEach(s => spG.appendChild(ck('Spacing', s, s)));
+    kb.appendChild(spG);
+
     function update() {
       const m = {};
       kb.querySelectorAll('input:checked').forEach(i => { (m[i.dataset.group] = m[i.dataset.group] || []).push(i.value); });
       const lines = ['IOSEVKA MONO — keep list'];
-      ['Widths', 'Weights', 'Slopes'].forEach(g => { if (m[g] && m[g].length) lines.push(g + ': ' + m[g].join(', ')); });
+      ['Widths', 'Weights', 'Slopes', 'Spacing'].forEach(g => { if (m[g] && m[g].length) lines.push(g + ': ' + m[g].join(', ')); });
       const cvbits = [];
       Object.keys(cvSel).forEach(t => cvbits.push((CVCHAR[t] || '?') + ' ["' + t + '" ' + cvSel[t] + ']'));
       if (cvbits.length) lines.push('Glyph variants: ' + cvbits.join(', '));
