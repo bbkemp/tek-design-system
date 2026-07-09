@@ -95,7 +95,7 @@
      each element's OWN font-size), so a given % scales proportionally at every
      preview size. Declaring an em on .stage alone would compute once against the
      base size and inherit down as a fixed px — loose on small text, tight on big. */
-  .stage, .stage * { letter-spacing: calc(var(--lsn, 0) * 1em); }
+  .stage, .stage * { letter-spacing: calc(var(--lsn, 0) * var(--wfac, 1) * 1em); }
   .stage.light { background: var(--tek-colors-neutral-white); color: var(--tek-colors-neutral-black); }
   .tier { border-top: 1px dashed var(--line); padding: 16px 0; }
   .tier:first-child { border-top: 0; padding-top: 0; }
@@ -369,6 +369,9 @@
     const st = $('#status');
     $('#wdv').textContent = WIDTHS[widthIdx].label + ' (' + WIDTHS[widthIdx].num + ')';
     $('#wtv').textContent = WEIGHTS[weightIdx].key + ' (' + WEIGHTS[weightIdx].num + ')';
+    // Scale tracking by the width's advance (num/600, Normal=1) so a given %
+    // reads as the same visual gap-to-glyph ratio on every width.
+    stage.style.setProperty('--wfac', WIDTHS[widthIdx].num / 600);
     try {
       await ensureFace(name);
       stage.style.setProperty('--test-font', '"' + name + '", ui-monospace, monospace');
@@ -390,7 +393,7 @@
       lab.style.marginBottom = '4px';
       const s = document.createElement('div');
       s.textContent = '+01.53176  003.5129 Ω  192.168.000.002  0O8B6 1lI';
-      s.style.cssText = 'font-family:"' + name + '",ui-monospace,monospace;font-size:' + (base * 1.7) + 'px;letter-spacing:' + ls + 'em;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:auto;';
+      s.style.cssText = 'font-family:"' + name + '",ui-monospace,monospace;font-size:' + (base * 1.7) + 'px;letter-spacing:' + (ls * w.num / 600) + 'em;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:auto;';
       s.style.fontFeatureSettings = (feat === 'normal') ? 'normal' : feat;
       wrap.appendChild(lab); wrap.appendChild(s); rows.appendChild(wrap);
       if (i === widthIdx) { wrap.style.outline = '1px solid var(--accent)'; wrap.style.outlineOffset = '4px'; wrap.style.borderRadius = '4px'; }
