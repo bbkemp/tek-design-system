@@ -439,16 +439,11 @@
     ['Upright', 'Oblique'].forEach(s => slG.appendChild(ck('Slopes', s, s)));
     kb.appendChild(slG);
 
-    const ssWrap = section('Stylistic set');
-    const ssBox = document.createElement('div'); ssBox.className = 'ssgrp';
-    Object.keys(SS).forEach(tag => ssBox.appendChild(ck('Stylistic set', tag + ' — ' + SS[tag], tag + ' — ' + SS[tag])));
-    ssWrap.appendChild(ssBox); kb.appendChild(ssWrap);
-
     function update() {
       const m = {};
       kb.querySelectorAll('input:checked').forEach(i => { (m[i.dataset.group] = m[i.dataset.group] || []).push(i.value); });
       const lines = ['IOSEVKA MONO — keep list'];
-      ['Widths', 'Weights', 'Slopes', 'Stylistic set'].forEach(g => { if (m[g] && m[g].length) lines.push(g + ': ' + m[g].join(', ')); });
+      ['Widths', 'Weights', 'Slopes'].forEach(g => { if (m[g] && m[g].length) lines.push(g + ': ' + m[g].join(', ')); });
       const cvbits = [];
       Object.keys(cvSel).forEach(t => cvbits.push((CVCHAR[t] || '?') + ' ["' + t + '" ' + cvSel[t] + ']'));
       if (cvbits.length) lines.push('Glyph variants: ' + cvbits.join(', '));
