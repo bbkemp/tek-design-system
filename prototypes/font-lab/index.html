@@ -118,7 +118,9 @@
   .cvcell .cvg { font-size: 28px; line-height: 1; color: var(--ink); }
   .cvcell .cvcar { font-size: 9px; color: var(--muted); }
   .cvcell.set { border-color: var(--accent); }
-  .cvcell.open { background: var(--panel); border-color: var(--accent); }
+  .cvcell.set .cvg { color: var(--accent); }                 /* customized glyph lights up */
+  .cvcell.set .cvcar { color: var(--accent); font-family: var(--sans); }  /* shows chosen index */
+  .cvcell.open { background: var(--panel); border-color: var(--line); outline: 2px solid var(--accent); outline-offset: 2px; }  /* editing = focus ring, not a matching border */
   #cvpanel { margin-top: 12px; border: 1px solid var(--line); border-radius: var(--r-md); padding: 10px; }
   .cvhead { font-family: var(--sans); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
   .cvvars { display: flex; flex-wrap: wrap; gap: 6px; max-height: 230px; overflow: auto; }
@@ -507,13 +509,23 @@
     GLYPHS.forEach(g => {
       const cell = document.createElement('button'); cell.className = 'cvcell'; cell.dataset.cv = g.cv;
       const gl = document.createElement('span'); gl.className = 'cvg'; gl.textContent = g.c;
+      gl.style.fontFeatureSettings = 'normal';   // isolate from stage --feat (ss14 etc.); render() reflects this glyph's own variant
       const car = document.createElement('span'); car.className = 'cvcar'; car.textContent = '▾';
       cell.appendChild(gl); cell.appendChild(car);
       cell.onclick = () => { active = (active && active.cv === g.cv) ? null : g; render(); };
       grid.appendChild(cell);
     });
     function render() {
-      [...grid.children].forEach(cell => { const cv = cell.dataset.cv; cell.classList.toggle('set', cvSel[cv] != null); cell.classList.toggle('open', !!(active && active.cv === cv)); });
+      [...grid.children].forEach(cell => {
+        const cv = cell.dataset.cv;
+        const isSet = cvSel[cv] != null;
+        cell.classList.toggle('set', isSet);
+        cell.classList.toggle('open', !!(active && active.cv === cv));
+        const g = cell.querySelector('.cvg');
+        if (g) g.style.fontFeatureSettings = isSet ? '"' + cv + '" ' + cvSel[cv] : 'normal';
+        const car = cell.querySelector('.cvcar');
+        if (car) car.textContent = isSet ? cvSel[cv] : '▾';
+      });
       panel.innerHTML = '';
       if (!active) { panel.style.display = 'none'; return; }
       panel.style.display = 'block';
