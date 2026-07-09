@@ -1,0 +1,706 @@
+{
+  "features_default": "\"cv04\" 7, \"cv07\" 1, \"cv08\" 2, \"cv09\" 3",
+  "letter_spacing_default": "normal (0)",
+  "families": [
+    {
+      "css_family": "Iosevka Mono Ultra Condensed",
+      "file": "css/iosevka-mono-ultra-condensed.css",
+      "spacing": "Iosevka Mono",
+      "width": "Ultra Condensed",
+      "faces": [
+        {
+          "face": "IosevkaMono-UltraCondensedLight",
+          "weight": 300,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Light Ultra-Condensed"
+        },
+        {
+          "face": "IosevkaMono-UltraCondensedLightOblique",
+          "weight": 300,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Light Ultra-Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMono-UltraCondensed",
+          "weight": 400,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Ultra-Condensed"
+        },
+        {
+          "face": "IosevkaMono-UltraCondensedOblique",
+          "weight": 400,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Ultra-Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMono-UltraCondensedMedium",
+          "weight": 500,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Medium Ultra-Condensed"
+        },
+        {
+          "face": "IosevkaMono-UltraCondensedMediumOblique",
+          "weight": 500,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Medium Ultra-Condensed Oblique"
+        }
+      ]
+    },
+    {
+      "css_family": "Iosevka Mono Extra Condensed",
+      "file": "css/iosevka-mono-extra-condensed.css",
+      "spacing": "Iosevka Mono",
+      "width": "Extra Condensed",
+      "faces": [
+        {
+          "face": "IosevkaMono-ExtraCondensedLight",
+          "weight": 300,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Light Extra-Condensed"
+        },
+        {
+          "face": "IosevkaMono-ExtraCondensedLightOblique",
+          "weight": 300,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Light Extra-Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMono-ExtraCondensed",
+          "weight": 400,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Extra-Condensed"
+        },
+        {
+          "face": "IosevkaMono-ExtraCondensedOblique",
+          "weight": 400,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Extra-Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMono-ExtraCondensedMedium",
+          "weight": 500,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Medium Extra-Condensed"
+        },
+        {
+          "face": "IosevkaMono-ExtraCondensedMediumOblique",
+          "weight": 500,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Medium Extra-Condensed Oblique"
+        }
+      ]
+    },
+    {
+      "css_family": "Iosevka Mono Condensed",
+      "file": "css/iosevka-mono-condensed.css",
+      "spacing": "Iosevka Mono",
+      "width": "Condensed",
+      "faces": [
+        {
+          "face": "IosevkaMono-CondensedLight",
+          "weight": 300,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Light Condensed"
+        },
+        {
+          "face": "IosevkaMono-CondensedLightOblique",
+          "weight": 300,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Light Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMono-Condensed",
+          "weight": 400,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Condensed"
+        },
+        {
+          "face": "IosevkaMono-CondensedOblique",
+          "weight": 400,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMono-CondensedMedium",
+          "weight": 500,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Medium Condensed"
+        },
+        {
+          "face": "IosevkaMono-CondensedMediumOblique",
+          "weight": 500,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Medium Condensed Oblique"
+        }
+      ]
+    },
+    {
+      "css_family": "Iosevka Mono Semi Condensed",
+      "file": "css/iosevka-mono-semi-condensed.css",
+      "spacing": "Iosevka Mono",
+      "width": "Semi Condensed",
+      "faces": [
+        {
+          "face": "IosevkaMono-SemiCondensedLight",
+          "weight": 300,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Light Semi-Condensed"
+        },
+        {
+          "face": "IosevkaMono-SemiCondensedLightOblique",
+          "weight": 300,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Light Semi-Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMono-SemiCondensed",
+          "weight": 400,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Semi-Condensed"
+        },
+        {
+          "face": "IosevkaMono-SemiCondensedOblique",
+          "weight": 400,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Semi-Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMono-SemiCondensedMedium",
+          "weight": 500,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Medium Semi-Condensed"
+        },
+        {
+          "face": "IosevkaMono-SemiCondensedMediumOblique",
+          "weight": 500,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Medium Semi-Condensed Oblique"
+        }
+      ]
+    },
+    {
+      "css_family": "Iosevka Mono",
+      "file": "css/iosevka-mono.css",
+      "spacing": "Iosevka Mono",
+      "width": "Normal",
+      "faces": [
+        {
+          "face": "IosevkaMono-Light",
+          "weight": 300,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Light"
+        },
+        {
+          "face": "IosevkaMono-LightOblique",
+          "weight": 300,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Light Oblique"
+        },
+        {
+          "face": "IosevkaMono-Regular",
+          "weight": 400,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Regular"
+        },
+        {
+          "face": "IosevkaMono-Oblique",
+          "weight": 400,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Oblique"
+        },
+        {
+          "face": "IosevkaMono-Medium",
+          "weight": 500,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Medium"
+        },
+        {
+          "face": "IosevkaMono-MediumOblique",
+          "weight": 500,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Medium Oblique"
+        }
+      ]
+    },
+    {
+      "css_family": "Iosevka Mono Semi Extended",
+      "file": "css/iosevka-mono-semi-extended.css",
+      "spacing": "Iosevka Mono",
+      "width": "Semi Extended",
+      "faces": [
+        {
+          "face": "IosevkaMono-SemiExtendedLight",
+          "weight": 300,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Light Semi-Extended"
+        },
+        {
+          "face": "IosevkaMono-SemiExtendedLightOblique",
+          "weight": 300,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Light Semi-Extended Oblique"
+        },
+        {
+          "face": "IosevkaMono-SemiExtended",
+          "weight": 400,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Semi-Extended"
+        },
+        {
+          "face": "IosevkaMono-SemiExtendedOblique",
+          "weight": 400,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Semi-Extended Oblique"
+        },
+        {
+          "face": "IosevkaMono-SemiExtendedMedium",
+          "weight": 500,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Medium Semi-Extended"
+        },
+        {
+          "face": "IosevkaMono-SemiExtendedMediumOblique",
+          "weight": 500,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Medium Semi-Extended Oblique"
+        }
+      ]
+    },
+    {
+      "css_family": "Iosevka Mono Extended",
+      "file": "css/iosevka-mono-extended.css",
+      "spacing": "Iosevka Mono",
+      "width": "Extended",
+      "faces": [
+        {
+          "face": "IosevkaMono-ExtendedLight",
+          "weight": 300,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Light Extended"
+        },
+        {
+          "face": "IosevkaMono-ExtendedLightOblique",
+          "weight": 300,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Light Extended Oblique"
+        },
+        {
+          "face": "IosevkaMono-Extended",
+          "weight": 400,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Extended"
+        },
+        {
+          "face": "IosevkaMono-ExtendedOblique",
+          "weight": 400,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Extended Oblique"
+        },
+        {
+          "face": "IosevkaMono-ExtendedMedium",
+          "weight": 500,
+          "style": "normal",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Medium Extended"
+        },
+        {
+          "face": "IosevkaMono-ExtendedMediumOblique",
+          "weight": 500,
+          "style": "italic",
+          "figma_family": "Iosevka Mono",
+          "figma_style": "Medium Extended Oblique"
+        }
+      ]
+    },
+    {
+      "css_family": "Iosevka Mono QP Ultra Condensed",
+      "file": "css/iosevka-mono-qp-ultra-condensed.css",
+      "spacing": "Iosevka Mono QP",
+      "width": "Ultra Condensed",
+      "faces": [
+        {
+          "face": "IosevkaMonoQP-UltraCondensedLight",
+          "weight": 300,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Light Ultra-Condensed"
+        },
+        {
+          "face": "IosevkaMonoQP-UltraCondensedLightOblique",
+          "weight": 300,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Light Ultra-Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMonoQP-UltraCondensed",
+          "weight": 400,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Ultra-Condensed"
+        },
+        {
+          "face": "IosevkaMonoQP-UltraCondensedOblique",
+          "weight": 400,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Ultra-Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMonoQP-UltraCondensedMedium",
+          "weight": 500,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Medium Ultra-Condensed"
+        },
+        {
+          "face": "IosevkaMonoQP-UltraCondensedMediumOblique",
+          "weight": 500,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Medium Ultra-Condensed Oblique"
+        }
+      ]
+    },
+    {
+      "css_family": "Iosevka Mono QP Extra Condensed",
+      "file": "css/iosevka-mono-qp-extra-condensed.css",
+      "spacing": "Iosevka Mono QP",
+      "width": "Extra Condensed",
+      "faces": [
+        {
+          "face": "IosevkaMonoQP-ExtraCondensedLight",
+          "weight": 300,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Light Extra-Condensed"
+        },
+        {
+          "face": "IosevkaMonoQP-ExtraCondensedLightOblique",
+          "weight": 300,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Light Extra-Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMonoQP-ExtraCondensed",
+          "weight": 400,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Extra-Condensed"
+        },
+        {
+          "face": "IosevkaMonoQP-ExtraCondensedOblique",
+          "weight": 400,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Extra-Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMonoQP-ExtraCondensedMedium",
+          "weight": 500,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Medium Extra-Condensed"
+        },
+        {
+          "face": "IosevkaMonoQP-ExtraCondensedMediumOblique",
+          "weight": 500,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Medium Extra-Condensed Oblique"
+        }
+      ]
+    },
+    {
+      "css_family": "Iosevka Mono QP Condensed",
+      "file": "css/iosevka-mono-qp-condensed.css",
+      "spacing": "Iosevka Mono QP",
+      "width": "Condensed",
+      "faces": [
+        {
+          "face": "IosevkaMonoQP-CondensedLight",
+          "weight": 300,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Light Condensed"
+        },
+        {
+          "face": "IosevkaMonoQP-CondensedLightOblique",
+          "weight": 300,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Light Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMonoQP-Condensed",
+          "weight": 400,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Condensed"
+        },
+        {
+          "face": "IosevkaMonoQP-CondensedOblique",
+          "weight": 400,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMonoQP-CondensedMedium",
+          "weight": 500,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Medium Condensed"
+        },
+        {
+          "face": "IosevkaMonoQP-CondensedMediumOblique",
+          "weight": 500,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Medium Condensed Oblique"
+        }
+      ]
+    },
+    {
+      "css_family": "Iosevka Mono QP Semi Condensed",
+      "file": "css/iosevka-mono-qp-semi-condensed.css",
+      "spacing": "Iosevka Mono QP",
+      "width": "Semi Condensed",
+      "faces": [
+        {
+          "face": "IosevkaMonoQP-SemiCondensedLight",
+          "weight": 300,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Light Semi-Condensed"
+        },
+        {
+          "face": "IosevkaMonoQP-SemiCondensedLightOblique",
+          "weight": 300,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Light Semi-Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMonoQP-SemiCondensed",
+          "weight": 400,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Semi-Condensed"
+        },
+        {
+          "face": "IosevkaMonoQP-SemiCondensedOblique",
+          "weight": 400,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Semi-Condensed Oblique"
+        },
+        {
+          "face": "IosevkaMonoQP-SemiCondensedMedium",
+          "weight": 500,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Medium Semi-Condensed"
+        },
+        {
+          "face": "IosevkaMonoQP-SemiCondensedMediumOblique",
+          "weight": 500,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Medium Semi-Condensed Oblique"
+        }
+      ]
+    },
+    {
+      "css_family": "Iosevka Mono QP",
+      "file": "css/iosevka-mono-qp.css",
+      "spacing": "Iosevka Mono QP",
+      "width": "Normal",
+      "faces": [
+        {
+          "face": "IosevkaMonoQP-Light",
+          "weight": 300,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Light"
+        },
+        {
+          "face": "IosevkaMonoQP-LightOblique",
+          "weight": 300,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Light Oblique"
+        },
+        {
+          "face": "IosevkaMonoQP-Regular",
+          "weight": 400,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Regular"
+        },
+        {
+          "face": "IosevkaMonoQP-Oblique",
+          "weight": 400,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Oblique"
+        },
+        {
+          "face": "IosevkaMonoQP-Medium",
+          "weight": 500,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Medium"
+        },
+        {
+          "face": "IosevkaMonoQP-MediumOblique",
+          "weight": 500,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Medium Oblique"
+        }
+      ]
+    },
+    {
+      "css_family": "Iosevka Mono QP Semi Extended",
+      "file": "css/iosevka-mono-qp-semi-extended.css",
+      "spacing": "Iosevka Mono QP",
+      "width": "Semi Extended",
+      "faces": [
+        {
+          "face": "IosevkaMonoQP-SemiExtendedLight",
+          "weight": 300,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Light Semi-Extended"
+        },
+        {
+          "face": "IosevkaMonoQP-SemiExtendedLightOblique",
+          "weight": 300,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Light Semi-Extended Oblique"
+        },
+        {
+          "face": "IosevkaMonoQP-SemiExtended",
+          "weight": 400,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Semi-Extended"
+        },
+        {
+          "face": "IosevkaMonoQP-SemiExtendedOblique",
+          "weight": 400,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Semi-Extended Oblique"
+        },
+        {
+          "face": "IosevkaMonoQP-SemiExtendedMedium",
+          "weight": 500,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Medium Semi-Extended"
+        },
+        {
+          "face": "IosevkaMonoQP-SemiExtendedMediumOblique",
+          "weight": 500,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Medium Semi-Extended Oblique"
+        }
+      ]
+    },
+    {
+      "css_family": "Iosevka Mono QP Extended",
+      "file": "css/iosevka-mono-qp-extended.css",
+      "spacing": "Iosevka Mono QP",
+      "width": "Extended",
+      "faces": [
+        {
+          "face": "IosevkaMonoQP-ExtendedLight",
+          "weight": 300,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Light Extended"
+        },
+        {
+          "face": "IosevkaMonoQP-ExtendedLightOblique",
+          "weight": 300,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Light Extended Oblique"
+        },
+        {
+          "face": "IosevkaMonoQP-Extended",
+          "weight": 400,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Extended"
+        },
+        {
+          "face": "IosevkaMonoQP-ExtendedOblique",
+          "weight": 400,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Extended Oblique"
+        },
+        {
+          "face": "IosevkaMonoQP-ExtendedMedium",
+          "weight": 500,
+          "style": "normal",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Medium Extended"
+        },
+        {
+          "face": "IosevkaMonoQP-ExtendedMediumOblique",
+          "weight": 500,
+          "style": "italic",
+          "figma_family": "Iosevka Mono QP",
+          "figma_style": "Medium Extended Oblique"
+        }
+      ]
+    }
+  ]
+}
