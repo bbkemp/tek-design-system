@@ -89,9 +89,13 @@
     padding: 24px; max-width: 1100px; margin: 0 auto;
     font-family: var(--test-font, ui-monospace, monospace);
     font-feature-settings: var(--feat, normal);
-    letter-spacing: var(--ls, 0);
     font-variant-numeric: tabular-nums;
   }
+  /* Tracking as a unitless multiplier resolved per element (calc(n * 1em) uses
+     each element's OWN font-size), so a given % scales proportionally at every
+     preview size. Declaring an em on .stage alone would compute once against the
+     base size and inherit down as a fixed px — loose on small text, tight on big. */
+  .stage, .stage * { letter-spacing: calc(var(--lsn, 0) * 1em); }
   .stage.light { background: var(--tek-colors-neutral-white); color: var(--tek-colors-neutral-black); }
   .tier { border-top: 1px dashed var(--line); padding: 16px 0; }
   .tier:first-child { border-top: 0; padding-top: 0; }
@@ -398,7 +402,7 @@
   $('#sz').oninput = e => { stage.style.setProperty('--base', e.target.value + 'px'); $('#szv').textContent = e.target.value + 'px'; renderCompare(); };
   $('#wd').oninput = e => { widthIdx = +e.target.value; applyFace(); };
   $('#wt').oninput = e => { weightIdx = +e.target.value; applyFace(); };
-  $('#ls').oninput = e => { stage.style.setProperty('--ls', (e.target.value / 100) + 'em'); $('#lsv').textContent = e.target.value + '%'; renderCompare(); };
+  $('#ls').oninput = e => { stage.style.setProperty('--lsn', e.target.value / 100); $('#lsv').textContent = e.target.value + '%'; renderCompare(); };
   $('#slUp').onclick = () => { oblique = false; $('#slUp').classList.add('on'); $('#slOb').classList.remove('on'); applyFace(); };
   $('#slOb').onclick = () => { oblique = true; $('#slOb').classList.add('on'); $('#slUp').classList.remove('on'); applyFace(); };
   $('#bg').onclick = () => { stage.classList.toggle('light'); $('#cmpCard').classList.toggle('light'); $('#bg').textContent = stage.classList.contains('light') ? 'Light' : 'Dark'; };
