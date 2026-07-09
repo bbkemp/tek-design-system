@@ -507,13 +507,20 @@
     GLYPHS.forEach(g => {
       const cell = document.createElement('button'); cell.className = 'cvcell'; cell.dataset.cv = g.cv;
       const gl = document.createElement('span'); gl.className = 'cvg'; gl.textContent = g.c;
+      gl.style.fontFeatureSettings = 'normal';   // isolate from stage --feat (ss14 etc.); render() reflects this glyph's own variant
       const car = document.createElement('span'); car.className = 'cvcar'; car.textContent = '▾';
       cell.appendChild(gl); cell.appendChild(car);
       cell.onclick = () => { active = (active && active.cv === g.cv) ? null : g; render(); };
       grid.appendChild(cell);
     });
     function render() {
-      [...grid.children].forEach(cell => { const cv = cell.dataset.cv; cell.classList.toggle('set', cvSel[cv] != null); cell.classList.toggle('open', !!(active && active.cv === cv)); });
+      [...grid.children].forEach(cell => {
+        const cv = cell.dataset.cv;
+        cell.classList.toggle('set', cvSel[cv] != null);
+        cell.classList.toggle('open', !!(active && active.cv === cv));
+        const g = cell.querySelector('.cvg');
+        if (g) g.style.fontFeatureSettings = cvSel[cv] != null ? '"' + cv + '" ' + cvSel[cv] : 'normal';
+      });
       panel.innerHTML = '';
       if (!active) { panel.style.display = 'none'; return; }
       panel.style.display = 'block';
