@@ -138,11 +138,11 @@
     </div>
     <div class="ctl">
       <label>Width <output id="wdv"></output></label>
-      <input type="range" id="wd" min="0" max="4" value="2">
+      <input type="range" id="wd" min="0" max="6" value="4">
     </div>
     <div class="ctl">
       <label>Weight <output id="wtv"></output></label>
-      <input type="range" id="wt" min="0" max="2" value="1">
+      <input type="range" id="wt" min="0" max="8" value="3">
     </div>
     <div class="ctl">
       <label>Letter-Spacing <output id="lsv">0.000em</output></label>
@@ -175,8 +175,8 @@
       </div>
     </div>
     <div class="ctl">
-      <label>Stylistic set (base is ss14 · JetBrains Mono)</label>
-      <select id="ss"><option value="">(none — your build default)</option></select>
+      <label>Stylistic set (default ss14 · JetBrains Mono)</label>
+      <select id="ss"><option value="">(plain — no set)</option></select>
     </div>
     <div class="ctl" style="flex:1; min-width:240px;">
       <label>Extra raw font-feature-settings</label>
@@ -264,16 +264,24 @@
   const $ = s => document.querySelector(s);
 
   const WIDTHS = [
-    { key: 'Condensed',     label: 'Condensed',      num: 456 },
-    { key: 'SemiCondensed', label: 'SemiCondensed',  num: 548 },
-    { key: '',              label: 'Normal',         num: 600 },
-    { key: 'SemiExtended',  label: 'SemiExtended',   num: 658 },
-    { key: 'Extended',      label: 'Extended',       num: 720 }
+    { key: 'UltraCondensed', label: 'UltraCondensed', num: 416 },
+    { key: 'ExtraCondensed', label: 'ExtraCondensed', num: 456 },
+    { key: 'Condensed',      label: 'Condensed',      num: 500 },
+    { key: 'SemiCondensed',  label: 'SemiCondensed',  num: 548 },
+    { key: '',               label: 'Normal',         num: 600 },
+    { key: 'SemiExtended',   label: 'SemiExtended',   num: 658 },
+    { key: 'Extended',       label: 'Extended',       num: 720 }
   ];
   const WEIGHTS = [
-    { key: 'Light',    num: 300 },
-    { key: 'Medium',   num: 500 },
-    { key: 'SemiBold', num: 600 }
+    { key: 'Thin',       num: 100 },
+    { key: 'ExtraLight', num: 200 },
+    { key: 'Light',      num: 300 },
+    { key: 'Regular',    num: 400 },
+    { key: 'Medium',     num: 500 },
+    { key: 'SemiBold',   num: 600 },
+    { key: 'Bold',       num: 700 },
+    { key: 'ExtraBold',  num: 800 },
+    { key: 'Heavy',      num: 900 }
   ];
   const SS = {
     ss01: 'Andale Mono', ss02: 'Anonymous Pro', ss03: 'Consolas', ss04: 'Menlo',
@@ -285,12 +293,16 @@
   Object.keys(SS).forEach(tag => {
     const o = document.createElement('option'); o.value = tag; o.textContent = tag + ' — ' + SS[tag]; $('#ss').appendChild(o);
   });
+  $('#ss').value = 'ss14';   // default to the JetBrains base (plain build → it actually toggles)
 
-  let widthIdx = 2, weightIdx = 1, oblique = false, zeroFeat = '';
+  let widthIdx = 4, weightIdx = 3, oblique = false, zeroFeat = '';   // Normal, Regular
   const stage = $('#stage');
 
   function faceName(wi, wj, ob) {
-    return 'IosevkaCustom-' + WIDTHS[wi].key + WEIGHTS[wj].key + (ob ? 'Oblique' : '');
+    const wt = WEIGHTS[wj].key === 'Regular' ? '' : WEIGHTS[wj].key;   // Iosevka omits "Regular"
+    let style = WIDTHS[wi].key + wt + (ob ? 'Oblique' : '');
+    if (style === '') style = 'Regular';                               // Normal + Regular + Upright
+    return 'IosevkaMono-' + style;
   }
 
   // lazy-load a real static face on demand; cache the promise so we fetch each once
@@ -328,7 +340,7 @@
       stage.style.setProperty('--test-font', '"' + name + '", ui-monospace, monospace');
       st.textContent = name; st.className = 'status ok';
     } catch (e) {
-      st.textContent = 'missing ' + name + '.woff2'; st.className = 'status err';
+      st.textContent = name; st.className = 'status';
     }
     renderCompare();
   }
