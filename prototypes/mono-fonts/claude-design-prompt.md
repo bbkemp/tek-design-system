@@ -4,15 +4,13 @@ Paste this into a Claude Design session (or prepend to a prototype prompt) so CD
 
 ---
 
-You have access to the Tek Design System's custom monospace family, **Iosevka Mono**, hosted at:
-
-`https://bbkemp.github.io/tek-design-system/prototypes/mono-fonts/`
+You have access to the Tek Design System's custom monospace family, **Iosevka Mono**, in this repo at **`prototypes/mono-fonts/`** (also hosted at `https://bbkemp.github.io/tek-design-system/prototypes/mono-fonts/`).
 
 Use it for **all monospace / instrument-readout / numeric / tabular / code text** in Tek prototypes. Do not substitute Geist Mono, system monospace, or any other mono font.
 
 ## Getting the font into a prototype (CSP-safe)
 
-The fonts are pre-embedded as base64 `@font-face`, one CSS file per family, under `css/`. For a prototype, **fetch the single family file you need and inline its full contents** into a `<style>` block (base64 is required — the artifact sandbox blocks external font fetches).
+The fonts are pre-embedded as base64 `@font-face`, one CSS file per family, under `prototypes/mono-fonts/css/`. For a prototype, **read the single family file you need from the repo and inline its full contents** into a `<style>` block (base64 is required — the artifact sandbox blocks external font fetches, so inline it rather than linking).
 
 Family files (pick by width; `qp` = quasi-proportional):
 ```
