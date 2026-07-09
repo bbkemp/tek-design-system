@@ -106,6 +106,19 @@
   .tscale .trow:first-child { border-top: 0; }
   .tscale .tnum { flex: 0 0 132px; color: var(--muted); font-family: var(--sans); font-size: 11px; letter-spacing: .03em; white-space: nowrap; }
   .tscale .tcopy { flex: 1 1 auto; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  #cvgrid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cvcell { width: 54px; height: 58px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: var(--field); border: 1px solid var(--line); border-radius: var(--r-md); cursor: pointer; padding: 0; }
+  .cvcell .cvg { font-size: 28px; line-height: 1; color: var(--ink); }
+  .cvcell .cvcar { font-size: 9px; color: var(--muted); }
+  .cvcell.set { border-color: var(--accent); }
+  .cvcell.open { background: var(--panel); border-color: var(--accent); }
+  #cvpanel { margin-top: 12px; border: 1px solid var(--line); border-radius: var(--r-md); padding: 10px; }
+  .cvhead { font-family: var(--sans); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+  .cvvars { display: flex; flex-wrap: wrap; gap: 6px; max-height: 230px; overflow: auto; }
+  .cvvar { width: 46px; height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: var(--field); border: 1px solid var(--line); border-radius: var(--r-sm); cursor: pointer; padding: 0; }
+  .cvvar.on { border-color: var(--accent); background: var(--panel); }
+  .cvvar .cvvarg { font-size: 24px; line-height: 1; color: var(--ink); }
+  .cvvar .cvvarn { font-size: 9px; color: var(--muted); font-family: var(--sans); }
   #cmpRows > div { padding: 10px 0; border-top: 1px dashed var(--line); }
 
   aside.rail {
@@ -150,7 +163,7 @@
     </div>
     <div class="ctl">
       <label>Letter-Spacing <output id="lsv">0.000em</output></label>
-      <input type="range" id="ls" min="-0.1" max="0.4" step="0.005" value="0">
+      <input type="range" id="ls" min="-0.25" max="1" step="0.01" value="0">
     </div>
     <div class="ctl">
       <label>Slope</label>
@@ -206,8 +219,8 @@
       <div class="readout">OPEN</div>
     </div>
     <div class="tier">
-      <div class="tlabel">Disambiguation — the pairs that bite on a dense LCD</div>
-      <div class="disamb"><span class="hl">0</span> O o Q D &nbsp; <span class="hl">1</span> l I i | j &nbsp; 8 B 6 &nbsp; 5 S &nbsp; 2 Z z &nbsp; 9 g q &nbsp; a &amp; @ &nbsp; ( ) [ ] { } &lt; &gt; &nbsp; . , : ; &nbsp; - ~ =</div>
+      <div class="tlabel">Character variants — click a glyph, pick a variant (applies live + logs to the keep list)</div>
+      <div id="cvgrid"></div>
     </div>
     <div class="tier">
       <div class="tlabel">Zeros in context</div>
@@ -318,6 +331,8 @@
   $('#ss').value = 'ss14';   // default to the JetBrains base (plain build → it actually toggles)
 
   let widthIdx = 4, weightIdx = 3, oblique = false, zeroFeat = '';   // Normal, Regular
+  const cvSel = {}, CVCHAR = {};   // grid char-variant overrides { cv36: 3 }, plus cv->char map
+  let klUpdate = () => {};
   const stage = $('#stage');
 
   function faceName(wi, wj, ob) {
@@ -344,12 +359,13 @@
   function composeFeatures() {
     const parts = [];
     if (zeroFeat) parts.push(zeroFeat);
+    Object.keys(cvSel).forEach(t => parts.push('"' + t + '" ' + cvSel[t]));
     if ($('#ss').value) parts.push('"' + $('#ss').value + '" 1');
     const raw = $('#raw').value.trim(); if (raw) parts.push(raw);
     const str = parts.join(', ');
     stage.style.setProperty('--feat', str || 'normal');
     $('#featstr').textContent = str || 'normal';
-    renderCompare();
+    renderCompare(); klUpdate();
   }
 
   async function applyFace() {
@@ -453,6 +469,10 @@
       kb.querySelectorAll('input:checked').forEach(i => { (m[i.dataset.group] = m[i.dataset.group] || []).push(i.value); });
       const lines = ['IOSEVKA MONO — keep list'];
       ['Widths', 'Weights', 'Slopes', 'Stylistic set', 'Zero'].forEach(g => { if (m[g] && m[g].length) lines.push(g + ': ' + m[g].join(', ')); });
+      const cvbits = [];
+      if (zeroFeat) cvbits.push('0 [' + zeroFeat + ']');
+      Object.keys(cvSel).forEach(t => cvbits.push((CVCHAR[t] || '?') + ' ["' + t + '" ' + cvSel[t] + ']'));
+      if (cvbits.length) lines.push('Glyph variants: ' + cvbits.join(', '));
       if (notes.value.trim()) lines.push('Notes: ' + notes.value.trim());
       out.value = lines.length > 1 ? lines.join('\n') : '(nothing selected yet)';
       localStorage.setItem(KEY, JSON.stringify({
@@ -475,7 +495,53 @@
     notes.addEventListener('input', update);
     $('#klCopy').onclick = () => { navigator.clipboard.writeText(out.value); $('#klCopy').textContent = 'Copied'; setTimeout(() => $('#klCopy').textContent = 'Copy', 1200); };
     $('#klClear').onclick = () => { kb.querySelectorAll('input:checked').forEach(i => i.checked = false); notes.value = ''; update(); };
+    klUpdate = update;
     restore();
+  })();
+
+  // ---- Character-variant grid (replaces the disambiguation strip) ----
+  (function cvGrid() {
+    const GLYPHS = [
+      {c:'1',cv:'cv01',n:9},{c:'2',cv:'cv02',n:4},{c:'3',cv:'cv03',n:3},{c:'4',cv:'cv04',n:12},{c:'5',cv:'cv05',n:12},{c:'6',cv:'cv06',n:3},{c:'7',cv:'cv07',n:12},{c:'8',cv:'cv08',n:3},{c:'9',cv:'cv09',n:3},
+      {c:'a',cv:'cv36',n:33},{c:'g',cv:'cv42',n:16},{c:'i',cv:'cv44',n:14},{c:'j',cv:'cv45',n:10},{c:'l',cv:'cv47',n:14},{c:'q',cv:'cv51',n:33},{c:'r',cv:'cv52',n:28},{c:'t',cv:'cv54',n:30},{c:'y',cv:'cv59',n:18},
+      {c:'f',cv:'cv41',n:45},{c:'k',cv:'cv46',n:40},{c:'m',cv:'cv48',n:58},{c:'n',cv:'cv49',n:24},{c:'u',cv:'cv55',n:17},{c:'w',cv:'cv57',n:47},
+      {c:'I',cv:'cv19',n:3},{c:'G',cv:'cv17',n:36},{c:'Q',cv:'cv26',n:11},{c:'R',cv:'cv27',n:30},{c:'M',cv:'cv23',n:12},{c:'K',cv:'cv21',n:32},
+      {c:'$',cv:'cv28',n:5}
+    ];
+    GLYPHS.forEach(g => CVCHAR[g.cv] = g.c);
+    const grid = $('#cvgrid'); if (!grid) return;
+    const panel = document.createElement('div'); panel.id = 'cvpanel'; grid.after(panel);
+    let active = null;
+    GLYPHS.forEach(g => {
+      const cell = document.createElement('button'); cell.className = 'cvcell'; cell.dataset.cv = g.cv;
+      const gl = document.createElement('span'); gl.className = 'cvg'; gl.textContent = g.c;
+      const car = document.createElement('span'); car.className = 'cvcar'; car.textContent = '▾';
+      cell.appendChild(gl); cell.appendChild(car);
+      cell.onclick = () => { active = (active && active.cv === g.cv) ? null : g; render(); };
+      grid.appendChild(cell);
+    });
+    function render() {
+      [...grid.children].forEach(cell => { const cv = cell.dataset.cv; cell.classList.toggle('set', cvSel[cv] != null); cell.classList.toggle('open', !!(active && active.cv === cv)); });
+      panel.innerHTML = '';
+      if (!active) { panel.style.display = 'none'; return; }
+      panel.style.display = 'block';
+      const head = document.createElement('div'); head.className = 'cvhead';
+      head.textContent = active.c + '  ·  ' + active.cv + '  ·  ' + active.n + ' variants  (def = font default)';
+      panel.appendChild(head);
+      const wrap = document.createElement('div'); wrap.className = 'cvvars';
+      for (let i = 0; i <= active.n; i++) {
+        const v = document.createElement('button'); v.className = 'cvvar';
+        const sel = (i === 0 ? cvSel[active.cv] == null : cvSel[active.cv] === i); if (sel) v.classList.add('on');
+        const gl = document.createElement('div'); gl.className = 'cvvarg'; gl.textContent = active.c;
+        gl.style.fontFeatureSettings = (i === 0 ? 'normal' : '"' + active.cv + '" ' + i);
+        const lb = document.createElement('div'); lb.className = 'cvvarn'; lb.textContent = (i === 0 ? 'def' : i);
+        v.appendChild(gl); v.appendChild(lb);
+        v.onclick = () => { if (i === 0) delete cvSel[active.cv]; else cvSel[active.cv] = i; composeFeatures(); render(); };
+        wrap.appendChild(v);
+      }
+      panel.appendChild(wrap);
+    }
+    render();
   })();
 </script>
 </body>
