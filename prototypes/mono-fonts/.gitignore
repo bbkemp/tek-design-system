@@ -1,0 +1,3 @@
+# Loose .ttf are intermediate — build-handoff.py packages them into
+# ttf/iosevka-mono-ttf.zip (the committed, Pages-served download).
+ttf/*.ttf

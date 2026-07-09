@@ -1,0 +1,591 @@
+/* URL @font-face for all 84 faces (non-CSP web). Points at the hosted
+   font-lab woff2 so nothing is duplicated. */
+
+@font-face {
+  font-family: 'Iosevka Mono Ultra Condensed';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-UltraCondensedLight.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Ultra Condensed';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-UltraCondensedLightOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Ultra Condensed';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-UltraCondensed.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Ultra Condensed';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-UltraCondensedOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Ultra Condensed';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-UltraCondensedMedium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Ultra Condensed';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-UltraCondensedMediumOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Extra Condensed';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-ExtraCondensedLight.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Extra Condensed';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-ExtraCondensedLightOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Extra Condensed';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-ExtraCondensed.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Extra Condensed';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-ExtraCondensedOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Extra Condensed';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-ExtraCondensedMedium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Extra Condensed';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-ExtraCondensedMediumOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Condensed';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-CondensedLight.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Condensed';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-CondensedLightOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Condensed';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-Condensed.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Condensed';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-CondensedOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Condensed';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-CondensedMedium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Condensed';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-CondensedMediumOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Semi Condensed';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-SemiCondensedLight.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Semi Condensed';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-SemiCondensedLightOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Semi Condensed';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-SemiCondensed.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Semi Condensed';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-SemiCondensedOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Semi Condensed';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-SemiCondensedMedium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Semi Condensed';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-SemiCondensedMediumOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-Light.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-LightOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-Oblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-MediumOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Semi Extended';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-SemiExtendedLight.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Semi Extended';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-SemiExtendedLightOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Semi Extended';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-SemiExtended.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Semi Extended';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-SemiExtendedOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Semi Extended';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-SemiExtendedMedium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Semi Extended';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-SemiExtendedMediumOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Extended';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-ExtendedLight.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Extended';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-ExtendedLightOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Extended';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-Extended.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Extended';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-ExtendedOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Extended';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-ExtendedMedium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono Extended';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMono-ExtendedMediumOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Ultra Condensed';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-UltraCondensedLight.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Ultra Condensed';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-UltraCondensedLightOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Ultra Condensed';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-UltraCondensed.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Ultra Condensed';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-UltraCondensedOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Ultra Condensed';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-UltraCondensedMedium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Ultra Condensed';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-UltraCondensedMediumOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Extra Condensed';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-ExtraCondensedLight.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Extra Condensed';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-ExtraCondensedLightOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Extra Condensed';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-ExtraCondensed.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Extra Condensed';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-ExtraCondensedOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Extra Condensed';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-ExtraCondensedMedium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Extra Condensed';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-ExtraCondensedMediumOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Condensed';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-CondensedLight.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Condensed';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-CondensedLightOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Condensed';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-Condensed.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Condensed';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-CondensedOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Condensed';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-CondensedMedium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Condensed';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-CondensedMediumOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Semi Condensed';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-SemiCondensedLight.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Semi Condensed';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-SemiCondensedLightOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Semi Condensed';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-SemiCondensed.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Semi Condensed';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-SemiCondensedOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Semi Condensed';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-SemiCondensedMedium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Semi Condensed';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-SemiCondensedMediumOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-Light.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-LightOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-Oblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-MediumOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Semi Extended';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-SemiExtendedLight.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Semi Extended';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-SemiExtendedLightOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Semi Extended';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-SemiExtended.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Semi Extended';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-SemiExtendedOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Semi Extended';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-SemiExtendedMedium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Semi Extended';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-SemiExtendedMediumOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Extended';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-ExtendedLight.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Extended';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-ExtendedLightOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Extended';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-Extended.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Extended';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-ExtendedOblique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Extended';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-ExtendedMedium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Iosevka Mono QP Extended';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../../font-lab/fonts/IosevkaMonoQP-ExtendedMediumOblique.woff2') format('woff2');
+}
