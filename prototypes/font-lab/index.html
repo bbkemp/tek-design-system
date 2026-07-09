@@ -162,8 +162,8 @@
       <input type="range" id="wt" min="0" max="8" value="3">
     </div>
     <div class="ctl">
-      <label>Letter-Spacing <output id="lsv">0.000em</output></label>
-      <input type="range" id="ls" min="-0.25" max="1" step="0.01" value="0">
+      <label>Letter-Spacing <output id="lsv">0%</output></label>
+      <input type="range" id="ls" min="-25" max="100" step="1" value="0">
     </div>
     <div class="ctl">
       <label>Slope</label>
@@ -385,7 +385,7 @@
 
   async function renderCompare() {
     const rows = $('#cmpRows'); rows.innerHTML = '';
-    const feat = $('#featstr').textContent, base = +$('#sz').value, ls = $('#ls').value;
+    const feat = $('#featstr').textContent, base = +$('#sz').value, ls = +$('#ls').value / 100;
     WIDTHS.forEach((w, i) => {
       const name = faceName(i, weightIdx, oblique);
       const wrap = document.createElement('div');
@@ -406,7 +406,7 @@
   $('#sz').oninput = e => { stage.style.setProperty('--base', e.target.value + 'px'); $('#szv').textContent = e.target.value + 'px'; renderCompare(); };
   $('#wd').oninput = e => { widthIdx = +e.target.value; applyFace(); };
   $('#wt').oninput = e => { weightIdx = +e.target.value; applyFace(); };
-  $('#ls').oninput = e => { stage.style.setProperty('--ls', e.target.value + 'em'); $('#lsv').textContent = (+e.target.value).toFixed(3) + 'em'; renderCompare(); };
+  $('#ls').oninput = e => { stage.style.setProperty('--ls', (e.target.value / 100) + 'em'); $('#lsv').textContent = e.target.value + '%'; renderCompare(); };
   $('#slUp').onclick = () => { oblique = false; $('#slUp').classList.add('on'); $('#slOb').classList.remove('on'); applyFace(); };
   $('#slOb').onclick = () => { oblique = true; $('#slOb').classList.add('on'); $('#slUp').classList.remove('on'); applyFace(); };
   $('#bg').onclick = () => { stage.classList.toggle('light'); $('#cmpCard').classList.toggle('light'); $('#bg').textContent = stage.classList.contains('light') ? 'Light' : 'Dark'; };
