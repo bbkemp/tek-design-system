@@ -23,14 +23,16 @@ Family: `fonts.family.Mono` (`Geist Mono` today → **`Iosevka Mono`**), already
 | `7xl` | 56 | 56 | **heading 3xl** |
 | `8xl` | 64 | 64 | **heading 4xl** |
 | `9xl` | 72 | 72 | **heading 5xl** |
+| `10xl` | 96 | 96 | **new — display readout** |
+| `11xl` | 120 | 120 | **new — hero readout** |
 
-Continuous mono ramp **10 → 72**, 13 steps. `xs`–`5xl` are byte-for-byte the current mono/text values (nothing existing changes); `6xl`–`9xl` are new.
+Continuous mono ramp **10 → 120**, 15 steps. `xs`–`5xl` are byte-for-byte the current mono/text values (nothing existing changes); `6xl`–`9xl` map to the heading scale; `10xl`–`11xl` are new display sizes for large instrument readouts (line-height = size, set tight).
 
 ## 2. Emitted CSS variables (via Token Push, `name/tek/kebab`)
 
 ```
---tek-fonts-mono-size-xs … --tek-fonts-mono-size-9xl
---tek-fonts-mono-line-height-xs … --tek-fonts-mono-line-height-9xl
+--tek-fonts-mono-size-xs … --tek-fonts-mono-size-11xl
+--tek-fonts-mono-line-height-xs … --tek-fonts-mono-line-height-11xl
 ```
 
 ## 3. Token JSON (goes under `fonts` in `primitives/fonts.json`, sibling to text/heading)
@@ -52,7 +54,9 @@ Continuous mono ramp **10 → 72**, 13 steps. `xs`–`5xl` are byte-for-byte the
     "6xl": { "$value": 48, "$type": "number" },
     "7xl": { "$value": 56, "$type": "number" },
     "8xl": { "$value": 64, "$type": "number" },
-    "9xl": { "$value": 72, "$type": "number" }
+    "9xl": { "$value": 72, "$type": "number" },
+    "10xl": { "$value": 96, "$type": "number" },
+    "11xl": { "$value": 120, "$type": "number" }
   },
   "line-height": {
     "xs": { "$value": 12, "$type": "number" },
@@ -67,7 +71,9 @@ Continuous mono ramp **10 → 72**, 13 steps. `xs`–`5xl` are byte-for-byte the
     "6xl": { "$value": 56, "$type": "number" },
     "7xl": { "$value": 56, "$type": "number" },
     "8xl": { "$value": 64, "$type": "number" },
-    "9xl": { "$value": 72, "$type": "number" }
+    "9xl": { "$value": 72, "$type": "number" },
+    "10xl": { "$value": 96, "$type": "number" },
+    "11xl": { "$value": 120, "$type": "number" }
   }
 }
 ```
@@ -91,9 +97,11 @@ Mirrors the current mono styles (size steps at one weight), extended to `9xl`. N
 | `text/mono/regular/7xl` | Iosevka Mono | 400 | 56 | 56 |
 | `text/mono/regular/8xl` | Iosevka Mono | 400 | 64 | 64 |
 | `text/mono/regular/9xl` | Iosevka Mono | 400 | 72 | 72 |
+| `text/mono/regular/10xl` | Iosevka Mono | 400 | 96 | 96 |
+| `text/mono/regular/11xl` | Iosevka Mono | 400 | 120 | 120 |
 
 ## 5. How it lands
-1. Create the `fonts.mono.size.*` + `fonts.mono.line-height.*` **Figma Variables** (13 each). → Token Push regenerates `fonts.json` → `--tek-fonts-mono-*`.
+1. Create the `fonts.mono.size.*` + `fonts.mono.line-height.*` **Figma Variables** (15 each). → Token Push regenerates `fonts.json` → `--tek-fonts-mono-*`.
 2. Create the **Figma text styles** above, bound to the mono family + mono size/line-height variables.
 3. Figma MCP must be re-authed for me to create these directly; otherwise this table is the apply-by-hand reference. (`add-token` skill is the DS-sanctioned path for the variables.)
 
