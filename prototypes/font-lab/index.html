@@ -102,6 +102,10 @@
   .cfg { font-size: calc(var(--base) * 1.15); line-height: 1.9; }
   .cfg .k { color: var(--muted); }
   .ramp div { line-height: 1.35; }
+  .tscale .trow { display: flex; gap: 20px; align-items: baseline; padding: 7px 0; border-top: 1px solid var(--line); }
+  .tscale .trow:first-child { border-top: 0; }
+  .tscale .tnum { flex: 0 0 132px; color: var(--muted); font-family: var(--sans); font-size: 11px; letter-spacing: .03em; white-space: nowrap; }
+  .tscale .tcopy { flex: 1 1 auto; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   #cmpRows > div { padding: 10px 0; border-top: 1px dashed var(--line); }
 
   aside.rail {
@@ -146,7 +150,7 @@
     </div>
     <div class="ctl">
       <label>Letter-Spacing <output id="lsv">0.000em</output></label>
-      <input type="range" id="ls" min="-0.03" max="0.15" step="0.005" value="0">
+      <input type="range" id="ls" min="-0.1" max="0.4" step="0.005" value="0">
     </div>
     <div class="ctl">
       <label>Slope</label>
@@ -208,6 +212,24 @@
     <div class="tier">
       <div class="tlabel">Zeros in context</div>
       <div class="disamb">00 O0 0O &nbsp; 100.000 &nbsp; 03000 &nbsp; 0022246AFECA &nbsp; 000.1826 &nbsp; +00.0000</div>
+    </div>
+    <div class="tier">
+      <div class="tlabel">Mono type scale — proposed fonts.mono.* (10 → 72)</div>
+      <div class="tscale">
+        <div class="trow"><div class="tnum">10px · xs · lh 12</div><div class="tcopy" style="font-size:10px;line-height:12px">Sourcing 1.53176 V &mdash; logged 1,024 samples at 5/s (&plusmn;0.5%)</div></div>
+        <div class="trow"><div class="tnum">12px · sm · lh 12</div><div class="tcopy" style="font-size:12px;line-height:12px">Sourcing 1.53176 V &mdash; logged 1,024 samples at 5/s (&plusmn;0.5%)</div></div>
+        <div class="trow"><div class="tnum">13px · md · lh 16</div><div class="tcopy" style="font-size:13px;line-height:16px">Sourcing 1.53176 V &mdash; logged 1,024 samples at 5/s (&plusmn;0.5%)</div></div>
+        <div class="trow"><div class="tnum">14px · lg · lh 20</div><div class="tcopy" style="font-size:14px;line-height:20px">Sourcing 1.53176 V &mdash; logged 1,024 samples at 5/s (&plusmn;0.5%)</div></div>
+        <div class="trow"><div class="tnum">16px · xl · lh 24</div><div class="tcopy" style="font-size:16px;line-height:24px">Sourcing 1.53176 V &mdash; logged 1,024 samples at 5/s (&plusmn;0.5%)</div></div>
+        <div class="trow"><div class="tnum">20px · 2xl · lh 32</div><div class="tcopy" style="font-size:20px;line-height:32px">Sourcing 1.53176 V &mdash; logged 1,024 samples at 5/s (&plusmn;0.5%)</div></div>
+        <div class="trow"><div class="tnum">24px · 3xl · lh 32</div><div class="tcopy" style="font-size:24px;line-height:32px">Sourcing 1.53176 V &mdash; logged 1,024 samples at 5/s</div></div>
+        <div class="trow"><div class="tnum">32px · 4xl · lh 40</div><div class="tcopy" style="font-size:32px;line-height:40px">Sourcing 1.53176 V &mdash; 1,024 samples</div></div>
+        <div class="trow"><div class="tnum">40px · 5xl · lh 48</div><div class="tcopy" style="font-size:40px;line-height:48px">Sourcing 1.53176 V</div></div>
+        <div class="trow"><div class="tnum">48px · 6xl · lh 56</div><div class="tcopy" style="font-size:48px;line-height:56px">+01.53176 VDC</div></div>
+        <div class="trow"><div class="tnum">56px · 7xl · lh 56</div><div class="tcopy" style="font-size:56px;line-height:56px">+01.53176 VDC</div></div>
+        <div class="trow"><div class="tnum">64px · 8xl · lh 64</div><div class="tcopy" style="font-size:64px;line-height:64px">+01.53176</div></div>
+        <div class="trow"><div class="tnum">72px · 9xl · lh 72</div><div class="tcopy" style="font-size:72px;line-height:72px">+01.53176</div></div>
+      </div>
     </div>
     <div class="tier">
       <div class="tlabel">Config &amp; network values</div>
