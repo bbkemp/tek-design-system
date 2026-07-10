@@ -1,0 +1,19 @@
+{
+  "name": "Dragon Storm",
+  "short_name": "Dragon Storm",
+  "description": "GDM9061 Dragon Storm — screen-only standalone",
+  "start_url": "./screen.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "../sign-in/img/IconLogo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
