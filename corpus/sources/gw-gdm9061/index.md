@@ -1,6 +1,6 @@
 # GDM9061 — screen index
 
-Generated **2026-06-30**. All 10 unique screens clustered from 29 source captures in `uploads/photos/` are documented. The GDM9061 is a 6½-digit benchtop digital multimeter; this corpus subject is the source UI for the internal **"Dragon Storm"** reskin and is documented as-is (no design-system mapping — that is a separate, dated audit via `prototype-qa`).
+Generated **2026-06-30** (updated **2026-07-10**: added `dual-display`). All 11 unique screens (10 clustered from 29 source captures, plus `dual-display` added later) in `uploads/photos/` are documented. The GDM9061 is a 6½-digit benchtop digital multimeter; this corpus subject is the source UI for the internal **"Dragon Storm"** reskin and is documented as-is (no design-system mapping — that is a separate, dated audit via `prototype-qa`).
 
 ## Screen graph
 
@@ -10,6 +10,7 @@ measurement  (readout)                    ← navigational root (single big read
 ├── trendchart     (graph)                ← Display ▸ TrendChart
 ├── histogram      (graph)                ← Display ▸ Histogram
 ├── statistics     (readout)              ← Math ▸ STAT  (also COMP / pass-fail state)
+├── dual-display   (readout)              ← 2ND softkey — dual 1ST/2ND display (DCV + ACV, AC+DC)
 └── config-system  (config)              ← MENU key — Configuration dialog, System tab
     ├── config-display    (config)        ← Display tab
     ├── config-interface  (config)        ← Interface tab
@@ -28,6 +29,7 @@ measurement-alt  (readout)                ← alternate display theme (single ca
 | [trendchart](screens/trendchart.md) | TrendChart | graph | DC Voltage, TrendChart display mode |
 | [histogram](screens/histogram.md) | Histogram | graph | DC Voltage, Histogram display mode |
 | [statistics](screens/statistics.md) | Math display — Statistics | readout | DC Voltage, MathDisp = STAT |
+| [dual-display](screens/dual-display.md) | Dual Display (1ST / 2ND) | readout | 1ST DCV / 2ND ACV, AC+DC combined |
 | [config-system](screens/config-system.md) | Configuration — System | config | System tab active |
 | [config-display](screens/config-display.md) | Configuration — Display | config | Display tab active |
 | [config-interface](screens/config-interface.md) | Configuration — Interface | config | Interface tab active |

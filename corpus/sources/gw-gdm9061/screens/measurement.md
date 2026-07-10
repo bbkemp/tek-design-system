@@ -14,6 +14,7 @@ child_screens:
   - trendchart
   - histogram
   - statistics
+  - dual-display
   - config-system
 controls:
   - id: status-loc
