@@ -13,11 +13,12 @@ Drop CD HTML exports here (e.g. `measurement-options.html`) so they're readable 
 
 `screen.html` + `screen.webmanifest` are a kiosk duplicate of `index.html` (same CD bundle, template edited in place — `index.html` itself is untouched):
 
-- Just the 480×272 LCD on a black page — dev panel hidden, no desk chrome.
+- Just the 480×272 LCD — dev panel hidden, no desk chrome. Filter **off**: clean prototype on black. Filter **on**: full device sim — white plastic bezel + front-panel dark grey (`#363a40`) backdrop. The bezel is device-proportional and clips at the viewport edge when space is tight: **screen size always wins over the bezel.**
 - Save to Home Screen → opens full screen (standalone), landscape, black status bar.
 - The LCD scales uniformly (aspect ratio locked, letterboxed in black) and refits on rotate/resize. On touch devices it renders at **physical 1:1** — the real instrument's 95 mm-wide 4.3" panel — whenever the screen is large enough (iPhone landscape, any iPad), falling back to fit-to-viewport when it isn't (iPhone portrait). Desktop browsers can't report monitor DPI, so they keep fit-to-window.
-- **Tap the status-bar clock to cycle to the next screen** (all 13, wrapping). Same pattern as the Tek Bench standalone drop.
-- Regenerate after an `index.html` refresh by re-running the same template edits (black wrapper, hidden dev panel, viewport-fit board scale with the true-size cap, `nextScreen` clock handler, scroll/zoom pinning, PWA meta) — don't hand-edit the bundled line.
+- **Screen-nav pills** (left column in landscape, wrapping across the top in portrait): one bezel-plastic pill per screen with short labels (Measure, Alt, Dual, Range, Overload, Trend, Hist, Stats, Fail, System, Display, I/O, LAN); the active screen renders pressed-in. The LCD Filter toggle shares the same off-white plastic styling.
+- **LCD Filter toggle** (right edge in landscape, bottom letterbox in portrait, persisted in localStorage) drives the whole device sim: bezel, panel-grey backdrop, an RGB-subpixel/pixel-gap lattice locked to the 480×272 logical pixels, TN-style contrast/saturation shift, a faint backlight veil, and true pixel degradation — an SVG mosaic filter (`#lcd-pixelate`: pre-blur ≈ box filter, then one sample per logical pixel) that re-rasterizes the vector UI to the panel grid so glyphs go bitmapped/jagged like the real screen. Browsers without url() reference-filter support just skip the mosaic and keep the rest.
+- Regenerate after an `index.html` refresh by re-running the same template edits (panel-grey wrapper, hidden dev panel, viewport-fit board scale with the true-size cap, bezel chrome, LCD-filter toggle/overlay, `nextScreen` clock handler, scroll/zoom pinning, PWA meta) — don't hand-edit the bundled line.
 
 ## Notes
 
