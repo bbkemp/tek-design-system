@@ -1,18 +1,24 @@
 {
-  "name": "Dragon Storm",
-  "short_name": "Dragon Storm",
-  "description": "GDM9061 Dragon Storm — screen-only standalone",
+  "name": "Dragonstorm",
+  "short_name": "Dragonstorm",
+  "description": "GDM9061 Dragonstorm — screen-only standalone",
   "start_url": "./screen.html",
   "scope": "./",
   "display": "fullscreen",
   "orientation": "landscape",
-  "background_color": "#363a40",
-  "theme_color": "#363a40",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "icons": [
     {
-      "src": "../sign-in/img/IconLogo.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
       "purpose": "any"
     }
   ]
