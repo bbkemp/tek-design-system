@@ -13,11 +13,12 @@ Drop CD HTML exports here (e.g. `measurement-options.html`) so they're readable 
 
 `screen.html` + `screen.webmanifest` are a kiosk duplicate of `index.html` (same CD bundle, template edited in place — `index.html` itself is untouched):
 
-- Just the 480×272 LCD on a black page — dev panel hidden, no desk chrome.
+- Just the 480×272 LCD framed by the instrument's white plastic bezel, on the front-panel dark grey (`#363a40`) — dev panel hidden, no desk chrome. The bezel is device-proportional and clips at the viewport edge when space is tight: **screen size always wins over the bezel.**
 - Save to Home Screen → opens full screen (standalone), landscape, black status bar.
 - The LCD scales uniformly (aspect ratio locked, letterboxed in black) and refits on rotate/resize. On touch devices it renders at **physical 1:1** — the real instrument's 95 mm-wide 4.3" panel — whenever the screen is large enough (iPhone landscape, any iPad), falling back to fit-to-viewport when it isn't (iPhone portrait). Desktop browsers can't report monitor DPI, so they keep fit-to-window.
 - **Tap the status-bar clock to cycle to the next screen** (all 13, wrapping). Same pattern as the Tek Bench standalone drop.
-- Regenerate after an `index.html` refresh by re-running the same template edits (black wrapper, hidden dev panel, viewport-fit board scale with the true-size cap, `nextScreen` clock handler, scroll/zoom pinning, PWA meta) — don't hand-edit the bundled line.
+- **LCD Filter toggle** (right edge in landscape, bottom letterbox in portrait, persisted in localStorage): simulates the real 4.3" TFT — an RGB-subpixel/pixel-gap lattice locked to the 480×272 logical pixels, slight glyph softening, TN-style contrast/saturation shift, and a faint backlight veil.
+- Regenerate after an `index.html` refresh by re-running the same template edits (panel-grey wrapper, hidden dev panel, viewport-fit board scale with the true-size cap, bezel chrome, LCD-filter toggle/overlay, `nextScreen` clock handler, scroll/zoom pinning, PWA meta) — don't hand-edit the bundled line.
 
 ## Notes
 
