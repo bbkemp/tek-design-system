@@ -15,9 +15,9 @@ Drop CD HTML exports here (e.g. `measurement-options.html`) so they're readable 
 
 - Just the 480×272 LCD on a black page — dev panel hidden, no desk chrome.
 - Save to Home Screen → opens full screen (standalone), landscape, black status bar.
-- The LCD scales uniformly to fit the viewport (aspect ratio locked, letterboxed in black) and refits on rotate/resize.
+- The LCD scales uniformly (aspect ratio locked, letterboxed in black) and refits on rotate/resize. On touch devices it renders at **physical 1:1** — the real instrument's 95 mm-wide 4.3" panel — whenever the screen is large enough (iPhone landscape, any iPad), falling back to fit-to-viewport when it isn't (iPhone portrait). Desktop browsers can't report monitor DPI, so they keep fit-to-window.
 - **Tap the status-bar clock to cycle to the next screen** (all 13, wrapping). Same pattern as the Tek Bench standalone drop.
-- Regenerate after an `index.html` refresh by re-running the same template edits (black wrapper, hidden dev panel, viewport-fit board scale, `nextScreen` clock handler, PWA meta) — don't hand-edit the bundled line.
+- Regenerate after an `index.html` refresh by re-running the same template edits (black wrapper, hidden dev panel, viewport-fit board scale with the true-size cap, `nextScreen` clock handler, scroll/zoom pinning, PWA meta) — don't hand-edit the bundled line.
 
 ## Notes
 
