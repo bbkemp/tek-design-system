@@ -208,7 +208,7 @@ Two cross-product VOC decks processed at `decks/`, **11 topic-clustered chunks**
 
 ## Documented walkthroughs
 
-Two meetings processed at `walkthroughs/`, **7 topic-clustered chunks** plus an [index](walkthroughs/_index.md).
+Three meetings (plus one methodology document) processed at `walkthroughs/`, **10 topic-clustered chunks** plus an [index](walkthroughs/_index.md).
 
 ### 2026-04-23 — TekExpress Design System Follow-up Discussion
 
@@ -233,7 +233,25 @@ Two meetings processed at `walkthroughs/`, **7 topic-clustered chunks** plus an 
 
 Mid-meeting segments (~12:00 – ~54:53) of the AU VoC discussion are **pending follow-up processing**.
 
-**Highest-RAG-value friction notes** from the transcript:
+### 2026-07 — TekExpress prototype SME review #1 (Tapo)
+
+3 chunks covering the first SME review of the TekExpress prototype (`prototypes/tek-express/`) with Tapo, an application engineer and former TekExpress application developer. `applies_to: [tek-express]` for the workflow-anatomy chunk; `[tek-express, tek-design-system]` for the two feedback chunks. Source transcript is unlabeled and untimestamped auto-transcription (see each chunk's Confidence notes for the ASR glossary).
+
+| Chunk | Topic |
+|---|---|
+| [compliance-test-workflow-anatomy](walkthroughs/compliance-test-workflow-anatomy.md) | Framework vs. application layer, DUT-panel semantics + "first panel" settings pressure, setup → selection → acquire → analyze → report anatomy, SCPI/SigTest, cross-app consistency, 20 years of drift |
+| [prototype-review-logs-results-and-reporting](walkthroughs/prototype-review-logs-results-and-reporting.md) | Keysight split-panel logs benchmark, flat results + download-and-scan workaround, custom limits / rework mode, HTML report preview, MHT/CSV/markdown formats, rerun-and-merge |
+| [prototype-review-navigation-help-and-visual-cues](walkthroughs/prototype-review-navigation-help-and-visual-cues.md) | Selection-driven contextual help (Clarius question-mark anti-pattern), checkmark semantics, non-sequential navigation, run-with-defaults, "blue dot" interdependency cue, Debug/Preferences placement, white brightness, icons |
+
+**Highest-RAG-value findings (2026-07 SME review):**
+
+- *"The segregation of settings that we have done here, that kind of goes for a toss."* — the DUT panel is a dumping ground under AE first-panel pressure; Tapo explicitly asks UX to arbitrate settings placement.
+- *"They felt that there is a lack of that intuitiveness or that the free flowing nature of Tek Express, what it used to have."* — field-AE evidence that the Clarius redesign eroded the wizard flow. Direct cautionary precedent for this redesign.
+- **Keysight is the benchmark on every post-Start surface**: split-panel summary+detail logs, richer results with plots, in-UI HTML report preview. Current TekExpress logs/results are "pretty flat"; the standard failure-finding workaround is *download the report and scan it*.
+- **Two DS-level pattern asks with no existing primitive**: selection-driven contextual help (minimalist — *not* Clarius's 100 question marks) and a cross-panel "blue dot" change indicator for interdependent settings.
+- **Run-with-defaults invariant**: *"Ideally, Tek Express… it's just run"* — DUT + test selection filled, everything else defaulted, Start must work. Checkmark-as-visited semantics confused everyone in the room; iteration committed.
+
+**Highest-RAG-value friction notes** from the 2026-04-23 transcript:
 
 - *"We go and sort of remake charts in the native place. And then what happens is we lose all the richness."* — Rick Kuhlman (55:23). The chart-library decision is the most-impactful open question for the redesign.
 - *"These need to be designed in such a way to dock half and half."* — Rick Kuhlman (50:05). Window-sizing modes between full and minimised are unvalidated.

@@ -66,7 +66,27 @@ Generic Fortive corporate VOC methodology — the discussion-guide / question-ba
 
 This is the **methodology family parent** of the Subhasis-authored empathy-map decks at [`tek-express/decks/designcon-2023-voc-summary/`](../decks/designcon-2023-voc-summary/_index.md), [`tek-express/decks/india-customer-voc-2023-march/`](../decks/india-customer-voc-2023-march/_index.md), and [`tek-flow/decks/tekflow-voc-synthesis-2022-12/`](../../tek-flow/decks/tekflow-voc-synthesis-2022-12/_index.md). It is also the upstream template for the **Tek-specific** Tx-Rx Solutions Platform VOC guide PDF (pending `/document-pdf` processing).
 
-## Pending references (across both meetings)
+### 4. TekExpress prototype SME review #1 — Tapo (2026-07)
+
+**Source:** `uploads/transcripts/tek-express-prototype-sme-review-tapo-2026-07.txt` · **Recorded:** on or shortly before 2026-07-13 (exact date not stated in transcript) · **Duration:** unknown (no timestamps) · **Applies to:** `tek-express`, `tek-design-system`
+
+First SME review session of the TekExpress prototype (`prototypes/tek-express/`). Tapo — an application engineer and former TekExpress application developer — clicks through the prototype and thinks out loud. First half is the deepest architectural explanation of TekExpress in the corpus (framework vs. application layer, DUT-panel semantics, the universal setup → selection → acquire → analyze → report anatomy, SCPI scope communication, SigTest); second half is concrete prototype feedback benchmarked against Keysight (split-panel logs, flat results, HTML report preview, report formats) plus DS-level pattern asks (selection-driven contextual help without Clarius-style question-mark clutter, a "blue dot" cross-panel change indicator, checkmark semantics, run-with-defaults invariant).
+
+| Chunk | Topic |
+|---|---|
+| [compliance-test-workflow-anatomy](./compliance-test-workflow-anatomy.md) | Guided-simplicity differentiator · Clarius workflow regression (field-AE evidence) · framework vs. application layer · DUT panel + "first panel" settings-placement pressure · SCPI / waveforms / SigTest · cross-app workflow consistency · 20 years of look-and-feel drift |
+| [prototype-review-logs-results-and-reporting](./prototype-review-logs-results-and-reporting.md) | Keysight split-panel logs benchmark · flat/abstract logs and errors · flat results view + download-and-scan workaround · marginal passes and custom limits (rework mode) · auto-load failing waveform idea · HTML report preview · MHT obsolete / CSV must-keep / markdown proposed · rerun-and-merge use case |
+| [prototype-review-navigation-help-and-visual-cues](./prototype-review-navigation-help-and-visual-cues.md) | On-screen contextual help (minimalist, selection-driven, not 100 question marks) · icons "more professional" · white too bright · direct non-sequential step navigation · checkmark = visited-only confusion · run-with-defaults · "blue dot" interdependent-settings cue · Debug/Preferences placement · container breakpoints · habituation ≠ satisfaction |
+
+#### Participants (2026-07 SME review #1)
+
+| Name | Role | Key contributions |
+|---|---|---|
+| Tapo | Application engineer / SME (former TekExpress application developer) | Full workflow anatomy, Keysight benchmarks, all UI feedback items |
+| Bryan Kemp | DS lead | Session facilitation, markdown-report proposal, global-help-pattern and checkmark-iteration commitments |
+| (unnamed) | UX participant, note-taking | Interviewer questions (icons, formats, merge behavior); likely Arpita Jogdand — inferred, not stated |
+
+## Pending references (across all meetings)
 
 - **TekRx product** — Pranavi demos it alongside TekExpress (2026-04-23) and Subhasis references TekFlow's relation to TekExpress (2026-06-23). TekFlow has its own subject; TekRx may need one if more material surfaces.
 - **Chart library decision** — Kuhlman raised the original concern (2026-04-23, 55:23, "we lose all the richness"). Subhasis's mantras don't directly address it but reinforce the cross-vendor parity constraint that caps differentiation outside the workflow layer.
@@ -75,3 +95,8 @@ This is the **methodology family parent** of the Subhasis-authored empathy-map d
 - **Section 4 of the UI/UX deep-dive** (in the Tx-Rx VOC guide PDF) — Subhasis's pointed-to extension point for the AU team's VOC guide. Process via `/document-pdf` when ready.
 - **Bangkok slides** — Subhasis committed to share (2026-06-23, 55:30). Not in inbox as of 2026-06-25.
 - **48 VOCs from 2020 pandemic customer list** — Subhasis committed to share + reconnect (2026-06-23, 55:30). Not in inbox as of 2026-06-25.
+- **Global contextual-help pattern** (2026-07 SME review) — selection-driven on-screen help with doc deep-links; committed to explore as a DS-wide pattern. No component or spec yet.
+- **Cross-panel change-indicator ("blue dot") pattern** (2026-07 SME review) — attention cue for interdependent-settings side effects. No DS primitive yet.
+- **Keysight split-panel log-view screenshots** (2026-07 SME review) — Tapo believes screenshots exist; route into a Keysight subject when they surface.
+- **Field-AE Clarius interview material** (2026-07 SME review) — Tapo cites interviews evidencing the Clarius intuitiveness regression; raw material not in corpus.
+- **Session save/load, export, and rerun-and-merge flows** (2026-07 SME review) — deferred to a follow-up SME session with Tapo.
