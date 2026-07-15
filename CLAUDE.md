@@ -94,7 +94,7 @@ These are flagged here so you don't act as if they exist, and don't propose them
 | `npm run new:component` Plop scaffold | Part 3 |
 | Storybook / component explorer | Part 4 (`apps/storybook`) |
 | Per-component `.styles.ts` / `.test.ts` / `.stories.ts` split | Part 3 |
-| Knowledge corpus retrieval (vector DB + embeddings + MCP) — authoring side is shipped, see [`corpus/README.md`](./corpus/README.md) | Part 1 |
+| Knowledge corpus retrieval (vector DB + embeddings + MCP) — authoring side is shipped, see [`corpus/README.md`](./corpus/README.md); endpoint build plan: [docs/mcp-server-plan.md](./docs/mcp-server-plan.md), scaffold in progress under `apps/mcp/` | Part 1 |
 | UXR + analytics taxonomy | Part 5 |
 
 Until namespace migration ships, packages and imports inside this repo use `@bbkemp/*`. Don't pre-emptively rename in code.
