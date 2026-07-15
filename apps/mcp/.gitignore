@@ -1,0 +1,8 @@
+.next/
+out/
+.env
+.env.*
+.vercel
+*.tsbuildinfo
+*.cpuprofile
+undefined/

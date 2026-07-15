@@ -1,0 +1,24 @@
+{
+  "name": "tek-mcp-endpoint",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Tek MCP Endpoint — hosted MCP server over the design system and corpus (see docs/mcp-server-plan.md)",
+  "scripts": {
+    "dev": "next dev --port 3333",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "@types/react": "^19.2.17",
+    "typescript": "5.9.3"
+  },
+  "dependencies": {
+    "mcp-handler": "^1.1.0",
+    "next": "^16.2.10",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "zod": "^3.25.76"
+  }
+}
