@@ -12,11 +12,13 @@
     "./primitives/css": "./dist/tek.primitives.css",
     "./primitives/js": "./dist/tek.primitives.js",
     "./json": "./src/semantic/tokens.json",
-    "./json/light": "./src/semantic/tokens.light.json"
+    "./json/light": "./src/semantic/tokens.light.json",
+    "./fonts/iosevka-mono": "./fonts/iosevka-mono.css"
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "fonts"
   ],
   "scripts": {
     "build": "node build.js",
