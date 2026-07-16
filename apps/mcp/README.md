@@ -92,6 +92,16 @@ npm run ingest --workspace=apps/mcp
 
 With no `DATABASE_URL` in the environment (or `DRY_RUN=1`) it's a dry run: parses everything, prints counts, writes nothing.
 
+## Eval harness
+
+[`eval/cases.json`](./eval/cases.json) holds curated question → expected-chunk pairs across every corpus subject plus token/component exact-lookups. Run against any deployment:
+
+```
+TEK_MCP_URL=https://<host>/<secret>/mcp npm run eval --workspace=apps/mcp
+```
+
+Scores corpus recall@5 (threshold 80%) and exact cases (must all pass); exits non-zero on failure. Baseline 2026-07-16: 96% recall@5, 7/7 exact. Don't tune queries to fit results — a miss is information about retrieval, not the question.
+
 ## Current tools
 
 | Tool | What it does |

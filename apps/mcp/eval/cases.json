@@ -1,0 +1,44 @@
+{
+  "$comment": "Curated eval set for the Tek MCP Endpoint. Corpus cases pass when an expected path lands in the top 5 (recall@5). Do not tune queries to fit results — a miss is information about retrieval, not about the question.",
+  "corpus": [
+    { "query": "how do I change the measurement function on the 2450 front panel", "expect_any": ["corpus/sources/2450-ec/screens/home.md"] },
+    { "query": "what connectors and buttons are on the 2450 front panel", "expect_any": ["corpus/sources/2450-ec/hardware/front-panel.md"] },
+    { "query": "how to assemble a test cable for the 2450", "expect_any": ["corpus/sources/2450-ec/docs/user-manual/cable-assembly.md"] },
+    { "query": "2450 first power-on and initial setup", "expect_any": ["corpus/sources/2450-ec/docs/user-manual/getting-started.md"] },
+    { "query": "view measurements as a graph on the 2450 touchscreen", "expect_any": ["corpus/sources/2450-ec/screens/graph.md"] },
+    { "query": "overview of the 2450 home screen and menus in the manual", "expect_any": ["corpus/sources/2450-ec/docs/user-manual/home-and-menu-overview.md"] },
+    { "query": "API endpoint to create a new account", "expect_any": ["corpus/sources/dev-core-api/api/v1.0-2026-05-12/accounts.md"] },
+    { "query": "how do I invite a user through the API", "expect_any": ["corpus/sources/dev-core-api/api/v1.0-2026-05-12/invitations.md"] },
+    { "query": "entitlement product keys endpoints", "expect_any": ["corpus/sources/dev-core-api/api/v1.0-2026-05-12/entitlements-product-keys.md"] },
+    { "query": "which API lists a user's memberships", "expect_any": ["corpus/sources/dev-core-api/api/v1.0-2026-05-12/memberships.md"] },
+    { "query": "most severe UI and UX bugs reported against Garuda", "expect_any": ["corpus/sources/garuda/data/garuda-ui-ux-jira-export/blocker-and-critical.md", "corpus/sources/garuda/data/garuda-ui-ux-jira-export/major-priority.md"] },
+    { "query": "key insights from the Garuda voice of customer synthesis", "expect_any": ["corpus/sources/garuda/data/garuda-vos-synthesis/key-insights.md"] },
+    { "query": "histogram view on the GDM-9061 multimeter", "expect_any": ["corpus/sources/gw-gdm9061/screens/histogram.md"] },
+    { "query": "how to measure resistance on the GDM-9061", "expect_any": ["corpus/sources/gw-gdm9061/docs/user-manual/resistance-measurement.md", "corpus/sources/gw-gdm9061/screens/measurement.md"] },
+    { "query": "configure LAN network settings on the GDM-9061", "expect_any": ["corpus/sources/gw-gdm9061/screens/config-lan.md"] },
+    { "query": "set up the test environment for Keysight USB-C testing", "subject": "keysight-d9020", "expect_any": ["corpus/sources/keysight-d9020/docs/d9020usbc-usb3-online-help/setting-up-test-environment.md"] },
+    { "query": "start and run tests in the Keysight USB3 test application", "subject": "keysight-d9020", "expect_any": ["corpus/sources/keysight-d9020/docs/d9020usbc-usb3-online-help/running-tests.md", "corpus/sources/keysight-d9020/docs/d9020usbc-usb3-online-help/starting-the-test-application.md"] },
+    { "query": "how is the DUT physically connected on the Keysight D9040 bench", "expect_any": ["corpus/sources/keysight-d9040/hardware/dut-setup.md", "corpus/sources/keysight-d9040/hardware/bench-overview.md"] },
+    { "query": "where do I see the HTML test report", "subject": "keysight-d9040", "expect_any": ["corpus/sources/keysight-d9040/screens/html-report.md", "corpus/sources/keysight-d9040/screens/results.md"] },
+    { "query": "email notification settings in TekExpress", "expect_any": ["corpus/sources/tek-express/screens/setup-preferences-email-settings.md"] },
+    { "query": "selecting which tests to run in TekExpress", "expect_any": ["corpus/sources/tek-express/screens/setup-test-selection.md", "corpus/sources/tek-express/screens/setup-test-selection-config.md"] },
+    { "query": "TekExpress DUT setup screen", "expect_any": ["corpus/sources/tek-express/screens/setup-dut.md", "corpus/sources/tek-express/wireframes/setup-dut-wireframe.md"] },
+    { "query": "what did STM customers say about TekFlow", "expect_any": ["corpus/sources/tek-flow/decks/stm-france-tekflow-presentation/stm-customer-feedback.md", "corpus/sources/tek-flow/walkthroughs/customer-feedback-thread.md"] },
+    { "query": "TekFlow software licensing and product offering", "expect_any": ["corpus/sources/tek-flow/decks/stm-france-tekflow-presentation/software-product-offering-and-licensing.md"] },
+    { "query": "how is the design system button component implemented in code", "expect_any": ["corpus/sources/tek-design-system/code/2026-05-12-85a6857/packages-ui-button.md", "corpus/sources/tek-design-system/code/2026-05-12-85a6857/packages-ui.md"] },
+    { "query": "how does the Figma token push plugin commit token files", "expect_any": ["corpus/sources/tek-design-system/code/2026-05-12-85a6857/figma-token-push.md"] }
+  ],
+  "tokens": [
+    { "query": "input border error", "expect": "tek-color-input-border-error" },
+    { "query": "button background hover", "expect": "tek-color-button-background-hover" },
+    { "query": "selector background checked", "expect": "tek-color-selector-background-checked" }
+  ],
+  "token_gets": [
+    { "name": "tek-color-button-border-default", "expect_value_dark": "#33baea" }
+  ],
+  "components": [
+    { "tag": "tek-button", "expect_class": "TekButton" },
+    { "tag": "tek-modal", "expect_class": "TekModal" },
+    { "tag": "tek-input", "expect_class": "TekInput" }
+  ]
+}
