@@ -10,11 +10,11 @@ module_id: node-links
 module_title: "Node Links"
 resource: node_links
 endpoints:
-  - { method: GET, path: /api/v1/node_links, summary: "List node links" }
-  - { method: POST, path: /api/v1/node_links, summary: "Create account node (link)" }
-  - { method: GET, path: /api/v1/node_links/{id}, summary: "Get account node (link)" }
-  - { method: PATCH, path: /api/v1/node_links/{id}, summary: "Update account node (link)" }
-  - { method: DELETE, path: /api/v1/node_links/{id}, summary: "Delete account node (link)" }
+  - { method: GET, path: "/api/v1/node_links", summary: "List node links" }
+  - { method: POST, path: "/api/v1/node_links", summary: "Create account node (link)" }
+  - { method: GET, path: "/api/v1/node_links/{id}", summary: "Get account node (link)" }
+  - { method: PATCH, path: "/api/v1/node_links/{id}", summary: "Update account node (link)" }
+  - { method: DELETE, path: "/api/v1/node_links/{id}", summary: "Delete account node (link)" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

@@ -10,13 +10,13 @@ module_id: users
 module_title: "Users"
 resource: users
 endpoints:
-  - { method: GET, path: /api/v1/users, summary: "List users" }
-  - { method: POST, path: /api/v1/users, summary: "Create user" }
-  - { method: GET, path: /api/v1/users/{id}, summary: "Get user" }
-  - { method: PATCH, path: /api/v1/users/{id}, summary: "Update user (partial)" }
-  - { method: PUT, path: /api/v1/users/{id}, summary: "Update user (full)" }
-  - { method: DELETE, path: /api/v1/users/{id}, summary: "Delete user" }
-  - { method: GET, path: /api/v1/users/{id}/memberships, summary: "Get memberships for user" }
+  - { method: GET, path: "/api/v1/users", summary: "List users" }
+  - { method: POST, path: "/api/v1/users", summary: "Create user" }
+  - { method: GET, path: "/api/v1/users/{id}", summary: "Get user" }
+  - { method: PATCH, path: "/api/v1/users/{id}", summary: "Update user (partial)" }
+  - { method: PUT, path: "/api/v1/users/{id}", summary: "Update user (full)" }
+  - { method: DELETE, path: "/api/v1/users/{id}", summary: "Delete user" }
+  - { method: GET, path: "/api/v1/users/{id}/memberships", summary: "Get memberships for user" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

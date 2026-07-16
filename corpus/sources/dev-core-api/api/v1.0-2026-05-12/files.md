@@ -10,9 +10,9 @@ module_id: files
 module_title: "Files"
 resource: files
 endpoints:
-  - { method: POST, path: /api/v1/files, summary: "Create file" }
-  - { method: GET, path: /api/v1/files/{id}, summary: "Get file (metadata)" }
-  - { method: GET, path: /api/v1/files/{id}/contents, summary: "Get file contents (bytes)" }
+  - { method: POST, path: "/api/v1/files", summary: "Create file" }
+  - { method: GET, path: "/api/v1/files/{id}", summary: "Get file (metadata)" }
+  - { method: GET, path: "/api/v1/files/{id}/contents", summary: "Get file contents (bytes)" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

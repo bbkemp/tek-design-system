@@ -250,7 +250,7 @@ controls:
     label: Details
     type: readout
     state: active
-    action: Right pane of the Messages panel — expanded detail for the currently selected message row. Visible text: `The HTML report now reflects the results shown on the Results tab.`
+    action: "Right pane of the Messages panel — expanded detail for the currently selected message row. Visible text: `The HTML report now reflects the results shown on the Results tab.`"
   - id: statusbar-unsaved-changes
     label: Unsaved Changes
     type: indicator

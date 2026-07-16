@@ -34,7 +34,7 @@ controls:
     label: ""
     type: readout
     state: active
-    action: Editable grid of per-test limit values. Six columns visible: Test Name, Details, Compare String (low side), Low Limit, Compare String (high side), High Limit.
+    action: "Editable grid of per-test limit values. Six columns visible: Test Name, Details, Compare String (low side), Low Limit, Compare String (high side), High Limit."
   - id: limits-row-alm
     label: Algorithm Library Measurement
     type: input

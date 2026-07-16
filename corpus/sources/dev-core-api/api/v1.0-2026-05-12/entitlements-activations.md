@@ -10,11 +10,11 @@ module_id: entitlements-activations
 module_title: "Entitlements — Activations"
 resource: entitlements
 endpoints:
-  - { method: GET, path: /api/v1/entitlements/activations, summary: "List entitlement activations" }
-  - { method: POST, path: /api/v1/entitlements/activations, summary: "Activate entitlement" }
-  - { method: GET, path: /api/v1/entitlements/activations/{id}, summary: "Get entitlement activation" }
-  - { method: POST, path: /api/v1/entitlements/activations/revoke, summary: "Revoke activation (bulk)" }
-  - { method: POST, path: /api/v1/entitlements/activations/{id}/revoke, summary: "Revoke entitlement by ID" }
+  - { method: GET, path: "/api/v1/entitlements/activations", summary: "List entitlement activations" }
+  - { method: POST, path: "/api/v1/entitlements/activations", summary: "Activate entitlement" }
+  - { method: GET, path: "/api/v1/entitlements/activations/{id}", summary: "Get entitlement activation" }
+  - { method: POST, path: "/api/v1/entitlements/activations/revoke", summary: "Revoke activation (bulk)" }
+  - { method: POST, path: "/api/v1/entitlements/activations/{id}/revoke", summary: "Revoke entitlement by ID" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

@@ -24,7 +24,7 @@ controls:
     label: Results table
     type: indicator
     state: active
-    action: Top region — one row per executed test. Columns visible: `Test Name`, `Actual Value`, `Margin %`, `Pass Limits`, `# Trials`.
+    action: "Top region — one row per executed test. Columns visible: `Test Name`, `Actual Value`, `Margin %`, `Pass Limits`, `# Trials`."
   - id: results-col-test-name
     label: Test Name
     type: indicator

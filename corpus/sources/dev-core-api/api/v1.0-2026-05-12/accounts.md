@@ -10,15 +10,15 @@ module_id: accounts
 module_title: "Accounts"
 resource: accounts
 endpoints:
-  - { method: GET, path: /api/v1/accounts, summary: "List accounts" }
-  - { method: POST, path: /api/v1/accounts, summary: "Create account" }
-  - { method: GET, path: /api/v1/accounts/{id}, summary: "Get account" }
-  - { method: PATCH, path: /api/v1/accounts/{id}, summary: "Update account (partial)" }
-  - { method: PUT, path: /api/v1/accounts/{id}, summary: "Update account (full)" }
-  - { method: DELETE, path: /api/v1/accounts/{id}, summary: "Delete account" }
-  - { method: GET, path: /api/v1/accounts/{id}/products, summary: "List products that account has access to" }
-  - { method: GET, path: /api/v1/accounts/{id}/memberships, summary: "Get user memberships for account" }
-  - { method: GET, path: /api/v1/accounts/{account_id}/logs, summary: "List logs for an account" }
+  - { method: GET, path: "/api/v1/accounts", summary: "List accounts" }
+  - { method: POST, path: "/api/v1/accounts", summary: "Create account" }
+  - { method: GET, path: "/api/v1/accounts/{id}", summary: "Get account" }
+  - { method: PATCH, path: "/api/v1/accounts/{id}", summary: "Update account (partial)" }
+  - { method: PUT, path: "/api/v1/accounts/{id}", summary: "Update account (full)" }
+  - { method: DELETE, path: "/api/v1/accounts/{id}", summary: "Delete account" }
+  - { method: GET, path: "/api/v1/accounts/{id}/products", summary: "List products that account has access to" }
+  - { method: GET, path: "/api/v1/accounts/{id}/memberships", summary: "Get user memberships for account" }
+  - { method: GET, path: "/api/v1/accounts/{account_id}/logs", summary: "List logs for an account" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

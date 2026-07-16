@@ -59,7 +59,7 @@ controls:
     label: Time
     type: input
     state: enabled
-    action: System time (22 : 00 : 39).
+    action: "System time (22 : 00 : 39)."
   - id: field-timesync
     label: TimeSync
     type: button

@@ -10,12 +10,12 @@ module_id: series
 module_title: "Series"
 resource: series
 endpoints:
-  - { method: GET, path: /api/v1/series, summary: "List series" }
-  - { method: POST, path: /api/v1/series, summary: "Create series" }
-  - { method: GET, path: /api/v1/series/{id}, summary: "Get series" }
-  - { method: PATCH, path: /api/v1/series/{id}, summary: "Update series (partial)" }
-  - { method: PUT, path: /api/v1/series/{id}, summary: "Update series (full)" }
-  - { method: DELETE, path: /api/v1/series/{id}, summary: "Delete series" }
+  - { method: GET, path: "/api/v1/series", summary: "List series" }
+  - { method: POST, path: "/api/v1/series", summary: "Create series" }
+  - { method: GET, path: "/api/v1/series/{id}", summary: "Get series" }
+  - { method: PATCH, path: "/api/v1/series/{id}", summary: "Update series (partial)" }
+  - { method: PUT, path: "/api/v1/series/{id}", summary: "Update series (full)" }
+  - { method: DELETE, path: "/api/v1/series/{id}", summary: "Delete series" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

@@ -64,7 +64,7 @@ controls:
     label: Horizontal Scale
     type: dropdown
     state: enabled
-    action: Time-base scale dropdown. Value "us/div" (units: microseconds per division).
+    action: "Time-base scale dropdown. Value \"us/div\" (units: microseconds per division)."
   - id: record-length
     label: Record Length
     type: input

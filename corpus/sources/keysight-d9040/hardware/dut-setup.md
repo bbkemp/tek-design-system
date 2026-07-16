@@ -24,7 +24,7 @@ features:
     label: ""
     type: display
     location: Top of laptop chassis
-    function: Laptop LCD showing two side-by-side application windows: the Resource Arbiter console (left, dark theme, scrolling log) and the USB4 Test Application (right, light theme, workflow tabs visible). Specific UI content is documented in `screens/resource-arbiter-console.md` and the `set-up` / `select-tests` / `automate` etc. screen chunks.
+    function: "Laptop LCD showing two side-by-side application windows: the Resource Arbiter console (left, dark theme, scrolling log) and the USB4 Test Application (right, light theme, workflow tabs visible). Specific UI content is documented in `screens/resource-arbiter-console.md` and the `set-up` / `select-tests` / `automate` etc. screen chunks."
   - id: external-monitor
     label: ASUS
     type: display

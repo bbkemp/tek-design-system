@@ -10,12 +10,12 @@ module_id: nodes
 module_title: "Nodes"
 resource: nodes
 endpoints:
-  - { method: GET, path: /api/v1/nodes, summary: "List nodes" }
-  - { method: POST, path: /api/v1/nodes, summary: "Create node" }
-  - { method: GET, path: /api/v1/nodes/{id}, summary: "Get node" }
-  - { method: PATCH, path: /api/v1/nodes/{id}, summary: "Update node (partial)" }
-  - { method: PUT, path: /api/v1/nodes/{id}, summary: "Update node (full)" }
-  - { method: DELETE, path: /api/v1/nodes/{id}, summary: "Delete node" }
+  - { method: GET, path: "/api/v1/nodes", summary: "List nodes" }
+  - { method: POST, path: "/api/v1/nodes", summary: "Create node" }
+  - { method: GET, path: "/api/v1/nodes/{id}", summary: "Get node" }
+  - { method: PATCH, path: "/api/v1/nodes/{id}", summary: "Update node (partial)" }
+  - { method: PUT, path: "/api/v1/nodes/{id}", summary: "Update node (full)" }
+  - { method: DELETE, path: "/api/v1/nodes/{id}", summary: "Delete node" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

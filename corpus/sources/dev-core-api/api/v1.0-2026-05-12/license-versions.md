@@ -10,11 +10,11 @@ module_id: license-versions
 module_title: "License Versions"
 resource: license_versions
 endpoints:
-  - { method: GET, path: /api/v1/license_versions, summary: "List license_versions" }
-  - { method: POST, path: /api/v1/license_versions, summary: "Create license_version" }
-  - { method: GET, path: /api/v1/license_versions/{id}, summary: "Get license_version" }
-  - { method: PATCH, path: /api/v1/license_versions/{id}, summary: "Update license_version" }
-  - { method: DELETE, path: /api/v1/license_versions/{id}, summary: "Delete license_version" }
+  - { method: GET, path: "/api/v1/license_versions", summary: "List license_versions" }
+  - { method: POST, path: "/api/v1/license_versions", summary: "Create license_version" }
+  - { method: GET, path: "/api/v1/license_versions/{id}", summary: "Get license_version" }
+  - { method: PATCH, path: "/api/v1/license_versions/{id}", summary: "Update license_version" }
+  - { method: DELETE, path: "/api/v1/license_versions/{id}", summary: "Delete license_version" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

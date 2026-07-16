@@ -29,7 +29,7 @@ controls:
     label: "Recipient e-mail Address(es)"
     type: input
     state: enabled
-    action: Comma-separated recipient list. Empty in this screenshot. Hint "Note: Separate Email addresses with a comma" sits below.
+    action: "Comma-separated recipient list. Empty in this screenshot. Hint \"Note: Separate Email addresses with a comma\" sits below."
   - id: input-sender
     label: "Sender's Address"
     type: input

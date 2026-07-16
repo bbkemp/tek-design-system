@@ -10,8 +10,8 @@ module_id: orders
 module_title: "Orders"
 resource: orders
 endpoints:
-  - { method: GET, path: /api/v1/orders, summary: "List orders" }
-  - { method: GET, path: /api/v1/orders/{id}, summary: "Get order" }
+  - { method: GET, path: "/api/v1/orders", summary: "List orders" }
+  - { method: GET, path: "/api/v1/orders/{id}", summary: "Get order" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

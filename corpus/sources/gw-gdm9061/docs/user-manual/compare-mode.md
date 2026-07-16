@@ -6,7 +6,7 @@ doc_number: null
 doc_date: 2024-03
 applies_to: [gw-gdm9061, gw-gdm9060]
 section_id: compare-mode
-section_title: Application: Compare Mode
+section_title: "Application: Compare Mode"
 parent_section: null
 page_range: "122-128"
 related_screens: [statistics]
