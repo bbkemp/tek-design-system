@@ -1,0 +1,32 @@
+name: Ingest corpus + DS into Neon
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "corpus/**"
+      - "packages/tokens/**"
+      - "packages/ui/src/**"
+      - "apps/mcp/**"
+      - ".github/workflows/ingest.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ingest
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build:tokens
+      - run: npm run ingest --workspace=apps/mcp
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          VOYAGE_API_KEY: ${{ secrets.VOYAGE_API_KEY }}

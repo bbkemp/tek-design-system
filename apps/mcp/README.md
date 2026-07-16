@@ -76,6 +76,22 @@ Or in a project `.mcp.json`:
 claude.ai: Settings → Connectors → Add custom connector → paste the URL.
 Hermes Agent, Cursor, and other MCP clients: add the same URL as a remote (streamable HTTP) server.
 
+## Ingestion — how data gets into Neon
+
+The repo is the library; Neon is the card catalog. [`scripts/ingest.ts`](./scripts/ingest.ts) re-derives the catalog from the repo — idempotent, safe to re-run, only re-embeds chunks whose content changed (sha256 hash check):
+
+- `corpus/sources/**` markdown (skipping `uploads/` and navigational `index.md`) → `corpus_chunks` with frontmatter metadata columns + Voyage embeddings + full-text `tsvector`
+- `packages/tokens/dist/*.css` + semantic source JSON → `ds_tokens` (dark/light values, type, alias chain)
+- `generated/custom-elements.json` (from `npm run manifest`, analyzing `packages/ui/src`) → `ds_components`
+
+It runs automatically via [`.github/workflows/ingest.yml`](../../.github/workflows/ingest.yml) on every push to `main` touching corpus/tokens/ui/mcp paths (repo secrets: `DATABASE_URL`, `VOYAGE_API_KEY`). Run locally:
+
+```
+npm run ingest --workspace=apps/mcp
+```
+
+With no `DATABASE_URL` in the environment (or `DRY_RUN=1`) it's a dry run: parses everything, prints counts, writes nothing.
+
 ## Current tools
 
 | Tool | Status |
