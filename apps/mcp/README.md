@@ -94,9 +94,13 @@ With no `DATABASE_URL` in the environment (or `DRY_RUN=1`) it's a dry run: parse
 
 ## Current tools
 
-| Tool | Status |
+| Tool | What it does |
 |---|---|
-| `server_info` | live — connectivity check; reports version + which surfaces are live |
-| tokens (`search_tokens`, `get_token`) | planned — P0 step 5 |
-| components (`list_components`, `get_component`) | planned — P0 step 5 |
-| corpus (`list_subjects`, `get_subject_index`, `search_corpus`, `get_chunk`) | planned — P0 step 6 |
+| `server_info` | Connectivity check; live data counts per surface |
+| `search_tokens` / `get_token` | Design tokens by fuzzy name search / exact lookup with alias resolution (dark + light values) |
+| `list_components` / `get_component` | Component inventory / full API (attributes, events, slots) from the custom-elements manifest |
+| `list_subjects` / `get_subject_index` | Corpus subjects with per-class counts / full chunk map for one subject |
+| `search_corpus` | Hybrid retrieval: Voyage query embedding + pgvector semantic + Postgres full-text, RRF-fused, Cohere reranked (graceful fallback to RRF order if Cohere is unavailable). Filters: `subject`, `class`, `applies_to`, `provenance`. Every result cites its repo path. |
+| `get_chunk` | Full markdown + frontmatter for one chunk by repo path |
+
+MCP resources: `tek://tokens`, `tek://components`, `tek://corpus/subjects` (browsable JSON for human-driven clients).
