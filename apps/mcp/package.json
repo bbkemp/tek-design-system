@@ -19,6 +19,7 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "1.26.0",
     "@neondatabase/serverless": "^1.1.0",
     "gray-matter": "^4.0.3",
     "mcp-handler": "^1.1.0",

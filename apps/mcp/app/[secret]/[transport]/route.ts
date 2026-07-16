@@ -1,11 +1,9 @@
 import { timingSafeEqual } from "node:crypto";
 import { createMcpHandler } from "mcp-handler";
+import { registerTools, SERVER_NAME, SERVER_VERSION } from "../../../lib/tools";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
-
-const SERVER_NAME = "tek-mcp-endpoint";
-const SERVER_VERSION = "0.1.0";
 
 function secretMatches(candidate: string, expected: string): boolean {
   const a = Buffer.from(candidate);
@@ -15,35 +13,7 @@ function secretMatches(candidate: string, expected: string): boolean {
 
 function buildHandler(secret: string) {
   return createMcpHandler(
-    (server) => {
-      server.tool(
-        "server_info",
-        "Report the Tek MCP Endpoint's status, version, and which tool surfaces are live. Use to verify connectivity.",
-        {},
-        async () => ({
-          content: [
-            {
-              type: "text" as const,
-              text: JSON.stringify(
-                {
-                  name: SERVER_NAME,
-                  version: SERVER_VERSION,
-                  phase: "P0 scaffold",
-                  surfaces: {
-                    tokens: "planned",
-                    components: "planned",
-                    corpus: "planned",
-                  },
-                  plan: "docs/mcp-server-plan.md in bbkemp/tek-design-system",
-                },
-                null,
-                2,
-              ),
-            },
-          ],
-        }),
-      );
-    },
+    registerTools,
     {
       serverInfo: { name: SERVER_NAME, version: SERVER_VERSION },
     },
