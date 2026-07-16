@@ -10,9 +10,9 @@ module_id: product-compatibilities
 module_title: "Product Compatibilities"
 resource: product_compatibilities
 endpoints:
-  - { method: GET, path: /api/v1/product_compatibilities, summary: "List product compatibilities" }
-  - { method: POST, path: /api/v1/product_compatibilities, summary: "Create product compatibility" }
-  - { method: DELETE, path: /api/v1/product_compatibilities/{id}, summary: "Delete product compatibility" }
+  - { method: GET, path: "/api/v1/product_compatibilities", summary: "List product compatibilities" }
+  - { method: POST, path: "/api/v1/product_compatibilities", summary: "Create product compatibility" }
+  - { method: DELETE, path: "/api/v1/product_compatibilities/{id}", summary: "Delete product compatibility" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

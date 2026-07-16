@@ -10,12 +10,12 @@ module_id: entitlements-allocations
 module_title: "Entitlements — Allocations"
 resource: entitlements
 endpoints:
-  - { method: GET, path: /api/v1/entitlements, summary: "List entitlements" }
-  - { method: GET, path: /api/v1/entitlements/allocations, summary: "List entitlement allocations" }
-  - { method: POST, path: /api/v1/entitlements/allocations, summary: "Create entitlement allocation" }
-  - { method: GET, path: /api/v1/entitlements/allocations/{id}, summary: "Get entitlement allocation" }
-  - { method: PATCH, path: /api/v1/entitlements/allocations/{id}, summary: "Update entitlement allocation" }
-  - { method: DELETE, path: /api/v1/entitlements/allocations/{id}, summary: "Delete entitlement allocation" }
+  - { method: GET, path: "/api/v1/entitlements", summary: "List entitlements" }
+  - { method: GET, path: "/api/v1/entitlements/allocations", summary: "List entitlement allocations" }
+  - { method: POST, path: "/api/v1/entitlements/allocations", summary: "Create entitlement allocation" }
+  - { method: GET, path: "/api/v1/entitlements/allocations/{id}", summary: "Get entitlement allocation" }
+  - { method: PATCH, path: "/api/v1/entitlements/allocations/{id}", summary: "Update entitlement allocation" }
+  - { method: DELETE, path: "/api/v1/entitlements/allocations/{id}", summary: "Delete entitlement allocation" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

@@ -10,10 +10,10 @@ module_id: memberships
 module_title: "Memberships"
 resource: memberships
 endpoints:
-  - { method: POST, path: /api/v1/memberships, summary: "Create membership" }
-  - { method: GET, path: /api/v1/memberships/{id}, summary: "Get membership" }
-  - { method: PATCH, path: /api/v1/memberships/{id}, summary: "Update membership" }
-  - { method: DELETE, path: /api/v1/memberships/{id}, summary: "Delete membership" }
+  - { method: POST, path: "/api/v1/memberships", summary: "Create membership" }
+  - { method: GET, path: "/api/v1/memberships/{id}", summary: "Get membership" }
+  - { method: PATCH, path: "/api/v1/memberships/{id}", summary: "Update membership" }
+  - { method: DELETE, path: "/api/v1/memberships/{id}", summary: "Delete membership" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

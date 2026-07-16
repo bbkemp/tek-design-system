@@ -10,12 +10,12 @@ module_id: lms-feature-compatibilities
 module_title: "LMS — Feature Compatibilities"
 resource: lms
 endpoints:
-  - { method: GET, path: /api/v1/lms/feature_compatibilities, summary: "List LMS Feature Compatibilities" }
-  - { method: POST, path: /api/v1/lms/feature_compatibilities, summary: "Create LMS Feature Compatibility" }
-  - { method: GET, path: /api/v1/lms/feature_compatibilities/{id}, summary: "Get LMS Feature Compatibility" }
-  - { method: PATCH, path: /api/v1/lms/feature_compatibilities/{id}, summary: "Update LMS Feature Compatibility (partial)" }
-  - { method: PUT, path: /api/v1/lms/feature_compatibilities/{id}, summary: "Update LMS Feature Compatibility (full)" }
-  - { method: DELETE, path: /api/v1/lms/feature_compatibilities/{id}, summary: "Delete LMS Feature Compatibility" }
+  - { method: GET, path: "/api/v1/lms/feature_compatibilities", summary: "List LMS Feature Compatibilities" }
+  - { method: POST, path: "/api/v1/lms/feature_compatibilities", summary: "Create LMS Feature Compatibility" }
+  - { method: GET, path: "/api/v1/lms/feature_compatibilities/{id}", summary: "Get LMS Feature Compatibility" }
+  - { method: PATCH, path: "/api/v1/lms/feature_compatibilities/{id}", summary: "Update LMS Feature Compatibility (partial)" }
+  - { method: PUT, path: "/api/v1/lms/feature_compatibilities/{id}", summary: "Update LMS Feature Compatibility (full)" }
+  - { method: DELETE, path: "/api/v1/lms/feature_compatibilities/{id}", summary: "Delete LMS Feature Compatibility" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

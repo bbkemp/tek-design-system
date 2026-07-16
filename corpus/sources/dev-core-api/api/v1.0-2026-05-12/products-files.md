@@ -10,9 +10,9 @@ module_id: products-files
 module_title: "Products — File Associations"
 resource: products
 endpoints:
-  - { method: GET, path: /api/v1/products/{id}/files, summary: "List product files" }
-  - { method: POST, path: /api/v1/products/{id}/files, summary: "Create product file association" }
-  - { method: DELETE, path: /api/v1/products/{id}/files/{product_file_id}, summary: "Delete product file association" }
+  - { method: GET, path: "/api/v1/products/{id}/files", summary: "List product files" }
+  - { method: POST, path: "/api/v1/products/{id}/files", summary: "Create product file association" }
+  - { method: DELETE, path: "/api/v1/products/{id}/files/{product_file_id}", summary: "Delete product file association" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

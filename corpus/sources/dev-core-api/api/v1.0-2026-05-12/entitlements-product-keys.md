@@ -10,8 +10,8 @@ module_id: entitlements-product-keys
 module_title: "Entitlements — Product Keys"
 resource: entitlements
 endpoints:
-  - { method: GET, path: /api/v1/entitlements/product_keys, summary: "List entitlement product keys" }
-  - { method: GET, path: /api/v1/entitlements/product_keys/{id}, summary: "Get entitlement product key" }
+  - { method: GET, path: "/api/v1/entitlements/product_keys", summary: "List entitlement product keys" }
+  - { method: GET, path: "/api/v1/entitlements/product_keys/{id}", summary: "Get entitlement product key" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

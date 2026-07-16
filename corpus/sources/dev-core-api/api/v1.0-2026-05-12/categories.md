@@ -10,12 +10,12 @@ module_id: categories
 module_title: "Categories"
 resource: categories
 endpoints:
-  - { method: GET, path: /api/v1/categories, summary: "List categories" }
-  - { method: POST, path: /api/v1/categories, summary: "Create category" }
-  - { method: GET, path: /api/v1/categories/{id}, summary: "Get category" }
-  - { method: PATCH, path: /api/v1/categories/{id}, summary: "Update category (partial)" }
-  - { method: PUT, path: /api/v1/categories/{id}, summary: "Update category (full)" }
-  - { method: DELETE, path: /api/v1/categories/{id}, summary: "Delete category" }
+  - { method: GET, path: "/api/v1/categories", summary: "List categories" }
+  - { method: POST, path: "/api/v1/categories", summary: "Create category" }
+  - { method: GET, path: "/api/v1/categories/{id}", summary: "Get category" }
+  - { method: PATCH, path: "/api/v1/categories/{id}", summary: "Update category (partial)" }
+  - { method: PUT, path: "/api/v1/categories/{id}", summary: "Update category (full)" }
+  - { method: DELETE, path: "/api/v1/categories/{id}", summary: "Delete category" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

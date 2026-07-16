@@ -10,11 +10,11 @@ module_id: invitations
 module_title: "Invitations"
 resource: invitations
 endpoints:
-  - { method: GET, path: /api/v1/invitations, summary: "List invitations" }
-  - { method: POST, path: /api/v1/invitations, summary: "Create invitation" }
-  - { method: DELETE, path: /api/v1/invitations/{id}, summary: "Delete invitation" }
-  - { method: POST, path: /api/v1/invitations/{id}/accept, summary: "Accept invitation" }
-  - { method: POST, path: /api/v1/invitations/{id}/deny, summary: "Deny invitation" }
+  - { method: GET, path: "/api/v1/invitations", summary: "List invitations" }
+  - { method: POST, path: "/api/v1/invitations", summary: "Create invitation" }
+  - { method: DELETE, path: "/api/v1/invitations/{id}", summary: "Delete invitation" }
+  - { method: POST, path: "/api/v1/invitations/{id}/accept", summary: "Accept invitation" }
+  - { method: POST, path: "/api/v1/invitations/{id}/deny", summary: "Deny invitation" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]

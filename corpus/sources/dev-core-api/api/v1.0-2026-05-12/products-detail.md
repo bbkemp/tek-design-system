@@ -10,10 +10,10 @@ module_id: products-detail
 module_title: "Products — Detail, Update, Delete"
 resource: products
 endpoints:
-  - { method: GET, path: /api/v1/products/{id}, summary: "Get product" }
-  - { method: PATCH, path: /api/v1/products/{id}, summary: "Update product (partial)" }
-  - { method: PUT, path: /api/v1/products/{id}, summary: "Update product (full)" }
-  - { method: DELETE, path: /api/v1/products/{id}, summary: "Delete product" }
+  - { method: GET, path: "/api/v1/products/{id}", summary: "Get product" }
+  - { method: PATCH, path: "/api/v1/products/{id}", summary: "Update product (partial)" }
+  - { method: PUT, path: "/api/v1/products/{id}", summary: "Update product (full)" }
+  - { method: DELETE, path: "/api/v1/products/{id}", summary: "Delete product" }
 auth_required: true
 auth_schemes: [authorization]
 applies_to: [dev-core-api]
