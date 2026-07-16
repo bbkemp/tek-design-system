@@ -1,0 +1,9 @@
+{
+  "$comment": "Copy to .mcp.json (gitignored) and replace the URL with the real endpoint — ask Bryan for it. The URL contains the access secret: treat it like a password, never commit it. Claude Code auto-connects to servers in .mcp.json for every session in this repo.",
+  "mcpServers": {
+    "tek": {
+      "type": "http",
+      "url": "https://tek-design-system-mcp.vercel.app/<SECRET>/mcp"
+    }
+  }
+}

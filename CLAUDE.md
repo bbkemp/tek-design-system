@@ -10,6 +10,7 @@ A monorepo containing:
 
 - `packages/tokens/` — design tokens (Style Dictionary v3, custom DTCG parser, `size/px` transform). Currently published as `@bbkemp/tokens` on GitHub Packages.
 - `packages/ui/` — Web Components consumed by Tek products. Currently published as `@bbkemp/ui`.
+- `apps/mcp/` — the **Tek MCP Endpoint** (shipped 2026-07-16): hosted MCP server on Vercel exposing tokens, components, and corpus search (Neon pgvector + Voyage + Cohere) to any MCP client via one secret URL. Data re-ingests from the repo on every push to `main` (`ingest.yml`). The URL is a secret — **never commit it** (the repo is public); local sessions connect via the gitignored `.mcp.json` (see `.mcp.json.example`). Details: `apps/mcp/README.md`; plan: `docs/mcp-server-plan.md`.
 - `figma-token-push/` — local-only Figma plugin that commits four token files atomically, with a concurrency group on the publish workflow to prevent SHA races.
 - `prototypes/` — Claude Design prototype drops (bench, my-tek, tek-express, font-lab) plus the HTML reference pages: `sign-in/` (sign in + create account — real built-package imports, pixel-perfect integration tests) and `component-library/` (live component reference; currently inline definitions).
 - `docs/wpf/` — WPF translation layer: pipeline-generated token ResourceDictionaries (XAML), Telerik overrides, reference page. The desktop runtime consuming the tokens — and the reason the system is Web Components and not React.
@@ -24,7 +25,7 @@ Primary maintainer: Bryan Kemp.
 
 These are the rules that hold the system together. Violating any of them produces drift the system explicitly exists to prevent.
 
-1. **Web Components only. Never React.** The consuming runtime is native desktop (WPF/XAML). Non-negotiable.
+1. **TypeScript-first Web Components.** Components ship as framework-agnostic Web Components because the consuming runtime is native desktop (WPF/XAML). No framework-specific ports (React, Vue, etc.) — the Web Components are the single implementation. If a genuine need for a framework layer appears, raise it as an open question rather than building one.
 2. **Tokens always.** Never hardcode hex, px, font sizes, font families, or radii. Use `var(--tek-*)` with a fallback: `var(--tek-spacing-s05, 8px)`. Token-adherence rules are spelled out in [CONTRIBUTING.md → Updating Web Components](./CONTRIBUTING.md#updating-web-components).
 3. **Figma is the source of truth.** Before writing or changing component code, look at the relevant Figma node. Do not assume existing code is correct. The Figma file is **DS-v2**, key `3wbYstse9TYKlPtCPpZH5X`. README has the node-to-source map.
 4. **TypeScript strict mode.** No `any` escape hatches.
@@ -72,7 +73,10 @@ After any change, run the relevant build:
 ```bash
 npm run build:tokens    # if tokens changed
 npm run build:ui        # if components changed
+npm run build:mcp       # if the MCP endpoint app changed
 ```
+
+For MCP endpoint changes, also run the eval harness against a deployment before merging retrieval-affecting work: `TEK_MCP_URL=<endpoint> npm run eval --workspace=apps/mcp`.
 
 Verify in a local server before claiming a fix works. VS Code Live Server (port 5500) is the canonical local-dev URL — open `prototypes/sign-in/index.html`, `prototypes/sign-in/signup.html`, or `prototypes/component-library/index.html`. The sign-in pages import from `packages/*/dist/` directly, so they exercise the real built packages and function as integration tests.
 
@@ -94,7 +98,7 @@ These are flagged here so you don't act as if they exist, and don't propose them
 | `npm run new:component` Plop scaffold | Part 3 |
 | Storybook / component explorer | Part 4 (`apps/storybook`) |
 | Per-component `.styles.ts` / `.test.ts` / `.stories.ts` split | Part 3 |
-| Knowledge corpus retrieval (vector DB + embeddings + MCP) — authoring side is shipped, see [`corpus/README.md`](./corpus/README.md); endpoint build plan: [docs/mcp-server-plan.md](./docs/mcp-server-plan.md), scaffold in progress under `apps/mcp/` | Part 1 |
+| MCP endpoint hardening — eval gate in CI, XAML keys in token results, usage logging, org SSO (endpoint itself is **shipped**, see `apps/mcp/`) | Part 1 + [docs/mcp-server-plan.md](./docs/mcp-server-plan.md) P1/P2 |
 | UXR + analytics taxonomy | Part 5 |
 
 Until namespace migration ships, packages and imports inside this repo use `@bbkemp/*`. Don't pre-emptively rename in code.
