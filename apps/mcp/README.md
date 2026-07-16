@@ -54,27 +54,23 @@ Serves on `http://localhost:3333/devsecret/mcp`.
 
 ## Connecting a client
 
-Claude Code:
+One URL is the whole setup. Get it from Bryan — **the URL contains the access secret; treat it like a password** (don't commit it, don't post it, don't put it in screenshots).
+
+**Claude Code — this repo:** copy [`.mcp.json.example`](../../.mcp.json.example) at the repo root to `.mcp.json` (gitignored) and paste the real URL. Every session in the repo auto-connects.
+
+**Claude Code — anywhere else:**
 
 ```
 claude mcp add --transport http tek https://<host>/<secret>/mcp
 ```
 
-Or in a project `.mcp.json`:
+**claude.ai:** Settings → Connectors → Add custom connector → paste the URL (no auth to configure).
 
-```json
-{
-  "mcpServers": {
-    "tek": {
-      "type": "http",
-      "url": "https://<host>/<secret>/mcp"
-    }
-  }
-}
-```
+**Cursor:** add the same block as `.mcp.json.example` to `~/.cursor/mcp.json` (or the project's `.cursor/mcp.json` — only in private repos).
 
-claude.ai: Settings → Connectors → Add custom connector → paste the URL.
-Hermes Agent, Cursor, and other MCP clients: add the same URL as a remote (streamable HTTP) server.
+**Hermes Agent:** add a custom remote (streamable HTTP) MCP server with the URL — see `hermes mcp` / Hermes's MCP config docs.
+
+**Sanity check from any client:** call the `server_info` tool — it should report all surfaces `live` with data counts.
 
 ## Ingestion — how data gets into Neon
 
