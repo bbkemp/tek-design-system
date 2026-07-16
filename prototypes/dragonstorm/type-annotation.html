@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dragon Storm — Type Annotation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..700&family=Geist:wght@400..700&family=Geist+Mono&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { height:100%; background:#646464; overflow:hidden; font-family:Geist,system-ui,sans-serif; }
+  #proto { position:fixed; inset:0; width:100%; height:100%; border:0; }
+  #overlay { position:fixed; inset:0; pointer-events:none; z-index:10; }
+  #overlay svg { position:absolute; inset:0; width:100%; height:100%; }
+  .lab {
+    position:absolute; width:290px; box-sizing:border-box; background:#1e1e1e;
+    border:0.5px solid #454545; border-radius:6px; padding:6px 9px;
+    display:flex; flex-direction:column; justify-content:center; gap:2px;
+  }
+  .lab .nm { font:600 13px Archivo,sans-serif; color:#fff; letter-spacing:.2px; }
+  .lab .sp { font:400 11px/1.35 'Geist Mono',ui-monospace,monospace; color:#bbb; }
+  .lab .sw { display:inline-block; width:8px; height:8px; border-radius:2px; border:0.5px solid #666; vertical-align:middle; }
+  .lab .un { color:#7bd4f0; }
+  /* control bar (upper-right) */
+  #bar {
+    position:fixed; top:16px; right:16px; z-index:30; display:flex; align-items:center; gap:10px;
+    background:#1e1e1e; border:0.5px solid #454545; border-radius:9px; padding:8px 10px;
+    font-family:Geist,system-ui,sans-serif; box-shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+  #bar label { font:600 11px Archivo,sans-serif; color:#979797; letter-spacing:.4px; text-transform:uppercase; }
+  #screen {
+    appearance:none; background:#252525; color:#fff; border:0.5px solid #7b7b7b; border-radius:6px;
+    padding:7px 30px 7px 11px; font:500 13px Geist,sans-serif; cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2333baea' stroke-width='2.4'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 9px center;
+  }
+  #screen:focus { outline:none; border-color:#33baea; }
+  #toggle { font:500 12px Geist,sans-serif; color:#cccccc; cursor:pointer; user-select:none; display:flex; align-items:center; gap:5px; }
+  #toggle input { accent-color:#33baea; cursor:pointer; }
+  #title { position:fixed; top:20px; left:20px; z-index:30; color:#fff; font:600 15px Archivo,sans-serif; }
+  #title small { font:400 12px Geist; color:#8a8a8a; }
+  #status { position:fixed; bottom:14px; left:20px; z-index:30; font:400 11px 'Geist Mono',monospace; color:#8a8a8a; }
+</style>
+</head>
+<body>
+  <iframe id="proto" src="./index.html"></iframe>
+  <div id="overlay"><svg id="svg"></svg></div>
+
+  <div id="title">GDM9061 · <span id="scrName">Measurement</span> <small>— type annotation · device-native 480×272 px</small></div>
+  <div id="bar">
+    <label for="screen">Screen</label>
+    <select id="screen"></select>
+    <span id="toggle"><input type="checkbox" id="annoOn" checked> annotations</span>
+  </div>
+  <div id="status">loading prototype…</div>
+
+<script>
+(function(){
+  "use strict";
+  const iframe = document.getElementById('proto');
+  const overlay = document.getElementById('overlay');
+  const svg = document.getElementById('svg');
+  const sel = document.getElementById('screen');
+  const scrName = document.getElementById('scrName');
+  const annoOn = document.getElementById('annoOn');
+  const statusEl = document.getElementById('status');
+  const NS = 'http://www.w3.org/2000/svg';
+
+  const widthAbbr = f => ({
+    'Iosevka Mono Ultra Condensed':'IM UltraCond',
+    'Iosevka Mono Condensed':'IM Cond',
+    'Iosevka Mono Extended':'IM Ext'
+  }[f] || f);
+  const hex = rgb => {
+    const m = (rgb||'').match(/\d+\.?\d*/g); if(!m) return rgb;
+    const h = n => ('0'+Math.round(n).toString(16)).slice(-2);
+    return '#'+h(m[0])+h(m[1])+h(m[2]);
+  };
+  const lsNum = ls => ls==='normal' ? '0' : String(parseFloat(ls));
+
+  // signature (size|weight|hex|width|ls) -> ds/ style name. Specs always shown; name is best-effort.
+  const NAME = {
+    '116|400|#ffffff|IM UltraCond|0':'readout/primary',
+    '74|400|#ffffff|IM UltraCond|-1':'readout/dual',
+    '71|400|#ffffff|IM Cond|-2':'readout/stat',
+    '38|500|#ffffff|IM Cond|-0.6':'readout/trend',
+    '15|400|#afafaf|IM Cond|0':'readout/dual-secondary',
+    '24|600|#ffffff|IM Cond|0':'unit/primary',
+    '20|600|#ffffff|IM Cond|0':'unit/dual',
+    '24|600|#e0b732|Geist|0':'unit/overload ⚠',
+    '17|600|#ffffff|Archivo|0.3':'chrome/title',
+    '16|500|#ffffff|IM Cond|-0.5':'chrome/clock',
+    '10|600|#afafaf|IM Ext|-0.1':'chrome/mode-chip',
+    '14|700|#ffffff|IM Cond|0':'chrome/usb-letter',
+    '12|700|#e74848|Geist|0':'chrome/lan-x',
+    '10|700|#ffffff|IM Cond|0':'chrome/tab-badge',
+    '12|500|#afafaf|Geist|0':'chrome/range-label',
+    '12|700|#000000|Geist|0':'chrome/auto-badge',
+    '12|600|#ffffff|IM Cond|0':'chrome/range-value',
+    '13|400|#ffffff|IM Cond|0':'chrome/trig-chip',
+    '13|400|#cccccc|IM Cond|0':'chrome/status-chip',
+    '13|400|#afafaf|Geist|0':'chrome/azero-pill',
+    '14|400|#afafaf|IM Cond|0':'chrome/math-flag',
+    '10|500|#cccccc|Geist|0.6':'control/label',
+    '15|500|#33baea|IM Cond|-0.3':'control/value',
+    '12|400|#000000|IM Cond|0':'control/toggle-on',
+    '12|400|#979797|IM Cond|0':'control/toggle-off',
+    '14|500|#ffffff|IM Cond|0.2':'control/menu-item',
+    '14|700|#000000|IM Cond|0.2':'control/menu-item-sel',
+    '11|500|#e0b732|Geist|0':'control/softkey-esc',
+    '11|400|#ffffff|Geist|0':'control/softkey-return',
+    '13|400|#e0b732|IM Cond|0.3':'data/stat-label',
+    '14|400|#e0b732|IM Cond|0.3':'data/stat-label-lg ⚠',
+    '13|400|#ffffff|IM Cond|0.3':'data/stat-value',
+    '14|400|#ffffff|IM Cond|0.3':'data/stat-value-lg ⚠',
+    '11|400|#cccccc|IM Cond|0':'data/axis',
+    '10|400|#e0b732|IM Cond|0':'data/count-label',
+    '12|500|#e74848|Geist|0':'data/status-flag',
+    '12|600|#000000|Archivo|0.4':'config/tab-active',
+    '12|500|#cccccc|Archivo|0.4':'config/tab-inactive',
+    '12|500|#e0b732|Geist|0':'config/menu-flag',
+    '12|400|#ffffff|Geist|0.6':'config/row-label',
+    '10|500|#33baea|IM Ext|-0.2':'config/section',
+    '10|400|#ffffff|IM Ext|-0.5':'config/value',
+    '11|400|#ffffff|IM Ext|-1.4':'config/field-num',
+    '11|400|#ffffff|IM Ext|-0.5':'config/open-link',
+    '11|400|#cccccc|Geist|0':'config/unit',
+    '11|400|#cccccc|Geist|0.6':'softkey'
+  };
+
+  let doc=null, win=null, navButtons=[];
+
+  function findBoard(){
+    if(!doc) return null;
+    let b = doc.querySelector('[data-lcd-board]');
+    if(b) return b;
+    b = [...doc.querySelectorAll('#dc-root div')].find(e =>
+      e.offsetWidth===480 && e.offsetHeight===272 &&
+      win.getComputedStyle(e).transform.indexOf('matrix(2')>-1);
+    if(b) b.setAttribute('data-lcd-board','1');
+    return b;
+  }
+
+  function hidePanel(){
+    const board = findBoard(); if(!board) return;
+    const nav = [...doc.querySelectorAll('#dc-root button')].find(x=>/1\.\sMeasurement/.test(x.textContent));
+    if(!nav) return;
+    let p = nav, root = doc.getElementById('dc-root');
+    while(p.parentElement && p.parentElement!==root && !p.parentElement.contains(board)) p = p.parentElement;
+    if(!p.contains(board)) p.style.display='none';
+  }
+
+  function clear(){ svg.innerHTML=''; overlay.querySelectorAll('.lab').forEach(n=>n.remove()); }
+
+  function annotate(){
+    clear();
+    if(!annoOn.checked) return;
+    const board = findBoard(); if(!board) return;
+    const ir = iframe.getBoundingClientRect();     // iframe origin in parent
+    const br = board.getBoundingClientRect();       // board rect in iframe viewport
+    const bx = ir.left+br.left, by = ir.top+br.top, bw = br.width, bh = br.height;
+    const boardCx = bx+bw/2;
+
+    // board outline
+    const rect = document.createElementNS(NS,'rect');
+    rect.setAttribute('x',bx); rect.setAttribute('y',by);
+    rect.setAttribute('width',bw); rect.setAttribute('height',bh);
+    rect.setAttribute('fill','none'); rect.setAttribute('stroke','#33baea');
+    rect.setAttribute('stroke-width','1'); rect.setAttribute('stroke-dasharray','4 4'); rect.setAttribute('opacity','.5');
+    svg.appendChild(rect);
+
+    // one representative element per distinct signature
+    const seen={}, items=[];
+    board.querySelectorAll('*').forEach(e=>{
+      const hasText = [...e.childNodes].some(n=>n.nodeType===3 && n.textContent.trim());
+      if(!hasText) return;
+      const r = e.getBoundingClientRect(); if(r.width===0||r.height===0) return;
+      const cs = win.getComputedStyle(e);
+      const width = widthAbbr(cs.fontFamily.split(',')[0].replace(/["']/g,''));
+      const size = Math.round(parseFloat(cs.fontSize));
+      const wt = cs.fontWeight, color = hex(cs.color), ls = lsNum(cs.letterSpacing);
+      const key = [size,wt,color,width,ls].join('|');
+      if(seen[key]) return; seen[key]=1;
+      const lh = cs.lineHeight==='normal' ? 'auto' : Math.round(parseFloat(cs.lineHeight));
+      const sample = [...e.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent.trim()).join(' ').slice(0,16);
+      items.push({ key, name:NAME[key]||null, width, wt, size, lh, ls, color,
+        tt:cs.textTransform, sample,
+        cx: ir.left+r.left+r.width/2, cy: ir.top+r.top+r.height/2,
+        side: (ir.left+r.left+r.width/2) < boardCx ? 'L':'R' });
+    });
+
+    const LABEL_H=54, GAP=8, W=290;
+    const colX = { L:24, R:Math.round(bx+bw+40) };
+    ['L','R'].forEach(side=>{
+      const arr = items.filter(i=>i.side===side).sort((a,b)=>a.cy-b.cy);
+      let y = arr.length ? Math.max(16, arr[0].cy-LABEL_H/2) : 16;
+      arr.forEach(it=>{ it.ly = Math.max(y, it.cy-LABEL_H/2); y = it.ly+LABEL_H+GAP; });
+      const overflow = y - (window.innerHeight-16);
+      if(overflow>0) arr.forEach(it=>it.ly -= overflow);
+      arr.forEach(it=>{
+        const anchorX = side==='L' ? colX.L+W : colX.R;
+        const anchorY = it.ly+LABEL_H/2;
+        const pl = document.createElementNS(NS,'polyline');
+        pl.setAttribute('points', `${anchorX},${anchorY} ${it.cx},${anchorY} ${it.cx},${it.cy}`);
+        pl.setAttribute('fill','none'); pl.setAttribute('stroke','#7bd4f0');
+        pl.setAttribute('stroke-width','1'); pl.setAttribute('opacity','.7');
+        svg.appendChild(pl);
+        const dot = document.createElementNS(NS,'circle');
+        dot.setAttribute('cx',it.cx); dot.setAttribute('cy',it.cy); dot.setAttribute('r','2.5'); dot.setAttribute('fill','#33baea');
+        svg.appendChild(dot);
+        const d = document.createElement('div');
+        d.className='lab';
+        d.style.left = colX[side]+'px'; d.style.top = it.ly+'px';
+        d.style.borderLeft = '3px solid '+(it.color==='#000000'?'#888':it.color);
+        const nm = it.name ? 'ds/'+it.name : '<span style="color:#888">(unnamed)</span>';
+        d.innerHTML =
+          `<div class="nm">${nm}</div>`+
+          `<div class="sp">${it.width} ${it.wt} · ${it.size}px${it.lh!=='auto'?'/'+it.lh:''}${it.ls!=='0'?' · ls '+it.ls:''} · `+
+          `<span class="sw" style="background:${it.color}"></span> ${it.color}${it.tt==='uppercase'?' · UPPER':''}</div>`+
+          (it.sample?`<div class="sp" style="color:#666">“${it.sample}”</div>`:'');
+        overlay.appendChild(d);
+      });
+    });
+    statusEl.textContent = items.length+' type styles · '+scrName.textContent;
+  }
+
+  function gotoScreen(i){
+    if(navButtons[i-1]) navButtons[i-1].click();
+    setTimeout(annotate, 350);
+  }
+
+  function init(){
+    doc = iframe.contentDocument; win = iframe.contentWindow;
+    const board = findBoard();
+    if(!board){ statusEl.textContent='waiting for screen to render…'; return setTimeout(init, 250); }
+    navButtons = [...doc.querySelectorAll('#dc-root button')].filter(b=>/^\s*\d+\.\s/.test(b.textContent));
+    if(navButtons.length<13){ return setTimeout(init, 250); }
+    hidePanel();
+    // populate dropdown
+    sel.innerHTML='';
+    navButtons.forEach((b,idx)=>{
+      const label = b.textContent.trim().replace(/^\s*\d+\.\s*/,'');
+      const o = document.createElement('option'); o.value=String(idx+1); o.textContent=(idx+1)+'. '+label;
+      sel.appendChild(o);
+    });
+    sel.value='1';
+    sel.addEventListener('change', ()=>{
+      scrName.textContent = sel.options[sel.selectedIndex].textContent.replace(/^\d+\.\s*/,'');
+      gotoScreen(parseInt(sel.value,10));
+    });
+    annoOn.addEventListener('change', annotate);
+    setTimeout(annotate, 300);
+  }
+
+  iframe.addEventListener('load', ()=> setTimeout(init, 400));
+  let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(annotate,200); });
+})();
+</script>
+</body>
+</html>
