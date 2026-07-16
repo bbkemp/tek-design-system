@@ -27,10 +27,20 @@ const MANIFEST_PATH = join(import.meta.dirname, "..", "generated", "custom-eleme
 
 const VOYAGE_MODEL = process.env.VOYAGE_MODEL ?? "voyage-3.5";
 const EMBEDDING_DIMS = 1024;
-const EMBED_BATCH_SIZE = 64;
 const EMBED_MAX_CHARS = 24_000;
+// Free-tier Voyage allows 3 requests/min and 10K tokens/min, so batches are
+// sized by an estimated token budget (~4 chars/token) and 429s are retried
+// with a wait. With billing enabled the same code just runs without pauses.
+const EMBED_BATCH_TOKEN_BUDGET = Number(process.env.VOYAGE_BATCH_TOKENS ?? 7_000);
+const EMBED_MAX_RETRIES = 10;
+const RETRY_WAIT_MS = 25_000;
 
 const DRY_RUN = process.env.DRY_RUN === "1" || !process.env.DATABASE_URL;
+
+// A CI run without secrets must fail loudly, never silently dry-run.
+if (process.env.CI === "true" && DRY_RUN && process.env.DRY_RUN !== "1") {
+  throw new Error("DATABASE_URL is not set in CI — refusing to silently dry-run. Add the repo secret or set DRY_RUN=1 explicitly.");
+}
 
 // ---------- corpus ----------
 
@@ -220,17 +230,28 @@ interface VoyageResponse {
   data: { embedding: number[] }[];
 }
 
+const estimateTokens = (text: string): number => Math.ceil(text.length / 4);
+
 async function embedBatch(texts: string[]): Promise<number[][]> {
   const key = process.env.VOYAGE_API_KEY;
   if (!key) throw new Error("VOYAGE_API_KEY is required when DATABASE_URL is set (query-time embedding of documents).");
-  const res = await fetch("https://api.voyageai.com/v1/embeddings", {
-    method: "POST",
-    headers: { "content-type": "application/json", authorization: `Bearer ${key}` },
-    body: JSON.stringify({ model: VOYAGE_MODEL, input: texts, input_type: "document", output_dimension: EMBEDDING_DIMS }),
-  });
-  if (!res.ok) throw new Error(`Voyage API ${res.status}: ${await res.text()}`);
-  const json = (await res.json()) as VoyageResponse;
-  return json.data.map((d) => d.embedding);
+  for (let attempt = 1; ; attempt++) {
+    const res = await fetch("https://api.voyageai.com/v1/embeddings", {
+      method: "POST",
+      headers: { "content-type": "application/json", authorization: `Bearer ${key}` },
+      body: JSON.stringify({ model: VOYAGE_MODEL, input: texts, input_type: "document", output_dimension: EMBEDDING_DIMS }),
+    });
+    if (res.ok) {
+      const json = (await res.json()) as VoyageResponse;
+      return json.data.map((d) => d.embedding);
+    }
+    const retryable = res.status === 429 || res.status >= 500;
+    if (!retryable || attempt >= EMBED_MAX_RETRIES) {
+      throw new Error(`Voyage API ${res.status} (attempt ${attempt}/${EMBED_MAX_RETRIES}): ${await res.text()}`);
+    }
+    console.log(`  rate limited (${res.status}), waiting ${RETRY_WAIT_MS / 1000}s — attempt ${attempt}/${EMBED_MAX_RETRIES}`);
+    await new Promise((resolve) => setTimeout(resolve, RETRY_WAIT_MS));
+  }
 }
 
 // ---------- main ----------
@@ -300,12 +321,29 @@ async function main(): Promise<void> {
   const toEmbed = chunks.filter((c) => existingHashes.get(c.path) !== c.hash);
   console.log(`\nembedding:  ${toEmbed.length} new/changed chunks (${chunks.length - toEmbed.length} unchanged)`);
 
+  // Group into batches that stay under the per-request token budget.
+  const batches: CorpusChunk[][] = [];
+  let current: CorpusChunk[] = [];
+  let currentTokens = 0;
+  for (const c of toEmbed) {
+    const tokens = estimateTokens(`${c.title}\n\n${c.body}`.slice(0, EMBED_MAX_CHARS));
+    if (current.length > 0 && currentTokens + tokens > EMBED_BATCH_TOKEN_BUDGET) {
+      batches.push(current);
+      current = [];
+      currentTokens = 0;
+    }
+    current.push(c);
+    currentTokens += tokens;
+  }
+  if (current.length > 0) batches.push(current);
+
   const embeddings = new Map<string, number[]>();
-  for (let i = 0; i < toEmbed.length; i += EMBED_BATCH_SIZE) {
-    const batch = toEmbed.slice(i, i + EMBED_BATCH_SIZE);
+  let done = 0;
+  for (const batch of batches) {
     const vectors = await embedBatch(batch.map((c) => `${c.title}\n\n${c.body}`.slice(0, EMBED_MAX_CHARS)));
     batch.forEach((c, j) => embeddings.set(c.path, vectors[j]));
-    console.log(`  embedded ${Math.min(i + EMBED_BATCH_SIZE, toEmbed.length)}/${toEmbed.length}`);
+    done += batch.length;
+    console.log(`  embedded ${done}/${toEmbed.length}`);
   }
 
   for (const c of chunks) {
