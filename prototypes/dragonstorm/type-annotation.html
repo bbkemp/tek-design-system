@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dragon Storm — Type Annotation</title>
+<title>Dragon Storm — Annotation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..700&family=Geist:wght@400..700&family=Geist+Mono&display=swap" rel="stylesheet">
 <style>
@@ -13,21 +13,21 @@
   #overlay { position:fixed; inset:0; pointer-events:none; z-index:10; }
   #overlay svg { position:absolute; inset:0; width:100%; height:100%; }
   .lab {
-    position:absolute; width:290px; box-sizing:border-box; background:#1e1e1e;
+    position:absolute; width:300px; box-sizing:border-box; background:#1e1e1e;
     border:0.5px solid #454545; border-radius:6px; padding:6px 9px;
     display:flex; flex-direction:column; justify-content:center; gap:2px;
   }
   .lab .nm { font:600 13px Archivo,sans-serif; color:#fff; letter-spacing:.2px; }
   .lab .sp { font:400 11px/1.35 'Geist Mono',ui-monospace,monospace; color:#bbb; }
   .lab .sw { display:inline-block; width:8px; height:8px; border-radius:2px; border:0.5px solid #666; vertical-align:middle; }
-  .lab .un { color:#7bd4f0; }
+  .lab .tok { color:#7bd4f0; }
   /* control bar (upper-right) */
   #bar {
     position:fixed; top:16px; right:16px; z-index:30; display:flex; align-items:center; gap:10px;
     background:#1e1e1e; border:0.5px solid #454545; border-radius:9px; padding:8px 10px;
     font-family:Geist,system-ui,sans-serif; box-shadow:0 2px 10px rgba(0,0,0,.35);
   }
-  #bar label { font:600 11px Archivo,sans-serif; color:#979797; letter-spacing:.4px; text-transform:uppercase; }
+  #bar > label { font:600 11px Archivo,sans-serif; color:#979797; letter-spacing:.4px; text-transform:uppercase; }
   #screen {
     appearance:none; background:#252525; color:#fff; border:0.5px solid #7b7b7b; border-radius:6px;
     padding:7px 30px 7px 11px; font:500 13px Geist,sans-serif; cursor:pointer;
@@ -35,8 +35,12 @@
     background-repeat:no-repeat; background-position:right 9px center;
   }
   #screen:focus { outline:none; border-color:#33baea; }
-  #toggle { font:500 12px Geist,sans-serif; color:#cccccc; cursor:pointer; user-select:none; display:flex; align-items:center; gap:5px; }
-  #toggle input { accent-color:#33baea; cursor:pointer; }
+  .seg { display:inline-flex; border:0.5px solid #7b7b7b; border-radius:6px; overflow:hidden; }
+  .seg button { appearance:none; border:none; background:#252525; color:#cccccc; font:500 12px Geist,sans-serif; padding:6px 12px; cursor:pointer; }
+  .seg button.on { background:#33baea; color:#181818; font-weight:600; }
+  .seg button + button { border-left:0.5px solid #7b7b7b; }
+  .ck { font:500 12px Geist,sans-serif; color:#cccccc; cursor:pointer; user-select:none; display:flex; align-items:center; gap:5px; }
+  .ck input { accent-color:#33baea; cursor:pointer; }
   #title { position:fixed; top:20px; left:20px; z-index:30; color:#fff; font:600 15px Archivo,sans-serif; }
   #title small { font:400 12px Geist; color:#8a8a8a; }
   #status { position:fixed; bottom:14px; left:20px; z-index:30; font:400 11px 'Geist Mono',monospace; color:#8a8a8a; }
@@ -46,11 +50,16 @@
   <iframe id="proto" src="./index.html"></iframe>
   <div id="overlay"><svg id="svg"></svg></div>
 
-  <div id="title">GDM9061 · <span id="scrName">Measurement</span> <small>— type annotation · device-native 480×272 px</small></div>
+  <div id="title">GDM9061 · <span id="scrName">Measurement</span> <small id="titleMode">— type annotation · device-native 480×272 px</small></div>
   <div id="bar">
     <label for="screen">Screen</label>
     <select id="screen"></select>
-    <span id="toggle"><input type="checkbox" id="annoOn" checked> annotations</span>
+    <span class="seg" id="modeSeg">
+      <button data-mode="type" class="on">Type</button>
+      <button data-mode="borders">Borders</button>
+    </span>
+    <label class="ck"><input type="checkbox" id="liveChk"> live</label>
+    <label class="ck"><input type="checkbox" id="annoOn" checked> anno</label>
   </div>
   <div id="status">loading prototype…</div>
 
@@ -62,9 +71,15 @@
   const svg = document.getElementById('svg');
   const sel = document.getElementById('screen');
   const scrName = document.getElementById('scrName');
+  const titleMode = document.getElementById('titleMode');
   const annoOn = document.getElementById('annoOn');
+  const liveChk = document.getElementById('liveChk');
+  const modeSeg = document.getElementById('modeSeg');
   const statusEl = document.getElementById('status');
   const NS = 'http://www.w3.org/2000/svg';
+
+  let mode = 'type';           // 'type' | 'borders'
+  let doc = null, win = null, navButtons = [], paused = false;
 
   const widthAbbr = f => ({
     'Iosevka Mono Ultra Condensed':'IM UltraCond',
@@ -77,8 +92,19 @@
     return '#'+h(m[0])+h(m[1])+h(m[2]);
   };
   const lsNum = ls => ls==='normal' ? '0' : String(parseFloat(ls));
+  const swatch = c => '<span class="sw" style="background:'+c+'"></span>';
 
-  // signature (size|weight|hex|width|ls) -> ds/ style name. Specs always shown; name is best-effort.
+  // hex -> DS primitive token (for the color/border-color callouts)
+  const TOKEN = {
+    '#33baea':'brand-tek-blue', '#e74848':'ui-error-red', '#e0b732':'ui-warning-yellow',
+    '#ffffff':'neutral-white', '#000000':'neutral-black',
+    '#cccccc':'neutral-100', '#afafaf':'neutral-200', '#979797':'neutral-300',
+    '#7b7b7b':'neutral-400', '#646464':'neutral-450', '#454545':'neutral-500',
+    '#333333':'neutral-600', '#252525':'neutral-700', '#1e1e1e':'neutral-800', '#181818':'neutral-900'
+  };
+  const tok = c => TOKEN[c] ? ' <span class="tok">('+TOKEN[c]+')</span>' : '';
+
+  // type signature (size|weight|hex|width|ls) -> ds/ style name. Specs always shown; name is best-effort.
   const NAME = {
     '116|400|#ffffff|IM UltraCond|0':'readout/primary',
     '74|400|#ffffff|IM UltraCond|-1':'readout/dual',
@@ -128,8 +154,6 @@
     '11|400|#cccccc|Geist|0.6':'softkey'
   };
 
-  let doc=null, win=null, navButtons=[];
-
   function findBoard(){
     if(!doc) return null;
     let b = doc.querySelector('[data-lcd-board]');
@@ -150,83 +174,107 @@
     if(!p.contains(board)) p.style.display='none';
   }
 
+  // pause / resume the prototype's live streaming via its dev-panel Live button
+  function pauseBtnEl(){ return [...doc.querySelectorAll('#dc-root button')].find(b=>/Live|running|Pause/i.test(b.textContent)); }
+  function setPaused(target){
+    const b = pauseBtnEl();
+    if(b && target !== paused){ b.click(); paused = target; }
+    liveChk.checked = !paused;
+  }
+
   function clear(){ svg.innerHTML=''; overlay.querySelectorAll('.lab').forEach(n=>n.remove()); }
 
-  function annotate(){
-    clear();
-    if(!annoOn.checked) return;
-    const board = findBoard(); if(!board) return;
-    const ir = iframe.getBoundingClientRect();     // iframe origin in parent
-    const br = board.getBoundingClientRect();       // board rect in iframe viewport
-    const bx = ir.left+br.left, by = ir.top+br.top, bw = br.width, bh = br.height;
-    const boardCx = bx+bw/2;
-
-    // board outline
-    const rect = document.createElementNS(NS,'rect');
-    rect.setAttribute('x',bx); rect.setAttribute('y',by);
-    rect.setAttribute('width',bw); rect.setAttribute('height',bh);
-    rect.setAttribute('fill','none'); rect.setAttribute('stroke','#33baea');
-    rect.setAttribute('stroke-width','1'); rect.setAttribute('stroke-dasharray','4 4'); rect.setAttribute('opacity','.5');
-    svg.appendChild(rect);
-
-    // one representative element per distinct signature
-    const seen={}, items=[];
-    board.querySelectorAll('*').forEach(e=>{
-      const hasText = [...e.childNodes].some(n=>n.nodeType===3 && n.textContent.trim());
-      if(!hasText) return;
-      const r = e.getBoundingClientRect(); if(r.width===0||r.height===0) return;
-      const cs = win.getComputedStyle(e);
-      const width = widthAbbr(cs.fontFamily.split(',')[0].replace(/["']/g,''));
-      const size = Math.round(parseFloat(cs.fontSize));
-      const wt = cs.fontWeight, color = hex(cs.color), ls = lsNum(cs.letterSpacing);
-      const key = [size,wt,color,width,ls].join('|');
-      if(seen[key]) return; seen[key]=1;
-      const lh = cs.lineHeight==='normal' ? 'auto' : Math.round(parseFloat(cs.lineHeight));
-      const sample = [...e.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent.trim()).join(' ').slice(0,16);
-      items.push({ key, name:NAME[key]||null, width, wt, size, lh, ls, color,
-        tt:cs.textTransform, sample,
-        cx: ir.left+r.left+r.width/2, cy: ir.top+r.top+r.height/2,
-        side: (ir.left+r.left+r.width/2) < boardCx ? 'L':'R' });
-    });
-
-    const LABEL_H=54, GAP=8, W=290;
-    const colX = { L:24, R:Math.round(bx+bw+40) };
+  // shared column layout + leader lines. items: {title, specHtml, color, sample, cx, cy, side}
+  function place(items, geo){
+    const LABEL_H=54, GAP=8, W=300, colX={ L:24, R:Math.round(geo.bx+geo.bw+40) };
     ['L','R'].forEach(side=>{
       const arr = items.filter(i=>i.side===side).sort((a,b)=>a.cy-b.cy);
       let y = arr.length ? Math.max(16, arr[0].cy-LABEL_H/2) : 16;
       arr.forEach(it=>{ it.ly = Math.max(y, it.cy-LABEL_H/2); y = it.ly+LABEL_H+GAP; });
-      const overflow = y - (window.innerHeight-16);
-      if(overflow>0) arr.forEach(it=>it.ly -= overflow);
+      const of = y - (window.innerHeight-16); if(of>0) arr.forEach(it=>it.ly-=of);
       arr.forEach(it=>{
-        const anchorX = side==='L' ? colX.L+W : colX.R;
-        const anchorY = it.ly+LABEL_H/2;
+        const anchorX = side==='L' ? colX.L+W : colX.R, anchorY = it.ly+LABEL_H/2;
         const pl = document.createElementNS(NS,'polyline');
         pl.setAttribute('points', `${anchorX},${anchorY} ${it.cx},${anchorY} ${it.cx},${it.cy}`);
-        pl.setAttribute('fill','none'); pl.setAttribute('stroke','#7bd4f0');
-        pl.setAttribute('stroke-width','1'); pl.setAttribute('opacity','.7');
+        pl.setAttribute('fill','none'); pl.setAttribute('stroke','#7bd4f0'); pl.setAttribute('stroke-width','1'); pl.setAttribute('opacity','.7');
         svg.appendChild(pl);
         const dot = document.createElementNS(NS,'circle');
-        dot.setAttribute('cx',it.cx); dot.setAttribute('cy',it.cy); dot.setAttribute('r','2.5'); dot.setAttribute('fill','#33baea');
-        svg.appendChild(dot);
-        const d = document.createElement('div');
-        d.className='lab';
+        dot.setAttribute('cx',it.cx); dot.setAttribute('cy',it.cy); dot.setAttribute('r','2.5'); dot.setAttribute('fill','#33baea'); svg.appendChild(dot);
+        const d = document.createElement('div'); d.className='lab';
         d.style.left = colX[side]+'px'; d.style.top = it.ly+'px';
         d.style.borderLeft = '3px solid '+(it.color==='#000000'?'#888':it.color);
-        const nm = it.name ? 'ds/'+it.name : '<span style="color:#888">(unnamed)</span>';
-        d.innerHTML =
-          `<div class="nm">${nm}</div>`+
-          `<div class="sp">${it.width} ${it.wt} · ${it.size}px${it.lh!=='auto'?'/'+it.lh:''}${it.ls!=='0'?' · ls '+it.ls:''} · `+
-          `<span class="sw" style="background:${it.color}"></span> ${it.color}${it.tt==='uppercase'?' · UPPER':''}</div>`+
-          (it.sample?`<div class="sp" style="color:#666">“${it.sample}”</div>`:'');
+        d.innerHTML = `<div class="nm">${it.title}</div><div class="sp">${it.specHtml}</div>`+
+          (it.sample?`<div class="sp" style="color:#666">${it.sample}</div>`:'');
         overlay.appendChild(d);
       });
     });
-    statusEl.textContent = items.length+' type styles · '+scrName.textContent;
+    statusEl.textContent = items.length+' '+(mode==='borders'?'border styles':'type styles')+' · '+scrName.textContent;
+  }
+
+  function annotateType(geo){
+    const board=geo.board, ir=geo.ir, boardCx=geo.boardCx, seen={}, items=[];
+    board.querySelectorAll('*').forEach(e=>{
+      const hasText=[...e.childNodes].some(n=>n.nodeType===3&&n.textContent.trim()); if(!hasText) return;
+      const r=e.getBoundingClientRect(); if(r.width===0||r.height===0) return;
+      const cs=win.getComputedStyle(e);
+      const width=widthAbbr(cs.fontFamily.split(',')[0].replace(/["']/g,''));
+      const size=Math.round(parseFloat(cs.fontSize)), wt=cs.fontWeight, color=hex(cs.color), ls=lsNum(cs.letterSpacing);
+      const key=[size,wt,color,width,ls].join('|'); if(seen[key]) return; seen[key]=1;
+      const lh=cs.lineHeight==='normal'?'auto':Math.round(parseFloat(cs.lineHeight));
+      const sample=[...e.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent.trim()).join(' ').slice(0,16);
+      const nm=NAME[key]?'ds/'+NAME[key]:'<span style="color:#888">(unnamed)</span>';
+      items.push({ title:nm, color, side:(ir.left+r.left+r.width/2)<boardCx?'L':'R',
+        cx:ir.left+r.left+r.width/2, cy:ir.top+r.top+r.height/2,
+        sample: sample?'“'+sample+'”':'',
+        specHtml:`${width} ${wt} · ${size}px${lh!=='auto'?'/'+lh:''}${ls!=='0'?' · ls '+ls:''} · ${swatch(color)} ${color}${tok(color)}${cs.textTransform==='uppercase'?' · UPPER':''}` });
+    });
+    place(items, geo);
+  }
+
+  function annotateBorders(geo){
+    const board=geo.board, ir=geo.ir, boardCx=geo.boardCx, seen={}, items=[];
+    const SIDES=['Top','Right','Bottom','Left'];
+    board.querySelectorAll('*').forEach(e=>{
+      const cs=win.getComputedStyle(e);
+      const w=SIDES.map(s=>parseFloat(cs['border'+s+'Width'])||0);
+      const st=SIDES.map(s=>cs['border'+s+'Style']);
+      const col=SIDES.map(s=>hex(cs['border'+s+'Color']));
+      const on=SIDES.map((s,i)=>w[i]>0 && st[i]!=='none');
+      if(!on.some(Boolean)) return;
+      const r=e.getBoundingClientRect(); if(r.width<3||r.height<3) return;
+      const uniform = on.every(Boolean) && w.every(x=>x===w[0]) && col.every(c=>c===col[0]) && st.every(s=>s===st[0]);
+      let desc, pi;
+      if(uniform){ desc='all'; pi=0; }
+      else { const names=SIDES.filter((s,i)=>on[i]); desc=names.map(s=>s.toLowerCase()).join('+'); pi=SIDES.indexOf(names[0]); }
+      let rad=cs.borderRadius; if(rad==='0px') rad=''; else if(/^9999px/.test(rad)) rad='full'; else rad=rad.split(' ')[0];
+      const sig=[desc, w[pi], st[pi], col[pi], rad].join('|'); if(seen[sig]) return; seen[sig]=1;
+      const sampleTxt=([...e.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent.trim()).join(' ').trim()).slice(0,16);
+      items.push({ title:'border · '+desc, color:col[pi], side:(ir.left+r.left+r.width/2)<boardCx?'L':'R',
+        cx:ir.left+r.left+r.width/2, cy:ir.top+r.top+r.height/2,
+        sample: sampleTxt?'“'+sampleTxt+'”':'',
+        specHtml:`${w[pi]}px ${st[pi]} · ${swatch(col[pi])} ${col[pi]}${tok(col[pi])}${rad?' · radius '+rad:''}` });
+    });
+    place(items, geo);
+  }
+
+  function render(){
+    clear();
+    if(!annoOn.checked) return;
+    const board=findBoard(); if(!board) return;
+    const ir=iframe.getBoundingClientRect(), br=board.getBoundingClientRect();
+    const bx=ir.left+br.left, by=ir.top+br.top, bw=br.width, bh=br.height, boardCx=bx+bw/2;
+    const rect=document.createElementNS(NS,'rect');
+    rect.setAttribute('x',bx); rect.setAttribute('y',by); rect.setAttribute('width',bw); rect.setAttribute('height',bh);
+    rect.setAttribute('fill','none'); rect.setAttribute('stroke','#33baea'); rect.setAttribute('stroke-width','1'); rect.setAttribute('stroke-dasharray','4 4'); rect.setAttribute('opacity','.5');
+    svg.appendChild(rect);
+    const geo={ board, ir, bx, by, bw, bh, boardCx };
+    titleMode.textContent = '— '+(mode==='borders'?'border':'type')+' annotation · device-native 480×272 px';
+    (mode==='borders'?annotateBorders:annotateType)(geo);
   }
 
   function gotoScreen(i){
     if(navButtons[i-1]) navButtons[i-1].click();
-    setTimeout(annotate, 350);
+    setTimeout(()=>{ if(paused) setPaused(true); render(); }, 350);
   }
 
   function init(){
@@ -235,8 +283,8 @@
     if(!board){ statusEl.textContent='waiting for screen to render…'; return setTimeout(init, 250); }
     navButtons = [...doc.querySelectorAll('#dc-root button')].filter(b=>/^\s*\d+\.\s/.test(b.textContent));
     if(navButtons.length<13){ return setTimeout(init, 250); }
+    setPaused(true);   // freeze live data by default so the annotated screen is static
     hidePanel();
-    // populate dropdown
     sel.innerHTML='';
     navButtons.forEach((b,idx)=>{
       const label = b.textContent.trim().replace(/^\s*\d+\.\s*/,'');
@@ -248,12 +296,18 @@
       scrName.textContent = sel.options[sel.selectedIndex].textContent.replace(/^\d+\.\s*/,'');
       gotoScreen(parseInt(sel.value,10));
     });
-    annoOn.addEventListener('change', annotate);
-    setTimeout(annotate, 300);
+    modeSeg.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{
+      mode=b.dataset.mode;
+      modeSeg.querySelectorAll('button').forEach(x=>x.classList.toggle('on', x===b));
+      render();
+    }));
+    annoOn.addEventListener('change', render);
+    liveChk.addEventListener('change', ()=>setPaused(!liveChk.checked));
+    setTimeout(render, 300);
   }
 
   iframe.addEventListener('load', ()=> setTimeout(init, 400));
-  let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(annotate,200); });
+  let rt; window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(render,200); });
 })();
 </script>
 </body>
