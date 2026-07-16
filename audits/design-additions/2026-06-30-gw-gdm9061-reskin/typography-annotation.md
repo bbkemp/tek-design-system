@@ -1,6 +1,6 @@
 # Dragon Storm (GDM9061) — Typography annotation & consistency audit
 
-**Date:** 2026-07-13 · Status: **for dev handoff** · Prototype: [`prototypes/dragonstorm/index.html`](../../../prototypes/dragonstorm/index.html) (desktop dev view, approved)
+**Date:** 2026-07-13 (decisions resolved 2026-07-16) · Status: **for dev handoff — as-built spec** · Prototype: [`prototypes/dragonstorm/index.html`](../../../prototypes/dragonstorm/index.html) (desktop dev view, approved)
 **Scope:** all 13 screens, **desktop** prototype only. Values are **device-native px** at the panel's true **480×272** resolution — extracted from the rendered DOM (`getComputedStyle`), so they are the exact numbers to implement, not scaled preview values.
 **Companion:** [`mono-type-scale-spec.md`](./mono-type-scale-spec.md) — the proposed `fonts.mono.*` scale this annotation references. **Read that first**; the style names below bind to it.
 
@@ -8,10 +8,10 @@
 
 ## How to read this
 
-1. **§1 Consistency audit** — what's inconsistent today, ranked P0–P2, with a recommendation each. Do this pass first (per the brief).
-2. **§2 Proposed type styles** — the consolidated named set devs should implement. One row = one style. Off-scale sizes forced by the 480×272 panel are marked **⚠ one-off**.
+1. **§1 Consistency audit** — the type variances across screens, ranked P0–P2. **Reviewed and accepted as-built on 2026-07-16 (see §4)** — read these as documented variances, not a fix list.
+2. **§2 Type-style catalog** — the ~30 distinct named styles, one row each. Off-scale sizes forced by the 480×272 panel are marked **⚠ one-off**. (Consolidation "targets" noted inline were **not** adopted — see §4.)
 3. **§3 Per-screen annotation** — every text element on every screen → its style name + raw props.
-4. **§4 Open decisions** — the genuine choices that need a human call before this is locked.
+4. **§4 Decisions** — the six calls, resolved 2026-07-16 (all ratified as-built).
 
 **Fonts in play:** `Iosevka Mono` in three widths — **Ultra Condensed**, **Condensed**, **Extended** (readouts/values) · **Archivo** (titles/tabs, `wdth 120`) · **Geist** (labels/softkeys/status).
 **Colors** — all 8 map cleanly to DS primitives, no raw hex escapes:
@@ -226,20 +226,24 @@ Shared config vocabulary (no readout / footer control block):
 
 ---
 
-## §4 · Open decisions
+## §4 · Decisions (resolved 2026-07-16)
 
-Genuine calls that need a human before locking — I have **not** resolved these unilaterally.
+Reviewed with the maintainer. **Every item was ratified as-built** — the approved prototype is the source of truth; no prototype or design-system changes result from this audit.
 
-1. **Canonical readout width + weight (A1).** Unify the four readout tiers on one Iosevka Mono width and one weight. Options: **(a) Ultra Condensed / 400** everywhere (matches the two largest, most-visible readouts), snapping stats/trend to it; **(b) Condensed** everywhere; **(c) keep Ultra Condensed for the full-screen readout and Condensed for inset stat/trend readouts as a deliberate two-tier rule.** Letter-spacing should then follow one rule (e.g. tighten as size grows).
-2. **Stat block size (A2).** One size for `data/stat-label`/`value` across Trend/Histogram/Stats — **13** or **14**?
-3. **OverLoad unit (A3).** Confirm the `#e0b732` is an intentional over-range warning tint (keep color, fix family → Iosevka Mono Condensed), **or** it's a full bug (revert to `unit/primary` white).
-4. **Snap vs ratify the off-scale sizes (A7).** For **11 / 15 / 17 / 9.5**: snap to the nearest scale step, or ratify as explicit mono one-offs? 11px in particular is load-bearing across all config screens — snapping it to 12 is a visible change.
-5. **Adopt into the DS mono scale, or keep Dragon-Storm-local?** These ~30 styles can either (a) stay a device-local set documented here for the firmware team, or (b) feed the `fonts.mono.*` + width/weight text-style build in [`mono-type-scale-spec.md`](./mono-type-scale-spec.md) §4 (Open decisions there already flag width + weight selection). Recommend keeping the readout one-offs local (panel-specific) and promoting only the on-scale styles.
-6. **Softkey unification (A6).** One bottom-caption style, or keep measurement (`control/label` 10/500) distinct from config (`softkey` 11/400)?
+| # | Decision | Outcome |
+|---|---|---|
+| 1 | Readout width/weight (A1) | **Ratify as-is.** Keep the per-tier widths and weights exactly — incl. the Trend readout at weight 500 and the UltraCondensed/Condensed split. No unification. |
+| 2 | Stat block size (A2) | **Ratify the split.** Trend/Histogram stay 13px/lh16.25; Stats stay 14px/lh17.5. |
+| 3 | OverLoad unit (A3) | **Leave as-is** — Geist + `#e0b732` accepted; not changed. |
+| 4 | Off-scale sizes (A7) | **Ratify all** — 9.5 / 11 / 15 / 17 kept as documented panel one-offs. |
+| 5 | DS adoption | **Keep everything Dragon-Storm-local.** None promoted to the `fonts.mono.*` scale/styles; this document is the reference. |
+| 6 | Softkeys (A6) | **Keep two** distinct specs — measurement footer `control/label` (10/500) vs config `softkey` (11/400). |
+
+Net effect: this document stands as the **as-built type spec** for the firmware team. The §1 findings remain as documentation of the accepted variances.
 
 ---
 
 ## Notes
 - Extraction method: rendered `getComputedStyle` on every text-bearing element inside the 480×272 board (the `scale(2)` LCD div), driven across all 13 screens via the dev-panel navigator. Font-size is transform-independent, so all px are **device-native**.
-- This is annotation of the **approved** prototype as-built — it records what's there and proposes consolidation. It does **not** change the prototype.
+- This is annotation of the **approved** prototype as-built — it records what's there. All variances were reviewed and **ratified as-is (2026-07-16, §4)**; it does **not** change the prototype.
 - Colors already trace 1:1 to DS primitives (table above); the open work is **type-style consolidation**, not color.
