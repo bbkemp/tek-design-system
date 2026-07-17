@@ -18,6 +18,7 @@ tek-design-system/
 │       ├── publish-tokens.yml    auto-publishes tokens on change
 │       └── publish-ui.yml        auto-publishes UI on change
 ├── apps/
+│   ├── bench/                Tek Bench — DS workstation shell wrapping the micro tools + prototypes
 │   └── mcp/                  Tek MCP Endpoint — hosted MCP server over tokens, components, corpus
 ├── figma-token-push/         Token Push Figma plugin (local dev, not published)
 ├── docs/wpf/                 WPF/XAML translation layer (pipeline-generated ResourceDictionaries)
@@ -508,10 +509,16 @@ Then open any preview page via a local server (required for ES module imports):
 
 # Or use Python's built-in server:
 python3 -m http.server 3000
+# open http://localhost:3000/apps/bench/                              ← the Bench: all tools, one shell
 # open http://localhost:3000/prototypes/sign-in/index.html
 # open http://localhost:3000/prototypes/sign-in/signup.html
 # open http://localhost:3000/prototypes/component-library/index.html
 ```
+
+[`apps/bench/`](./apps/bench/) is the **Tek Bench workstation** — a token-driven shell that wraps every
+micro tool, reference page, and prototype drop behind one rail (deep-linkable as `#/<tool-id>`). New tools
+register in [`apps/bench/tools.js`](./apps/bench/tools.js); the tool consistency contract is in
+[`apps/bench/README.md`](./apps/bench/README.md).
 
 The sign-in pages (`prototypes/sign-in/`) import from `packages/tokens/dist/` and `packages/ui/dist/` —
 they consume the real built packages and function as integration tests. `prototypes/component-library/index.html`

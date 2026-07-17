@@ -10,6 +10,7 @@ A monorepo containing:
 
 - `packages/tokens/` — design tokens (Style Dictionary v3, custom DTCG parser, `size/px` transform). Currently published as `@bbkemp/tokens` on GitHub Packages.
 - `packages/ui/` — Web Components consumed by Tek products. Currently published as `@bbkemp/ui`.
+- `apps/bench/` — the **Tek Bench workstation**: static, token-driven shell that wraps the micro tools, reference pages, and prototype drops behind one rail. Tool registry + consistency contract: `apps/bench/tools.js` and `apps/bench/README.md`.
 - `apps/mcp/` — the **Tek MCP Endpoint** (shipped 2026-07-16): hosted MCP server on Vercel exposing tokens, components, and corpus search (Neon pgvector + Voyage + Cohere) to any MCP client via one secret URL. Data re-ingests from the repo on every push to `main` (`ingest.yml`). The URL is a secret — **never commit it** (the repo is public); local sessions connect via the gitignored `.mcp.json` (see `.mcp.json.example`). Details: `apps/mcp/README.md`; plan: `docs/mcp-server-plan.md`.
 - `figma-token-push/` — local-only Figma plugin that commits four token files atomically, with a concurrency group on the publish workflow to prevent SHA races.
 - `prototypes/` — Claude Design prototype drops (bench, my-tek, tek-express, font-lab) plus the HTML reference pages: `sign-in/` (sign in + create account — real built-package imports, pixel-perfect integration tests) and `component-library/` (live component reference; currently inline definitions).
