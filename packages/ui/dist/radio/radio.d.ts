@@ -1,8 +1,10 @@
 import { TekBaseSelector } from '../base-selector.js';
 export declare class TekRadio extends TekBaseSelector {
-    private _shadow;
+    static styles: import("lit").CSSResult;
     connectedCallback(): void;
-    attributeChangedCallback(n: string, o: string | null, v: string | null): void;
+    disconnectedCallback(): void;
+    private _onKeydown;
+    updated(): void;
     protected _click: () => void;
-    protected render(): void;
+    render(): import("lit-html").TemplateResult<1>;
 }

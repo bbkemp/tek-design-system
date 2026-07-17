@@ -25,7 +25,7 @@ Primary maintainer: Bryan Kemp.
 
 These are the rules that hold the system together. Violating any of them produces drift the system explicitly exists to prevent.
 
-1. **TypeScript-first Web Components.** Components ship as framework-agnostic Web Components because the consuming runtime is native desktop (WPF/XAML). No framework-specific ports (React, Vue, etc.) — the Web Components are the single implementation. If a genuine need for a framework layer appears, raise it as an open question rather than building one.
+1. **TypeScript-first Web Components.** Components ship as framework-agnostic Web Components because the consuming runtime is native desktop (WPF/XAML). No framework-specific ports (React, Vue, etc.) — the Web Components are the single implementation. Internally components extend `LitElement` ([ADR-0001](./docs/adr/0001-adopt-lit.md)) — an implementation detail, not a framework layer: the published artifacts remain standard custom elements. If a genuine need for a consumer-facing framework layer appears, raise it as an open question rather than building one.
 2. **Tokens always.** Never hardcode hex, px, font sizes, font families, or radii. Use `var(--tek-*)` with a fallback: `var(--tek-spacing-s05, 8px)`. Token-adherence rules are spelled out in [CONTRIBUTING.md → Updating Web Components](./CONTRIBUTING.md#updating-web-components).
 3. **Figma is the source of truth.** Before writing or changing component code, look at the relevant Figma node. Do not assume existing code is correct. The Figma file is **DS-v2**, key `3wbYstse9TYKlPtCPpZH5X`. README has the node-to-source map.
 4. **TypeScript strict mode.** No `any` escape hatches.
@@ -45,7 +45,7 @@ These are the rules that hold the system together. Violating any of them produce
 
 This describes what's actually on disk right now. Aspirational/planned conventions are in the next section.
 
-Components live in `packages/ui/src/<name>/<name>.ts` — one TypeScript file per component, lowercase kebab-case directory name matching the filename. Examples:
+Components live in `packages/ui/src/<name>/<name>.ts` — one TypeScript file per component, lowercase kebab-case directory name matching the filename. Every component extends `LitElement` (or `TekBaseSelector` for checkbox-like controls) with `static styles`, `@property` decorators, and a `render()` returning a Lit template — see [ADR-0001](./docs/adr/0001-adopt-lit.md). Examples:
 
 ```
 packages/ui/src/button/button.ts
@@ -93,7 +93,6 @@ These are flagged here so you don't act as if they exist, and don't propose them
 | `@bbkemp/*` → `@tektronix/*` namespace migration | Part 4 |
 | `@tektronix/.github` org-wide conventions repo | Part 4 |
 | `/prds/` directory + first PRD (likely Dashboard) | Part 2 |
-| ADRs under `/docs/adr/` | Part 3 |
 | ESLint rules for hardcoded values, type exports, import paths | Part 3 |
 | `npm run new:component` Plop scaffold | Part 3 |
 | Storybook / component explorer | Part 4 (`apps/storybook`) |

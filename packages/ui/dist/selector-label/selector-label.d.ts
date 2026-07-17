@@ -1,13 +1,8 @@
-export declare class TekSelectorLabel extends HTMLElement {
-    static get observedAttributes(): string[];
-    get checked(): boolean;
-    set checked(v: boolean);
-    get error(): boolean;
-    set error(v: boolean);
-    get disabled(): boolean;
-    set disabled(v: boolean);
-    private _shadow;
-    connectedCallback(): void;
-    attributeChangedCallback(): void;
-    private _render;
+import { LitElement } from 'lit';
+export declare class TekSelectorLabel extends LitElement {
+    static styles: import("lit").CSSResult;
+    checked: boolean;
+    error: boolean;
+    disabled: boolean;
+    render(): import("lit-html").TemplateResult<1>;
 }

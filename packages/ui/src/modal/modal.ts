@@ -23,54 +23,51 @@
  *     </div>
  *   </tek-modal>
  */
-const STYLES = `
-  :host {
-    display: flex;
-    flex-direction: column;
-    gap: var(--tek-spacing-s08, 14px);
-    background: var(--tek-color-modal-background-default, #181818);
-    border: 0.25px solid var(--tek-color-modal-border-default, #7b7b7b);
-    border-radius: var(--tek-borders-radius-05, 11px);
-    padding: var(--tek-modal-padding, var(--tek-spacing-s13, 32px));
-    width: 100%;
-    max-width: 360px;
-    box-sizing: border-box;
-    overflow: clip;
-    box-shadow: 0px 2px 6px 0px var(--tek-color-modal-shadow-default, rgba(0,0,0,0.2));
-  }
+import { css, html, LitElement } from 'lit';
 
-  .header {
-    font-family: var(--tek-fonts-family-archivo, sans-serif);
-    font-size: var(--tek-modal-heading-size, var(--tek-fonts-heading-size-md, 24px));
-    font-weight: 600;
-    font-variation-settings: 'wdth' 106;
-    line-height: var(--tek-modal-heading-line-height, var(--tek-fonts-heading-line-height-md, 32px));
-    letter-spacing: 0;
-    color: var(--tek-color-modal-text-default, #ffffff);
-  }
+export class TekModal extends LitElement {
+  static styles = css`
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: var(--tek-spacing-s08, 14px);
+      background: var(--tek-color-modal-background-default, #181818);
+      border: 0.25px solid var(--tek-color-modal-border-default, #7b7b7b);
+      border-radius: var(--tek-borders-radius-05, 11px);
+      padding: var(--tek-modal-padding, var(--tek-spacing-s13, 32px));
+      width: 100%;
+      max-width: 360px;
+      box-sizing: border-box;
+      overflow: clip;
+      box-shadow: 0px 2px 6px 0px var(--tek-color-modal-shadow-default, rgba(0,0,0,0.2));
+    }
 
-  .input-blocks {
-    display: flex;
-    flex-direction: column;
-    gap: var(--tek-spacing-s06, 10px);
-    width: 100%;
-  }
+    .header {
+      font-family: var(--tek-fonts-family-archivo, sans-serif);
+      font-size: var(--tek-modal-heading-size, var(--tek-fonts-heading-size-md, 24px));
+      font-weight: 600;
+      font-variation-settings: 'wdth' 106;
+      line-height: var(--tek-modal-heading-line-height, var(--tek-fonts-heading-line-height-md, 32px));
+      letter-spacing: 0;
+      color: var(--tek-color-modal-text-default, #ffffff);
+    }
 
-  .action-blocks {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-`;
+    .input-blocks {
+      display: flex;
+      flex-direction: column;
+      gap: var(--tek-spacing-s06, 10px);
+      width: 100%;
+    }
 
-export class TekModal extends HTMLElement {
-  private _shadow = this.attachShadow({ mode: 'open' });
+    .action-blocks {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+  `;
 
-  connectedCallback() { this._render(); }
-
-  private _render() {
-    this._shadow.innerHTML = `
-      <style>${STYLES}</style>
+  render() {
+    return html`
       <div class="header" part="header">
         <slot name="header"></slot>
       </div>

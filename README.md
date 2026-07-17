@@ -295,6 +295,8 @@ The token package has two layers. **Most projects need both.**
 
 ## Using Web Components
 
+Components are implemented with [Lit](https://lit.dev) ([ADR-0001](./docs/adr/0001-adopt-lit.md)) and ship as standard, framework-agnostic custom elements — Lit is bundled into the published artifact, so consumers need no extra dependency or module resolver.
+
 ```js
 import '@bbkemp/ui';
 ```

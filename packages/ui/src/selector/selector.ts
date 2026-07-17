@@ -16,56 +16,56 @@
  *     <tek-selector-label>Enable feature</tek-selector-label>
  *   </tek-selector>
  */
-const STYLES = `
-  :host { display:inline-flex; gap:0; align-items:center; padding:0; cursor:pointer; user-select:none; }
-  :host([type="toggle"]) { padding-top:1px; padding-bottom:1px; }
-  .inner { display:flex; gap:var(--tek-spacing-s05,8px); align-items:center; min-height:1px; min-width:1px; padding:0; }
-`;
+import { css, html, LitElement, type PropertyValues, type TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
-export class TekSelector extends HTMLElement {
-  static get observedAttributes() { return ['checked','error','disabled','label','type','name']; }
+export class TekSelector extends LitElement {
+  static styles = css`
+    :host { display:inline-flex; gap:0; align-items:center; padding:0; cursor:pointer; user-select:none; }
+    :host([type="toggle"]) { padding-top:1px; padding-bottom:1px; }
+    .inner { display:flex; gap:var(--tek-spacing-s05,8px); align-items:center; min-height:1px; min-width:1px; padding:0; }
+  `;
 
-  get checked()  { return this.hasAttribute('checked'); }
-  set checked(v: boolean) { v ? this.setAttribute('checked','') : this.removeAttribute('checked'); }
-  get error()    { return this.hasAttribute('error'); }
-  get disabled() { return this.hasAttribute('disabled'); }
-
-  private _shadow = this.attachShadow({ mode: 'open' });
+  @property({ type: Boolean, reflect: true }) checked = false;
+  @property({ type: Boolean, reflect: true }) error = false;
+  @property({ type: Boolean, reflect: true }) disabled = false;
+  @property() label: string | null = null;
+  @property() type = 'checkbox';
+  @property() name: string | null = null;
 
   connectedCallback() {
-    this._render();
+    super.connectedCallback();
     this.setAttribute('role', 'group');
-    this.setAttribute('aria-checked', String(this.checked));
     // tek-change from children (composed:true) bubbles up to here — sync host state
-    this.addEventListener('tek-change', (e: Event) => {
-      const { checked } = (e as CustomEvent<{checked:boolean}>).detail;
-      this._sync(checked);
-    });
+    this.addEventListener('tek-change', this._onTekChange);
     this.addEventListener('click', this._onClick);
   }
 
-  disconnectedCallback() { this.removeEventListener('click', this._onClick); }
-
-  attributeChangedCallback(n: string, o: string|null, v: string|null) {
-    if (o === v) return;
-    // label/type/name changes require a full re-render
-    if (n === 'label' || n === 'type' || n === 'name') { this._render(); }
-    else { this._syncChildren(); }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('tek-change', this._onTekChange);
+    this.removeEventListener('click', this._onClick);
   }
 
   private _getCtrl(): HTMLElement | null {
     // Check shadow DOM first (self-contained mode), then light DOM (slot mode)
-    return (this._shadow.querySelector('tek-checkbox,tek-radio,tek-toggle') ||
+    return (this.renderRoot.querySelector('tek-checkbox,tek-radio,tek-toggle') ||
             this.querySelector('tek-checkbox,tek-radio,tek-toggle')) as HTMLElement | null;
   }
 
   private _getLbl(): HTMLElement | null {
-    return (this._shadow.querySelector('tek-selector-label') ||
+    return (this.renderRoot.querySelector('tek-selector-label') ||
             this.querySelector('tek-selector-label')) as HTMLElement | null;
   }
 
+  private _onTekChange = (e: Event) => {
+    const { checked } = (e as CustomEvent<{ checked: boolean }>).detail;
+    this._sync(checked);
+  };
+
   private _onClick = (e: Event) => {
-    const ctrl = this._getCtrl() as any;
+    const ctrl = this._getCtrl() as HTMLElement & { checked: boolean; disabled: boolean; error: boolean } | null;
     if (!ctrl || ctrl.disabled || ctrl.error) return;
     // If click originated inside the control element, let the control handle it
     if (e.composedPath().some((el: EventTarget) => el === ctrl)) return;
@@ -77,48 +77,60 @@ export class TekSelector extends HTMLElement {
   };
 
   private _sync(checked: boolean) {
-    const lbl = this._getLbl() as any;
-    if (lbl) { checked ? lbl.setAttribute('checked','') : lbl.removeAttribute('checked'); }
-    checked ? this.setAttribute('checked','') : this.removeAttribute('checked');
-    this.setAttribute('aria-checked', String(checked));
+    this.checked = checked;
+    const lbl = this._getLbl();
+    if (lbl) { checked ? lbl.setAttribute('checked', '') : lbl.removeAttribute('checked'); }
   }
 
-  private _syncChildren() {
-    const ctrl = this._getCtrl() as HTMLElement;
-    const lbl  = this._getLbl() as HTMLElement;
-    ['checked','error','disabled'].forEach(attr => {
-      const has = this.hasAttribute(attr);
-      [ctrl, lbl].forEach(el => {
-        if (!el) return;
-        has ? el.setAttribute(attr,'') : el.removeAttribute(attr);
-      });
-    });
-  }
-
-  private _render() {
-    const label    = this.getAttribute('label');
-    const type     = this.getAttribute('type') || 'checkbox';
-    const name     = this.getAttribute('name') ? `name="${this.getAttribute('name')}"` : '';
-    const checked  = this.hasAttribute('checked')  ? 'checked'  : '';
-    const error    = this.hasAttribute('error')    ? 'error'    : '';
-    const disabled = this.hasAttribute('disabled') ? 'disabled' : '';
-
-    if (label !== null) {
-      // Self-contained: render the control + label entirely in shadow DOM
-      this._shadow.innerHTML = `<style>${STYLES}</style>
-        <div class="inner" part="inner">
-          <tek-${type} ${checked} ${error} ${disabled} ${name}></tek-${type}>
-          <tek-selector-label ${checked} ${error}>${label}</tek-selector-label>
-        </div>`;
-    } else {
-      // Slot mode: consumer slots in tek-checkbox/radio/toggle + tek-selector-label
-      this._shadow.innerHTML = `<style>${STYLES}</style>
-        <div class="inner" part="inner"><slot></slot></div>`;
-      // Auto-detect toggle for correct top padding
-      requestAnimationFrame(() => {
-        if (this.querySelector('tek-toggle')) this.setAttribute('type','toggle');
+  updated(changed: PropertyValues) {
+    if (changed.has('checked')) this.setAttribute('aria-checked', String(this.checked));
+    // Slot mode: propagate host state to light-DOM children (self-contained
+    // mode is handled by template bindings)
+    if (this.label === null) {
+      const ctrl = this.querySelector('tek-checkbox,tek-radio,tek-toggle');
+      const lbl = this.querySelector('tek-selector-label');
+      (['checked', 'error', 'disabled'] as const).forEach(attr => {
+        if (!changed.has(attr)) return;
+        const has = this[attr];
+        [ctrl, lbl].forEach(el => {
+          if (!el) return;
+          has ? el.setAttribute(attr, '') : el.removeAttribute(attr);
+        });
       });
     }
+  }
+
+  firstUpdated() {
+    this.setAttribute('aria-checked', String(this.checked));
+    if (this.label === null) {
+      // Auto-detect toggle for correct top padding
+      requestAnimationFrame(() => {
+        if (this.querySelector('tek-toggle')) this.setAttribute('type', 'toggle');
+      });
+    }
+  }
+
+  private _controlTpl(): TemplateResult {
+    const name = ifDefined(this.name ?? undefined);
+    switch (this.type) {
+      case 'radio':
+        return html`<tek-radio ?checked=${this.checked} ?error=${this.error} ?disabled=${this.disabled} name=${name}></tek-radio>`;
+      case 'toggle':
+        return html`<tek-toggle ?checked=${this.checked} ?error=${this.error} ?disabled=${this.disabled} name=${name}></tek-toggle>`;
+      default:
+        return html`<tek-checkbox ?checked=${this.checked} ?error=${this.error} ?disabled=${this.disabled} name=${name}></tek-checkbox>`;
+    }
+  }
+
+  render() {
+    if (this.label !== null) {
+      // Self-contained: render the control + label entirely in shadow DOM
+      return html`<div class="inner" part="inner">
+        ${this._controlTpl()}<tek-selector-label ?checked=${this.checked} ?error=${this.error} ?disabled=${this.disabled}>${this.label}</tek-selector-label>
+      </div>`;
+    }
+    // Slot mode: consumer slots in tek-checkbox/radio/toggle + tek-selector-label
+    return html`<div class="inner" part="inner"><slot></slot></div>`;
   }
 }
 customElements.define('tek-selector', TekSelector);
