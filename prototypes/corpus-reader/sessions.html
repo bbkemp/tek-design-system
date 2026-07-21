@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AE sessions — friction &amp; voices · Tek Corpus Reader</title>
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+<link rel="stylesheet" href="reader.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark"></span>Tek Corpus Reader</div>
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">◐ theme</button>
+</header>
+<div class="shell">
+  <nav class="sidebar"><a class="nav-item" href="index.html">Delivery plan (3 phases)</a>
+<a class="nav-item" href="phase-1.html">Phase 1 — Immediate Prototype</a>
+<a class="nav-item" href="phase-2.html">Phase 2 — Global UI</a>
+<a class="nav-item" href="phase-3.html">Phase 3 — Panel UI</a>
+<a class="nav-item" href="synthesis.html">Research synthesis</a>
+<a class="nav-item active" href="sessions.html">AE sessions</a>
+<a class="nav-item" href="screens.html">Screen gallery</a>
+    <div class="nav-footer">
+      <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/README.md">Corpus conventions</a>
+      <a href="https://github.com/bbkemp/tek-design-system">Repository</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>AE sessions — friction &amp; voices</h1>
+    <p class="subtitle">July 2026 interview round · highlights only; the corpus holds the full tape</p>
+    <p class="lede">The human layer of each session: what it covered, where the friction was, and the verbatim &ldquo;why it works this way&rdquo; annotations. Everything here is <span class="chip observed">provenance: observed</span> &mdash; each card links to its full corpus record (steps, cross-references, confidence notes).</p>
+<section class="session"><h2>Will Teverovsky</h2><p class="meta">2026-07-13 · 1:38:12</p>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview — Will Teverovsky: Acquisitions, Presets, Status/Results, and the 1024×768 Constraint</span></summary>
+<div class="chunk-summary"><p>Third segment of the 2026-07-13 session. Will moves through Acquisitions, Preferences, Status, and Results in the prototype. Acquisitions surfaces the need for at-a-glance connectivity status of the automated DUT-control device, a prototype misplacement (embed filter), waveform-file access patterns (copy path / open in File Explorer vs. load-for-debug in pre-recorded mode), and the oddity of Refresh Sources. The product leader asks for a pre-flight readiness check using an extended car-dashboard analogy and a "load on TekScope" share action for pre-recorded mode. Will then gives the session's deepest domain tutorial — PCIe presets — concluding they should be visible "almost all the time," ideally in the persistent bottom bar. On Status/Results: status and log view can't be seen simultaneously, richer test statuses are wanted (waiting-for-trigger vs. analyzing), a pass/fail column merged into status is the "lowest friction" fix (Clarius already did it), and the whole UI must be designed against a 1024×768 scope screen — with responsive resizing called out as a genuinely exciting selling point.</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>No at-a-glance DUT-control connectivity.</strong> <em>"It would be important to know at a glance if my [DUT] control device… is live and connected. Like, can I ping it? Is it working?"</em></li>
+<li><strong>Status and Log View are mutually exclusive views.</strong> <em>"The drawback that I've experienced is that you can't see them both at the same time."</em></li>
+<li><strong>Status vocabulary is too coarse.</strong> <em>"Waiting for trigger that's been going [on] for three minutes probably means… stop… Whereas if I stop in the middle of an algorithm, now I'm just a frustrated user."</em></li>
+<li><strong>Status/results toggling.</strong> <em>"I'm only going to know both of those things if I keep toggling back between these two."</em></li>
+<li><strong>Waveform file location is buried behind a long path.</strong> <em>"Where does this actually save to my hard drive? Usually that's a very long [path]."</em></li>
+<li><strong>Refresh Sources is unexplained framework residue.</strong> <em>"Refresh sources is very weird."</em></li>
+<li><strong>Configuration is a junk drawer.</strong> <em>"A catch-all miscellaneous junk drawer that probably needs to be thought more intelligently."</em></li>
+<li><strong>Preferences is misplaced in the main nav.</strong> <em>"This is like a distraction here… This should be under options."</em></li>
+<li><strong>TekExpress today is effectively non-resizable</strong> and some host scopes are fixed 1024×768.</li>
+<li><strong>Preset state is invisible in the prototype.</strong> <em>"It should be very visible almost all the time."</em></li>
+<li><strong>Prototype defects/misplacements noted live:</strong> embed filter in automated DUT control; acquisition grouping missing; pre-recorded mode initially broken in the prototype (reset via Tweaks).</li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>Three levels of preset expectation</strong> — user's expectation, TekExpress's expectation, and the DUT's actual state — is the observability frame Will uses for run-time state. Failures trigger manual measurement solely to reconcile these three.</li>
+<li><strong>Failing tests run longer.</strong> The automation <em>"tries to tweak more parameters to try and get you to a pass"</em> on failure — relevant to progress indication and time estimates.</li>
+<li><strong>Clarius precedent, twice.</strong> The sibling Clarius product already has (a) a connectivity LED for instrument liveness and (b) a merged status+results pass/fail column. Both are cited by the product leader as prior art for TekExpress asks.</li>
+<li><strong>Refresh Sources likely exists because the framework didn't track physical channel re-plugging</strong> — a workaround control, per Will, removable if source tracking becomes automatic ("or maybe that's a good [thing] to put in the junk drawer").</li>
+<li><strong>Application preferences vs. test preferences</strong> is Will's proposed dividing line for the junk-drawer cleanup: app-level settings (theme, email, keep-on-top, instrument control) belong under Options; test-affecting configuration needs a real home in the workflow.</li>
+<li><strong>The prototype was built from screenshots and manuals without live app access</strong> — acknowledged on-call; the room proposes remote instrument access via technical support engineers, observing a product owner run the software, and a TSC (technical support center) Gen-3 walkthrough (Steve Guerrero, arranged via Travis) as fixes. Product leader's analogy: <em>"An Airbus pilot cannot [fly] a Boeing… the guys who do compliance really need to understand why is this button here… Why does it need to do X and not Y?"</em></li>
+<li><strong>Pre-recorded mode is the PC story.</strong> Sessions with captured waveforms can move machines/sites and be rerun without a scope; the "load on TekScope" share action is the product leader's bridge between the PC app and scope software.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">Full corpus record →</a></p>
+</details>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview — Will Teverovsky: DUT Panel, Suite/Device Nomenclature, and Data-Rate Selection</span></summary>
+<div class="chunk-summary"><p>Opening segment of the longest AE feedback session (2026-07-13, 1h 38m). Will Teverovsky, an AE with deep PCI Express compliance experience, drives the new TekExpress UI prototype (PCI Express variant) live for the first time while thinking out loud. Bryan Kemp facilitates; at least one other design-team member and a Tek Express product/program leader are in the room (single-microphone recording — see Confidence notes). Will orients quickly ("feels relatively familiar"), then works through the Setup › DUT panel: tab iconography confusion, "Suite" nomenclature not matching how AEs and customers think about PCIe generations vs. device types, lane selection being a DUT characteristic rather than a test choice, and — the core finding of the segment — data-rate selection needing to be a multi-select test decision rather than a device-centric dropdown. The product leader closes the segment with the compliance-vs-conformance split across the TekExpress portfolio.</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>Tab iconography is unclear.</strong> <em>"I'm a little bit confused about like what these, what the iconography means here… I don't know what like the check mark is really referring to."</em></li>
+<li><strong>"Suite" nomenclature doesn't match AE vocabulary.</strong> <em>"The suite nomenclature is a little bit different than I'm used to."</em></li>
+<li><strong>Dropdown contents conflate spec levels.</strong> <em>"Gen. 5 versus [CEM] 5.0 … those are kind of the same thing… that should be a different level than this."</em> / <em>"The things in these dropdowns don't really fully work in the context of the technology."</em></li>
+<li><strong>Data-rate selection modeled wrong.</strong> <em>"The data rates I'm about to test is more of like a multi-select rather than a drop-down."</em></li>
+<li><strong>Lane selection implies a test plan it shouldn't.</strong> <em>"Just because I have a by-16 [DUT] doesn't mean I'm going to test all 16 lanes."</em></li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>The two-level device model.</strong> Will's mental model separates a <em>device profile</em> (lane width ×16/×8/×4/×1, generation capability — facts about the DUT) from the <em>test plan</em> (which lanes and which data rates to actually run — choices per session). The current DUT panel mixes both into one column of dropdowns. This is observed AE framing, not a redesign proposal.</li>
+<li><strong>Backwards-compatibility drives the data-rate set.</strong> A Gen-5 DUT is capable of every lower rate; full compliance technically requires all of them; almost nobody runs all of them routinely. Three common patterns Will names: highest only, highest three, all.</li>
+<li><strong>Separate per-technology apps today.</strong> Each technology (Gen 5, Ethernet, …) opens as its own TekExpress application from the scope menu; Will reacts positively to them being "potentially integrated" in the prototype.</li>
+<li><strong>DUT toggling is automated but hardware-dependent.</strong> Stepping the DUT through rates/presets takes seconds and uses AFG toggling or a cheaper third-party toggle box ("what [Anritsu] recommends… we don't sell it") — existing TekExpress has hooks for it as an option.</li>
+<li><strong>Compliance vs. conformance is a portfolio-level split.</strong> Per the product leader, conformance products (e.g. MIPI) cannot share one unified workflow with compliance products; existing TekExpress keeps panels "under a guideline frame" so application teams can vary the workflow "within a certain guard rail."</li>
+<li><strong>Full compliance run duration</strong> for the discussed scenario is on the order of an hour ("Take an hour… for the full test across all suites"), while DUT state toggling is "a few seconds."</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-dut-panel-and-data-rates.md">Full corpus record →</a></p>
+</details>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview — Will Teverovsky: Session Files, Options Overhaul, Platform Strategy, and Closing Verdict</span></summary>
+<div class="chunk-summary"><p>This chunk collects the app-level and program-level threads of the 2026-07-13 session, which are interleaved with the panel walkthroughs in the recording. Will names saving/opening test setups as a standing pain point — session files live on a virtual X: drive, the save/recall commands hide under Options, and he has to coach customers through it every time. The room converges on "Options is the junk drawer" and a standard File-menu expectation. Mid-session, a colleague (Gary) probes the program's goals and platform, and the product leader lays out strategy: EXE-only (explicitly not browser-based), usability that scales from scope to PC, a multi-PC "cockpit view" control-station roadmap, a zero-new-manual-lines North Star, and design running one quarter ahead of engineering. Product prioritization follows: PCI Express first ("we capture 50% of the business"), DDR discouraged (fragmented across DPOJET/Clarius/TekExpress), DisplayPort urgent for Clarius license migration, plus a cautionary lost-trust story about a Gigabit Ethernet customer. Will closes with a positive look-and-feel verdict — align with TekScope, one stylized label font flagged — and "the best thing about it is that it works."</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>Save/open test setups is "incredibly difficult and frustrating."</strong> <em>"How that interacts with the file system and how that interacts with the GUI is a bit of a headache and I kind of have to coach [customers] through it every time."</em></li>
+<li><strong>Save/recall is undiscoverable under Options.</strong> <em>"No one knows to look in options for it."</em> / <em>"It cannot be in options."</em></li>
+<li><strong>No standard File menu.</strong> <em>"There should be a start menu, file menu, the typical Windows user flow."</em></li>
+<li><strong>Options is the junk drawer.</strong> <em>"All the crap is in [options]"</em> / <em>"the option menu overall probably just needs somewhat of an overhaul rework."</em></li>
+<li><strong>A customer lost trust in TekExpress Gigabit Ethernet</strong> (bugs or flows unknown) and forced a competitive shootout — the session's sharpest evidence that UX/quality problems have direct revenue consequences.</li>
+<li><strong>Prototype nit:</strong> the stylized top-level label font is the single look-and-feel element Will flags as out of place.</li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>Session files are a collaboration and portability primitive, not just save state.</strong> Both Will (send-to-colleague, rerun, support) and the product leader (multi-site replication of a device's test record) treat the session bundle — config + waveforms + results — as the unit that moves between people, machines, and countries. Its UI today (X: drive + Options menu) does not match that importance.</li>
+<li><strong>EXE-only is a hard platform decision, stated emphatically.</strong> Browser/Linux deployment is explicitly rejected by the product leader; Will's relieved "thank you" underscores AE alignment.</li>
+<li><strong>Design is expected to run one quarter ahead of engineering</strong> on the roadmap (multi-PC cockpit view targeted at Q2), per the product leader.</li>
+<li><strong>The zero-manual-lines North Star</strong> doubles as a change gate: any moved button must justify itself ("what it saves in… gray matter") and must not add documentation burden.</li>
+<li><strong>Keysight stability cited as competitive context:</strong> <em>"[Keysight] also has not changed its usability for 20 [years]"</em> — used to argue for evolution without disorientation, alongside the "keyboard for 15 years" bandwagon analogy.</li>
+<li><strong>DDR-first research was a known mis-start.</strong> The team's earliest corpus material came from DDR; both the product leader and Will steer future depth work to PCI Express, with DisplayPort next for business (Clarius migration) reasons. DDR is fragmented across DPOJET, Clarius, and TekExpress.</li>
+<li><strong>Trust, once lost, moves customers to competitive evaluation</strong> — the redacted Gigabit Ethernet story is the concrete stakes: a customer who "prefer[s] Tek" is nonetheless running a shootout.</li>
+<li><strong>Reports intentionally deprioritized in this session</strong> — contrast with the Chris B session, which covered reports in depth; Will defers ("almost like a different topic") while endorsing the custom-logo capability.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md">Full corpus record →</a></p>
+</details>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview — Will Teverovsky: Test Selection, MOI/Schematic Contextual Help, and Compliance-Mode Visibility</span></summary>
+<div class="chunk-summary"><p>Second segment of the 2026-07-13 session. Will works through the prototype's Test Selection panel: he likes Select Required / Select All, can't parse some labels ("algorithm library"), and walks through how MOI (Method of Implementation) and schematic buttons function as contextual help in the existing app — including the returning-after-two-weeks reconnection scenario that makes schematics critical. He explains the Configure dialog (limits editor, custom limit profiles, reference levels), which triggers the segment's biggest theme: users lose track of whether they are still in compliance mode. A colleague ("Gary," present for part of the session) calls compliance-mode visibility a years-old recurring complaint; the product leader confirms today's behavior is a single dismissable warning popup with no persistent indicator. Will endorses a persistent bottom status bar and proposes gating the limits editor behind an explicit user-defined toggle. The product leader contributes the missing test-comments field and an MVVM architecture note about why mid-run edits are impossible today.</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>Compliance-mode state is invisible after the initial warning.</strong> Gary: <em>"constant confusion on whether you were still actually in compliance… make it painfully clear."</em> Product leader: <em>"You accept it, but… after that, for 45 minutes… you will only know that in the report."</em></li>
+<li><strong>"What am I selecting and why" is the panel's core confusion.</strong> Will: <em>"Even if it says select required, if the selects [are] more or less than I'm expecting, what's going on there."</em></li>
+<li><strong>Reconnection uncertainty.</strong> Will: <em>"Now I need to remember how to hook up for the PAM 4 linearity test… otherwise… I'll have spent hours, days, whatever, testing stuff and realize that, oh, I should have had that attenuator there, not there."</em></li>
+<li><strong>Unclear label:</strong> <em>"I don't know what algorithm library really means."</em></li>
+<li><strong>Prototype organization/labels are currently worse than the real app on this panel.</strong> <em>"Some of the labels and some of the content in each of these dropdowns make it more confusing than it actually is [in] how Tek Express exists today."</em></li>
+<li><strong>Missing from prototype:</strong> per-test descriptions, the test-comments field, required-vs-informative marking; Select Required button non-functional (prototype defect).</li>
+<li><strong>Configure is inherently confusing.</strong> <em>"Configure is obviously very confusing… that's kind of inherently going to be confusing"</em> — highly technology-dependent and <em>"very difficult to manage."</em></li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>MOI = Method of Implementation.</strong> Per-test documentation that is deeper than TekExpress's own UI; users doing manual/debug work read the MOI to understand what the automation is doing underneath. Today it opens as a PDF scrolled to the right page. In at least one application version the schematic <em>"opens an embedded PDF [and] you have to keep scrolling to see the test mode"</em> (product leader).</li>
+<li><strong>Compliance-mode state is a mode, warned once, then invisible.</strong> Today's single accept-and-forget popup is the entire mode signal; the report is the only later evidence. Gary frames persistent mode visibility as a years-old, recurring ask; Bryan draws an accessibility analogy (<em>"you need to know when you're breaking it, but then you can put it back… there needs to be a level of like indicator"</em>).</li>
+<li><strong>The mid-run-edit limitation is architectural, not a UX choice.</strong> The product leader ties "go back and change test 7 of 10 mid-run" to the pending MVVM refactor; the redesign's phase-1 lift-and-shift inherits the current no-going-back behavior.</li>
+<li><strong>Test comments are a session-persistent, report-visible artifact.</strong> Free text, saved into the session file, printed in the report; used to record device-specific anomalies for whoever picks the DUT up next. Related existing screen: <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/screens/setup-dut-comments.md"><code>setup-dut-comments</code></a>. Later in the session (presets segment) Will connects it to preset choices: <em>"That's where that like [DUT] comment field that's not here would come in."</em></li>
+<li><strong>Two-audience design principle.</strong> Will repeatedly frames the target user as set-and-forget (Select Required → go), with metadata (descriptions, MOI, required-vs-informative rationale) surfaced on demand for the power-user/debug path.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-test-selection-and-contextual-help.md">Full corpus record →</a></p>
+</details>
+</section>
+<section class="session"><h2>Tapo Parua</h2><p class="meta">mid-July 2026 · former TekExpress developer</p>
+<details class="chunk">
+<summary><span class="chunk-title">AE SME Session (Tapo Parua) — Prototype UI Feedback: Logs, Results, Reports, Help, Navigation</span></summary>
+<div class="chunk-summary"><p>Second half of the first SME review session with AE Tapojyoti "Tapo" Parua (facilitated by Bryan Kemp). With the workflow context established (see <a href="./ae-tapo-parua-workflow-and-settings-architecture.md"><code>ae-tapo-parua-workflow-and-settings-architecture</code></a>), Tapo works through concrete UI feedback against the prototype, repeatedly benchmarking against Keysight: flat uninformative logs vs. Keysight's summary+detail log view, a flat results grid that hides failures, missing on-screen HTML report preview, obsolete report formats vs. must-have CSV, PDF-only help vs. contextual in-app help, wizard navigation and the meaning of panel checkmarks, a proposed change-indicator for interdependent settings that span panels, rerun-and-merge reporting, and the placement of persistent chrome (Debug/Preferences links, application/suite label).</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>Flat, abstract logs; no progress insight during hours-long runs:</strong> <em>"The logs are pretty flat. … It's just like [rattling] lines there. … Sometimes they are too abstract … especially … the error messages. … Then I have to just go inside and if the application [has] printed those logs in some text file, then I might know."</em> And: <em>"a test runs for maybe hours … how do I know like where I am exactly?"</em></li>
+<li><strong>Flat results grid hides the failures that matter:</strong> <em>"I feel like it's a bit flat … just … a bunch of numbers here … not much colors … sometimes I run so many measurements that it is almost difficult to … find … where that one or 2 fails [are]. So normally … they download a report and then scan that report."</em> — the workaround is leaving the app entirely.</li>
+<li><strong>No on-screen report preview:</strong> <em>"[Keysight] have a good HTML view of the report before you download it even. … [That] on-screen visibility of the result … is also not [there in TekExpress]."</em></li>
+<li><strong>Obsolete report formats still shipped:</strong> <em>"Some of the formats that we supported, like [MHT] … [are] obsolete — none of the browsers support those today."</em></li>
+<li><strong>Document-only help breaks flow:</strong> <em>"They are all document files. … You need to download it. … So that intuitiveness kind of … goes away."</em> / <em>"In PDF, I just [have] to scroll, scroll, scroll and find out, okay, this panel, this setting, what does it mean?"</em></li>
+<li><strong>Wizard forces sequential navigation:</strong> <em>"I should be able to click this [tab directly]. Because not always … I go in sequence."</em></li>
+<li><strong>Checkmark semantics confusing / risk of gating Start:</strong> <em>"Are you telling that if I do not have that tick mark[ed], I should not be able to start a test? [That]'s [the] confusing part."</em> (Preferences is rarely visited; gating on it would break run-with-defaults.)</li>
+<li><strong>Invisible cross-panel side effects:</strong> <em>"These interdependent settings, they are spanned across pages … and it is not visible at the same time."</em></li>
+<li><strong>Rerun-and-merge report flow lacks intuitiveness:</strong> <em>"That is a common use case … Current Tek Express also has that. But maybe the intuitiveness, again, there has to be a little bit [of work]."</em></li>
+<li><strong>Prototype visual: white too bright:</strong> <em>"Maybe the white is a little bit [bright]. It kind of hurting my eye right now."</em></li>
+<li><strong>Prototype: application/suite label in the wrong place</strong> relative to current TekExpress: <em>"it does not come here. It comes here."</em> (Exact positions not recoverable from audio-only transcript.)</li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>Keysight is the recurring benchmark</strong>, cited four separate times: (1) summary+detail log panel, (2) richer results display with plots, (3) in-app HTML report preview, (4) general polish (<em>"if you see the Keysight software … they are really doing that [well]"</em>). Tapo references Keysight "UXR applications" — likely the compliance apps on Keysight's UXR-series oscilloscopes.</li>
+<li><strong>The log summary/description split is an interface contract, not just UI.</strong> Tapo's point: application teams <em>can't</em> feed structured summary+description logs today because the framework interface doesn't offer it. Adding the UI creates the contract; content quality then becomes the application teams' responsibility.</li>
+<li><strong>Pass/fail color alone under-informs</strong> — margin-to-limit is the real signal (<em>"that green would not suggest … whether it is a good pass or a bad pass"</em>), and customers with internal spec limits re-evaluate results via CSV exports and rework-mode custom limits.</li>
+<li><strong>CSV is load-bearing infrastructure</strong>: customers script against it to build custom reports, apply custom limits, and chart results. MHT is dead. Bryan's Markdown-report suggestion was received positively (Tapo: <em>"Okay, that's cool"</em>).</li>
+<li><strong>Help model requested: layered.</strong> On-screen contextual description (selection-aware, F1 / single global question mark) → link into the exact section of the reference document. Explicitly <em>not</em> tooltips, and explicitly <em>not</em> a question mark on every setting (Clarius precedent: <em>"too many question marks all over the page"</em>). The "Riddick" per-setting help popup is the positive reference.</li>
+<li><strong>Checkmarks-as-visited is the agreed model</strong>: navigation tabs directly clickable, checkmark = visited only, never a gate on Start — because run-with-defaults from the DUT panel alone is core TekExpress behavior (see the workflow chunk). Bryan committed to iterating on the affordance.</li>
+<li><strong>The "blue dot" cross-panel change-indicator is Tapo's one net-new feature proposal</strong> in this session: a non-blocking attention cue when a setting change on one panel alters values on another, because interdependent settings <em>"are spanned across pages … not visible at the same time."</em></li>
+<li><strong>Persistent chrome</strong>: Debug/Preferences links and the application/suite identity label belong in an always-visible common region, matching current TekExpress's header label behavior.</li>
+<li><strong>Auto-load-failing-waveform-on-scope</strong> is flagged as a future/bigger-picture idea, not a current ask — the near-term ask is failure cues in the results panel.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-prototype-ui-feedback.md">Full corpus record →</a></p>
+</details>
+<details class="chunk">
+<summary><span class="chunk-title">AE SME Session (Tapo Parua) — TekExpress Workflow Architecture and Settings Placement</span></summary>
+<div class="chunk-summary"><p>First SME review session for the new Tek Express UI prototype, with Application Engineer Tapojyoti "Tapo" Parua (formerly a developer on the TekExpress applications), facilitated by Bryan Kemp. This chunk covers the first half of the session: Tapo's reaction to the prototype at first look, and — mostly — the deep existing-app context he volunteers: what TekExpress's market differentiation is, the universal 3–4-step compliance workflow, the DUT panel's intended role, the organizational pressure that erodes settings segregation, the framework-vs-application-layer architecture, how TekExpress automates the oscilloscope, and 20 years of accumulated look-and-feel drift. The prototype-specific UI feedback continues in <a href="./ae-tapo-parua-prototype-ui-feedback.md"><code>ae-tapo-parua-prototype-ui-feedback</code></a>.</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>Post-Clarius intuitiveness regression (field feedback, relayed):</strong> <em>"They felt that there is a lack of that intuitiveness or that the free flowing nature of Tek Express, what it used to have."</em></li>
+<li><strong>Settings dumped onto the first panel:</strong> <em>"Because it is the 1st panel that the user sees, a lot of [AEs] kind of pushes that, okay, I need these settings to be available on the 1st panel … then … the segregation of settings that we have done here … kind of goes for a toss."</em></li>
+<li><strong>Buried settings on later panels:</strong> <em>"On the other panels, they kind of need to, you know, go deep down … to find out where the setting is."</em></li>
+<li><strong>Look-and-feel drift across 20 years of application teams:</strong> <em>"That standard look and feel kind of got a bit [eroded]. Someone putting the filter selection here, someone another place. So … it's kind of a lot of learning for the [user]."</em></li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>TekExpress's differentiator is guided simplicity, per Tapo.</strong> <em>"Tek Express, traditionally, it standouts … compared to other vendors … in the matter of simplicity, and the way it guides the user to run a test."</em> He names Keysight (transcribed "Eastside"/"Keyside") and LeCroy (transcribed "Lecroix") as the comparison vendors. The redesign's first job is preserving the wizard-guided flow.</li>
+<li><strong>A prior redesign already damaged this once.</strong> Tapo: field-engineer interviews after "the Clarius thing" found <em>"a lack of that intuitiveness or that the free flowing nature of Tek Express, what it used to have."</em> Direct precedent/warning for this redesign.</li>
+<li><strong>The settings-placement pressure is organizational, not technical.</strong> Tapo (as former developer): application teams push settings to the DUT panel because it's seen first, and <em>"the segregation of settings … goes for a toss."</em> He explicitly welcomes a UX team as arbiter of these calls — a governance role for the design system, stated by the SME unprompted.</li>
+<li><strong>The universal 4-step compliance model</strong> (setup → test selection → acquire → analyze/report) is <em>"90% same in any application."</em> This is the invariant the panel structure encodes; per-application variance lives only in the settings the framework hosts.</li>
+<li><strong>Framework/application layering:</strong> the framework owns panels, flow of execution, and all scope communication (SCPI, <code>.wfm</code> acquisition); application plugins contribute settings and measurements (internal, base-scope like jitter/eye, or third-party consortium tools like Intel SigTest). UI changes to the shared shell propagate to every application.</li>
+<li><strong>Cross-application consistency is a customer expectation, not just aesthetics</strong> — labs run DisplayPort + USB + Thunderbolt side by side and expect one workflow.</li>
+<li><strong>The 20-year drift diagnosis</strong> — <em>"someone putting the filter selection here, someone another place"</em> — is Tapo's own framing of what the new design should fix: re-standardizing look and feel across application teams.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">Full corpus record →</a></p>
+</details>
+</section>
+<section class="session"><h2>Joey Chiu + drop-in field AE</h2><p class="meta">2026-07-14 · 38:11</p>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview (Joey Chiu session) — DUT ID / Path-Length Limits and Prototype Reactions</span></summary>
+<div class="chunk-summary"><p>Final segment of the Joey Chiu session. The session is taking place at a compliance-workshop-style event (breakout announcements and badge references are audible); partway through, a second Tek field AE drops in, is briefed on the re-skin prototype, and delivers his top field complaint: <strong>the DUT ID field cannot hold enough characters</strong>, a limit rooted in Windows path-length restrictions on session/waveform file naming. The application team explains the folder-naming mechanics behind the restriction and a possible registry-level fix. The drop-in AE also reacts to the prototype ("they're going to like this better because it's new"), probes window resizing, and names a competitor comparison before leaving for his event track.</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>DUT ID character limit is the top field complaint.</strong> <em>"The biggest complaint I've had lately is the inability to put enough characters in … the ID."</em> / <em>"It needs to be like 200 characters, man."</em> / <em>"The customers hate [it]."</em></li>
+<li><strong>Windows path-length errors on save are easy to trigger.</strong> <em>"Sometimes … Windows throws an error that we cannot save this … It's very, very easy to run into that issue."</em></li>
+<li><strong>The mitigation punishes users:</strong> <em>"For some applications, we have restricted this name [from] be[ing] changed. That's not convenient for the user, but that is the only way."</em></li>
+<li><strong>The slot-number/auto field is dead weight for most users and its effect is unclear.</strong> <em>"I haven't had anyone use that."</em> / <em>"Most people don't [use it]."</em> / Bryan: <em>"It's not very intuitive for the user to know what exactly … this will change."</em></li>
+<li><strong>The existing UI's fixed window size prompts "cycling through"</strong> — the AE's first usability probe of the new UI was whether it, too, would be size-limited.</li>
+<li><strong>Current layout reads as field-dumping.</strong> Bryan (relaying/agreeing during the exchange): <em>"This is just like dumping fields … device profile [says] what it does, but then it doesn't tell me how I test."</em></li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>App team (why the DUT ID naming exists):</strong> Plugfest/compliance-workshop attribution — every DUT's waveforms, results, and folders must be distinguishable per device ID when many vendors' devices are tested in one place. The naming scheme is a real requirement; the length ceiling is the bug.</li>
+<li><strong>App team (fix landscape):</strong> Windows long-path support is registry-selectable (<em>"there are two selections in Windows that you can choose in the registry"</em>), i.e., the limit is not immovable — it is a packaging/deployment decision.</li>
+<li><strong>Drop-in AE (prototype):</strong> <em>"They're going to like this better because it's new"</em> — an honest read that novelty, not structure, drives the first-impression win. No concerns about showing the re-skin to customers were raised.</li>
+<li><strong>Drop-in AE (competitive):</strong> Customers rarely volunteer comparisons of the competitor tool; the AE's own comparison work (a prior report comparing Keysight [and other] solutions) exists and was offered to the team.</li>
+<li><strong>Bryan (design intent):</strong> the redesign should "make the best use of the space" rather than reproduce the field-dump layout — consistent with the phase-1 constraint that functionality stays identical.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-dut-id-limits-and-prototype-reaction.md">Full corpus record →</a></p>
+</details>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview (Joey Chiu) — PCIe Backward-Compatibility Scaling and Test Setup</span></summary>
+<div class="chunk-summary"><p>First AE feedback session in the July 2026 interview series. Joey Chiu — the AE for TekExpress, who describes himself as an internal customer who validates the application and channels customer feedback — reacts to the new TekExpress UI prototype and then drives the existing TekExpress PCIe application live, walking through where the current UI fails to scale as PCIe adds generations. TekExpress application-team members are present and add roadmap context (three-phase modernization, .NET/backend throughput work). The dominant theme: <strong>backward compatibility makes every setup surface grow without bound</strong> — data-rate checkboxes, the test tree, preset selection, and the limits editor all get worse with every new PCIe generation.</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>Data-rate checkbox real estate does not scale with PCIe generations.</strong> <em>"If we are talking about Gen 12, Gen 13 … how many data rates you need to fit in here … it will never cause another real estate problem or an overload of settings problems?"</em> And: <em>"You should not see a cumbersome UI here … too many checkboxes to select."</em></li>
+<li><strong>Test tree breaks down past ~20 tests.</strong> Joey: <em>"Test tree is good for like if it is [a] good 20 tests there, but if there are like 200 tests there on a tree, [it] often gets very difficult to select things there."</em> Corroborated: <em>"PCI is going up to Gen 7 and then Gen 8 … it's just gonna explode the UI."</em></li>
+<li><strong>Preset selection is in an unintuitive tab and silently costs users 10x run time.</strong> Joey: <em>"It resides in this tab, which is like not very intuitive … they might miss out and ultimately run with all the preset[s] and it will take maybe 10 times more time."</em></li>
+<li><strong>"Preset" is overloaded</strong> — a preset <em>test</em> (tests the preset signal itself) vs. presets applied during <em>signal</em> tests (eye diagram etc.). Bryan, as a fresh pair of eyes, was confused until Joey untangled it; Joey: <em>"I'm not really a fan."</em></li>
+<li><strong>Instrument connection settings are hidden in a menu ("junk drawer") instead of surfaced as a first-class setup step.</strong> Joey: <em>"The instrument settings are like slightly hidden here … maybe we can reconsider where should we put these instrument connection settings."</em></li>
+<li><strong>Limits editor grows unboundedly and is hard to edit.</strong> <em>"It's gonna be … super long … a horizontal scroll, but … that also do[es] not suffice."</em></li>
+<li><strong>Logging is flat and low-information</strong> (app-team self-critique, queued for phase 2): <em>"This log … the logging mechanism, it is pretty flat, we did not get a lot of information from it."</em></li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>Joey Chiu (on his role):</strong> <em>"Tek Express does not go directly to the customer … I'm like an internal customer for them to … validate things … or give feedback."</em> AEs are the proxy voice of customers for TekExpress.</li>
+<li><strong>Application team (roadmap):</strong> Phase 1 = re-skin only (<em>"the functionality remains all same, so [they] will only rework on the front end"</em>); phase 2 = panel-breaking usability changes; phase 3 = new features. Backend in parallel: .NET upgrade + parallel measurement service targeting <em>"things what used to take one hour yesterday, maybe today it take 20 minutes."</em></li>
+<li><strong>Application team (why the UI is overloaded):</strong> <em>"This technology is kind of overloaded with generation after generation … every year there is a new [spec] … and everything is backward compatible."</em> The scaling pain is structural, not incidental.</li>
+<li><strong>Joey (Clarius learnings):</strong> <em>"It will be sad to … lose all the context that we've been learning from [Clarius]."</em> Clarius is winding down (<em>"Clari[u]s [is] going down, so we're now putting some love into [TekExpress]"</em>), but its UX learnings and application-specific feedback are considered a live input to the TekExpress redesign.</li>
+<li><strong>Application team (compliance model):</strong> Compliance limits, not run structure, define conformance — users may split data rates across runs. Redesigns that treat "all boxes checked in one run" as the compliance definition would be wrong.</li>
+<li><strong>Application team (competitive posture on trees):</strong> <em>"Keys[ight] is doing the same … tree [navigation] is standard with all the vendors"</em> — so a better-scaling selection model is a differentiation opportunity, not table stakes.</li>
+<li><strong>Usage insight:</strong> fewer than half of users ever modify prior-generation settings; the majority buy TekExpress for compliance and only dig deeper when troubleshooting. Progressive disclosure of prior-generation detail is therefore viable.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-pcie-backward-compat-scaling.md">Full corpus record →</a></p>
+</details>
+</section>
+<section class="session"><h2>Nadir Kahn</h2><p class="meta">2026-07-14 · 23:17</p>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview — Nadir Kahn: Competitive Landscape, Visual Hierarchy, and the Match-TekScope Directive</span></summary>
+<div class="chunk-summary"><p>Second half of the 2026-07-14 AE feedback session. Prompted by the facilitators, Nadir maps the compliance-software competitive landscape: Keysight's software is old but holds ~80% market share (so match its conventions), Teledyne LeCroy has the best TX compliance software and the only combined TX+RX interface, and Rohde &amp; Schwarz's laptop-hosted approach is disliked — on-scope testing is a Tek strength. He then critiques the prototype's flatness against the current app's color-coded hierarchy, warns it reads as a "Clarius look" / web app rather than an instrument interface, and delivers his central directive: make TekExpress look like TekScope — same grays, same greens — or it will read as <em>"2 disconnected pieces of software for a long time."</em> He wants dark mode as the default, endorses keeping the existing layout, confirms window resizing was a top field complaint the prototype fixes, and closes with <em>"you're on the right track."</em></p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>The prototype is too flat to scan.</strong> <em>"At a glance, like there's a hierarchy to it [the current app]… which the [prototype] sort of isn't, it is more flat… like Clarius look, which I don't know if that's like a good thing, to be honest."</em></li>
+<li><strong>The prototype doesn't look like TekScope — and that's the launch risk.</strong> <em>"If you open this on TekScope right now, it doesn't look like TekScope… if you get stuck launching this in a way where it doesn't look like TekScope, it's just going to look like 2 disconnected pieces of software for a long time."</em> He says today it resembles Keysight's Infiniium software more than TekScope.</li>
+<li><strong>Current TekExpress window can't resize / go full screen</strong> — <em>"one of the biggest problems… it's like this big on a 4K monitor."</em> (Prototype reportedly fixes this.)</li>
+<li><strong>Current TekExpress wastes space</strong> — <em>"this has a lot of dead space… wasted space."</em></li>
+<li><strong>Progress bar is not accurate enough</strong> — reiterated as the single most continuous field complaint; the fix is acknowledged to be mostly back-end.</li>
+<li><strong>Back-end architecture described (secondhand) as "kind of a disaster"</strong> — per-application branching in every direction, per other AEs.</li>
+<li><strong>Demoing today actively hurts perception:</strong> opening TekExpress on an SX <em>"gets the perception even older… it's like not even being touched."</em></li>
+<li><strong>Prototype dead ends during hands-on:</strong> navigation partially broken, several controls inert ("These don't work right now"), interaction <em>"a little loose… not accurate enough"</em> — acknowledged as expected for a GUI-only pass.</li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>Competitive map (as stated by Nadir):</strong> Keysight = ~80% market share in high-speed testing, dated software they chose not to rewrite for their new platform; Teledyne LeCroy = <em>"best TX compliance software"</em> and <em>"the TX and RX in one user interface, which no one else has"</em> (their newest, transcribed as "Qualify Two" — likely QualiPHY 2); Rohde &amp; Schwarz = single interface for USB 3 only, laptop-hosted, <em>"not very good"</em> and <em>"people do not like that."</em></li>
+<li><strong>Convention beats innovation at the interaction layer.</strong> Nadir's copy-Keysight argument is explicitly about learning cost: engineers <em>"already have to come in and learn TekScope,"</em> so diverging from the dominant player's compliance-software conventions adds friction. Keysight's own refusal to change its compliance software across platform generations is cited as proof the conventions are sticky.</li>
+<li><strong>On-scope execution is a moat.</strong> Rohde moved compliance testing to a laptop and users hate it; Tek testing on the scope is <em>"already in good standing."</em></li>
+<li><strong>The match-TekScope directive is token-level guidance.</strong> Nadir doesn't just want family resemblance — he names specific values: dark mode based on TekScope's gray, <em>"this green should be the same as that green."</em> Rationale: TekScope's look isn't changing soon, and a mismatched TekExpress reads as <em>"2 disconnected pieces of software"</em> — the SIM plugin is his precedent for how integrated should feel.</li>
+<li><strong>Hierarchy over flatness, for expert fatigue reasons.</strong> The legacy color system (progression indicators, shaded button classes) gives at-a-glance state legibility that a flat "Clarius look" / <em>"web app look"</em> loses. Attention-worthy items <em>"should be distinguishable… just at first glance."</em></li>
+<li><strong>"Clarius look" is used pejoratively twice</strong> — once for the prototype's flatness, once recalling that users found Clarius <em>"too complicated, just like overall setup."</em> Within this session "web app," "CSS looking bootstrap" (a facilitator's phrase), and "AI generated Clarius look" are the anti-pattern vocabulary; "instrument interface" is the target.</li>
+<li><strong>Demo optics compound hardware age.</strong> Old scope + old-looking software each make the other feel older; a modern TekExpress visibly <em>"being touched"</em> has direct selling value.</li>
+<li><strong>Compliance software as strategic differentiator.</strong> With a coming product generation (codename redacted) <em>"everything in that space is compliance testing"</em> — Nadir argues for flagship-level ("TekScope circa 2017") investment, and for harvesting Gary Walden's unexplored compliance-testing ideas.</li>
+<li><strong>Staged-rollout consensus.</strong> Both sides agree: modernize the GUI first for existing customers, then layer functionality changes — avoiding <em>"that phobia of… new user experience."</em> The facilitators are pooling ~6 field interviews (via Arpita and Ryan) to rank common problems.</li>
+<li><strong>Performance is the next competitive axis nobody measures:</strong> multi-core utilization, RAM usage on the scope, speed vs. competitors — explicitly out of scope for the UI pass but flagged for the future.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-competitive-landscape-and-visual-direction.md">Full corpus record →</a></p>
+</details>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview — Nadir Kahn: Prototype First Reaction, Reporting Pain Points, and Automation Requirements</span></summary>
+<div class="chunk-summary"><p>First half of a one-on-one AE feedback session (2026-07-14). Bryan Kemp (with a second Tek facilitator — see Confidence notes) shows Nadir Kahn the new TekExpress UI prototype and asks for workflow-level feedback on the existing app. Nadir reacts positively to the prototype overall, then surfaces a run of concrete field pain points: progress bars that jump around and hide what's actually running, nagging splash/connection-diagram windows, a DUT naming field too short for customers' report-numbering schemes, 10–11 MB PCIe Gen 5 reports filling scope SSDs, and 25-year-old button-text overflow bugs. The segment closes with a strong requirement that TekExpress remain fully scriptable — customers "program through the GUI" for 24-hour regression loops, and the automation hooks must never trip up.</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>Progress bars are misleading and fragmented.</strong> <em>"Progress bars are like here and then here and then here. And like, so people can't really tell what's going on sometimes."</em> Reinforced later in the session as <em>"the progress bar is not accurate enough"</em> — flagged by the facilitators as continuous field feedback.</li>
+<li><strong>No visibility into what a running test is doing</strong> — <em>"if a trigger's getting hung up… versus some other processing"</em> the user can't tell which.</li>
+<li><strong>Splash / connection-diagram windows nag repeatedly.</strong> <em>"There needs to be like really good control of, do you want to see this again over and over again?"</em></li>
+<li><strong>DUT naming ID character limit is too short</strong> for customers encoding test-chip version + report number: <em>"there's not enough characters, basically."</em></li>
+<li><strong>Reports are 10–11 MB each and fill the SX scope's SSD</strong> under heavy validation workloads.</li>
+<li><strong>Button text overflows its buttons in the current build</strong> — <em>"the text and the button itself doesn't even [fit], it goes out of the [bounds]"</em> — dated at <em>"25 years ago, essentially."</em></li>
+<li><strong>Automation hooks are fragile in long unattended runs</strong> — the requirement that it <em>"never gets tripped up"</em> implies today it sometimes does; scope crashes are excused, TekExpress-internal failures are not.</li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>GUI-first sequencing endorsed by the AE.</strong> Nadir explicitly agrees the visual pass is the right short-term priority: <em>"getting the GUI looking better is probably more important… short term."</em> Deeper workflow/functionality work is a later round.</li>
+<li><strong>The GUI is the automation surface.</strong> Nadir's framing that customers are <em>"literally… programming the GUI"</em> reframes every UI element as part of a programmable contract, not just a visual: redesigns must not break scriptability. His concrete suggestion is exposing a programmatic command per GUI action.</li>
+<li><strong>Why PDF reports dominate:</strong> reports are distributed artifacts — sent to <em>"worldwide sites… other colleagues in different sites, or just internally"</em> — so a portable single-file format wins.</li>
+<li><strong>Run-state transparency is diagnostic, not cosmetic.</strong> The reason detailed progress matters is triage: distinguishing <em>"a trigger's getting hung up"</em> from processing that legitimately <em>"should take a long time."</em></li>
+<li><strong>Connection/block diagram maintenance called out as critical</strong> — the diagrams themselves, and user control over when they appear, are both part of the ask.</li>
+<li><strong>Localization status is unknown even to the team</strong> — nobody on the call could say definitively whether TekExpress is English-only.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-pain-points-and-automation.md">Full corpus record →</a></p>
+</details>
+</section>
+<section class="session"><h2>Chris B</h2><p class="meta">2026-07-15 · 23:49</p>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview — Chris B: Reports, Rerun-One-Test Workflow, and Report Output Review</span></summary>
+<div class="chunk-summary"><p>First half of a one-on-one AE feedback session (2026-07-15). Bryan Kemp had shown Chris B. the new TekExpress UI prototype earlier the same day; in this recorded segment Chris drives the <em>current</em> TekExpress build live, framing everything through customer workflow rather than internal use. He lays out the compliance-workshop rerun problem (rerun one failed test, replace only that section of the report), enumerates report use cases (pass-only reports for SIG submission, multi-run aggregate reports, custom customer logos), explores the Reports tab, generates a report, and critiques the generated HTML output (broken anchor hyperlinks, no back-to-top link, legacy lilac color scheme, type density).</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>No selective rerun + report section replacement.</strong> <em>"What I really want is the ability to go back and rerun just that one test. But have it update my report … and replace just that section."</em> This is the central workflow gap of the first half of the session.</li>
+<li><strong>Loop/run options are buried and undiscoverable.</strong> <em>"We like bury it under options … I'm not even sure where that would be at at this point."</em> An expert AE could not find the loop feature live on camera.</li>
+<li><strong>Report option labels don't communicate function.</strong> On the Reports tab checkboxes: <em>"They look like it, but I don't know exactly what the functionality of it is."</em></li>
+<li><strong>Anchor hyperlinks in the generated report don't work.</strong> <em>"These hyperlinks, either I'm just clicking wrong with this mouse or they don't work."</em> Expected jump-to-section behavior is broken (or unsupported in the viewer — unresolved on the call).</li>
+<li><strong>No back-to-top link from result sections.</strong> <em>"If there's a hyperlink to jump back to the results table at the top … so I'm not scrolling it everywhere."</em></li>
+<li><strong>Report color scheme is legacy, not intentional.</strong> The lilac/purple scheme <em>"just matched … that color scheme at the time"</em> of the old UI.</li>
+<li><strong>File-format expectation mismatch on logo placement.</strong> Chris expected the custom-logo option under settings; it (reportedly) appears in the generate-report flow instead.</li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>Internal use vs customer workflow is a known design trap.</strong> Chris: <em>"a lot of times we end up building things for how we use it internally."</em> His two internal archetypes — one-test demo runs, and week-long compliance workshops — bracket the customer use cases and expose different needs (speed vs selective rerun).</li>
+<li><strong>Why pass-only reports exist:</strong> compliance-workshop reports <em>"end[..] up getting submitted to the SIG and customers are nervous"</em> — the report is a deliverable to a standards body, not just an engineering artifact.</li>
+<li><strong>Why custom logos exist:</strong> service labs re-brand reports for <em>their</em> customers and <em>"sometimes they don't want it to show whose test equipment they were using."</em></li>
+<li><strong>Report presentation is an industry convention.</strong> Chris explicitly says the report layout is <em>"kind of accepted in the industry"</em> — the redesign can restyle it but should not restructure it without cause.</li>
+<li><strong>Automation is a standing customer ask.</strong> Chris, in passing: customers <em>"always ask for automation of how to automate these as well."</em> Not elaborated in this session.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-reports-and-rerun-workflow.md">Full corpus record →</a></p>
+</details>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview — Chris B: Pre-Recorded Waveforms, Test Modes, Status/Results, and Run-Mode Asks</span></summary>
+<div class="chunk-summary"><p>Second half of the 2026-07-15 AE feedback session with Chris B. (single recording, same transcript as the reports chunk). Chris moves from reports into the setup workflow: the pre-recorded-waveform file-naming convention (his "one major pain point"), a proposed rename-for-me dialog, test modes and user-defined limits, and comparisons to LeCroy, Keysight, and Rohde &amp; Schwarz. He then reviews Status/Log View/Results (proposes merging Results into Test Status, and a resizable console-log layout), warns about screen real estate when running on the scope itself, and lands his number-one ask: loop run modes (loop until failure / until pass / X times) exposed on the run toolbar, not buried in a menu. The session closes with his verdict on the new prototype: modern, "not 20 years old."</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>Pre-recorded waveform re-analysis is "one major pain point."</strong> <em>"The file format has to be extremely specific and labeled a certain way. And we don't always get that from the customers."</em> … <em>"If I have to remember what that name's supposed to be … good luck."</em></li>
+<li><strong>Settings lock-up in pre-recorded mode.</strong> <em>"You'd have to switch back and forth to an acquired waveforms and use pre-recorded if I wanted to change settings because some of the settings weren't available to go and alter."</em></li>
+<li><strong>Loop run modes buried in a menu</strong> (continuation of the first-half friction; now ranked): <em>"Put my options in here for loop until failure … Don't bury it in the menu. You got real estate. … That's probably my number one."</em></li>
+<li><strong>Results screen is almost redundant.</strong> <em>"This is almost redundant. … The results in the status, I would combine those."</em></li>
+<li><strong>Test-mode dropdown discoverability.</strong> Chris and the facilitators could not immediately locate where test mode is changed in the USB app (because USB is compliance-only, the control doesn't appear) — behavior varies by application in a way that confused even an AE.</li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>Why the file-name convention exists:</strong> the waveform file name <em>is</em> the metadata carrier — <em>"you're basically embedding all the meta information about the waveform in the title of the file name."</em> The format is documented, but customers sending ad-hoc files defeats it. LeCroy shares the flaw, so fixing it is a differentiator, not table stakes: <em>"it's not unique to us … It's a solvable problem for sure."</em></li>
+<li><strong>Why user-defined test modes matter:</strong> margin testing with stricter-than-compliance limits, and proprietary/military targets that don't follow public compliance standards — <em>"it's not going to be sold at Best Buy."</em></li>
+<li><strong>TekExpress's up-front configuration is a competitive strength.</strong> Chris explicitly prefers it to LeCroy's registry-edit-style 3,000-entry settings tree: <em>"having it handled up front is pretty nice."</em></li>
+<li><strong>Test Status doubles as a customer-facing demo surface</strong> — AEs narrate the live run to customers watching. Log View is the internal debugging surface. The two roles differ even though both show run progress.</li>
+<li><strong>On-scope vs connected-PC is a first-class layout constraint.</strong> Any denser combined layout must not steal scope screen real estate: <em>"I want to see what's going on in the scope."</em> (Resonates with the half-screen-docking discussion in <a href="./ux-feedback-and-open-questions.md"><code>ux-feedback-and-open-questions</code></a>.)</li>
+<li><strong>Rohde &amp; Schwarz does multi-run report picking</strong> (select which runs feed the report) — cited as the one justification for keeping a separate Results view. Rohde's run/run-select button pair is also cited as a confusing pattern to avoid.</li>
+<li><strong>Keysight has a compact console-style layout</strong> the facilitators referenced when proposing side-by-side status+log; Chris hadn't seen it (transcribed as "key sites"; details of the comparison are garbled in the transcript).</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-setup-waveforms-and-run-modes.md">Full corpus record →</a></p>
+</details>
+</section>
+<section class="session"><h2>Dallas + Jesse</h2><p class="meta">2026-07-15 · 1:19:17</p>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview (Dallas &amp; Jesse) — Compliance vs. User-Defined Mode, Acquisition Speed, Presets, and Signal Validation</span></summary>
+<div class="chunk-summary"><p>The middle of the session. The veteran AE lays out a philosophy of compliance software — the app knows the spec, so it should drive aggressively and hold the user's hand — and derives concrete asks from it: don't reset instrumentation between acquisitions (a claimed 30–40% speedup), parallelize multi-lane acquisition, offer math waveforms as sources, and make the compliance vs. user-defined mode visually unmistakable (color-coded chrome). Test Selection feedback follows: presets hidden in second tabs are confusing, tests should be grouped by pattern source with tooltips showing the required pattern, and test names must match the specification. The segment closes with a long working discussion of signal validation — the AEs walk over to a Tek scope to demo its global/local measurement paradigm and converge with Bryan on a global/local design for validation, collapsing the current three-option control.</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>Per-acquisition instrument reset wastes 30–40 seconds each time.</strong> <em>"You just burned 30 or 40 seconds for no damn reason."</em></li>
+<li><strong>Sequential lane-by-lane acquisition.</strong> <em>"That could have happened in like 4 minutes instead of 30."</em></li>
+<li><strong>Mode changes are invisible.</strong> <em>"Oh, crap, I just spent two days just not realizing that it's not compliant."</em></li>
+<li><strong>Presets hidden in a second tab.</strong> <em>"Why the hell are there two tabs? It's just another test, just put it in the list."</em></li>
+<li><strong>No pattern info at selection time.</strong> <em>"You're going to make me go to another menu and deal with the test I just selected."</em></li>
+<li><strong>Test names drift from the specification.</strong> <em>"Make sure the names match with the specifications calling those tests. Sometimes they don't."</em></li>
+<li><strong>Multi-lane channel assignment is confusing.</strong> <em>"It gets confusing… when it mixes things up [single-ended vs. differential, multiple channels]."</em></li>
+<li><strong>Validation control's three options confuse everyone, including the room.</strong> <em>"The language doesn't make sense. We're all confused."</em></li>
+<li><strong>Per-test repeated configuration with no global apply.</strong> <em>"You have to like go to each one [and] do the same thing for each."</em></li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>Compliance mode is a contract, not a preference.</strong> The veteran AE's model: in compliance the app should take control, configure per spec, and optimize ruthlessly; in user-defined the user has explicitly traded speed for control. Most speed/automation asks in this session derive from that model.</li>
+<li><strong>The instrument-reset behavior exists because the app distrusts state.</strong> As paraphrased by the AE, the team's rationale was <em>"oh, well, we don't know [what] they were going to capture [next],"</em> to which: <em>"Hell yeah, you do. It's in the checkbox."</em> — the selected-test list already determines the next acquisition.</li>
+<li><strong>The scope's global/local measurement-settings paradigm is presented as the pattern to reuse</strong> for validation (and later for other per-test controls: <em>"a lot of these also… is it global versus local, 'cause [right now] you have to like go to each one [and] do the same thing for each"</em>).</li>
+<li><strong>Early-silicon pattern mismatch is the canonical reason user-defined mode exists</strong>: pre-release patterns with flipped bits can't pass compliance-pattern validation even when the customer is effectively running the compliance procedure.</li>
+<li><strong>Signal validation itself is seen as a differentiator</strong>: <em>"This is actually an advantage for us. I don't know that everybody does this."</em></li>
+<li><strong>"Compliance versus conformance" naming battle is old history</strong> inside Tektronix; the AEs treat the current "user-defined" label as tolerable but debatable, and suggest a vote; no competitor terminology was known in the room.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-compliance-mode-and-test-selection.md">Full corpus record →</a></p>
+</details>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview (Dallas &amp; Jesse) — Instrument Config, Session Files, Status/Results Tables, Debug Workflow, and Pause</span></summary>
+<div class="chunk-summary"><p>Final long stretch of the session. The AEs hit instrument/probe handling (hard-coded model numbers break automation every time a new model ships; the VISA detection path is buggy), per-standard inconsistency, and broken session-file recall with useless warnings. The richest material is the debug workflow: a proposed right-click on a failed result offering "rerun in compliance," "rerun in user-defined," and "save a scope session file" that packages measurement, limits, and waveforms for scope-side debugging — which the AEs frame as a decisive advantage over Keysight, whose compliance algorithms don't exist in their scopes. Tek Express team members present reveal roadmap: a shared measurement library (launched January) and an MVVM re-architecture enabling mid-run edits. The segment closes on pause-button behavior, results-table configurability (steal TekScope's), plots in results/reports, and spec-version visibility.</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>Hard-coded model numbers break automation on every new instrument revision.</strong> <em>"It's now a B version and all of a sudden the automation doesn't work."</em></li>
+<li><strong>Three-to-six-month software-update lag just to allowlist new equipment.</strong> <em>"We wait three to six months for software updates so we can use an instrument that we came out with."</em></li>
+<li><strong>Bandwidth/probe lockouts persist into user-defined mode.</strong> <em>"You can't even run this test 'cause you don't have a 13 gig probe… I'm not in compliance. Let me do it."</em></li>
+<li><strong>In-app instrument detection fails without a manual TekVISA scan first.</strong> <em>"Nine times out of 10, when I just do it from here, it doesn't show up."</em></li>
+<li><strong>Fixes in one standard break another; defaults differ across standards.</strong> <em>"They'll fix something in one and break something in the other one."</em></li>
+<li><strong>Session recall silently mis-recalls parameters.</strong> <em>"It doesn't recall the parameters correctly. It just — it's broken."</em></li>
+<li><strong>Recall warnings are information-free.</strong> <em>"It says, 'Contact your Tektronix local representative.'"</em></li>
+<li><strong>Tek Express session files are opaque single blobs.</strong> <em>"You can't break it apart, you can't open it."</em></li>
+<li><strong>Status table lacks connection context and column control.</strong> <em>"Give me a column here with where that thing is connected to."</em></li>
+<li><strong>No failed-only rerun / append-vs-replace from results.</strong> <em>"I only need to rerun [one]."</em></li>
+<li><strong>Failed compliance tests are effectively un-debuggable for most customers today.</strong> <em>"When you fail a test in compliance mode… there might be three people in your facility that could actually do that."</em></li>
+<li><strong>Pause is undefined and laggy, and doubles as a bug workaround.</strong> <em>"Sometimes you hit pause and nothing happens."</em></li>
+<li><strong>Plots produced by analysis tools never surface in results or reports.</strong> <em>"Why would we not provide the plots? The analysis already did them."</em></li>
+<li><strong>Spec version is invisible in results, causing wrong-limits disputes.</strong> <em>"You guys have the wrong set of limits because you're running the wrong spec version."</em></li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>The scope-session debug handoff is positioned as the single biggest differentiator available.</strong> <em>"No one does that. We would win based on that."</em> The mechanism only works because Tek keeps the same measurement algorithms in the scope and the compliance app — a deliberate, fought-for architectural stance.</li>
+<li><strong>Tek Express origin story (as recounted, with in-room debate):</strong> the X drive dates to the NI TestStand / SATA one-box era ~20 years ago — <em>"the X Drive was a test stand requirement, and we never got rid of it when we moved out of test stand"</em> — with a colorful founding anecdote: <em>"They hired a kid from Austin… He wrote it in two days, it ran in 8 minutes… nine months later, I got the test back and it ran in 37 minutes."</em> Multiple voices disputed details (drive mapping for SATA-on-scope, an acquired database product); treat specifics as folklore, direction as consistent.</li>
+<li><strong>Roadmap items volunteered by the team</strong> — measurement library (shipped January 2026 product), engine/UI split with multi-threading, MVVM mid-run editability, pause-flexibility work "already coming" — are stated plans, not AE asks. The AEs' reaction to the session-format plan: make the Tek Express session a scope-compatible TSS so the debug handoff is nearly free (<em>"the wheel is [already] in Tek Express, I just want to move the wheel over to the scope"</em>).</li>
+<li><strong>DDR-A precedent:</strong> one team member notes DDR-A already toggles into DPOJet with measurements configured — cited as the model for debug handoff in other standards.</li>
+<li><strong>AI aside:</strong> an AE floats a future where <em>"Future Me AI is saying, 'Look at this one, tell me why [it failed].'"</em> Team references upcoming modes "same like Clarius… or Qualiphy or GRL" (transcription uncertain).</li>
+<li><strong>Results-table parity with TekScope is a stated goal on both sides</strong> — AEs: <em>"just steal it"</em>; team: <em>"parity is what we're looking for"</em> — including a mention that the new UI's table component family has "a whole slew of functionality" to draw on.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md">Full corpus record →</a></p>
+</details>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview (Dallas &amp; Jesse) — Session Context, Prototype Framing, and Overall Workflow Reactions</span></summary>
+<div class="chunk-summary"><p>Opening segment (~first 10 minutes) of a 1h19m joint interview with two Tektronix Application Engineers, Dallas and Jesse, facilitated by Bryan Kemp. Bryan briefly shows the new Tek Express UI prototype "at a glance," frames it as a one-to-one functional port with an updated look and feel, and then deliberately turns the session over to the AEs: react to Tek Express as-is, surface customer likes/dislikes, and bring competitive context. The AEs' headline reactions: the guided step-down workflow of Tek Express is its greatest strength and must be preserved; the quality of error/feedback messaging is its most chronic weakness.</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>Error/confirmation dialogs lack actionable information.</strong> Verbatim: <em>"They'll pop up a dialogue and it'll have the information is just missing… It's like, I don't know what to do with that and I work here."</em></li>
+<li><strong>Legacy expert-navigation burden (now largely solved by the flow).</strong> Verbatim: <em>"You had to be an expert, you had to know to go here, and then go here, go here, and go here, and go back."</em> — cited as the historical problem the current guided flow fixed; preserving that fix is the explicit ask.</li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>The messaging complaint applies to all error classes.</strong> When asked whether this meant software errors or test errors: <em>"warning messages, any any kind of errors, one of those where it pops up and it's like, 'Oh, I couldn't run the test,' and it's like, 'Well, you didn't define this'"</em> — i.e., both application faults and test-precondition failures suffer from the same information-free dialogs.</li>
+<li><strong>The "hold my hand" framing recurs for the rest of the session.</strong> The veteran AE repeatedly returns to the idea that Tek Express's value is embedded expertise: customers pay for guidance, so the workflow (and its messages) must walk them through rather than assume expertise. This framing anchors most of the later feedback.</li>
+<li><strong>The space-for-detail complaint is aimed at UI constraints.</strong> The AE explicitly casts truncated messages as (in part) a UI-layout limitation developers hid behind — a direct request that the new UI not impose tight character limits on dialogs and alerts.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-session-context-and-overall-reactions.md">Full corpus record →</a></p>
+</details>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview (Dallas &amp; Jesse) — Setup Flow Friction: Test Selection, Interdependent Settings, Waveform Files, and Naming</span></summary>
+<div class="chunk-summary"><p>The AEs walk the live Tek Express Setup flow and catalog its chronic friction: mutually-exclusive test selections that behave as sticky independent toggles; settings that silently change other settings; a pre-recorded-waveform feature so pedantic about file names and locations that it goes underused; the legacy "X drive" requirement carried over from NI TestStand; over-restrictive DUT ID characters; and the inability to rerun a single failed test and replace its result in an existing run.</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>Mutually exclusive selections don't auto-deselect.</strong> <em>"You have to like check one before you uncheck the other one because you know you can't have nothing on there."</em></li>
+<li><strong>One field changes other fields with no notification.</strong> <em>"You thought you were changing one field before fields change."</em></li>
+<li><strong>Pre-recorded waveform selection is inconsistent across versions and opaque.</strong> <em>"Different versions do it differently… it's very hard to figure out where the folder is, what waveforms are required."</em></li>
+<li><strong>Waveform file-name conventions force elaborate workarounds.</strong> <em>"We basically have to connect to an AWG, hope that we can run through the test so that it saves both… copy the waveform… copy the name, paste it over there."</em></li>
+<li><strong>Failures are unexplained.</strong> <em>"It doesn't tell you why it couldn't do anything, 'cause the messages were terrible."</em></li>
+<li><strong>Path-length failures on recall.</strong> <em>"You recall something and then the path is too long."</em></li>
+<li><strong>X-drive requirement is a 20-year-old holdover.</strong> <em>"A hangover from NI test stand, which has no rationale or requirement for anything we're doing now."</em></li>
+<li><strong>No single-test rerun with result replacement.</strong> <em>"If the test took eight hours to run, and we're going to make them run all eight hours again, to get the one test."</em></li>
+<li><strong>DUT ID restrictions are undocumented and over-tight.</strong> <em>"There are certain things you can't put in there. I don't know what they are."</em></li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>File-name matching is self-imposed, not a hardware or (probably) SigTest requirement.</strong> Veteran AE: <em>"I don't think sig test is directly [checking] the file names."</em> Second AE partially disagrees: <em>"Sometimes if you just put P0 and not P00, they read it differently… 'cause they have their templates."</em> Resolution proposed in-session: the software should handle any template/syntax needs <em>"behind the scenes"</em> — <em>"You're gonna do whatever the hell you need behind the scenes and don't change Jeff."</em></li>
+<li><strong>The X drive's origin was debated at length later in the session</strong> (see the instruments/sessions chunk): consensus that it dates to the NI TestStand / SATA-era architecture roughly 20 years ago and survived the migration off TestStand. <em>"The X Drive was a test stand requirement, and we never got rid of it when we moved out of test stand."</em></li>
+<li><strong>Append vs. replace exists partially in newer versions.</strong> <em>"Some of the newer ones might do it a little bit, but still not real, not as friendly as it could be."</em></li>
+<li><strong>Remote/automated use is a first-class scenario.</strong> Customers run Tek Express remotely and pull waveforms to their own PCs for analysis — the fixed save location actively fights this.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-setup-flow-friction.md">Full corpus record →</a></p>
+</details>
+</section>
+<section class="session"><h2>Sam</h2><p class="meta">2026-07-15 · 9:35 (truncated — DDR follow-up pending)</p>
+<details class="chunk">
+<summary><span class="chunk-title">AE Feedback Session — Sam (DDR / Memory)</span></summary>
+<div class="chunk-summary"><p>Short (9m 35s) in-person feedback session. Bryan Kemp facilitates; Sam is a Tektronix AE whose specialty is DDR / memory testing in TekExpress. The plan was to react to the new TekExpress UI prototype and walk the existing app on a bench scope, but the scope in the room did not have the TekExpress DDR version installed (it had USB / DisplayPort / PCIe) and the application hung on launch — it never even showed its splash screen. The session therefore became mostly verbal: Sam narrates the DDR-specific pain points from memory, reacts briefly to the prototype's configuration screen, and recaps prototype feedback he had previously left as sticky notes in Figma. A follow-up session (remote, or next day) was agreed to before wrapping.</p>
+<p>Despite the technical failure, this is a dense chunk: DDR/memory is structurally the odd one out among TekExpress standards (no fixed test specification, probe-centric), and Sam's live-mode / pre-recorded-mode toggling workaround is the most concrete workflow-friction story captured from any AE so far.</p></div>
+<h4>Friction</h4><div class="friction"><p>All quotes Sam unless noted (attribution inferred — see Confidence notes).</p>
+<ul>
+<li><strong>Error reporting is opaque:</strong> <em>"The error reporting is not obvious where it goes wrong. And again, especially with DDR, because this comes up a lot with trying to run like pre-recorded mode."</em></li>
+<li><strong>Hidden assumptions in offline mode:</strong> <em>"When you switch to offline mode, there's a lot of assumptions that Tek Express is making that the user is not aware of necessarily."</em></li>
+<li><strong>Settings locked behind live mode:</strong> <em>"You have to toggle between live mode and pre-recorded mode to like change the settings, so you'll need to go through a live mode setup and then … switch to pre-recorded mode and then run it from there"</em> — confirmed "not intuitive."</li>
+<li><strong>Generic errors mask the probe-swap root cause:</strong> <em>"[the] customer sent me [waveforms] not working in pre-recorded mode — you'll just get some generic error … it is not obvious that … what actually happened was the probe swapped, so I have to go back into live mode again and then physically change in the live configuration where the channels are."</em></li>
+<li><strong>The workaround's existence is itself the complaint:</strong> <em>"Okay, I can work around that now, but why? Like, why can't I control this from pre-recorded mode in the first place?"</em></li>
+<li><strong>Prototype configuration screen doesn't fit memory:</strong> <em>"This screen makes no sense for memory … no, this is nonsense."</em> (Memory's measurement controls <em>"live in a different place."</em>)</li>
+<li><strong>De-embedding filter assignment is a flat, slow-to-scan list:</strong> <em>"You kind of get this just big giant list of like file pathways basically to assign to a signal … it takes a minute or two to be like, okay, I have a filter for my [w]rite burst measurement. Which one of these is the one I'm trying to put it in?"</em></li>
+<li><strong>Probe controls scattered across windows:</strong> <em>"There's like some probe controls, but that lives like separately from where you actually tell it what channels your probes are on"</em>; tri-mode (A / B / differential) in one place, <em>"voltage levels, that just probably should be in the same spot because I'm kind of bouncing around sometimes."</em></li>
+<li><strong>Prototype: Next button moves with window size:</strong> <em>"The next button, sometimes it … it'd be nice if it was just in the same spot every time, so I don't have to keep like scrolling down."</em></li>
+<li><strong>Prototype: reflow-on-resize behavior feels unnecessary:</strong> <em>"If you resize it small enough, like this moves up to there, which like I get why it does that, but … it's wonky. Like why, why, why would you need that?"</em></li>
+<li><strong>Session logistics: the app never launched on the bench scope</strong> (<em>"it was not even showing the splash"</em>), and the scope lacked the DDR plugin entirely — the live-walkthrough half of the session was lost and rescheduled.</li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>DDR/memory is structurally different from every other TekExpress standard.</strong> Sam: <em>"the other standards have a lot more of a … specification to follow … In memory there's no test specifications, so there's a lot more flexibility in how you [con]figure Tek Express."</em> The consequence is that offline/pre-recorded mode carries hidden assumptions in DDR that don't exist elsewhere. Any redesign validated only against spec-driven standards (USB, DisplayPort, PCIe) will miss the memory case.</li>
+<li><strong>DDR is the probe-centric plugin.</strong> Sam: <em>"The DDR version is kind of the only one that's assuming you're using the [probes]."</em> Probes move channels frequently in memory work, which is exactly what makes the live/pre-recorded settings split so painful — the thing most likely to change (channel assignment) is the thing locked behind a mode switch.</li>
+<li><strong>The mode-toggle workaround is known and accepted by experienced users — but resented.</strong> Sam: <em>"Once people are aware of it, they're … like, okay, I can work around that now, but why? Like, why can't I control this from pre-recorded mode in the first place?"</em> This distinguishes a learnability problem from a capability gap: users learn the workaround, but the underlying constraint is what they question.</li>
+<li><strong>De-embedding filters want measurement-grouped organization, not a flat list.</strong> Sam: <em>"these are the filters I use for these measurements … Pick[er] kind of thing. Whereas now you kind of just get like a big list."</em> He explicitly frames current layout as "not laid out unintuitively" but not <em>scannable</em> — an information-architecture request, not a redesign-from-scratch request.</li>
+<li><strong>Sam reviewed the Figma prototype assuming every detail was intentional</strong> and flagged accordingly, preferring to over-report; Bryan endorsed that as the preferred reviewer posture. Useful context for weighing his sticky-note feedback: it deliberately includes items that may already be known-unfinished.</li>
+<li><strong>The prototype is explicitly framed as a rough draft.</strong> Bryan (inferred): <em>"It's like a rough draft. It'll get better looking and more accurate."</em> Sam's "makes no sense for memory" reaction is therefore an accuracy gap being surfaced early, as intended by the session format.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-sam-ddr-memory-feedback.md">Full corpus record →</a></p>
+</details>
+</section>
+<section class="session"><h2>Travis Berger</h2><p class="meta">2026-07-15 · 1:14:53 (re-record)</p>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview — Travis Berger: PCIe Bench Setup, Instrument Connection Friction, and Channel Defaults</span></summary>
+<div class="chunk-summary"><p>Opening segment of the 2026-07-15 AE feedback session with Travis Berger (re-recorded after a failed ~2-minute first attempt earlier the same day). Travis narrates a live PCIe Gen 3 transmit-compliance bench: the compliance baseboard (CBB), riser/load board, DUT (a 4-lane network card), and the AFG function generator that toggles compliance patterns. He walks the instrument-connection process — where LAN-connected instruments often fail to auto-detect in TekExpress and he falls back to an external tool or USB — then reviews the DUT/setup panel. His headline setup-level ask: TekExpress defaults acquisition channels to 1 and 3 (a shared-hardware constraint from older scope platforms) even on the 7 series where no resources are shared, and there is no global setting to change the default. The segment closes on whether cascading cross-panel settings confuse him (mildly, on the more complex standards).</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>LAN instrument detection is unreliable.</strong> <em>"It doesn't always refresh in here, so then I'll have to resort to that tool. … I don't know what the disconnect is between there. … I usually just use USB if it's available."</em></li>
+<li><strong>NI CBB controller is an undocumented extra install.</strong> <em>"You have to install a software to make that work. … it's kind of like an added process for customers. I don't even think we have documentation on that."</em></li>
+<li><strong>Channel defaults are wrong for the 7 series and not obvious to customers.</strong> <em>"This always defaults to one and three. … it's like not blatantly obvious to customers who aren't used to using the software."</em> No global setting exists to change the default.</li>
+<li><strong>Settings volume confuses even an AE on complex standards.</strong> <em>"Sometimes I do get confused. There are a lot of settings … some [standards] are way more complex in terms of setup than this."</em></li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>Why channels default to 1 and 3:</strong> on older scope platforms channels 1+2 and 3+4 share acquisition hardware — enabling an adjacent channel halves sample rate (<em>"as soon as I enable either of these, my sample rate and everything drops"</em>). The 7 series has per-channel hardware, but TekExpress still ships the legacy default.</li>
+<li><strong>Why lane 0 only at workshops:</strong> full multi-lane compliance runs are too slow for a workshop format — <em>"it takes a long time to get through these tests."</em></li>
+<li><strong>Gen 3 fixtures are end-of-life</strong> and the sanctioned path is running Gen 5 fixtures with embedded correlation files through Sig Test — bench hardware and software versions drift apart over a standard's lifetime.</li>
+<li><strong>Toggle mechanisms vary by generation:</strong> an AFG burst into the receive lane (older), or the NI CBB controller driving the onboard clock (newer). The NI path requires a separate non-VISA driver install that Travis believes is undocumented.</li>
+<li><strong>AEs pre-stage the bench at workshops</strong> — the customer only brings the DUT. Customers doing this alone at their site hit the connection-diagram and instrument-connection friction without an AE present.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-bench-setup-and-instrument-connection.md">Full corpus record →</a></p>
+</details>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview — Travis Berger: A Launcher Layer Above TekExpress, Options-Menu Burial, Acrobat Schematics, and Presets</span></summary>
+<div class="chunk-summary"><p>Core setup-critique segment of the Travis Berger session. Travis — who had a brief stint at Rohde &amp; Schwarz — contrasts Tek's buried Analyze-menu launch path with Rohde's single compliance launcher that shows every standard in one block-diagram window, and builds it into this session's signature proposal: a launcher/global-settings layer <em>above</em> the per-standard TekExpress applications where channel defaults, instrument connections, and save-waveform behavior live once. Along the way the group discovers DPOJet and the legacy TekScope UI ("Terminator interface"), which the facilitators immediately recognize as the visual ancestor of TekExpress. Travis then hits the classics: instrument connection buried in the Options menu, connection schematics that open in Adobe Acrobat because the TekExpress window can't resize, the two-tab test-selection layout people miss, presets duplicated in two places, and a Preferences page he never touches — more fuel for the global-settings layer.</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>Launch path is buried and per-standard.</strong> <em>"You have to go to this analyze menu. And then you have to choose your Tek Express from this drop down"</em> — vs Rohde's single launcher; <em>"I feel like I have to walk them through all the time."</em></li>
+<li><strong>Instrument connection is buried in Options and duplicated elsewhere.</strong> <em>"It's kind of buried in this little options menu. … Customers don't know to go in there to connect."</em> / <em>"The options screen is very confusing. … It's not options."</em></li>
+<li><strong>Connection schematics require an Adobe Acrobat round-trip.</strong> <em>"I hate that you have to go through this Adobe Acrobat, all this like weird crap."</em> Root cause: the TekExpress window can't be resized.</li>
+<li><strong>Two-tab test selection is missed.</strong> <em>"Some people aren't aware; usually they're just in a list."</em></li>
+<li><strong>Preset selection is duplicated in two windows</strong> and even an AE can't say whether they're the same control: <em>"I actually don't know. I think they're the same."</em></li>
+<li><strong>Settings scattered across Preferences / Acquisitions / Configuration that nobody changes per-session</strong> — Travis's repeated refrain is "put it in the global settings"; the facilitator's: <em>"There are so many different types of settings which are placed different places, it's the top drawer."</em></li>
+<li><strong>7-series signal-validation false positives</strong> on PCIe: <em>"this signal validation comes up even though the waveform is correct."</em></li>
+<li><strong>Instrument list flaked during the demo</strong> — the AFG appeared as the scope, then resolved on refresh; LAN refresh is slow with a dated loading graphic.</li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>Travis worked at Rohde &amp; Schwarz</strong> before Tek — his launcher comparison is first-hand, not hearsay. Rohde's compliance software presents <em>all</em> standards in one block-diagram launcher window; Tek scatters per-standard TekExpress applications behind the scope's Analyze/Applications menu.</li>
+<li><strong>TekExpress's visual style is inherited from the legacy TekScope/DPOJet era</strong> (the "Terminator interface"). The facilitators treat this as the origin story for the "UI looks 20 years old" feedback; the newer Riddick scope platform <em>"looks pretty alright."</em></li>
+<li><strong>Why schematics open in Acrobat:</strong> the TekExpress window is fixed-size, so an in-app diagram would be unreadably small — the PDF hand-off is a workaround for the non-resizable window, not a deliberate choice. (Connects to the window-resize theme across AE sessions.)</li>
+<li><strong>Why the file-naming convention exists (per Travis):</strong> the saved waveform's name is what Sig Test and other external analysis tools key on — the pipeline is scope-setup → capture → dump to Sig Test for PCIe, while other standards embed analysis in TekExpress itself.</li>
+<li><strong>Presets are spec-defined equalization settings</strong> (P0–P9, Q-naming from Gen 6), not scope presets — a facilitator explicitly notes they'd misunderstood this the day before: <em>"I got tripped up on word preset … I'm glad you said equalization, because now that makes sense."</em></li>
+<li><strong>Signal validation is a safety net AEs rely on</strong> (catches forgotten toggle connections) and it defaults on — but a live 7-series PCIe bug throws false positives, eroding trust in the prompt.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-launcher-global-settings-and-setup-flow.md">Full corpus record →</a></p>
+</details>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview — Travis Berger: PC vs On-Scope, Change Tolerance, Report Interop, and Stop/Pause</span></summary>
+<div class="chunk-summary"><p>Final segment of the Travis Berger session, recorded while the live PCIe run finishes. The facilitators probe the run-on-PC question: Travis hears little direct customer demand — under 20% of his customers do walk-away automation, most sit at the scope troubleshooting, and floating laptop licenses are the real blocker — but concedes scope processors are generations old and offloading analysis (via Tek HSI waveform export) would help. On adoption he's blunt: <em>"don't change it"</em> structurally — customers tolerate a reskin plus placement fixes, and the Clarius-style total revamp is the cautionary tale; his mitigation is a dismissible first-run tutorial overlay. Reviewing the finished report he asks for the report-to-waveform hyperlink to work ("saved me so much headache"), and relays the two-vendor interop reality: correlation against Keysight-equipped partner teams drives requests for CSV export and vendor-neutral report templates. Last complaints: Stop takes forever to die ("stopping your progress"), while Pause works instantly. Closes with a (redacted-customer) laptop-install war story and the facilitators calling it their favorite session yet.</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>Stop takes a long time to actually stop.</strong> <em>"Everybody complains about stopping a test and having to wait for it to process."</em> / <em>"It says 'stopping your progress' — what, why is that happening? I don't quite know."</em></li>
+<li><strong>Report-to-waveform hyperlinks are broken.</strong> <em>"Why does this not anchor to the waveform? … I think it's broken. It might have worked at some point."</em> Working links <em>"[would have] saved me so much headache."</em></li>
+<li><strong>No CSV / neutral-format export for cross-vendor report sharing.</strong> <em>"Some customers have asked to export just like these as a CSV or something they could take and put in a different report format."</em></li>
+<li><strong>Correlation against Keysight reports is manual.</strong> <em>"Our results might be mid-page [where theirs] is the top of the page … I got to match the test name and all that."</em></li>
+<li><strong>Laptop installs can break irrecoverably after reboot</strong> (replicated across two machines): <em>"when I rebooted my laptop, it wouldn't launch anymore."</em></li>
+<li><strong>Licensing model strands PC licenses on individuals' laptops</strong> when staff rotate projects.</li>
+<li><strong>Change itself is a risk:</strong> <em>"a lot of customers that are embedded in it don't like a whole lot of change"</em> — the old-platform → Riddick migration was already <em>"a hurdle for a few customers."</em></li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>On-scope vs PC is a licensing and workflow question, not just a technical one.</strong> Floating laptop licenses strand when engineers change projects; the scope stays in the lab, so the license does too. Remote-desktop into the scope is today's remote path. Direct customer demand for a PC build is thin in Travis's territory (Bay Area), but analysis speed on aging scope CPUs is a real cost.</li>
+<li><strong>Tek HSI (high-speed interface) on Riddick scopes</strong> is Travis's suggested bridge: export massive waveforms to a more powerful host for analysis rather than porting the whole application.</li>
+<li><strong>The Clarius revamp is the shared cautionary tale</strong> for drastic UI change: <em>"[Rohde], [Keysight] and us were all kind of similar … Clari[u]s just seemed very foreign."</em> Travis's adoption guidance: keep structure, reskin the GUI, fix placements, add nothing that forces relearning — and ship a dismissible first-run tutorial for what does change. (Facilitator context suggests Clarius is a product the Tek team previously worked with; see Confidence notes.)</li>
+<li><strong>Older engineers migrating from Keysight are a real onboarding population</strong> — AEs teach them the Tek GUI from scratch; median customer age skews early-30s in his territory.</li>
+<li><strong>Report interop is a two-vendor world.</strong> Multi-site programs split across Tek and Keysight benches; correlation work means manually matching test names across differently-ordered reports. CSV export and a vendor-neutral ("style two") template are the customer-driven asks; SCPI scripting is the existing backdoor for extracting report data.</li>
+<li><strong>Sig Test-generated plots and scope-generated eye diagrams coexist in one report</strong> with visibly different styling ("looks like a MATLAB plot") — cosmetic, low priority per Travis.</li>
+<li><strong>Stop's slow teardown is universal:</strong> <em>"I'm sure everybody complains about"</em> it; Pause is the well-behaved control. Nobody in the room could explain what "stopping your progress" is doing in the back end.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-run-environments-adoption-and-reports.md">Full corpus record →</a></p>
+</details>
+<details class="chunk">
+<summary><span class="chunk-title">AE Interview — Travis Berger: Log View, Results Redundancy, Session-File Discoverability, and the Minimized Run Window</span></summary>
+<div class="chunk-summary"><p>Middle segment of the Travis Berger session, running a live PCIe test. Travis praises Log View (it's what the minimized run window defaults to) but asks for a verbose/debug log level and a Riddick-style "export log files → zip" button for escalations to the product line. He admits he ignores the Results panel entirely in favor of the PDF report, and flags that results populating in two places during a run (Test Status <em>and</em> Results) confuses users. The deepest friction is session files: customers can't find them ("untitled session, there's like a million folders, timestamp based"), can't double-click a session to open it in the right TekExpress application, and Travis has to paste directory paths into emails to walk them to it. He starts the run, showing the connection-diagram prompt (picturing a Gen 5 board while his bench is Gen 3) and the minimized run window most users don't know they can restore — which on old platforms can't be resized, unlike Riddick.</p></div>
+<h4>Friction</h4><div class="friction"><ul>
+<li><strong>No verbose/debug log level and no one-click log export.</strong> <em>"We're always sending stuff to the software team … maybe like a more verbose version that you can access easily."</em></li>
+<li><strong>Results panel is redundant with Test Status during a run.</strong> <em>"I usually just look at the PDFs if I'm being honest. I don't really look at the results in here."</em> / <em>"It pops up as it goes too, which makes it confusing."</em></li>
+<li><strong>Customers can't find session files.</strong> <em>"Customers don't know where to find their session files. … go into untitled session — there's like a million folders, timestamp based … sort by date modified and then send me the latest one."</em></li>
+<li><strong>No double-click/file-association for sessions; must open the right application first.</strong> <em>"It'd be nice if you could just double-click on the session, and then it would load up everything in the right application."</em></li>
+<li><strong>Open Recent nearly recalled a session unintentionally mid-demo.</strong> <em>"Uh oh, I hope it's not recalling it."</em></li>
+<li><strong>Most users don't know the minimized run window can be restored.</strong> <em>"Most don't even know that you could bring it back up. … sometimes it'll just go to the back."</em></li>
+<li><strong>No window resizing on the older platforms</strong> — side-by-side scope + log view is only possible on Riddick.</li>
+</ul></div>
+<h4>Annotations &mdash; in their words</h4><div class="annotations"><ul>
+<li><strong>Log View is the de facto run-time face of TekExpress</strong> — the minimized run window defaults to it, and Travis rates it <em>"awesome"</em> as-is. The ask is additive (verbose level + one-click export), not a redesign.</li>
+<li><strong>The Riddick scope platform already ships the support workflow Travis wants</strong> (Export Log Files → zip → send to product line) — a Tek-internal precedent, not a competitor pattern.</li>
+<li><strong>Results vs Test Status vs Report:</strong> during a run, per-test outcomes surface in Test Status <em>and</em> Results simultaneously; the PDF report only exists at the end. Travis's personal workflow skips the Results panel entirely and reads PDFs — corroborating the results-fragmentation critique from other AE sessions. A facilitator states the redesign intent on-record: <em>"we're gonna just look at consolidating some of that."</em></li>
+<li><strong>The session-file model breaks the desktop convention</strong> (file → double-click → right app). Sessions live deep in the X: drive under per-application folders, are timestamp-named by default ("Untitled Session"), and must be opened from inside the matching standard's TekExpress application. AEs absorb this friction on behalf of customers by pasting directory paths into support emails.</li>
+<li><strong>The DUT-ID field is the de facto semantic-naming mechanism</strong> — it names the report and the session folder, and multi-board customers depend on it for tracking. (Connects to the DUT-ID length-limit complaints in other sessions.)</li>
+<li><strong>Connection-diagram prompts can picture different fixture generations than the bench</strong> (Gen 5 board pictured, Gen 3 in use) — <em>"it looks a little different, but same connection"</em> is AE knowledge a new customer wouldn't have.</li>
+<li><strong>On-scope window management is a first-class constraint:</strong> the run window hides behind the scope UI, staying on top would cost scope visibility, and old platforms can't resize — Travis's fix on Riddick is manual side-by-side tiling of scope + log view.</li>
+</ul></div>
+<p class="full-record"><a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-status-results-sessions-and-run-window.md">Full corpus record →</a></p>
+</details>
+</section>
+  </main>
+</div>
+<script>
+function toggleTheme() {
+  const r = document.documentElement;
+  const cur = r.getAttribute('data-theme') ||
+    (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  r.setAttribute('data-theme', next);
+  localStorage.setItem('tek-reader-theme', next);
+}
+const saved = localStorage.getItem('tek-reader-theme');
+if (saved) document.documentElement.setAttribute('data-theme', saved);
+</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phase 1 — Immediate Prototype · Tek Corpus Reader</title>
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+<link rel="stylesheet" href="reader.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark"></span>Tek Corpus Reader</div>
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">◐ theme</button>
+</header>
+<div class="shell">
+  <nav class="sidebar"><a class="nav-item" href="index.html">Delivery plan (3 phases)</a>
+<a class="nav-item active" href="phase-1.html">Phase 1 — Immediate Prototype</a>
+<a class="nav-item" href="phase-2.html">Phase 2 — Global UI</a>
+<a class="nav-item" href="phase-3.html">Phase 3 — Panel UI</a>
+<a class="nav-item" href="synthesis.html">Research synthesis</a>
+<a class="nav-item" href="sessions.html">AE sessions</a>
+<a class="nav-item" href="screens.html">Screen gallery</a>
+    <div class="nav-footer">
+      <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/README.md">Corpus conventions</a>
+      <a href="https://github.com/bbkemp/tek-design-system">Repository</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>Phase 1 — Immediate Prototype</h1>
+    <p class="subtitle">Lift-and-shift only. No net-new functionality.</p>
+    <article class="doc"><blockquote>
+<h2>⚠️ Authored analysis — not corpus</h2>
+<p><strong>This document is interpretation, authored by Bryan Kemp and Claude Code on 2026-07-21.</strong> It is opinion and synthesis, not observed fact. The system of record is the cited corpus entries (<code>provenance: observed</code>). When this analysis and a corpus entry disagree, the corpus wins.</p>
+</blockquote>
+<p>Everything required for the lift-and-shift: the prototype becomes a faithful re-skin of today's TekExpress. <strong>No net-new functionality.</strong> Items are grouped as: accuracy debts → semantics that must be settled → visual tokens → interaction consistency → nomenclature → parity guarantees.</p>
+<p>Citation format: <strong>AE name</strong> → corpus chunk. Chunk paths abbreviated; all live under <a href="../../corpus/sources/tek-express/walkthroughs/"><code>corpus/sources/tek-express/walkthroughs/</code></a>.</p>
+<h2>1. Prototype accuracy debts (prototype ≠ product today)</h2>
+<ul>
+<li><strong>Configuration screen is wrong for memory.</strong> "This screen makes no sense for memory… they just live in a different place" — measurement-specific controls for DDR live elsewhere. <strong>Sam</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-sam-ddr-memory-feedback.md">ae-sam-ddr-memory-feedback</a></li>
+<li><strong>DUT middle section reads as "just dumping fields"</strong> — device profile tells <em>what it is</em>, not <em>how I test</em>; acknowledged in-session as early shell. <strong>Joey's session</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-dut-id-limits-and-prototype-reaction.md">ae-joey-chiu-dut-id-limits-and-prototype-reaction</a></li>
+<li><strong>Select Required is non-functional</strong> in the current build. <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-test-selection-and-contextual-help.md">ae-will-teverovsky-test-selection-and-contextual-help</a></li>
+<li><strong>Embed filter is misplaced</strong> relative to the real app. <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">ae-will-teverovsky-acquisitions-presets-status-and-results</a></li>
+<li><strong>Acquisition grouping and test comments are missing.</strong> <strong>Will</strong> → same chunk as above.</li>
+<li><strong>Presets are absent</strong> from the prototype — three levels of preset expectation exist (user / TekExpress / DUT). <strong>Will</strong> → same chunk.</li>
+<li><strong>Application/suite label placement is wrong</strong> vs. the current app ("it does not come here. It comes here"). <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-prototype-ui-feedback.md">ae-tapo-parua-prototype-ui-feedback</a></li>
+<li><strong>Debug / Preferences links should be persistent chrome</strong>, not panel-local. <strong>Tapo</strong> → same chunk.</li>
+<li><strong>The user-trap demo caveat:</strong> the AU VoC configuration walkthrough was driven on an illustrative prototype ("not 100% accurate") — verify trap details against a live session before Phase 3 designs against them. → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/configuration-user-traps-and-cockpit-view.md">configuration-user-traps-and-cockpit-view</a></li>
+</ul>
+<h2>2. Semantics to settle now (cheap now, expensive later)</h2>
+<ul>
+<li><strong>Checkmarks = visited indicator only. Never a Start gate.</strong> "Are you telling that if I do not have that tick marked, I should not be able to start a test?" Preferences is rarely visited; run-with-defaults from DUT alone is core behavior. <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-prototype-ui-feedback.md">ae-tapo-parua-prototype-ui-feedback</a>; reinforced by <strong>Will</strong> (tab iconography/checkmarks unclear) → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-dut-panel-and-data-rates.md">ae-will-teverovsky-dut-panel-and-data-rates</a></li>
+<li><strong>Wizard tabs directly clickable</strong> — "not always… I go in sequence." Next/Back stays, but tabs are navigation, not a rail. <strong>Tapo</strong> → same chunk.</li>
+<li><strong>Left-right / top-to-bottom canonical flow</strong> preserved exactly — the guided step-down is the moat. <strong>Dallas/Jesse veteran</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-session-context-and-overall-reactions.md">ae-dallas-jesse-session-context-and-overall-reactions</a>; <strong>Tapo</strong> (universal 4-step model, "90% same in any application"; nothing executes before Start) → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a></li>
+<li><strong>Set-and-forget defaults stay the default path</strong> — Select Required preselected; most users test only the highest data rate. <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-test-selection-and-contextual-help.md">ae-will-teverovsky-test-selection-and-contextual-help</a></li>
+</ul>
+<h2>3. Visual tokens (DS-level decisions)</h2>
+<ul>
+<li><strong>TekScope kinship at the token level</strong>: "your dark mode should be based on like this gray… this green should be the same as that green… if it doesn't look like TekScope, it's just going to look like 2 disconnected pieces of software." <strong>Nadir</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-competitive-landscape-and-visual-direction.md">ae-nadir-kahn-competitive-landscape-and-visual-direction</a>; endorsed by <strong>Will</strong> ("sharing colors… is great") → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md">ae-will-teverovsky-session-files-options-and-program-context</a></li>
+<li><strong>Dark mode default; light available.</strong> <strong>Nadir</strong> (default), <strong>Dallas/Jesse</strong> ("if you show the dark mode… it'll look better"), <strong>Tapo</strong> ("the white is… hurting my eye right now"). → chunks above + <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-prototype-ui-feedback.md">ae-tapo-parua-prototype-ui-feedback</a></li>
+<li><strong>Flat aesthetic + attention hierarchy</strong> — reconcile Nadir's "too flat… web app look / AI generated Clarius look" with Dallas/Jesse's "customers love that [TekScope PC] GUI because it's flat… keep this stuff flat": TekScope's surface flatness with deliberate state/attention hierarchy ("attention items distinguishable at first glance"). <strong>Validate with a TekScope-styled token variant before committing</strong> — this is Open decision 2 in <a href="synthesis.html">synthesis.md §10</a>. </li>
+<li><strong>Drop the stylized top-label font</strong> that "felt a little out of place." <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-dut-panel-and-data-rates.md">ae-will-teverovsky-dut-panel-and-data-rates</a></li>
+<li><strong>Keep the monospace log styling</strong> — explicitly praised. <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">ae-will-teverovsky-acquisitions-presets-status-and-results</a></li>
+<li><strong>Icons: go for it</strong> — "makes it look more professional, for sure." <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-prototype-ui-feedback.md">ae-tapo-parua-prototype-ui-feedback</a></li>
+<li><strong>Type density</strong>: Chris prefers small/compact ("everyone's gonna give you a different answer") — treat as a density token question, not a per-screen choice. <strong>Chris B</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-setup-waveforms-and-run-modes.md">ae-chrisb-setup-waveforms-and-run-modes</a></li>
+<li><strong>Button text must never overflow</strong> — "goes out of the [button]… 25 years ago, essentially." A DS acceptance criterion, not a bug ticket. <strong>Nadir</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-pain-points-and-automation.md">ae-nadir-kahn-pain-points-and-automation</a></li>
+</ul>
+<h2>4. Interaction consistency</h2>
+<ul>
+<li><strong>Fixed Next/Previous placement regardless of window size</strong> — "it'd be nice if it was just in the same spot every time, so I don't have to keep scrolling down" (he sketched fixed placement). <strong>Sam</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-sam-ddr-memory-feedback.md">ae-sam-ddr-memory-feedback</a></li>
+<li><strong>Sane resize reflow</strong> — "if you resize it small enough, like this moves up to there… it's wonky." <strong>Sam</strong> → same chunk.</li>
+<li><strong>Responsive resizing itself is a validated win — preserve it.</strong> "I'm just gonna move it and they'll be like, 'All right, sign me up'" (<strong>Will</strong>); "one of the biggest problems" fixed (<strong>Nadir</strong>); resizability is a Bryan-endorsed requirement in the AU VoC competitive review. → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md">ae-will-teverovsky-session-files-options-and-program-context</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-pain-points-and-automation.md">ae-nadir-kahn-pain-points-and-automation</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/competitive-deployment-licensing-and-status-value.md">competitive-deployment-licensing-and-status-value</a></li>
+<li><strong>Design floor 1024×768</strong> — reconcile with the DS's container-breakpoints commitment; define the tested resolution matrix (Open decision 7). <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">ae-will-teverovsky-acquisitions-presets-status-and-results</a></li>
+<li><strong>Tab iconography</strong> must communicate meaning without a legend. <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-dut-panel-and-data-rates.md">ae-will-teverovsky-dut-panel-and-data-rates</a></li>
+</ul>
+<h2>5. Nomenclature pass</h2>
+<ul>
+<li><strong>"Suite" is off</strong> as a label. <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-dut-panel-and-data-rates.md">ae-will-teverovsky-dut-panel-and-data-rates</a></li>
+<li><strong>Gen vs. CEM spec levels conflated in one dropdown</strong> — "those are kind of the same thing." <strong>Will</strong> → same chunk.</li>
+<li><strong>"Algorithm library" is opaque</strong> to users. <strong>Will</strong> → same chunk.</li>
+<li><strong>"Preset" is overloaded</strong> (preset test vs. presets applied during signal tests; equalization vs. scope presets) — confused even facilitators. <strong>Joey's session</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-pcie-backward-compat-scaling.md">ae-joey-chiu-pcie-backward-compat-scaling</a>; <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-launcher-global-settings-and-setup-flow.md">ae-travis-berger-launcher-global-settings-and-setup-flow</a></li>
+<li><strong>"User-defined" vs. "Debug"</strong> — do not rename in Phase 1; it's contested (Open decision 1; the room suggested a vote). <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-compliance-mode-and-test-selection.md">ae-dallas-jesse-compliance-mode-and-test-selection</a></li>
+<li><strong>Setting names should match industry-standard terms</strong> where they currently deviate. <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a></li>
+</ul>
+<h2>6. Parity guarantees (nothing silently lost in the re-skin)</h2>
+<ul>
+<li><strong>Automation/scripted control parity</strong> — customers "are literally programming through this GUI" for 24-hour regression runs; must run "fully automated… without any user interaction." A per-screen parity checklist is the Phase 1 artifact; the richer automation contract is Phase 2/Open decision 10. <strong>Nadir</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-pain-points-and-automation.md">ae-nadir-kahn-pain-points-and-automation</a>; SCPI "backdoor" confirmed by <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-run-environments-adoption-and-reports.md">ae-travis-berger-run-environments-adoption-and-reports</a></li>
+<li><strong>Up-front visible configuration stays</strong> — stated competitive strength vs. LeCroy's registry-style tree ("scroll through like 3,000 things"). <strong>Chris B</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-setup-waveforms-and-run-modes.md">ae-chrisb-setup-waveforms-and-run-modes</a></li>
+<li><strong>Signal validation stays</strong> ("this is actually an advantage for us") — behavior refinement is Phase 3. <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-compliance-mode-and-test-selection.md">ae-dallas-jesse-compliance-mode-and-test-selection</a></li>
+<li><strong>Acquisition table's derived per-row context stays</strong> ("Lane Zero, PRTS 7, P0 — that is way better than it used to be"). <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md">ae-dallas-jesse-instruments-sessions-results-debug</a></li>
+<li><strong>Report structure stays</strong> — "kind of accepted in the industry"; restyle, don't restructure. <strong>Chris B</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-reports-and-rerun-workflow.md">ae-chrisb-reports-and-rerun-workflow</a></li>
+<li><strong>Custom customer logo</strong> capability stays (demo-whitelabeling reason: hides "whose test equipment they were using") and should be findable under settings. <strong>Chris B</strong> → same chunk.</li>
+<li><strong>EXE / on-scope, never browser</strong> — platform decision already aligned; on-scope is a moat vs. R&amp;S laptop-hosted. <strong>Will's session</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md">ae-will-teverovsky-session-files-options-and-program-context</a>; <strong>Nadir</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-competitive-landscape-and-visual-direction.md">ae-nadir-kahn-competitive-landscape-and-visual-direction</a></li>
+</ul>
+<h2>7. Rollout posture (Phase 1 framing, not features)</h2>
+<ul>
+<li><strong>Ship fast beats polish</strong> — "getting it done and out as fast as possible is much more important"; staged rollout avoids "phobia of new user experience." <strong>Nadir</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-competitive-landscape-and-visual-direction.md">ae-nadir-kahn-competitive-landscape-and-visual-direction</a></li>
+<li><strong>"Don't change it" structurally</strong> — reskin + placement fixes, "not too drastic"; customers embedded in it dislike change. Third independent Clarius warning. <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-run-environments-adoption-and-reports.md">ae-travis-berger-run-environments-adoption-and-reports</a></li>
+<li><strong>Additive adoption aids are in-scope</strong>: first-run dismissible tutorial overlay; onboarding thought for the older Keysight-migrant population. <strong>Travis</strong> → same chunk.</li>
+<li><strong>Demo/perception value is real</strong> — old software makes the hardware look old; the new skin is itself a sales asset. <strong>Nadir</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-pain-points-and-automation.md">ae-nadir-kahn-pain-points-and-automation</a>; "they're going to like this better because it's new" (drop-in AE) → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-dut-id-limits-and-prototype-reaction.md">ae-joey-chiu-dut-id-limits-and-prototype-reaction</a></li>
+</ul></article>
+  </main>
+</div>
+<script>
+function toggleTheme() {
+  const r = document.documentElement;
+  const cur = r.getAttribute('data-theme') ||
+    (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  r.setAttribute('data-theme', next);
+  localStorage.setItem('tek-reader-theme', next);
+}
+const saved = localStorage.getItem('tek-reader-theme');
+if (saved) document.documentElement.setAttribute('data-theme', saved);
+</script>
+</body>
+</html>
