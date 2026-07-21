@@ -162,10 +162,13 @@ The **hardware bezel** is identical to the Home screen. Left side, top-to-bottom
 Visible in this photo: tab = Graph active; trigger = Continuous; buffer = defbuffer1; y-axis units = pA; output state ambiguous.
 
 Other states this same screen layout will exhibit:
-- **Tab change** — tapping `tab-data`, `tab-scale`, or `tab-trigger` navigates to the sibling sub-views, documented separately as `graph-data`, `graph-scale`, `graph-trigger`.
+- **Tab change** — tapping `tab-data`, `tab-scale`, or `tab-trigger` navigates to the sibling sub-views, documented separately as [`graph-data`](graph-data.md), [`graph-scale`](graph-scale.md), [`graph-trigger`](graph-trigger.md).
+- **Graph Type = Scatter/IV** — `uploads/photos/photo-549_singular_display_fullPicture.jpeg` shows the plot with Graph Type switched from Time to Scatter/IV (set on the Data tab): one buffer element plotted against another, with the bottom row reading `X: defbuffer1.src` and `Y: defbuffer1.meas` beside `defbuffer1`. The trace becomes a scatter/web of connected points around a central cluster instead of a left-to-right time series; the y-axis spans approximately `+24.00pA` down to `-20.00pA`. The Data tab carries a white knob-focus outline in this shot.
+- **Log y-axis** — `uploads/photos/photo-562_singular_display_fullPicture.jpeg` and `photo-570` show the plot with Scale Format = Log (set on the Scale tab): the y-axis becomes decade labels from `+1.000nA` at top through `+316.2pA`, `+100.0pA`, `+31.62pA`, `+10.00pA`, then exponent-form labels (`+3.1e-12A`, `+1.0e-12A`, `+316e-15A`, `+100e-15A`, `+31e-15A`, `+10e-15A` — exact strings at legibility limit). Active buffer is `defbuffer2`; x-axis ticks run approximately `00:00` to `02:20` in 20 s steps. A hand is in frame in both shots.
+- **Log y-axis + cursors** — `uploads/photos/photo-573_singular_display_fullPicture.jpeg` and `photo-576` show the same log-format plot with two vertical purple/magenta cursor lines in the plot region. The Scale tab carries a white knob-focus outline in both shots. Y-axis top labels read approximately `+20.42pA` / `+10.23pA` before dropping into exponent form; buffer is `defbuffer2`. How the cursors are enabled/positioned is not derivable from these stills.
+- **Buffer change** — `buffer-name` changes to whichever buffer is selected; the trace and statistics update. Seen concretely in `uploads/photos/photo-559_singular_display_fullPicture.jpeg` (linear axis, `defbuffer2` active, y-axis approximately `+36.00pA` to `-24.00pA`, hand in frame).
 - **Function change** — when the active measure function changes (Voltage, Resistance, Power), the y-axis units swap to mV/V, Ω, or W and the trace is redrawn.
 - **Trigger state** — `status-trigger` cycles through Continuous, Idle, Running, etc., changing both the label and the chevron behavior.
-- **Buffer change** — `buffer-name` changes to whichever buffer is selected; the trace and statistics update.
 - **Empty buffer** — when no readings have been taken since the buffer was last cleared, the plot region is empty (no waveform). Not visible in any of the candidate photos.
 
 ## Visible text (verbatim)
@@ -196,15 +199,19 @@ Several elements in this photo sit at or below the legibility limit of the 1600 
 - `function_state` — inferred from pA-scale y-axis; not directly labeled on this screen. Could be confirmed by inspecting the active measure function on Home.
 - `parent_screens: [home]` — assumed because Home is the navigational root and the HOME hardkey returns there. The exact path *to* Graph (FUNCTION hardkey, MENU > Views, swipe, etc.) is not derivable from this single shot.
 - `output-led` color and meaning — same caveat as Home; green is visible, but the on/off/armed convention is unverified.
-- `tab-data`, `tab-scale`, `tab-trigger` action descriptions — the *content* of those sub-views is inferred from typical SMU instrument patterns, not from photos in `uploads/photos/`. Confirm against the manual or by processing photos of those tabs (likely candidates: photos showing waveforms with tabular overlays for Data; axis-config dialogs for Scale; trigger-model diagrams for Trigger).
+- `tab-data`, `tab-scale`, `tab-trigger` action descriptions — now confirmed from photos: the sub-views are documented as [`graph-data`](graph-data.md) (trace management, graph type, draw style), [`graph-scale`](graph-scale.md) (axis method/scale/position, linear vs. log), and [`graph-trigger`](graph-trigger.md) (source event, delay, position, trigger clear). Data is trace management rather than the tabular readings view originally guessed here.
+- State-variation photo transcriptions (photo-549 Scatter/IV axis bounds and bottom-row element names; photo-562/570 log decade labels; photo-573/576 cursor colors and top labels; photo-559 axis bounds) are read at or near the legibility limit of hand-held shots — treat the quoted axis values as approximate. The white outlines noted on the Data / Scale tabs in those shots are interpreted as knob-focus indicators; unverified.
 
 ## Manual references
 
-> Pending. Manual will be paired in a later pass (2450-EC User's Manual, sections covering the Graph view, buffer statistics display, axis scaling, and tab navigation between Graph / Data / Scale / Trigger).
+- **`Connections for testing`** ([`docs/quickstart/connections-for-testing.md`](../docs/quickstart/connections-for-testing.md), `quickstart` pp. 22 to 23) — the "view the measurements on the front-panel graph" procedure and figure are this screen; confirms the navigation path (`MENU` > Views > `Graph`, resolving the unverified-path confidence note) and identifies the bottom buffer row as buffer statistics (`Buffer Max`/`Avg`, `Stats Min`/`Std` — resolving the stat-left/stat-right identity question), plus pinch/zoom and the Data / Scale / Trigger tabs.
+- **`Touchscreen display overview`** ([`docs/quickstart/touchscreen-and-home-screen.md`](../docs/quickstart/touchscreen-and-home-screen.md), `quickstart` pp. 15 to 17) — documents the alternate entry path: the GRAPH swipe screen on Home, whose header graph icon opens this full-screen Graph view, where data and scale can be changed.
+
+Pending: 2450-EC User's Manual sections covering the Graph view in the EC test applications (Sections 2–7, not yet processed) — the quickstart references above document the base-2450 default Graph screen.
 
 ## Source photo
 
 Selected from `uploads/photos/`: **photo-477_singular_display_fullPicture.jpeg** — chosen for clarity (no hand obstruction, sharp focus on the LCD, full hardware bezel visible, tab bar and waveform readable). Other Graph-view candidates and why they were not used:
 
-- `photo-549` — Histogram/data variant with the Data tab active, scope drift visible. Better as the canonical photo for `graph-data` once that screen is processed.
+- `photo-549` — Scatter/IV graph-type state of this screen (documented above under State variations). Originally misread as a data-tab variant and slated as the canonical photo for `graph-data`; the 2026-07-21 cluster pass corrected this — [`graph-data`](graph-data.md)'s canonical is photo-539.
 - Other candidates in `uploads/photos/` — primarily Home screen variants (with and without overlays) or modal dialogs; not Graph views.

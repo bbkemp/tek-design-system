@@ -7,8 +7,8 @@ flow_title: TekExpress customers, market positioning, and the multi-interface co
 recorded_by: [Bera, Subhasis (Principal Product Manager, Solutions Platform and Decoders)]
 participants: [Kemp, Bryan; Bera, Subhasis; Jogdand, Arpita]
 recorded_date: 2026-06-23
-duration: ~25 min (segment ~6:18 – ~30:00 of a 1h 1m meeting)
-transcript_source: corpus/sources/tek-express/uploads/transcripts/AU VoC Sync up.docx
+duration: ~6 min (segment ~6:18 – ~12:00 of a 1h 1m meeting)
+transcript_source: uploads/transcripts/AU VoC Sync up.docx
 screens_visited: []
 applies_to: [tek-express, tek-flow]
 related_screens: [setup-test-selection, setup-acquisitions, status-test-status, results]

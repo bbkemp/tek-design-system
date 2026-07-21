@@ -8,7 +8,7 @@ recorded_by: [Fortive Growth Accelerator (GA) team]
 participants: []
 recorded_date: 2023-01-01
 duration: methodology document (not a recorded session)
-transcript_source: corpus/sources/tek-express/uploads/artifacts/GA VOC for Empathy Disc Guide Question Bank - GM v1.docx
+transcript_source: uploads/artifacts/GA VOC for Empathy Disc Guide Question Bank - GM v1.docx
 screens_visited: []
 applies_to: [tek-express, tek-flow]
 related_screens: []

@@ -34,7 +34,7 @@ Give the DS team and the broader audience a working understanding of what the us
 
 **~17:30 — TekExpress entry: data rate, lane setup, signal validation.** Pranavi navigates the Setup wizard from DUT outwards. The key form fields she calls out:
 
-- Data rate selection ([`setup-dut`](../../screens/setup-dut.md) Device / Suite / Version dropdowns).
+- Data rate selection ([`setup-dut`](../screens/setup-dut.md) Device / Suite / Version dropdowns).
 - Lane setup and signal validation — *"some of them are very specific to DP, so that's what we are seeing here."*
 - Filters.
 
@@ -44,7 +44,7 @@ Give the DS team and the broader audience a working understanding of what the us
 
 **~21:00 — Pranavi enters Test Selection.** Describes the hierarchical test tree and the per-test Configure dialog. *"Like if we see something like a Lane setup or filters or signal validations are very common for all the applications, but some of them are very specific to DP, so that's what we are seeing here."*
 
-**26:28 — Pranavi opens the Configure dialog.** *"Before going to acquisition. So we also have something called configure, right? So when I click this, that's when we can configure each of the tests. I think in some of the applications, this can go a…"* → opens [`setup-test-selection-config`](../../screens/setup-test-selection-config.md). She walks through the Acquire / Analyze sub-tabs.
+**26:28 — Pranavi opens the Configure dialog.** *"Before going to acquisition. So we also have something called configure, right? So when I click this, that's when we can configure each of the tests. I think in some of the applications, this can go a…"* → opens [`setup-test-selection-config`](../screens/setup-test-selection-config.md). She walks through the Acquire / Analyze sub-tabs.
 
 **35:07 — Srevats wraps the TekExpress segment.** *"Just looking at the time also, Pranavi. First of all, thank you so much for taking us through a lot of detail. So everybody, if you want to spend more time on Tech Express, we could."*
 
@@ -89,7 +89,7 @@ Give the DS team and the broader audience a working understanding of what the us
 ## Cross-references
 
 - All TekExpress screens visited or referenced in this demo are documented under `screens/` in this corpus:
-  - [`setup-dut`](../../screens/setup-dut.md), [`setup-test-selection`](../../screens/setup-test-selection.md), [`setup-test-selection-config`](../../screens/setup-test-selection-config.md), [`setup-acquisitions`](../../screens/setup-acquisitions.md), [`status-test-status`](../../screens/status-test-status.md), [`status-log-view`](../../screens/status-log-view.md), [`results`](../../screens/results.md), [`plots`](../../screens/plots.md), [`reports-configuration`](../../screens/reports-configuration.md), [`reports-view-settings`](../../screens/reports-view-settings.md).
+  - [`setup-dut`](../screens/setup-dut.md), [`setup-test-selection`](../screens/setup-test-selection.md), [`setup-test-selection-config`](../screens/setup-test-selection-config.md), [`setup-acquisitions`](../screens/setup-acquisitions.md), [`status-test-status`](../screens/status-test-status.md), [`status-log-view`](../screens/status-log-view.md), [`results`](../screens/results.md), [`plots`](../screens/plots.md), [`reports-configuration`](../screens/reports-configuration.md), [`reports-view-settings`](../screens/reports-view-settings.md).
 - The audit PDF's screen-inventory chunk covers the same set: [`docs/ui-audit/screen-inventory.md`](../docs/ui-audit/screen-inventory.md).
 
 ## Pending references
