@@ -70,11 +70,11 @@ def md_html(text, base_rel=""):
 
 def page(title, active, body_html, subtitle=""):
     nav_items = [
-        ("index.html", "findings", "Findings readout"),
+        ("index.html", "findings", "Delivery plan (3 phases)"),
         ("phase-1.html", "p1", "Phase 1 — Immediate Prototype"),
         ("phase-2.html", "p2", "Phase 2 — Global UI"),
         ("phase-3.html", "p3", "Phase 3 — Panel UI"),
-        ("synthesis.html", "synth", "Cross-AE synthesis"),
+        ("synthesis.html", "synth", "Research synthesis"),
         ("sessions.html", "sessions", "AE sessions"),
         ("screens.html", "screens", "Screen gallery"),
     ]
