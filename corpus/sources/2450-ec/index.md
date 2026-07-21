@@ -1,43 +1,45 @@
 # 2450-EC — screen index
 
-Generated **2026-05-05**. Two screens documented; the rest are referenced via `child_screens` and pending the next pass of the `document-screens` skill against the remaining photos in `uploads/photos/`.
+Scaffolded **2026-05-05** (two screens). Full cluster pass over all 58 `uploads/photos/` ran **2026-07-21**: **32 screens documented** (see the generated Screens table below — it is the authoritative list). Every photo is dispositioned: canonical reference, state variation (folded into `home.md` / `graph.md` / parent chunks), or duplicate-skip.
 
 ## Screen graph
 
 ```
-home  (readout)                           ← navigational root
-├── graph  (graph)                        ← documented
-│   ├── graph-data                        ← pending
-│   ├── graph-scale                       ← pending
-│   └── graph-trigger                     ← pending
-├── menu                                  ← pending
-├── quickset                              ← pending
-├── help                                  ← pending
-├── measure-range  (dialog)               ← pending  (overlay; reached by tapping Range)
-├── source-edit    (dialog)               ← pending  (overlay; reached by tapping a source tile)
-├── buffer-picker  (dialog)               ← pending  (overlay; reached from buffer-name in status bar / buffer row)
-└── trigger-config (dialog)               ← pending  (overlay; reached from CONT trigger pill)
+home  (readout)                            ← navigational root — documented, incl. swipe panels
+├── graph  (graph)                         ← documented, incl. Scatter/IV + log-axis + cursor states
+│   ├── graph-data                         ← documented
+│   ├── graph-scale                        ← documented
+│   └── graph-trigger                      ← documented
+│       ├── trigger-source-event (dialog)  ← documented
+│       ├── trigger-clear (dialog)         ← documented
+│       ├── delay-edit (dialog)            ← documented
+│       └── position-edit (dialog)         ← documented
+├── menu                                   ← PENDING — never photographed (the one big gap)
+│   ├── source-settings                    ← documented (+ 7 picker dialogs: source-range,
+│   │                                        output-off-mode, ovp-limit, interlock,
+│   │                                        high-capacitance, source-readback, source-delay)
+│   ├── calculation-settings               ← documented (+ math-settings, filter-picker)
+│   └── system-communications              ← documented (GPIB/USB/LAN/TSP-Link tabs)
+├── quickset                               ← documented
+├── help                                   ← PENDING — never photographed
+├── measure-range  (dialog)                ← documented
+├── source-edit    (dialog)                ← documented (canonical keypad-editor chunk)
+├── limit-edit     (dialog)                ← documented
+├── nplcs-edit     (dialog)                ← documented (launch context uncertain)
+├── display-digits (dialog)                ← documented
+├── buffer-picker  (dialog)                ← documented
+├── script-picker  (dialog)                ← documented
+├── system-info    (dialog)                ← documented
+├── trigger-config (dialog)                ← documented
+└── error-dialog   (dialog)                ← documented (Error 2727)
 ```
 
-## All documented screens
+## Remaining gaps
 
-| screen_id | screen_title | screen_type | function_state |
-|---|---|---|---|
-| [home](screens/home.md) | Home | readout | MEASURE CURRENT 2-WIRE |
-| [graph](screens/graph.md) | Graph | graph | MEASURE CURRENT 2-WIRE *(inferred)* |
-
-## Pending screens — likely candidates from `uploads/photos/`
-
-Photo-by-photo dispositions are not authoritative until the cluster pass runs, but visible candidates:
-
-| Pending screen | Likely source photo(s) | Notes |
-|---|---|---|
-| `home` (settings-panel state) | `uploads/photos/photo-690…`, `uploads/photos/photo-650…` | State variation of `home`, not a separate screen — fold into `home.md`'s **State variations**. |
-| `graph-data` | `uploads/photos/photo-549…` | Data tab active over a histogram-style trace. |
-| `measure-range` | `uploads/photos/photo-604…` | Range-picker overlay above Home. |
-| `calculation-settings` | `uploads/photos/photo-715…` | Calculation Settings dialog with Math Settings panel and OK button. |
-
-Other photos in `uploads/photos/` are mostly additional Home-screen variants (different functions, output ON/OFF, ambient lighting differences) and will collapse into state variations within existing screens during the cluster pass.
+- **`menu`** — the main MENU tree screen was never photographed; its children (source-settings, calculation-settings, system-communications) are documented with `parent_screens: [menu]` pending notes. **Top re-shoot priority.**
+- **`help`** — never photographed.
+- **Re-shoot candidates** — `ovp-limit` (photo-626) and `source-readback` (photo-643) are documented from the only, blurry, shots; several labels are itemized as uncertain in their Confidence notes.
+- **EC-app Graph coverage** — the quickstart documents the base-2450 Graph; EC-app-specific graph behavior remains unverified (flagged in `graph.md`).
 
 ## Documented hardware
 
@@ -57,18 +59,48 @@ Manual chunks cross-link back to corpus entries via `related_screens` / `related
 
 ## How this index is regenerated
 
-Each pass of the `document-screens`, `document-hardware`, or `document-pdf` skill updates the relevant section of this file from the frontmatter of every `.md` under `screens/`, `hardware/`, and `docs/`. Hand-edits are overwritten on the next run.
+`/refresh-index 2450-ec` regenerates everything below the AUTO marker from chunk frontmatter. This preamble is hand-maintained and preserved across runs.
 
 <!-- /AUTO -->
 
 > Generated by /refresh-index on 2026-07-21. Edits above the `<!-- /AUTO -->` marker are preserved; everything below is regenerated.
 
-## Screens (2)
+## Screens (32)
 
 | screen_id | screen_title | screen_type | function_state | applies_to |
 |---|---|---|---|---|
+| [buffer-picker](screens/buffer-picker.md) | Buffer picker | dialog | MEASURE CURRENT 2-WIRE | — |
+| [calculation-settings](screens/calculation-settings.md) | Calculation Settings | config | Function: SVMI | — |
+| [delay-edit](screens/delay-edit.md) | Trigger Delay editor | dialog | — | — |
+| [display-digits](screens/display-digits.md) | Display Digits picker | dialog | MEASURE CURRENT (wiring-mode text occluded by dialog) | — |
+| [error-dialog](screens/error-dialog.md) | Error 2727 dialog | dialog | MEASURE CURRENT 2-WIRE | — |
+| [filter-picker](screens/filter-picker.md) | Filter picker | dialog | Function: SVMI | — |
 | [graph](screens/graph.md) | Graph | graph | MEASURE CURRENT 2-WIRE (inferred from pA-scale y-axis) | — |
+| [graph-data](screens/graph-data.md) | Graph — Data tab | graph | — | — |
+| [graph-scale](screens/graph-scale.md) | Graph — Scale tab | config | — | — |
+| [graph-trigger](screens/graph-trigger.md) | Graph — Trigger tab | config | — | — |
+| [high-capacitance](screens/high-capacitance.md) | High Capacitance picker | dialog | Function: SVMI | — |
 | [home](screens/home.md) | Home | readout | MEASURE CURRENT 2-WIRE | — |
+| [interlock](screens/interlock.md) | Interlock picker | dialog | Function: SVMI | — |
+| [limit-edit](screens/limit-edit.md) | Current Limit Value | dialog | SOURCE VOLTAGE / LIMIT CURRENT (inferred from dialog title) | — |
+| [math-settings](screens/math-settings.md) | Math Settings | dialog | Function: SVMI | — |
+| [measure-range](screens/measure-range.md) | Measure Range picker | dialog | MEASURE CURRENT 2-WIRE | — |
+| [nplcs-edit](screens/nplcs-edit.md) | NPLCs editor | dialog | — | — |
+| [output-off-mode](screens/output-off-mode.md) | Output Off picker | dialog | Function: SVMI | — |
+| [ovp-limit](screens/ovp-limit.md) | Overvoltage Protection Limit picker | dialog | Function: SVMI | — |
+| [position-edit](screens/position-edit.md) | Trigger Position editor | dialog | — | — |
+| [quickset](screens/quickset.md) | Basic Source/Measure Settings | config | Function: SrcV MeasI | — |
+| [script-picker](screens/script-picker.md) | Script picker | dialog | MEASURE CURRENT 2-WIRE | — |
+| [source-delay](screens/source-delay.md) | Source Delay picker | dialog | Function: SVMI | — |
+| [source-edit](screens/source-edit.md) | Voltage Source Value | dialog | SOURCE VOLTAGE (inferred from dialog title) | — |
+| [source-range](screens/source-range.md) | Source Range picker | dialog | MEASURE CURRENT 2-WIRE | — |
+| [source-readback](screens/source-readback.md) | Source Readback picker | dialog | Function: SVMI | — |
+| [source-settings](screens/source-settings.md) | Source Settings | config | Function: SVMI | — |
+| [system-communications](screens/system-communications.md) | System Communications | config | — | — |
+| [system-info](screens/system-info.md) | System status popup | dialog | MEASURE CURRENT 2-WIRE | — |
+| [trigger-clear](screens/trigger-clear.md) | Trigger Clear picker | dialog | — | — |
+| [trigger-config](screens/trigger-config.md) | Trigger mode picker | dialog | MEASURE CURRENT 2-WIRE | — |
+| [trigger-source-event](screens/trigger-source-event.md) | Source Event picker | dialog | — | — |
 
 ## Hardware (1)
 
@@ -76,7 +108,25 @@ Each pass of the `document-screens`, `document-hardware`, or `document-pdf` skil
 |---|---|---|---|
 | [front-panel](hardware/front-panel.md) | Front panel | front-panel | 2450-ec, 2460-ec, 2461-ec |
 
-## Docs (5)
+## Docs (18)
+
+### quickstart (13)
+
+| section_id | section_title | parent_section |
+|---|---|---|
+| [connect-the-instrument](docs/quickstart/connect-the-instrument.md) | Connect the instrument | — |
+| [connections-for-testing](docs/quickstart/connections-for-testing.md) | Connections for testing | — |
+| [faqs-and-next-steps](docs/quickstart/faqs-and-next-steps.md) | FAQs | — |
+| [front-panel-overview](docs/quickstart/front-panel-overview.md) | Overview of the front-panel options | connect-the-instrument |
+| [help-and-function](docs/quickstart/help-and-function.md) | Help / FUNCTION | connect-the-instrument |
+| [introduction](docs/quickstart/introduction.md) | Introduction | — |
+| [navigation-keys-and-menu](docs/quickstart/navigation-keys-and-menu.md) | ENTER and EXIT keys / TRIGGER key / Menu screen overview | connect-the-instrument |
+| [power-and-environmental-specs](docs/quickstart/power-and-environmental-specs.md) | Power and environmental specifications | — |
+| [power-on](docs/quickstart/power-on.md) | Power on the instrument | connect-the-instrument |
+| [quickset-and-measure-settings](docs/quickstart/quickset-and-measure-settings.md) | Quick Setup options | connect-the-instrument |
+| [touchscreen-and-home-screen](docs/quickstart/touchscreen-and-home-screen.md) | Touchscreen display overview | connect-the-instrument |
+| [unpack-and-inspect](docs/quickstart/unpack-and-inspect.md) | Unpack and inspect the instrument | — |
+| [wiring-the-interlock](docs/quickstart/wiring-the-interlock.md) | Wiring the interlock | connect-the-instrument |
 
 ### user-manual (5)
 
@@ -92,17 +142,42 @@ Each pass of the `document-screens`, `document-hardware`, or `document-pdf` skil
 
 | Source | Target | Edge |
 |---|---|---|
-| screen `home` | hardware `front-panel` | related_hardware |
-| hardware `front-panel` | screen `home` | related_screens |
+| hardware-view `front-panel` | screen `home` | related_screens |
+| doc-section `connections-for-testing` | screen `home` | related_screens |
+| doc-section `connections-for-testing` | screen `graph` | related_screens |
+| doc-section `touchscreen-and-home-screen` | screen `home` | related_screens |
+| doc-section `touchscreen-and-home-screen` | screen `graph` | related_screens |
 | doc-section `home-and-menu-overview` | screen `home` | related_screens |
+| screen `buffer-picker` | hardware `front-panel` | related_hardware |
+| screen `calculation-settings` | hardware `front-panel` | related_hardware |
+| screen `display-digits` | hardware `front-panel` | related_hardware |
+| screen `error-dialog` | hardware `front-panel` | related_hardware |
+| screen `filter-picker` | hardware `front-panel` | related_hardware |
+| screen `high-capacitance` | hardware `front-panel` | related_hardware |
+| screen `home` | hardware `front-panel` | related_hardware |
+| screen `interlock` | hardware `front-panel` | related_hardware |
+| screen `math-settings` | hardware `front-panel` | related_hardware |
+| screen `measure-range` | hardware `front-panel` | related_hardware |
+| screen `nplcs-edit` | hardware `front-panel` | related_hardware |
+| screen `output-off-mode` | hardware `front-panel` | related_hardware |
+| screen `ovp-limit` | hardware `front-panel` | related_hardware |
+| screen `quickset` | hardware `front-panel` | related_hardware |
+| screen `script-picker` | hardware `front-panel` | related_hardware |
+| screen `source-delay` | hardware `front-panel` | related_hardware |
+| screen `source-range` | hardware `front-panel` | related_hardware |
+| screen `source-readback` | hardware `front-panel` | related_hardware |
+| screen `source-settings` | hardware `front-panel` | related_hardware |
+| screen `system-communications` | hardware `front-panel` | related_hardware |
+| screen `system-info` | hardware `front-panel` | related_hardware |
+| screen `trigger-config` | hardware `front-panel` | related_hardware |
 
 ## Coverage notes
 
-- Screens documented: 2
+- Screens documented: 32
 - Walkthroughs documented: 0
-- Manual sections documented: 5
+- Manual sections documented: 18
 - Hardware views documented: 1
 - API snapshots: 0
 - Code snapshots: 0
-- Cross-references: 3
+- Cross-references: 28
 - Last regenerated: 2026-07-21 by /refresh-index

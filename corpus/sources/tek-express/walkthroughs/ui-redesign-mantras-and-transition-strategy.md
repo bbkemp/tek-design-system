@@ -8,7 +8,7 @@ recorded_by: [Bera, Subhasis (Principal Product Manager, Solutions Platform and 
 participants: [Kemp, Bryan; Bera, Subhasis; Jogdand, Arpita]
 recorded_date: 2026-06-23
 duration: ~6 min (segment ~54:53 – ~1:00:39 of a 1h 1m meeting)
-transcript_source: corpus/sources/tek-express/uploads/transcripts/AU VoC Sync up.docx
+transcript_source: uploads/transcripts/AU VoC Sync up.docx
 screens_visited: []
 applies_to: [tek-express, tek-flow]
 related_screens: [setup-dut, setup-dut-session-browser]

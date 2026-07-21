@@ -19,6 +19,9 @@ child_screens:
   - source-edit
   - buffer-picker
   - trigger-config
+  - script-picker
+  - system-info
+  - error-dialog
 related_hardware:
   - front-panel
 controls:
@@ -179,8 +182,22 @@ Visible in this photo: function = Measure Current 2-Wire, output = OFF (inferred
 Other states this same screen layout will exhibit (from the broader photo set in `uploads/photos/`):
 - Function changes — Measure Voltage, Measure Resistance, Measure Power — change the units and which side is "measure" vs "source".
 - Output ON vs OFF — when output is on, the readback values are non-trivial and the LED state changes.
-- Settings overlay — see photo-690 (`uploads/photos/`), where a configuration panel (Rel / Math / NPLCs / Filter / Auto Zero / Display Digits) overlays the lower half. This is documented as a child screen `home-settings` once processed.
-- Range overlay — see photo-604, where tapping the range opens a Measure Range picker. Documented as child screen `measure-range`.
+
+**Swipe panels (lower half).** The source region can be swiped horizontally to reveal alternate panels; a dot-position indicator between the regions tracks which panel is showing. These are state variations of Home, not child screens:
+
+- **SETTINGS panel** — `uploads/photos/photo-690_singular_display_fullPicture.jpeg` (cleanest capture; also photo-392, same state with a hand in frame). A two-row control grid replaces the source region: `Rel` (toggle), `Math` (X), `NPLCs` (`1`), `Filter` (X), `Auto Zero` (✓), `Display Digits` (`5.5 Digits` · `Auto`), with range up/down arrow buttons at the right and a dimmed `Range / Source / Limit` summary row along the bottom edge (`Range: 20mV · Source: +0.0000V · Limit: 105.00µA`, legible in photo-392).
+- **SETTINGS panel, Filter + Auto Zero active** — photo-694. Same grid with `Filter` checked (white-outlined) and the `FILTER` and `AZERO` annunciators stacked at the top right of the measure region; reading `+00.0010 nA`.
+- **SETTINGS panel, Math on** — photo-698. `Math` enabled (white-outlined); the primary readout switches to the math result, reading `-100.000 %`, with a `MATH` annunciator beside `FILTER` / `AZERO` at the top right.
+- **GRAPH panel** — photo-418. A mini-plot strip replaces the source region: `GRAPH` caption, pA-scale y-axis labels, time-axis labels, live trace, and an expand icon at the top right of the strip (full-screen counterpart: [graph](graph.md)). Reading `+00.0077 nA`.
+- **STATISTICS panel** — photo-448. A statistics readout replaces the source region: `STATISTICS` caption with `Peak to Peak +44.9929pA` · `Average +10.1865pA` · `Standard Dev 2.04261pA` · `Span 1482 rdgs` · `Maximum +00.0316nA` · `Minimum -00.0134nA` and a `Clear Active Buffer` button.
+
+**Other photographed states:**
+
+- **Manual range** — photo-608. Range pill reads `10µA` (fixed, highlighted) instead of `Auto`; function readout in µA (`-00.0001 µA`, source readback `-00.0013 mV`), and an amber warning triangle sits at the far right of the status bar.
+- **Warning toast** — photo-646. An inline panel replaces the right side of the screen: ⚠ `Warning 5076` · `Source Limit changed to 1.05e-05 A due to new measure Range` with an `Event Log` button; amber triangle at the far right of the status bar; output ON (blue OUTPUT light).
+- **WAIT trigger state** — photo-653. Status pill reads `WAIT ▼` (boxed/highlighted) instead of `CONT`, output ON; readouts `-00.0001 µA` / `-00.0003 V` at range `10µA`.
+
+**Dialog overlays (documented as child screens):** tapping Home's controls launches [measure-range](measure-range.md) (range control, photo-604), [trigger-config](trigger-config.md) (trigger pill, photos 650/657), [buffer-picker](buffer-picker.md) (buffer pill, photo-663), [script-picker](script-picker.md) (script pill, photo-660), [system-info](system-info.md) (system status popup, photo-666), and — when a command is rejected — [error-dialog](error-dialog.md) (photo-684).
 
 ## Visible text (verbatim)
 
@@ -204,12 +221,19 @@ Transcriptions verified against the 1600 px downscale (`home.jpg`). Items below 
 - `source-limit` exact value — read as `105.000 µA`. Could plausibly be `100.000 µA`; the ones digit is ambiguous.
 - `output-led` color and meaning — green is visible, but on the 2450 the output-state LED's exact convention (lit = ON vs lit = ARMED) is not derivable from this single shot.
 - `azero-indicator` tap-to-toggle behavior — the on-screen `AZERO` may be a passive indicator only, with toggling done via Menu. Unverified.
+- `source-limit` ambiguity above is now substantially resolved by the state-variation photos: photo-392 shows a legible `Limit: 105.00µA` in the SETTINGS panel's summary row, and the photo-646 toast reports `Source Limit changed to 1.05e-05 A` (= 10.5 µA at the 10 µA range) — both consistent with the 1.05×-range pattern, supporting the `105.000 µA` reading over `100.000 µA`.
+- Swipe-panel details (photos 690/392/694/698/418/448): panel captions (`SETTINGS`, `GRAPH`, `STATISTICS`) and the dimmed `Range / Source / Limit` summary row are at the edge of legibility in most shots; the SETTINGS grid labels are corroborated across four photos, but the exact number and order of swipe panels (and the dot-indicator count) are not fully derivable from these stills.
+- photo-418's GRAPH mini-plot axis tick values are not legibly resolved (pA-scale y-axis inferred from the visible suffix; time-format x-axis inferred from `MM:SS`-style labels).
+- A dim `REL` label appears at the right edge of the measure region in photos 690/694/698 (below `AZERO` / `FILTER`); whether it is an inactive annunciator placeholder or something else is not resolvable from these shots.
+- The launch affordance for the [system-info](system-info.md) popup (plausibly the round info icon at the right end of the status bar) was not captured mid-tap; unconfirmed.
 
 ## Manual references
 
 - **`Home and Menu screen overview`** ([`docs/user-manual/home-and-menu-overview.md`](../docs/user-manual/home-and-menu-overview.md), `user-manual` p. 1-11) — the default SourceMeter Home screen described in the manual matches this corpus screen's layout exactly; differs only in source-level / current-limit values (DUT-dependent state, same screen identity).
 - **`Connections and usage`** ([`docs/user-manual/connections-and-usage.md`](../docs/user-manual/connections-and-usage.md), `user-manual` pp. 1-7 to 1-10) — physical-connection prerequisites; SENSE HI/LO + FORCE HI/LO banana jacks correspond to the `terminals` control.
 - **`Getting started`** ([`docs/user-manual/getting-started.md`](../docs/user-manual/getting-started.md), `user-manual` pp. 1-2 to 1-6) — power-on procedure, high-impedance output-off state, MENU-key navigation that maps to the `btn-menu` hardkey.
+- **`Touchscreen display overview`** ([`docs/quickstart/touchscreen-and-home-screen.md`](../docs/quickstart/touchscreen-and-home-screen.md), `quickstart` pp. 15 to 17) — base-2450 quick-start anatomy of this screen: status/event indicator row, measure section, and the five swipe screens (SOURCE, SETTINGS, GRAPH, STATISTICS, USER) that occupy the lower half; the guide's figures show the same layout with output ON.
+- **`Connections for testing`** ([`docs/quickstart/connections-for-testing.md`](../docs/quickstart/connections-for-testing.md), `quickstart` pp. 22 to 23) — verify-measurement procedure operating this screen: the `Source` control (this screen's `source-level` input) opens the Current Source Value numeric-entry dialog, and readings appear in the Measure area (`primary-readout`).
 
 Pending sections (manual content not yet processed into the corpus): EC test-application Home/Menu screen variants (Sections 2–7) — those describe application-specific replacements for this default screen and will land as their own corpus screens (`screens/<app>-home.md`) once processed.
 

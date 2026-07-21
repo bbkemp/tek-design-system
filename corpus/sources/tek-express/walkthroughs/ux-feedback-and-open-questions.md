@@ -32,7 +32,7 @@ Surface UX-feedback and architectural-open-question content from the design-syst
 
 **49:27 — Srevats explains the live-feedback / focus-shift dynamic.** *"You don't always need to, but there are live feedback that's coming in terms of what is running, whether the right kind of signal is there. But once you see that, you want to focus…"*
 
-**50:05 — Rick proposes half-screen docking as a key affordance.** *"Maybe it's a key thing. I don't know if it's a key thing or not, but maybe it's a key thing that these need to be designed in such a way to dock half and half."* → he's pointing at the existing minimised window ([`running-test`](../../screens/running-test.md)) and asking whether something between full and minimised is a real user need.
+**50:05 — Rick proposes half-screen docking as a key affordance.** *"Maybe it's a key thing. I don't know if it's a key thing or not, but maybe it's a key thing that these need to be designed in such a way to dock half and half."* → he's pointing at the existing minimised window ([`running-test`](../screens/running-test.md)) and asking whether something between full and minimised is a real user need.
 
 **50:40 — Srevats opens the design question.** *"It's a good observation. I think, I don't know, Richard, if this is something that we want to build in terms of something we want to validate with our experts, right? Like what Rick is selling, if…"*
 
@@ -84,8 +84,8 @@ Surface UX-feedback and architectural-open-question content from the design-syst
 
 ## Cross-references
 
-- The minimised-window state Rick references is documented in [`running-test.md`](../../screens/running-test.md).
-- The chart-heavy plot screen is [`plots.md`](../../screens/plots.md) — its `tek-plot` candidate primitive proposal predates this meeting but is reinforced by Rick's chart-richness friction note.
+- The minimised-window state Rick references is documented in [`running-test.md`](../screens/running-test.md).
+- The chart-heavy plot screen is [`plots.md`](../screens/plots.md) — its `tek-plot` candidate primitive proposal predates this meeting but is reinforced by Rick's chart-richness friction note.
 - Container breakpoints will eventually be documented in the DS — currently a planned feature, no chunk yet. CLAUDE.md "what's in flight" table is the closest reference.
 - The composite-control pattern Mahesha describes is the same need addressed by the proposed `tek-numeric-tile` primitive in the 2450-EC corpus (`audits/prototype/2026-05-12-2450-ec-corpus-snapshot/report.md`).
 

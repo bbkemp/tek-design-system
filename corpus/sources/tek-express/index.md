@@ -40,7 +40,7 @@ The `AU VoC Sync up.docx` was processed via `/document-walkthrough` into 3 chunk
 - `mAR 2023 ind Customer VOC.pptx` → [`decks/india-customer-voc-2023-march/`](decks/india-customer-voc-2023-march/_index.md), **4 chunks** (3 empathy maps + Infineon customer-workflow diagram).
 - `GA VOC for Empathy Disc Guide Question Bank - GM v1.docx` → [`walkthroughs/empathy-discussion-guide-question-bank.md`](walkthroughs/empathy-discussion-guide-question-bank.md), **1 chunk** (Fortive corporate VOC methodology — parent of all three Subhasis-authored empathy-map decks).
 
-The remaining batch-2 PDF (Subhasis's TekExpress-specific Tx-Rx Solutions Platform VOC guide) still awaits `/document-pdf` processing.
+The remaining batch-2 PDF (Subhasis's TekExpress-specific Tx-Rx Solutions Platform VOC guide) was processed 2026-07-21 into `docs/tx-rx-voc-guide/` (9 chunks); publication is under review because the source carries a "TALK ONLY — not to be shared over digital sources" restriction. `TekExpress_Needed_Features 1.md` was assessed 2026-07-21 as a de-attributed authored synthesis of the AE interviews — not corpus material; it stays local-only in `uploads/artifacts/`.
 
 ### Confidence notes — retroactive routing fix (2026-06-26)
 
@@ -154,7 +154,7 @@ Processed at `docs/tek-express-ddr5-tx-user-manual/` — **13 substantive chunks
 | [scpi-commands](docs/tek-express-ddr5-tx-user-manual/scpi-commands.md) | Remote-control SCPI reference | 56-166 |
 | [references-and-appendices](docs/tek-express-ddr5-tx-user-manual/references-and-appendices.md) | Manual back-matter | (back) |
 
-This manual is the first product-specific TekExpress user guide in the corpus. The remaining PDFs in `uploads/pdfs/` (DisplayPortTx, DisplayPortTx 2.1, PCI Express Online Help, AppEmulator) await follow-up `/document-pdf` runs.
+This manual was the first product-specific TekExpress user guide in the corpus. The remaining PDFs (DisplayPortTx, DisplayPortTx 2.1, PCI Express Online Help, AppEmulator) have since been processed — see the generated Docs tables below for the authoritative chunk listing.
 
 ## Documented decks
 
@@ -208,7 +208,7 @@ Two cross-product VOC decks processed at `decks/`, **11 topic-clustered chunks**
 
 ## Documented walkthroughs
 
-Two meetings processed at `walkthroughs/`, **7 topic-clustered chunks** plus an [index](walkthroughs/_index.md).
+Four meeting groups processed at `walkthroughs/` — the 2026-04-23 DS follow-up, the 2026-06-23 AU VoC sync (fully chunked), the GA methodology doc, and the July 2026 AE interview round (8 sessions, 21 `ae-*` chunks) — **30 chunks** plus an [index](walkthroughs/_index.md). The sections below describe the first two meetings; the AE round is indexed in `walkthroughs/_index.md` § 4 and synthesized (authored-analysis) at `uxr/tek-express-ae-interviews/synthesis.md`.
 
 ### 2026-04-23 — TekExpress Design System Follow-up Discussion
 
@@ -231,7 +231,7 @@ Two meetings processed at `walkthroughs/`, **7 topic-clustered chunks** plus an 
 | [customer-market-and-platform-context](walkthroughs/customer-market-and-platform-context.md) | Customer landscape (humanoids, AI servers, EVs, Tesla, Meta Lab, JLR), the multi-interface compliance workflow (~600 interfaces per AMD AI server), cross-vendor parity vs. conformance differentiation | ~6:18 – ~30:00 |
 | [ui-redesign-mantras-and-transition-strategy](walkthroughs/ui-redesign-mantras-and-transition-strategy.md) | Three redesign mantras (guided customer engagement, Mazda-to-Jaguar / no manual to drive, bandwagon respect); deployment-friction wedge | ~54:53 – 1:00:39 |
 
-Mid-meeting segments (~12:00 – ~54:53) of the AU VoC discussion are **pending follow-up processing**.
+The AU VoC meeting is now fully chunked — the former mid-meeting gap (~12:00 – ~54:53) was processed 2026-07-21 into four additional chunks (persona-evolution, competitive-deployment-licensing, configuration-user-traps, prototype-feedback-loop); see `walkthroughs/_index.md`.
 
 **Highest-RAG-value friction notes** from the transcript:
 
@@ -284,7 +284,7 @@ The pre-existing audit PDF (`uploads/pdfs/UI-app-emulator-audit.pdf`) describes 
 | [status-log-view](screens/status-log-view.md) | Status › Log View | status | — | tek-express |
 | [status-test-status](screens/status-test-status.md) | Status › Test Status | status | — | tek-express |
 
-## Walkthroughs (30)
+## Walkthroughs (33)
 
 | flow_id | flow_title | recorded_date | screens_visited |
 |---|---|---|---|
@@ -309,17 +309,20 @@ The pre-existing audit PDF (`uploads/pdfs/UI-app-emulator-audit.pdf`) describes 
 | [ae-will-teverovsky-dut-panel-and-data-rates](walkthroughs/ae-will-teverovsky-dut-panel-and-data-rates.md) | AE Interview — Will Teverovsky: DUT Panel, Suite/Device Nomenclature, and Data-Rate Selection | 2026-07-13 | setup-dut |
 | [ae-will-teverovsky-session-files-options-and-program-context](walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md) | AE Interview — Will Teverovsky: Session Files, Options Overhaul, Platform Strategy, and Closing Verdict | 2026-07-13 | options-dropdown |
 | [ae-will-teverovsky-test-selection-and-contextual-help](walkthroughs/ae-will-teverovsky-test-selection-and-contextual-help.md) | AE Interview — Will Teverovsky: Test Selection, MOI/Schematic Contextual Help, and Compliance-Mode Visibility | 2026-07-13 | setup-test-selection → setup-test-selection-config → setup-test-selection-limits-editor |
+| [competitive-deployment-licensing-and-status-value](walkthroughs/competitive-deployment-licensing-and-status-value.md) | Keysight-vs-TekExpress deployment model, licensing, and the status-visibility value principle | 2026-06-23 | — |
+| [configuration-user-traps-and-cockpit-view](walkthroughs/configuration-user-traps-and-cockpit-view.md) | The two-layer configuration user trap and the WPF-era "cockpit view" prototype | 2026-06-23 | setup-test-selection → setup-test-selection-config |
 | [customer-market-and-platform-context](walkthroughs/customer-market-and-platform-context.md) | TekExpress customers, market positioning, and the multi-interface compliance workflow | 2026-06-23 | — |
 | [desktop-integration-strategy](walkthroughs/desktop-integration-strategy.md) | Desktop / WPF Integration Strategy | 2026-04-23 | — |
 | [ds-architecture-presentation](walkthroughs/ds-architecture-presentation.md) | Tek Design System v2 — Architecture Presentation | 2026-04-23 | — |
 | [empathy-discussion-guide-question-bank](walkthroughs/empathy-discussion-guide-question-bank.md) | Fortive Growth Accelerator empathy interview discussion guide and question bank | 2023-01-01 | — |
 | [persona-evolution-physical-ai-and-voc-methodology](walkthroughs/persona-evolution-physical-ai-and-voc-methodology.md) | Persona evolution toward AI, the "physical AI products" theme, and the VOC methodology / competitive-prep plan | 2026-06-23 | — |
 | [personas-and-jobs-to-be-done](walkthroughs/personas-and-jobs-to-be-done.md) | TekExpress personas and the customer jobs-to-be-done landscape | 2026-06-23 | — |
+| [prototype-feedback-loop-and-voc-synthesis-history](walkthroughs/prototype-feedback-loop-and-voc-synthesis-history.md) | The recorded-walkthrough feedback loop, pain-to-dollar synthesis, and the Clarius VOC playbook | 2026-06-23 | — |
 | [tek-products-walkthrough](walkthroughs/tek-products-walkthrough.md) | TekExpress + TekRx Product Demos (Pranavi) | 2026-04-23 | setup-dut → setup-test-selection → setup-test-selection-config → setup-acquisitions → results → plots |
 | [ui-redesign-mantras-and-transition-strategy](walkthroughs/ui-redesign-mantras-and-transition-strategy.md) | UI/UX deep-dive priorities, deployment friction, and incremental transition strategy | 2026-06-23 | — |
 | [ux-feedback-and-open-questions](walkthroughs/ux-feedback-and-open-questions.md) | UX Feedback and Open Design Questions | 2026-04-23 | running-test → status-test-status → plots |
 
-## Docs (57)
+## Docs (65)
 
 ### tek-express-app-emulator (10)
 
@@ -394,6 +397,19 @@ The pre-existing audit PDF (`uploads/pdfs/UI-app-emulator-audit.pdf`) describes 
 | [switch-matrix-application](docs/tek-express-pci-express/switch-matrix-application.md) | Switch Matrix application | — |
 | [welcome-and-help](docs/tek-express-pci-express/welcome-and-help.md) | Welcome, Key features, and Getting help | — |
 
+### tx-rx-voc-guide (8)
+
+| section_id | section_title | parent_section |
+|---|---|---|
+| [background-and-guidelines](docs/tx-rx-voc-guide/background-and-guidelines.md) | Background and Guidelines (INTERNAL TO TEKTRONIX) | — |
+| [current-workflow-and-jtbd](docs/tx-rx-voc-guide/current-workflow-and-jtbd.md) | 2. Current Workflow & Job-to-be-Done (JTBD) | — |
+| [customer-context-and-buying-influence](docs/tx-rx-voc-guide/customer-context-and-buying-influence.md) | 1. Customer Context & Buying Influence | — |
+| [future-needs-and-wrap-up](docs/tx-rx-voc-guide/future-needs-and-wrap-up.md) | 5. Future Needs & Ideal Solution, and Wrap-Up | — |
+| [introduction-outcomes-and-personas](docs/tx-rx-voc-guide/introduction-outcomes-and-personas.md) | Introduction script, expected outcomes, and target personas | — |
+| [pain-points-analysis-reporting-and-debug](docs/tx-rx-voc-guide/pain-points-analysis-reporting-and-debug.md) | 3. Pain Points (continued) — 3.3 Analysis, 3.4 Reporting & Traceability, 3.5 Debug on Failure & Lifecycle Journey | — |
+| [pain-points-setup-and-execution](docs/tx-rx-voc-guide/pain-points-setup-and-execution.md) | 3. Pain Points (Core Section) — 3.1 Setup & Bring-up, 3.2 Test Execution & Scalability | — |
+| [ui-ux-deep-dive](docs/tx-rx-voc-guide/ui-ux-deep-dive.md) | 4. UI/UX Deep Dive | — |
+
 ### ui-audit (9)
 
 | section_id | section_title | parent_section |
@@ -412,48 +428,6 @@ The pre-existing audit PDF (`uploads/pdfs/UI-app-emulator-audit.pdf`) describes 
 
 | Source | Target | Edge |
 |---|---|---|
-| screen `options-dropdown` | screen `setup-dut` | related_screens |
-| screen `options-dropdown` | screen `setup-preferences-email-settings` | related_screens |
-| screen `plots` | screen `results` | related_screens |
-| screen `plots` | screen `setup-test-selection` | related_screens |
-| screen `reports-configuration` | screen `reports-view-settings` | related_screens |
-| screen `reports-configuration` | screen `results` | related_screens |
-| screen `reports-configuration` | screen `plots` | related_screens |
-| screen `reports-view-settings` | screen `reports-configuration` | related_screens |
-| screen `reports-view-settings` | screen `results` | related_screens |
-| screen `reports-view-settings` | screen `plots` | related_screens |
-| screen `results` | screen `status-test-status` | related_screens |
-| screen `results` | screen `plots` | related_screens |
-| screen `results` | screen `reports-configuration` | related_screens |
-| screen `running-test` | screen `status-test-status` | related_screens |
-| screen `running-test` | screen `status-log-view` | related_screens |
-| screen `setup-acquisitions` | screen `setup-dut` | related_screens |
-| screen `setup-acquisitions` | screen `setup-test-selection` | related_screens |
-| screen `setup-acquisitions` | screen `setup-acquisitions-probe-config` | related_screens |
-| screen `setup-acquisitions` | screen `setup-preferences` | related_screens |
-| screen `setup-acquisitions-probe-config` | screen `setup-acquisitions` | related_screens |
-| screen `setup-dut-comments` | screen `setup-dut` | related_screens |
-| screen `setup-dut-comments` | screen `setup-dut-session-browser` | related_screens |
-| screen `setup-dut-session-browser` | screen `setup-dut` | related_screens |
-| screen `setup-dut-session-browser` | screen `setup-dut-comments` | related_screens |
-| screen `setup-preferences` | screen `setup-dut` | related_screens |
-| screen `setup-preferences` | screen `setup-test-selection` | related_screens |
-| screen `setup-preferences` | screen `setup-acquisitions` | related_screens |
-| screen `setup-preferences` | screen `setup-preferences-email-settings` | related_screens |
-| screen `setup-preferences-email-settings` | screen `setup-preferences` | related_screens |
-| screen `setup-test-selection` | screen `setup-dut` | related_screens |
-| screen `setup-test-selection` | screen `setup-acquisitions` | related_screens |
-| screen `setup-test-selection` | screen `setup-preferences` | related_screens |
-| screen `setup-test-selection-config` | screen `setup-test-selection` | related_screens |
-| screen `setup-test-selection-config` | screen `setup-test-selection-limits-editor` | related_screens |
-| screen `setup-test-selection-limits-editor` | screen `setup-test-selection` | related_screens |
-| screen `setup-test-selection-limits-editor` | screen `setup-test-selection-config` | related_screens |
-| screen `status-log-view` | screen `status-test-status` | related_screens |
-| screen `status-log-view` | screen `running-test` | related_screens |
-| screen `status-test-status` | screen `status-log-view` | related_screens |
-| screen `status-test-status` | screen `running-test` | related_screens |
-| screen `status-test-status` | screen `setup-test-selection` | related_screens |
-| screen `status-test-status` | screen `setup-acquisitions` | related_screens |
 | wireframe `wireframes/setup-dut-wireframe.md` | screen `setup-dut` | related_screens |
 | wireframe `wireframes/setup-dut-wireframe.md` | screen `setup-test-selection` | related_screens |
 | wireframe `wireframes/setup-dut-wireframe.md` | screen `setup-acquisitions` | related_screens |
@@ -584,6 +558,48 @@ The pre-existing audit PDF (`uploads/pdfs/UI-app-emulator-audit.pdf`) describes 
 | doc-section `status-and-results-panels` | screen `status-log-view` | related_screens |
 | doc-section `status-and-results-panels` | screen `results` | related_screens |
 | doc-section `status-and-results-panels` | screen `running-test` | related_screens |
+| screen `options-dropdown` | screen `setup-dut` | related_screens |
+| screen `options-dropdown` | screen `setup-preferences-email-settings` | related_screens |
+| screen `plots` | screen `results` | related_screens |
+| screen `plots` | screen `setup-test-selection` | related_screens |
+| screen `reports-configuration` | screen `reports-view-settings` | related_screens |
+| screen `reports-configuration` | screen `results` | related_screens |
+| screen `reports-configuration` | screen `plots` | related_screens |
+| screen `reports-view-settings` | screen `reports-configuration` | related_screens |
+| screen `reports-view-settings` | screen `results` | related_screens |
+| screen `reports-view-settings` | screen `plots` | related_screens |
+| screen `results` | screen `status-test-status` | related_screens |
+| screen `results` | screen `plots` | related_screens |
+| screen `results` | screen `reports-configuration` | related_screens |
+| screen `running-test` | screen `status-test-status` | related_screens |
+| screen `running-test` | screen `status-log-view` | related_screens |
+| screen `setup-acquisitions-probe-config` | screen `setup-acquisitions` | related_screens |
+| screen `setup-acquisitions` | screen `setup-dut` | related_screens |
+| screen `setup-acquisitions` | screen `setup-test-selection` | related_screens |
+| screen `setup-acquisitions` | screen `setup-acquisitions-probe-config` | related_screens |
+| screen `setup-acquisitions` | screen `setup-preferences` | related_screens |
+| screen `setup-dut-comments` | screen `setup-dut` | related_screens |
+| screen `setup-dut-comments` | screen `setup-dut-session-browser` | related_screens |
+| screen `setup-dut-session-browser` | screen `setup-dut` | related_screens |
+| screen `setup-dut-session-browser` | screen `setup-dut-comments` | related_screens |
+| screen `setup-preferences-email-settings` | screen `setup-preferences` | related_screens |
+| screen `setup-preferences` | screen `setup-dut` | related_screens |
+| screen `setup-preferences` | screen `setup-test-selection` | related_screens |
+| screen `setup-preferences` | screen `setup-acquisitions` | related_screens |
+| screen `setup-preferences` | screen `setup-preferences-email-settings` | related_screens |
+| screen `setup-test-selection-config` | screen `setup-test-selection` | related_screens |
+| screen `setup-test-selection-config` | screen `setup-test-selection-limits-editor` | related_screens |
+| screen `setup-test-selection-limits-editor` | screen `setup-test-selection` | related_screens |
+| screen `setup-test-selection-limits-editor` | screen `setup-test-selection-config` | related_screens |
+| screen `setup-test-selection` | screen `setup-dut` | related_screens |
+| screen `setup-test-selection` | screen `setup-acquisitions` | related_screens |
+| screen `setup-test-selection` | screen `setup-preferences` | related_screens |
+| screen `status-log-view` | screen `status-test-status` | related_screens |
+| screen `status-log-view` | screen `running-test` | related_screens |
+| screen `status-test-status` | screen `status-log-view` | related_screens |
+| screen `status-test-status` | screen `running-test` | related_screens |
+| screen `status-test-status` | screen `setup-test-selection` | related_screens |
+| screen `status-test-status` | screen `setup-acquisitions` | related_screens |
 | walkthrough `ae-chrisb-reports-and-rerun-workflow` | screen `reports-configuration` | screens_visited |
 | walkthrough `ae-chrisb-reports-and-rerun-workflow` | screen `reports-configuration` | related_screens |
 | walkthrough `ae-chrisb-reports-and-rerun-workflow` | screen `reports-view-settings` | related_screens |
@@ -751,6 +767,16 @@ The pre-existing audit PDF (`uploads/pdfs/UI-app-emulator-audit.pdf`) describes 
 | walkthrough `ae-will-teverovsky-test-selection-and-contextual-help` | screen `setup-dut-comments` | related_screens |
 | walkthrough `ae-will-teverovsky-test-selection-and-contextual-help` | screen `status-test-status` | related_screens |
 | walkthrough `ae-will-teverovsky-test-selection-and-contextual-help` | screen `results` | related_screens |
+| walkthrough `competitive-deployment-licensing-and-status-value` | screen `status-test-status` | related_screens |
+| walkthrough `competitive-deployment-licensing-and-status-value` | screen `status-log-view` | related_screens |
+| walkthrough `competitive-deployment-licensing-and-status-value` | screen `results` | related_screens |
+| walkthrough `competitive-deployment-licensing-and-status-value` | screen `reports-configuration` | related_screens |
+| walkthrough `configuration-user-traps-and-cockpit-view` | screen `setup-test-selection` | screens_visited |
+| walkthrough `configuration-user-traps-and-cockpit-view` | screen `setup-test-selection-config` | screens_visited |
+| walkthrough `configuration-user-traps-and-cockpit-view` | screen `setup-test-selection` | related_screens |
+| walkthrough `configuration-user-traps-and-cockpit-view` | screen `setup-test-selection-config` | related_screens |
+| walkthrough `configuration-user-traps-and-cockpit-view` | screen `setup-preferences` | related_screens |
+| walkthrough `configuration-user-traps-and-cockpit-view` | screen `setup-dut` | related_screens |
 | walkthrough `customer-market-and-platform-context` | screen `setup-test-selection` | related_screens |
 | walkthrough `customer-market-and-platform-context` | screen `setup-acquisitions` | related_screens |
 | walkthrough `customer-market-and-platform-context` | screen `status-test-status` | related_screens |
@@ -796,10 +822,10 @@ The pre-existing audit PDF (`uploads/pdfs/UI-app-emulator-audit.pdf`) describes 
 ## Coverage notes
 
 - Screens documented: 18
-- Walkthroughs documented: 30
-- Manual sections documented: 57
+- Walkthroughs documented: 33
+- Manual sections documented: 65
 - Hardware views documented: 0
 - API snapshots: 0
 - Code snapshots: 0
-- Cross-references: 380
+- Cross-references: 390
 - Last regenerated: 2026-07-21 by /refresh-index
