@@ -1,4 +1,5 @@
 ---
+class: screen
 software: GDM9061
 software_version: TBD
 screen_id: dual-display

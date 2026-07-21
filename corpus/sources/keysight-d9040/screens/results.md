@@ -1,5 +1,6 @@
 ---
 provenance: observed
+class: screen
 software: "Keysight D9040 (D9040USBC USB4 Test Application / D9040DPPC DisplayPort Test App)"
 software_version: TBD
 screen_id: results

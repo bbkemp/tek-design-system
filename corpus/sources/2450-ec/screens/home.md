@@ -1,5 +1,6 @@
 ---
 provenance: observed
+class: screen
 software: 2450-EC
 software_version: TBD
 screen_id: home
