@@ -26,7 +26,7 @@ When the UXR system grows beyond placeholder material, the structure will likely
 | Subject | What it is |
 |---|---|
 | [`tek-voc-library/`](./tek-voc-library/notes.md) | Tek-internal research tool — "The Tek VOC / User Research Library." Executive briefing PDF + notes for follow-up discussion. |
-| [`tek-express-ae-interviews/`](./tek-express-ae-interviews/synthesis.md) | July 2026 AE interview round on the TekExpress prototype + existing app — cross-session synthesis (`authored-analysis`). Raw transcripts live as `observed` corpus uploads under `corpus/sources/tek-express/`; the 17 processed walkthrough chunks are the evidence base. |
+| [`tek-express-ae-interviews/`](./tek-express-ae-interviews/synthesis.md) | July 2026 AE interview round (8 sessions) on the TekExpress prototype + existing app — cross-session synthesis (`authored-analysis`). Raw transcripts live as `observed` corpus uploads under `corpus/sources/tek-express/`; the 21 processed walkthrough chunks are the evidence base. |
 
 ## What this folder is NOT
 

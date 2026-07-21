@@ -23,6 +23,10 @@ sources:
   - corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-test-selection-and-contextual-help.md
   - corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md
   - corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md
+  - corpus/sources/tek-express/walkthroughs/ae-travis-berger-bench-setup-and-instrument-connection.md
+  - corpus/sources/tek-express/walkthroughs/ae-travis-berger-launcher-global-settings-and-setup-flow.md
+  - corpus/sources/tek-express/walkthroughs/ae-travis-berger-status-results-sessions-and-run-window.md
+  - corpus/sources/tek-express/walkthroughs/ae-travis-berger-run-environments-adoption-and-reports.md
 ---
 
 > ## ⚠️ Authored analysis — not corpus
@@ -30,9 +34,9 @@ sources:
 
 # TekExpress AE Interview Synthesis — July 2026 prototype review round
 
-Seven live sessions with Tektronix Application Engineers (2026-07-13 → 2026-07-15), each reviewing the new TekExpress prototype and walking the existing app. All sessions single-mic; speaker attribution in the corpus chunks is inferred and flagged per-chunk. This is the first SME feedback round against the prototype.
+Eight live sessions with Tektronix Application Engineers (2026-07-13 → 2026-07-15), each reviewing the new TekExpress prototype and walking the existing app. All sessions single-mic; speaker attribution in the corpus chunks is inferred and flagged per-chunk. This is the first SME feedback round against the prototype.
 
-**Sessions:** Will Teverovsky (1:38), Tapo Parua, Joey Chiu + drop-in field AE (0:38), Nadir Kahn (0:23), Chris B (0:24), Dallas + Jesse (1:19), Sam (0:10, truncated — see Coverage gaps). An eighth session (Travis Berger) failed to record.
+**Sessions:** Will Teverovsky (1:38), Tapo Parua, Joey Chiu + drop-in field AE (0:38), Nadir Kahn (0:23), Chris B (0:24), Dallas + Jesse (1:19), Sam (0:10, truncated — see Coverage gaps), Travis Berger (1:15 — re-recorded after a failed first attempt; the only session with per-cue timestamps).
 
 ---
 
@@ -44,30 +48,30 @@ The prototype's **direction is validated** — every AE who saw it accepted the 
 2. **Visual identity** — a strong, repeated directive to look like **TekScope**, with an unresolved tension about flatness vs. hierarchy (§5).
 3. **Prototype accuracy debts** — panels that don't yet reflect real per-plugin behavior (memory/DDR especially).
 
-The strongest single warning across the round is the **Clarius precedent**: a prior Tek redesign that looked better but "lost the free-flowing nature" and damaged trust ([Tapo](../../corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md), [Will](../../corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md)). Familiarity is a feature; the guided wizard flow is the product's core asset ("you had to be an expert… this flow holds that… customers appreciate that" — Dallas/Jesse veteran).
+The strongest single warning across the round is the **Clarius precedent**: a prior Tek redesign that looked better but "lost the free-flowing nature" and damaged trust ([Tapo](../../corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md), [Will](../../corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md), [Travis](../../corpus/sources/tek-express/walkthroughs/ae-travis-berger-run-environments-adoption-and-reports.md)). Familiarity is a feature; the guided wizard flow is the product's core asset ("you had to be an expert… this flow holds that… customers appreciate that" — Dallas/Jesse veteran).
 
 ## 2. Convergence matrix
 
 Which AEs independently corroborate each theme (✓ = raised it unprompted; ~ = agreed when raised):
 
-| # | Theme | Will | Tapo | Joey* | Nadir | Chris | Dallas+Jesse | Sam |
-|---|---|---|---|---|---|---|---|---|
-| T1 | Compliance/user-defined **mode state invisible** | ✓ | | | | ~ | ✓ | |
-| T2 | **Options menu is a junk drawer** (save/recall, loop, instruments buried) | ✓ | | ✓ | | ✓ | ✓ | |
-| T3 | **Selective rerun + report replace/merge** | | ✓ | | | ✓ | ✓ | |
-| T4 | **Errors/logs information-free**; no run-state insight | | ✓ | ✓ | ✓ | | ✓ | ✓ |
-| T5 | **Pre-recorded waveform filename convention** pain; live↔pre-recorded settings trap | | | | | ✓ | ✓ | ✓ |
-| T6 | **Results/Status fragmentation**; failures hard to find; no margin info | ✓ | ✓ | | ~ | ✓ | ✓ | |
-| T7 | **Scale**: test tree, data rates, presets, limits editor don't scale | ✓ | | ✓ | | | ✓ | |
-| T8 | **DUT ID / path length limit** | | | ✓ | ✓ | | | |
-| T9 | **Match TekScope visually**; dark mode | ✓ | | | ✓ | | ✓ | |
-| T10 | **Automation/scriptability** is load-bearing | | | | ✓ | ✓ | ✓ | |
-| T11 | **Contextual help** instead of PDF round-trips | ✓ | ✓ | | | | ~ | |
-| T12 | **Window resize/full-screen** (prototype fixes it) | ✓ | | ✓ | ✓ | | | ~ |
+| # | Theme | Will | Tapo | Joey* | Nadir | Chris | Dallas+Jesse | Sam | Travis |
+|---|---|---|---|---|---|---|---|---|---|
+| T1 | Compliance/user-defined **mode state invisible** | ✓ | | | | ~ | ✓ | | ~ |
+| T2 | **Options menu is a junk drawer** (save/recall, loop, instruments buried) | ✓ | | ✓ | | ✓ | ✓ | | ✓ |
+| T3 | **Selective rerun + report replace/merge** | | ✓ | | | ✓ | ✓ | | |
+| T4 | **Errors/logs information-free**; no run-state insight | | ✓ | ✓ | ✓ | | ✓ | ✓ | ✓ |
+| T5 | **Pre-recorded waveform filename convention** pain; live↔pre-recorded settings trap | | | | | ✓ | ✓ | ✓ | ✓ |
+| T6 | **Results/Status fragmentation**; failures hard to find; no margin info | ✓ | ✓ | | ~ | ✓ | ✓ | | ✓ |
+| T7 | **Scale**: test tree, data rates, presets, limits editor don't scale | ✓ | | ✓ | | | ✓ | | ✓ |
+| T8 | **DUT ID / path length limit** | | | ✓ | ✓ | | | | |
+| T9 | **Match TekScope visually**; dark mode | ✓ | | | ✓ | | ✓ | | ✓ |
+| T10 | **Automation/scriptability** is load-bearing | | | | ✓ | ✓ | ✓ | | ~ |
+| T11 | **Contextual help** instead of PDF round-trips | ✓ | ✓ | | | | ~ | | ✓ |
+| T12 | **Window resize/full-screen** (prototype fixes it) | ✓ | | ✓ | ✓ | | | ~ | ✓ |
 
 \* Joey column includes the unnamed drop-in field AE in his session.
 
-No theme is single-source; the weakest corroboration is T8 (two sources, but it was the drop-in AE's *top* customer complaint and has a known root cause and fix path).
+No theme is single-source; the weakest corroboration is T8 (two sources, but it was the drop-in AE's *top* customer complaint and has a known root cause and fix path). Travis's session (added after the initial synthesis) independently corroborated 9 of the 12 themes and supplied root-cause evidence for T12: schematics open in Acrobat *because* "TekExpress can't get any bigger, so that's why it's a PDF." His T10 mark is a qualified ~: he confirms the SCPI "backdoor" but tempers the demand narrative — "less than 20% of customers do full automation… most are there by the device," with licensing (stranded laptop licenses) as the real on-scope-vs-PC decider.
 
 ## 3. Prioritized findings
 
@@ -81,7 +85,9 @@ Priorities are authored judgment: P0 = shapes the redesign's information archite
 
 **P0.3 — Error, log, and run-state intelligibility.** The most broadly corroborated pain (5 of 7 sessions). "They'll pop up a dialogue and… the information is just missing. I don't know what to do with that and I work here" (Dallas/Jesse); logs "too abstract," failures findable only by downloading the report (Tapo); error reporting "not obvious where it goes wrong" (Sam); progress bars "not accurate enough," can't distinguish a hung trigger from slow processing (Nadir); "flat logging" self-critique from the app team (Joey's session). Convergent target picture, benchmarked to Keysight by Tapo: **summary + detail split log**, richer run statuses ("waiting on trigger" vs "analyzing"), failure cues surfaced in Results with **margin-to-limit** ("am I a couple millivolts off?" — Will).
 
-**P0.4 — Unbury the buried: kill the Options junk drawer.** "All the crap is in options" (product leader, Will's session); save/recall "no one knows to look in options for it" (Will); loop run modes "don't bury it in the menu. You got real estate… that's probably my number one" (Chris B); instrument settings "slightly hidden" and belong top-level as physical setup (Joey's session consensus). The redesign's IA should treat this as a placement pass over *everything* currently under Options — standard File-menu semantics for sessions, run modes on the run surface, instruments as a first-class setup step with liveness/pre-flight check (T4/P1.4).
+**P0.4 — Unbury the buried: kill the Options junk drawer.** "All the crap is in options" (product leader, Will's session); save/recall "no one knows to look in options for it" (Will); loop run modes "don't bury it in the menu. You got real estate… that's probably my number one" (Chris B); instrument settings "slightly hidden" and belong top-level as physical setup (Joey's session consensus); "It's kind of buried in this little options menu… Customers don't know to go in there to connect" + "The options screen is very confusing. It's not options" ([Travis](../../corpus/sources/tek-express/walkthroughs/ae-travis-berger-bench-setup-and-instrument-connection.md)). The redesign's IA should treat this as a placement pass over *everything* currently under Options — standard File-menu semantics for sessions, run modes on the run surface, instruments as a first-class setup step with liveness/pre-flight check (T4/P1.4).
+
+Travis extends this into the round's one genuinely new **structural** proposal: a **launcher / global-settings layer above the per-standard applications** — channel defaults (his 7-series pain: "This always defaults to one and three… there's no shared resources in the hardware"), instrument connections, save-waveform, and preferences hoisted out of any single technology app, modeled on Rohde & Schwarz's single block-diagram compliance launcher (he worked there briefly). Settings today are "the top drawer" scattered everywhere. This reframes T2 from "re-home the menu items" to "introduce a layer" — logged as Open decision 11 rather than resolved here.
 
 **P0.5 — Pre-recorded waveform workflow.** Three independent corroborations of the same broken loop: metadata lives in a rigid filename convention customers never follow ("If I have to remember what that name's supposed to be… good luck" — Chris B; AEs connect an AWG just to harvest correct names — Dallas/Jesse), settings are locked in pre-recorded mode forcing a live-mode round-trip ("I can work around that now, but why?" — Sam), and failures produce generic errors (Sam's customer-waveform story, Dallas/Jesse "the messages were terrible"). Fix shape suggested in-session: point-and-rename dialog mapping files to signals (Chris B), grouped/scannable filter-and-file pickers (Sam). Dallas/Jesse's framing raises the stakes: the feature is *underused because* it's hard — this is capability left on the table.
 
@@ -99,7 +105,7 @@ Priorities are authored judgment: P0 = shapes the redesign's information archite
 
 **P1.5 — Layered contextual help.** Doc-only help breaks flow ("In PDF, I just have to scroll, scroll, scroll" — Tapo). Convergent design: selection-aware help (F1/global "?") → on-screen description → deep link into the reference section. Explicitly NOT a question mark per setting (Clarius got "too many question marks" feedback). Will's variant: required-vs-informative test marking with rationale tooltips, MOI stays as depth.
 
-**P1.6 — Automation as a contract.** Customers "are literally programming through this GUI" for 24-hour regression (Nadir); customers "always ask for automation" (Chris B); a GUI redesign that breaks scripted control breaks the field. Nadir's proposal: a SCPI-like command per GUI action; must run "fully automated… without any user interaction." The redesign needs an explicit automation-parity checklist per screen.
+**P1.6 — Automation as a contract.** Customers "are literally programming through this GUI" for 24-hour regression (Nadir); customers "always ask for automation" (Chris B); a GUI redesign that breaks scripted control breaks the field. Nadir's proposal: a SCPI-like command per GUI action; must run "fully automated… without any user interaction." The redesign needs an explicit automation-parity checklist per screen. Counterweight from Travis: "less than 20% of customers do full automation… most are there by the device" — automation parity is a hard floor for the minority who script, not the majority workflow; the majority sit *at the scope*, which also makes on-scope licensing the real platform decider (stranded laptop licenses).
 
 ### P2 — opportunistic
 
@@ -108,7 +114,10 @@ Priorities are authored judgment: P0 = shapes the redesign's information archite
 - **Session recall correctness** — "It doesn't recall the parameters correctly. It just — it's broken" (Dallas/Jesse), and the X:-drive virtual filesystem is "a hangover from NI TestStand" that should become normal save-anywhere.
 - **Acquisition speed opportunities** (backend, but UX-visible): don't reset instruments between acquisitions ("We would speed ourselves up 30 and 40%"), parallel lane acquisition (Dallas/Jesse).
 - **Cross-plugin consistency governance** — "They'll fix something in one and break something in the other one" (Dallas/Jesse); labs run DisplayPort + USB + Thunderbolt side-by-side and expect one identical workflow (Tapo). This is exactly the argument for the design system owning TekExpress patterns.
-- **Interaction details**: mutually-exclusive test toggles that can't both be off, silent cascading setting changes → "this will change A, B, C — continue/cancel" dialogs (Dallas/Jesse); directly clickable wizard tabs (Tapo); consistent Next-button placement across window sizes (Sam); math waveforms as sources; column add/remove everywhere, stealing TekScope's results-table configure (Dallas/Jesse, team-endorsed).
+- **Interaction details**: mutually-exclusive test toggles that can't both be off, silent cascading setting changes → "this will change A, B, C — continue/cancel" dialogs (Dallas/Jesse); directly clickable wizard tabs (Tapo); consistent Next-button placement across window sizes (Sam); math waveforms as sources; column add/remove everywhere, stealing TekScope's results-table configure (Dallas/Jesse, team-endorsed); Stop-vs-Pause behavior gap — "Everybody complains about stopping a test and having to wait," while Pause "works like immediately" (Travis); minimized run window hides behind the scope UI and "most don't even know that you could bring it back up" (Travis).
+- **Session files as OS citizens** (Travis): "Customers don't know where to find their session files… there's like a million folders, timestamp based" — visible save location, recent-sessions list, double-click file association. Extends the X:-drive retirement (above) into everyday discoverability; the DUT-ID field is already the semantic-naming mechanism feeding report and folder names (bridges to T8).
+- **Report-to-artifact links + cross-vendor interoperability** (Travis): restore the broken report-to-waveform hyperlink ("Bam, I could go right to the waveform that failed… saved me so much headache"); CSV export and a vendor-neutral report template for two-vendor customer programs that hand-correlate Tek and Keysight reports today. Reinforces the CSV-is-a-must signal (Tapo).
+- **Support/debug loop** (Travis): verbose/debug log level and a Riddick-style "Export Log Files → zip" — AEs are "always sending stuff to the software team."
 
 ## 4. What must NOT change
 
@@ -121,6 +130,7 @@ The preserve-list is as load-bearing as the fix-list (Clarius is the cautionary 
 - **Report structure** — "kind of accepted in the industry"; restyle, don't restructure (Chris B).
 - **Acquisition table's derived per-row context** and signal validation as a capability ("this is actually an advantage for us" — Dallas/Jesse).
 - **Set-and-forget defaults** — Select Required is the default path; most users test only the highest data rate (Will).
+- **Structural familiarity itself** — "I would say don't change it… customers that are embedded in it don't like a whole lot of change" (Travis: reskin + placement fixes, "not too drastic"); his adoption aids are additive (first-run dismissible tutorial overlay, onboarding for the older Keysight-migrant population), not restructuring. Third independent invocation of the Clarius cautionary tale.
 
 ## 5. Visual direction — the one real tension
 
@@ -141,7 +151,7 @@ Reading: "flat" is being used two ways — Dallas/Jesse mean *TekScope PC's* fla
 
 **Design questions raised:** checkmark semantics unclear — and must never read as a Start gate (Tapo, Will); "Suite" nomenclature off; Gen vs. CEM spec levels conflated in one dropdown (Will); tab iconography unclear; one stylized top-label font "out of place" (Will); Next/Previous button position must not shift with window size (Sam); data-rate model should be multi-select, and device profile vs. test plan are conflated on the DUT panel (Will).
 
-**Exposure caveat:** prototype exposure varied wildly by session — Dallas/Jesse saw it only "at a glance" by design; Sam's bench lacked his plugin; Chris saw it before recording started. The *depth* of prototype validation is thinner than the session count suggests (see §9).
+**Exposure caveat:** prototype exposure varied wildly by session — Dallas/Jesse saw it only "at a glance" by design; Sam's bench lacked his plugin; Chris saw it before recording started; Travis's session was almost entirely an existing-app/bench walkthrough with no direct prototype verdict on record (closest: "I definitely [would] update the GUI… the skin would be nice"). The *depth* of prototype validation is thinner than the session count suggests (see §9).
 
 ## 7. Competitive picture (as reported by AEs — unverified)
 
@@ -168,7 +178,7 @@ From [ux-feedback-and-open-questions](../../corpus/sources/tek-express/walkthrou
 
 ## 9. Coverage gaps and method notes
 
-- **Travis Berger's session is lost** — both files captured only ~2 min of mic setup. Re-run or capture his notes another way; his stubs remain in `corpus/_inbox/`.
+- **Travis Berger's session was re-recorded and recovered** — the first attempt captured only ~2 min of mic setup; the Pt2 re-record (1:14:53, same day) is fully processed into 4 chunks. It is the only session with per-cue timestamps. His prototype exposure, however, was near-zero (see §6) — facilitators called it "my favorite session yet," but it's an existing-app deep-dive, not prototype validation.
 - **Sam's session truncated at 9:35** — bench lacked the DDR plugin and TekExpress hung at launch; mostly verbal recall; a follow-up was agreed in-session and should be scheduled. **DDR/memory is the outlier plugin** (spec-less, probe-centric — "the DDR version is kind of the only one that's assuming you're using the probes") and currently has near-zero prototype validation. A redesign validated only on spec-driven plugins (USB/DP/PCIe) will miss memory.
 - **Prototype exposure was uneven** (see §6) — treat "no negative prototype reactions" in several sessions as *absence of exposure*, not endorsement. A second, prototype-centric round with hands-on tasks is the natural next study.
 - **Single-mic attribution** — every quote's speaker is inferred; each corpus chunk flags its own uncertainty. In the Dallas+Jesse session the names "Dallas"/"Jesse" never appear (a "Tony" does) — quotes there are attributed by role. Confirm identities before quoting externally.
@@ -188,7 +198,8 @@ Explicitly unresolved — needs an owner, not silent resolution:
 7. **1024×768 floor vs. container-breakpoint responsiveness** — reconcile Will's floor with the DS's container-breakpoints commitment; define the tested resolution matrix.
 8. **Scope-session debug export (.TSS handoff)** — pursue as differentiator? Needs product + engineering feasibility read; the claim it's uncopyable rests on algorithm-in-scope architecture.
 9. **DDR/memory validation plan** — when and how the outlier plugin gets prototype coverage (Sam follow-up + dedicated memory-workflow review).
-10. **Automation parity contract** — what's the mechanism (SCPI-per-action? scripting API freeze?) and who signs off per screen?
+10. **Automation parity contract** — what's the mechanism (SCPI-per-action? scripting API freeze?) and who signs off per screen? Scope it against Travis's <20%-automation datapoint: parity floor for scripters, not the majority workflow.
+11. **Launcher / global-settings layer** (Travis's structural proposal, R&S-pattern) — pursue as a real architectural layer above the per-standard apps, or satisfy it with placement fixes inside the current shell (P0.4)? Changes the IA scope of the redesign materially; needs product + engineering weigh-in before design commits either way. Related reliability/platform facts surfaced with it: 7-series channel defaults, LAN detection flakiness, licensing as the on-scope decider.
 
 ## 11. Per-AE evidence index
 
@@ -201,4 +212,4 @@ Explicitly unresolved — needs an owner, not silent resolution:
 | Chris B | 2026-07-15 | 23:49 | [setup-waveforms-and-run-modes](../../corpus/sources/tek-express/walkthroughs/ae-chrisb-setup-waveforms-and-run-modes.md) · [reports-and-rerun-workflow](../../corpus/sources/tek-express/walkthroughs/ae-chrisb-reports-and-rerun-workflow.md) |
 | Dallas + Jesse | 2026-07-15 | 1:19:17 | [session-context-and-overall-reactions](../../corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-session-context-and-overall-reactions.md) · [setup-flow-friction](../../corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-setup-flow-friction.md) · [compliance-mode-and-test-selection](../../corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-compliance-mode-and-test-selection.md) · [instruments-sessions-results-debug](../../corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md) |
 | Sam | 2026-07-15 | 9:35 (truncated) | [ddr-memory-feedback](../../corpus/sources/tek-express/walkthroughs/ae-sam-ddr-memory-feedback.md) |
-| Travis Berger | 2026-07-15 | 2:08 (recording failed) | — (stubs held in `corpus/_inbox/`) |
+| Travis Berger | 2026-07-15 | 1:14:53 (re-record; first attempt failed at 2:08) | [bench-setup-and-instrument-connection](../../corpus/sources/tek-express/walkthroughs/ae-travis-berger-bench-setup-and-instrument-connection.md) · [launcher-global-settings-and-setup-flow](../../corpus/sources/tek-express/walkthroughs/ae-travis-berger-launcher-global-settings-and-setup-flow.md) · [status-results-sessions-and-run-window](../../corpus/sources/tek-express/walkthroughs/ae-travis-berger-status-results-sessions-and-run-window.md) · [run-environments-adoption-and-reports](../../corpus/sources/tek-express/walkthroughs/ae-travis-berger-run-environments-adoption-and-reports.md) |
