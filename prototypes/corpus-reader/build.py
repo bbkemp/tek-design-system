@@ -209,9 +209,25 @@ SUBJECTS = [
     ("keysight-d9040", "Keysight D9040", "Competitor compliance app."),
 ]
 
+filter_chips = '<div class="filters">' + "".join(
+    f'<button class="filter-chip" data-subject="{s}" onclick="filterSubject(\'{s}\')">{html.escape(l)}</button>'
+    for s, l in [("tek-express", "TekExpress"), ("2450-ec", "2450-EC"),
+                 ("gw-gdm9061", "GDM-9061"), ("keysight-d9040", "Keysight D9040"),
+                 ("all", "All subjects")]) + '</div>'
+filter_js = """<script>
+function filterSubject(s) {
+  document.querySelectorAll('section.subject').forEach(el =>
+    el.style.display = (s === 'all' || el.dataset.subject === s) ? '' : 'none');
+  document.querySelectorAll('.filter-chip').forEach(el =>
+    el.classList.toggle('active', el.dataset.subject === s));
+}
+filterSubject('tek-express');
+</script>"""
 parts = ['<p class="lede">Every documented screen, straight from its corpus chunk. Images are the '
          'committed downscaled references; each card links to the full observation (controls '
-         'inventory, verbatim text, confidence notes).</p>']
+         'inventory, verbatim text, confidence notes). Showing TekExpress by default &mdash; '
+         'the other corpus subjects (instrument + competitor UIs) are behind the filters.</p>',
+         filter_chips]
 for subj, label, blurb in SUBJECTS:
     sdir = os.path.join(ROOT, "corpus", "sources", subj, "screens")
     if not os.path.isdir(sdir):
@@ -240,11 +256,12 @@ for subj, label, blurb in SUBJECTS:
             f'<span class="chip type">{html.escape(stype)}</span>'
             f'<p>{html.escape(purpose)}</p></div></a>')
     if cards:
-        parts.append(f'<section class="subject"><h2>{html.escape(label)} '
+        parts.append(f'<section class="subject" data-subject="{subj}"><h2>{html.escape(label)} '
                      f'<span class="count">{len(cards)}</span></h2>'
                      f'<p class="meta">{html.escape(blurb)}</p>'
                      f'<div class="grid">{"".join(cards)}</div></section>')
+parts.append(filter_js)
 write_page("screens.html", "Screen gallery", "screens", "\n".join(parts),
-           "All documented screens across corpus subjects")
+           "Documented screens by corpus subject — TekExpress first")
 
 print("done — serve the repo root and open /prototypes/corpus-reader/index.html")

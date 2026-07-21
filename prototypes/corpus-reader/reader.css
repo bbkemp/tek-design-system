@@ -207,6 +207,27 @@ details.chunk[open] summary {
 .full-record a { font-size: var(--tek-fonts-text-size-xs, 12px); }
 
 /* ── screens gallery ── */
+.filters {
+  display: flex; gap: var(--tek-spacing-s04, 6px); flex-wrap: wrap;
+  margin: var(--tek-spacing-s05, 8px) 0 var(--tek-spacing-s07, 16px);
+}
+.filter-chip {
+  font-family: var(--tek-fonts-family-geist, Geist), sans-serif;
+  font-size: var(--tek-fonts-text-size-xs, 12px);
+  color: var(--tek-color-button-text-default, #cccccc);
+  background: var(--tek-color-button-background-default, #1e1e1e);
+  border: var(--tek-borders-width-01, 1px) solid var(--tek-color-input-border-default, #7b7b7b);
+  border-radius: var(--tek-borders-radius-full, 999px);
+  padding: var(--tek-spacing-s03, 4px) var(--tek-spacing-s06, 12px);
+  cursor: pointer;
+}
+.filter-chip:hover { color: var(--tek-color-button-text-hover, #ffffff); }
+.filter-chip.active {
+  border-color: var(--tek-colors-brand-tek-blue, #33baea);
+  color: var(--tek-colors-brand-tek-blue, #33baea);
+  background: var(--tek-color-button-background-inactive, #181818);
+}
+
 .count {
   font-family: var(--tek-fonts-family-mono, "Geist Mono"), monospace;
   font-size: var(--tek-fonts-text-size-sm, 14px);
