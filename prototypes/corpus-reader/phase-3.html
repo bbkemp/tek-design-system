@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phase 3 — Panel UI · Tek Corpus Reader</title>
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+<link rel="stylesheet" href="reader.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark"></span>Tek Corpus Reader</div>
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">◐ theme</button>
+</header>
+<div class="shell">
+  <nav class="sidebar"><a class="nav-item" href="index.html">Findings readout</a>
+<a class="nav-item" href="phase-1.html">Phase 1 — Immediate Prototype</a>
+<a class="nav-item" href="phase-2.html">Phase 2 — Global UI</a>
+<a class="nav-item active" href="phase-3.html">Phase 3 — Panel UI</a>
+<a class="nav-item" href="synthesis.html">Cross-AE synthesis</a>
+<a class="nav-item" href="sessions.html">AE sessions</a>
+<a class="nav-item" href="screens.html">Screen gallery</a>
+    <div class="nav-footer">
+      <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/README.md">Corpus conventions</a>
+      <a href="https://github.com/bbkemp/tek-design-system">Repository</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>Phase 3 — Panel UI</h1>
+    <p class="subtitle">By installation, panel by panel.</p>
+    <article class="doc"><blockquote>
+<h2>⚠️ Authored analysis — not corpus</h2>
+<p><strong>This document is interpretation, authored by Bryan Kemp and Claude Code on 2026-07-21.</strong> It is opinion and synthesis, not observed fact. The system of record is the cited corpus entries (<code>provenance: observed</code>). When this analysis and a corpus entry disagree, the corpus wins.</p>
+</blockquote>
+<p>Panel-by-panel workflow optimization, grouped by installation. Most feedback applies to the <strong>common panels all installations share</strong> — that group comes first, panel by panel in wizard order. Installation-specific sections follow. Chunk paths abbreviated; all under <a href="../../corpus/sources/tek-express/walkthroughs/"><code>corpus/sources/tek-express/walkthroughs/</code></a>.</p>
+<hr />
+<h2>A. All installations — panel by panel</h2>
+<h3>A1. DUT panel</h3>
+<ul>
+<li><strong>Separate device profile from test plan</strong> — lane width is "more of a [DUT] characteristic"; "the data rates I'm about to test is more of like a multi-select rather than a drop-down." <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-dut-panel-and-data-rates.md">ae-will-teverovsky-dut-panel-and-data-rates</a></li>
+<li><strong>DUT ID to ~200 characters</strong> — "The biggest complaint I've had lately… The customers hate it" (drop-in AE); customers encode chip version + report number (<strong>Nadir</strong>). Root cause: Windows path limits from appended folder naming; fix path named (long-path registry support) — "whatever way you can fix it, fix it." → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-dut-id-limits-and-prototype-reaction.md">ae-joey-chiu-dut-id-limits-and-prototype-reaction</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-pain-points-and-automation.md">ae-nadir-kahn-pain-points-and-automation</a></li>
+<li><strong>Keep DUT high-level</strong> — "don't dump settings onto the first panel"; the DUT menus are "pretty good" today. <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-setup-flow-friction.md">ae-dallas-jesse-setup-flow-friction</a>. Counter-pressure exists — AEs lobby to surface their settings on panel 1; Tapo wants the UX team as arbiter. <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a></li>
+<li><strong>Slot-number/"auto" field is unused</strong> — "I haven't had anyone use that… most people don't." Candidate for demotion. <strong>Joey's session</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-pcie-backward-compat-scaling.md">ae-joey-chiu-pcie-backward-compat-scaling</a></li>
+<li><strong>DUT settings gray out dependent tests in the tree</strong> (SSC example) — behavior to preserve and make legible. <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a></li>
+</ul>
+<h3>A2. Test Selection panel</h3>
+<ul>
+<li><strong>Scale-proof the tree</strong> — "good for like… 20 tests, but if there are like 200 tests there on a tree, [it] often gets very difficult to select things." <strong>Joey</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-pcie-backward-compat-scaling.md">ae-joey-chiu-pcie-backward-compat-scaling</a></li>
+<li><strong>Group tests by pattern source</strong>; tooltips showing required pattern per test. <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-setup-flow-friction.md">ae-dallas-jesse-setup-flow-friction</a></li>
+<li><strong>Test names match spec test IDs.</strong> <strong>Dallas/Jesse</strong> → same chunk.</li>
+<li><strong>Required-vs-informative marking with rationale tooltips.</strong> <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-test-selection-and-contextual-help.md">ae-will-teverovsky-test-selection-and-contextual-help</a></li>
+<li><strong>Smart mutually-exclusive selection</strong> — kill the "check one before you uncheck the other" dance; non-exclusive toggles that can't both be off. <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-setup-flow-friction.md">ae-dallas-jesse-setup-flow-friction</a></li>
+<li><strong>Two-tab test selection gets missed</strong> — users don't find the second tab. <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-launcher-global-settings-and-setup-flow.md">ae-travis-berger-launcher-global-settings-and-setup-flow</a></li>
+<li><strong>Tree navigation is industry-standard (Keysight uses it too)</strong> — a differentiation opportunity, not a convention to copy blindly. <strong>Joey</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-pcie-backward-compat-scaling.md">ae-joey-chiu-pcie-backward-compat-scaling</a></li>
+</ul>
+<h3>A3. Limits editor (within Test Selection/Configuration)</h3>
+<ul>
+<li><strong>Gate behind the user-defined toggle</strong> with warning + grayed state. <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-test-selection-and-contextual-help.md">ae-will-teverovsky-test-selection-and-contextual-help</a></li>
+<li><strong>Bound the layout</strong> — "super long… a horizontal scroll, but that also does not suffice." <strong>Joey's session</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-pcie-backward-compat-scaling.md">ae-joey-chiu-pcie-backward-compat-scaling</a></li>
+<li><strong>Chip-development customers iterate against internal spec limits via CSV</strong> — keep the CSV path first-class. <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a></li>
+</ul>
+<h3>A4. Acquisitions panel</h3>
+<ul>
+<li><strong>Fix the pre-recorded waveform workflow</strong> (three-way corroborated): filename convention carries metadata customers never follow — "If I have to remember what that name's supposed to be… good luck" (<strong>Chris B</strong>); AEs connect an AWG just to harvest correct names (<strong>Dallas/Jesse</strong>: "we've made it so hard… the messages were terrible"); DDR failures round-trip through live mode (<strong>Sam</strong>). Fix shape: point-and-rename dialog mapping files → signals ("I can tell it this is my PRBS 0 waveform on channel one… Just make it rename it for me"). → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-setup-waveforms-and-run-modes.md">ae-chrisb-setup-waveforms-and-run-modes</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-setup-flow-friction.md">ae-dallas-jesse-setup-flow-friction</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-sam-ddr-memory-feedback.md">ae-sam-ddr-memory-feedback</a></li>
+<li><strong>No live↔pre-recorded settings trap</strong> — "why can't I control this from pre-recorded mode in the first place?" (<strong>Sam</strong>); settings locked in pre-recorded mode force switching back and forth (<strong>Chris B</strong>). → chunks above</li>
+<li><strong>De-embed/filter assignment must be scannable</strong> — "you kind of get this just big giant list of like file pathways"; group filters by measurement, picker-style. <strong>Sam</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-sam-ddr-memory-feedback.md">ae-sam-ddr-memory-feedback</a></li>
+<li><strong>Copy-path / open-in-File-Explorer for waveforms.</strong> <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">ae-will-teverovsky-acquisitions-presets-status-and-results</a></li>
+<li><strong>Math waveforms as sources.</strong> <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md">ae-dallas-jesse-instruments-sessions-results-debug</a></li>
+<li><strong>Keep the derived per-row context</strong> ("Lane Zero, PRTS 7, P0 — way better than it used to be"). <strong>Dallas/Jesse</strong> → same chunk.</li>
+<li><strong>Acquisition-speed opportunities (backend, UX-visible):</strong> don't reset instruments between acquisitions ("We would speed ourselves up 30 and 40%"); parallel lane acquisition ("4 minutes instead of 30"). <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-compliance-mode-and-test-selection.md">ae-dallas-jesse-compliance-mode-and-test-selection</a></li>
+</ul>
+<h3>A5. Configuration / Preferences panels</h3>
+<ul>
+<li><strong>Fix the two-window configuration user trap</strong> — test-specific configuration invisible until a test row is highlighted, split across two windows from global settings; the WPF-era three-pane Outlook-style "cockpit view" (built with Hemant; wireframes promised) is prior art. → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/configuration-user-traps-and-cockpit-view.md">configuration-user-traps-and-cockpit-view</a>. (Caveat: demoed on an illustrative prototype — verify against a live session.)</li>
+<li><strong>Settings tiering: spec-locked vs. user-editable</strong> — "scope bandwidth is actually locked because this is spec required." <strong>Joey's session</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-pcie-backward-compat-scaling.md">ae-joey-chiu-pcie-backward-compat-scaling</a></li>
+<li><strong>Cross-panel dependency cues</strong> — the "blue dot" non-blocking indicator when a change on one panel alters values elsewhere; interdependent settings "spanned across pages… not visible at the same time." <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a></li>
+<li><strong>"This will change A, B, C — continue/cancel" dialogs</strong> for silent cascading setting changes ("You thought you were changing one field before fields change"). <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-setup-flow-friction.md">ae-dallas-jesse-setup-flow-friction</a></li>
+<li><strong>Global/local paradigm for signal validation</strong> (modeled live on the scope's measurement settings) with "run anyway but flag validation failure" replacing the confusing third choice. <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-compliance-mode-and-test-selection.md">ae-dallas-jesse-compliance-mode-and-test-selection</a></li>
+<li><strong>7-series channel defaults</strong> — "always defaults to one and three… on the seven series, there's no shared resources"; wants global, scope-model-aware preferred channels (feeds the Phase 2 launcher decision). <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-launcher-global-settings-and-setup-flow.md">ae-travis-berger-launcher-global-settings-and-setup-flow</a></li>
+<li><strong>"Rethink the tabs — were they necessary, or were they just there?"</strong>; "this menu feeds the next menu" — key info in both selection and detail. <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-setup-flow-friction.md">ae-dallas-jesse-setup-flow-friction</a></li>
+</ul>
+<h3>A6. Status / Log panels</h3>
+<p>(Shell-level state vocabulary is Phase 2; panel-level specifics here.)</p>
+<ul>
+<li><strong>Test Status is a customer-facing demo surface</strong> — "we're on preset 6… you can watch it live" — design it to be watched. <strong>Chris B</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-setup-waveforms-and-run-modes.md">ae-chrisb-setup-waveforms-and-run-modes</a></li>
+<li><strong>Connection/channel column in Status.</strong> <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md">ae-dallas-jesse-instruments-sessions-results-debug</a></li>
+<li><strong>Resizable console-log layout</strong> — top two-thirds content, bottom third log. <strong>Chris B</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-setup-waveforms-and-run-modes.md">ae-chrisb-setup-waveforms-and-run-modes</a></li>
+<li><strong>Log View is the debug surface</strong> (failures/hangs) — keep it strong; 7-series signal-validation false positives observed. <strong>Chris B</strong>, <strong>Travis</strong> → chunks above + <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-run-environments-adoption-and-reports.md">ae-travis-berger-run-environments-adoption-and-reports</a></li>
+</ul>
+<h3>A7. Results panel</h3>
+<ul>
+<li><strong>Margin-to-limit, not just green</strong> — "that green would not suggest… whether it is a good pass or a bad pass" (<strong>Tapo</strong>); "am I a couple millivolts off?" (<strong>Will</strong>). → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">ae-will-teverovsky-acquisitions-presets-status-and-results</a></li>
+<li><strong>Failure cues surfaced in-panel</strong> — "it is almost difficult to find… where that one or 2 fails are. So normally… they download a report and then scan that report." <strong>Tapo</strong> → same chunk.</li>
+<li><strong>Results populate live.</strong> <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">ae-will-teverovsky-acquisitions-presets-status-and-results</a></li>
+<li><strong>Selective rerun with result replacement</strong> — "If the test took eight hours to run… let me run this one test. Give me the choice to replace the results" (<strong>Dallas/Jesse</strong>); rerun-failed-only with append/replace choice; right-click debug menu on a failed result (rerun compliance / rerun user-defined / export scope session). → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md">ae-dallas-jesse-instruments-sessions-results-debug</a></li>
+<li><strong>Column add/remove + TekScope results-table configure parity</strong> (team-endorsed); spec-version column. <strong>Dallas/Jesse</strong> → same chunk.</li>
+<li><strong>Plots from analysis tools surfaced in results</strong> (and reports). <strong>Dallas/Jesse</strong> → same chunk. (Depends on the chart-library decision — Open decision 5.)</li>
+<li><strong>(Future, flagged as net-new)</strong> auto-load failing waveform on the scope for debug — "a cue to go and check this then and there." <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a></li>
+</ul>
+<h3>A8. Reports panel</h3>
+<ul>
+<li><strong>Selective rerun → report section replace/merge</strong> — "have it update my report… and replace just that section" (<strong>Chris B</strong>); rerun-and-merge is "a common use case" needing intuitiveness (<strong>Tapo</strong>). → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-reports-and-rerun-workflow.md">ae-chrisb-reports-and-rerun-workflow</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-prototype-ui-feedback.md">ae-tapo-parua-prototype-ui-feedback</a></li>
+<li><strong>Formats:</strong> keep PDF (distributed artifact, worldwide sites); <strong>CSV is a must</strong> ("a data dump that they use to create their custom reports"); MHT is dead; in-app HTML preview (Keysight parity); Markdown received positively. <strong>Tapo</strong>, <strong>Nadir</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-prototype-ui-feedback.md">ae-tapo-parua-prototype-ui-feedback</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-pain-points-and-automation.md">ae-nadir-kahn-pain-points-and-automation</a></li>
+<li><strong>Vendor-neutral report template + CSV export for cross-vendor programs</strong> — customers hand-correlate Tek and Keysight reports today. <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-run-environments-adoption-and-reports.md">ae-travis-berger-run-environments-adoption-and-reports</a></li>
+<li><strong>Restore report-to-waveform hyperlinks</strong> — "Bam, I could go right to the waveform that failed… saved me so much headache." <strong>Travis</strong> → same chunk.</li>
+<li><strong>Fix broken anchor links + add back-to-top</strong> in HTML reports. <strong>Chris B</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-reports-and-rerun-workflow.md">ae-chrisb-reports-and-rerun-workflow</a></li>
+<li><strong>Report scope options that communicate</strong> — pass-only (SIG submission) vs. everything; labels currently don't explain function ("I don't know exactly what the functionality of it is"). <strong>Chris B</strong> → same chunk.</li>
+<li><strong>Multi-run aggregate report</strong> — "run five times and they want all the data from every time." <strong>Chris B</strong> → same chunk.</li>
+<li><strong>Report size management</strong> — PCIe Gen 5 reports "ten to 11 megabytes each… fill up the SSD of the SX." <strong>Nadir</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-pain-points-and-automation.md">ae-nadir-kahn-pain-points-and-automation</a></li>
+<li><strong>Report generation speed is a strength</strong> — surprised Chris positively; don't regress it. <strong>Chris B</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-reports-and-rerun-workflow.md">ae-chrisb-reports-and-rerun-workflow</a></li>
+</ul>
+<hr />
+<h2>B. Per-installation specifics</h2>
+<h3>B1. PCI Express — design against this one first</h3>
+<p>"The super set of stupid" — design for PCIe and everything else follows (<strong>Dallas/Jesse</strong>); ~50% of the business (<strong>product leader</strong>); "inarguably the one to focus on first" (<strong>Will</strong>). → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-setup-flow-friction.md">ae-dallas-jesse-setup-flow-friction</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md">ae-will-teverovsky-session-files-options-and-program-context</a></p>
+<ul>
+<li><strong>Data-rate model</strong> — "Gen 12, Gen 13… another real estate problem or an overload of settings problems?"; "Gen 7 and then Gen 8… it's just gonna explode the UI." Options on the table: compact table instead of per-rate checkboxes, per-rate tabs with shorter trees, multi-select. Needs a design spike at Gen-7 scale (Open decision 4). <strong>Joey</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-pcie-backward-compat-scaling.md">ae-joey-chiu-pcie-backward-compat-scaling</a></li>
+<li><strong>Preset selection out of the wrong tab</strong> — hidden placement silently costs 10×: "they might miss out and ultimately run with all the presets and it will take maybe 10 times more time." Merge into test selection (Joey: "I'm not really a fan" of today's split). <strong>Joey</strong> → same chunk.</li>
+<li><strong>Presets as list rows, not tabs.</strong> <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-compliance-mode-and-test-selection.md">ae-dallas-jesse-compliance-mode-and-test-selection</a></li>
+<li><strong>Progressive disclosure of prior-generation settings</strong> — &lt;50% of users ever touch them; "have access to it, but not… scrolling forever." <strong>Joey</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-pcie-backward-compat-scaling.md">ae-joey-chiu-pcie-backward-compat-scaling</a></li>
+<li><strong>Compliance ≠ one run</strong> — users split data rates across runs; "compliance doesn't require you just complete everything in one run"; characterization runs all presets, compliance users "already know these two presets." Model both. <strong>Joey</strong> → same chunk.</li>
+<li><strong>Preset semantics</strong> = spec equalization settings (P4 flat-EQ reference); SigTest is the consortium-mandated black box doing PCIe analysis. <strong>Travis</strong>, <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-launcher-global-settings-and-setup-flow.md">ae-travis-berger-launcher-global-settings-and-setup-flow</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a></li>
+<li><strong>Preset duplication in two windows</strong> — "I actually don't know. I think they're the same." <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-launcher-global-settings-and-setup-flow.md">ae-travis-berger-launcher-global-settings-and-setup-flow</a></li>
+<li><strong>Workshop reality:</strong> lane-0-only at compliance workshops (time); DUT-ID-in-filenames exists for Plugfest attribution. <strong>Travis</strong>, <strong>Joey's session</strong> → chunks above.</li>
+</ul>
+<h3>B2. DDR / Memory — the spec-less outlier</h3>
+<p><strong>Any redesign validated only on spec-driven plugins will miss memory.</strong> "The DDR version is kind of the only one that's assuming you're using the probes"; no test specifications → "a lot more flexibility… so when you switch to offline mode, there's a lot of assumptions that Tek Express is making that the user is not aware of." <strong>Sam</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-sam-ddr-memory-feedback.md">ae-sam-ddr-memory-feedback</a></p>
+<ul>
+<li><strong>Surface the hidden offline-mode assumptions</strong> (acquisitions named as another hidden-assumption spot).</li>
+<li><strong>Co-locate probe controls</strong> — tri-mode (A/B/differential) + voltage levels + channel assignment live in different windows; "probably should be in the same spot because I'm kind of bouncing around."</li>
+<li><strong>Probes move channels constantly</strong> — what makes the mode-locked settings so costly for DDR specifically.</li>
+<li><strong>Configuration panel needs a memory variant</strong> (Phase 1 accuracy debt, but the <em>design</em> of memory-specific configuration is Phase 3).</li>
+<li><strong>Validation plan required</strong> — Sam's session was 9:35 truncated (bench lacked the plugin; TekExpress hung at launch); a follow-up was agreed in-session. Open decision 9. All → same chunk.</li>
+<li><strong>DDR history caveat:</strong> DDR was a research mis-start once before (fragmented across DPOJET/Clarius/TekExpress). <strong>Will's session</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md">ae-will-teverovsky-session-files-options-and-program-context</a></li>
+</ul>
+<h3>B3. USB</h3>
+<ul>
+<li><strong>Test-mode dropdown appears/disappears per application</strong> (USB = compliance-only) — confused even the AE; make mode surface consistent across installations. <strong>Chris B</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-setup-waveforms-and-run-modes.md">ae-chrisb-setup-waveforms-and-run-modes</a></li>
+<li><strong>User-defined test modes matter</strong> for margin testing and military/proprietary targets ("not going to be sold at Best Buy"). <strong>Chris B</strong> → same chunk.</li>
+<li><strong>Loop run modes on the run surface</strong> (loop-until-failure / until-pass / ×N) — Chris's self-declared #1, raised in a USB workshop context but global in value (also listed under Phase 2 Options unburying). → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-setup-waveforms-and-run-modes.md">ae-chrisb-setup-waveforms-and-run-modes</a></li>
+</ul>
+<h3>B4. DisplayPort</h3>
+<ul>
+<li><strong>Next after PCIe</strong> — Clarius licensing migration creates urgency (13 licenses to migrate). <strong>Will's session</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md">ae-will-teverovsky-session-files-options-and-program-context</a></li>
+<li><strong>8-hour DisplayPort runs</strong> are the motivating case for status visibility (Phase 2). → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/competitive-deployment-licensing-and-status-value.md">competitive-deployment-licensing-and-status-value</a></li>
+<li><strong>Harvest Clarius</strong> — merged status+results, connectivity LED, praised-but-commercially-failed redesign ("the best thing about it is that it works"). <strong>Will's session</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">ae-will-teverovsky-acquisitions-presets-status-and-results</a></li>
+</ul>
+<h3>B5. TekRx / receiver-side</h3>
+<ul>
+<li><strong>TekRx is inherently sequential</strong> (calibration dependencies) — the wizard pattern is fundamental, not a UX choice; respect it in any shared-shell work. → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ux-feedback-and-open-questions.md">ux-feedback-and-open-questions</a> (April 2026, Mahesha)</li>
+<li><strong>LeCroy has the only combined TX+RX interface</strong> — the competitive reference point for any future TX/RX convergence. <strong>Nadir</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-competitive-landscape-and-visual-direction.md">ae-nadir-kahn-competitive-landscape-and-visual-direction</a></li>
+<li><strong>Study-mix note:</strong> conformance products "cannot [share] a unified workflow" — span compliance + conformance (PCI/DisplayPort/MIPI) in future rounds. <strong>Will's session</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md">ae-will-teverovsky-session-files-options-and-program-context</a></li>
+</ul>
+<hr />
+<h2>C. Differentiator candidates surfaced by panel work (net-new — explicitly beyond lift-and-shift)</h2>
+<p>Logged here because they emerged from panel walkthroughs; every one is an open decision, not a commitment.</p>
+<ul>
+<li><strong>Scope-session debug export</strong> (.TSS with measurement, limits, waveforms) from a failed result — technician → SI-engineer handoff. "No one does that. We would win based on that." Structurally hard for Keysight to copy (their algorithms don't run in the scope: "They can never debug it"). Open decision 8. <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md">ae-dallas-jesse-instruments-sessions-results-debug</a></li>
+<li><strong>"Load on TekScope" share action</strong> for waveforms (product leader). → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">ae-will-teverovsky-acquisitions-presets-status-and-results</a></li>
+<li><strong>Tek HSI waveform offload</strong> for faster analysis on old-scope CPUs. <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-run-environments-adoption-and-reports.md">ae-travis-berger-run-environments-adoption-and-reports</a></li>
+<li><strong>Multi-PC "cockpit view" control station</strong> — Q2 roadmap item disclosed in-session; the decade-old three-pane cockpit prototype is prior art. → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md">ae-will-teverovsky-session-files-options-and-program-context</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/configuration-user-traps-and-cockpit-view.md">configuration-user-traps-and-cockpit-view</a></li>
+<li><strong>North Star</strong> (product leader): "I don't add a single line into my user manual" — the panel redesign's success metric is self-evidence, not documentation. → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md">ae-will-teverovsky-session-files-options-and-program-context</a></li>
+</ul></article>
+  </main>
+</div>
+<script>
+function toggleTheme() {
+  const r = document.documentElement;
+  const cur = r.getAttribute('data-theme') ||
+    (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  r.setAttribute('data-theme', next);
+  localStorage.setItem('tek-reader-theme', next);
+}
+const saved = localStorage.getItem('tek-reader-theme');
+if (saved) document.documentElement.setAttribute('data-theme', saved);
+</script>
+</body>
+</html>

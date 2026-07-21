@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phase 2 — Global UI · Tek Corpus Reader</title>
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+<link rel="stylesheet" href="reader.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark"></span>Tek Corpus Reader</div>
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">◐ theme</button>
+</header>
+<div class="shell">
+  <nav class="sidebar"><a class="nav-item" href="index.html">Findings readout</a>
+<a class="nav-item" href="phase-1.html">Phase 1 — Immediate Prototype</a>
+<a class="nav-item active" href="phase-2.html">Phase 2 — Global UI</a>
+<a class="nav-item" href="phase-3.html">Phase 3 — Panel UI</a>
+<a class="nav-item" href="synthesis.html">Cross-AE synthesis</a>
+<a class="nav-item" href="sessions.html">AE sessions</a>
+<a class="nav-item" href="screens.html">Screen gallery</a>
+    <div class="nav-footer">
+      <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/README.md">Corpus conventions</a>
+      <a href="https://github.com/bbkemp/tek-design-system">Repository</a>
+    </div>
+  </nav>
+  <main class="content">
+    <h1>Phase 2 — Global UI</h1>
+    <p class="subtitle">The shared shell every installation inherits.</p>
+    <article class="doc"><blockquote>
+<h2>⚠️ Authored analysis — not corpus</h2>
+<p><strong>This document is interpretation, authored by Bryan Kemp and Claude Code on 2026-07-21.</strong> It is opinion and synthesis, not observed fact. The system of record is the cited corpus entries (<code>provenance: observed</code>). When this analysis and a corpus entry disagree, the corpus wins.</p>
+</blockquote>
+<p>The wrapping shell every installation shares: navigation, run/test/pass/fail/pause state vocabulary, sessions, logs, errors, instruments, windows, help. Labs run DisplayPort + USB + Thunderbolt side-by-side and <strong>expect one identical workflow</strong> (Tapo) — the shell is the contract. Grouped by system. Chunk paths abbreviated; all under <a href="../../corpus/sources/tek-express/walkthroughs/"><code>corpus/sources/tek-express/walkthroughs/</code></a>.</p>
+<h2>1. Persistent state: mode + preset always visible</h2>
+<ul>
+<li><strong>Mode state (compliance vs. user-defined) is invisible today</strong> — one dismissable popup, then "for 45 minutes… you will only know that in the report." Cost: "Oh, crap, I just spent two days just not realizing that it's not compliant" (<strong>Dallas/Jesse</strong>); "constant confusion… make it painfully clear" (<strong>Gary</strong>, Will's session). → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-compliance-mode-and-test-selection.md">ae-dallas-jesse-compliance-mode-and-test-selection</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-test-selection-and-contextual-help.md">ae-will-teverovsky-test-selection-and-contextual-help</a></li>
+<li><strong>Persistent status bar carries mode + current preset</strong> — "presets should be very visible almost all the time" (<strong>Will</strong>); the prototype's liked bottom bar is the natural home. → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">ae-will-teverovsky-acquisitions-presets-status-and-results</a></li>
+<li><strong>Color-coded frame per mode</strong> as reinforcement. <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-compliance-mode-and-test-selection.md">ae-dallas-jesse-compliance-mode-and-test-selection</a></li>
+<li><strong>Rework/watermark precedent</strong>: custom limits already watermark the report non-compliant — the UI state should telegraph the same thing live. <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a></li>
+</ul>
+<h2>2. Run-state vocabulary (run / test / pass / fail / pause / stop)</h2>
+<ul>
+<li><strong>Progress must be honest</strong> — "progress bars are like here and then here and then here… people can't really tell what's going on"; "not accurate enough" is standing field feedback. <strong>Nadir</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-pain-points-and-automation.md">ae-nadir-kahn-pain-points-and-automation</a></li>
+<li><strong>Richer run statuses</strong> — distinguish "waiting on a trigger" from "analyzing" from legitimately-slow processing (<strong>Will</strong>, <strong>Nadir</strong>); "a test runs for maybe hours… how do I know where I am exactly?" (<strong>Tapo</strong>). → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">ae-will-teverovsky-acquisitions-presets-status-and-results</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a></li>
+<li><strong>Status visibility is the product's value</strong> — "the biggest value… is letting know the user the status of the system at any given point in time" (Subhasis; 8-hour DisplayPort runs). Elevate Status/Log in hierarchy. → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/competitive-deployment-licensing-and-status-value.md">competitive-deployment-licensing-and-status-value</a></li>
+<li><strong>Stop must be fast</strong> — "Everybody complains about stopping a test and having to wait for it to process"; kill-process-style instant stop asked. Pause "works like immediately" — keep. <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-status-results-sessions-and-run-window.md">ae-travis-berger-status-results-sessions-and-run-window</a></li>
+<li><strong>Opaque Stop state</strong> — "it says 'stopping your progress' — why is that happening? I don't quite know." <strong>Travis</strong> → same chunk.</li>
+<li><strong>Defined Pause semantics + step rewind + breakpoints</strong> (concept liked, behavior undefined); mid-run config edits ride the MVVM re-architecture ("run 5, fix the 7th, continue"). <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md">ae-dallas-jesse-instruments-sessions-results-debug</a></li>
+<li><strong>Panic-stop access without permanent prominence</strong> — run controls reachable always, not dominating. <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">ae-will-teverovsky-acquisitions-presets-status-and-results</a></li>
+<li><strong>Minimized run window</strong> must not hide behind the scope UI; "most don't even know that you could bring it back up." <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-status-results-sessions-and-run-window.md">ae-travis-berger-status-results-sessions-and-run-window</a></li>
+</ul>
+<h2>3. Logs and errors</h2>
+<ul>
+<li><strong>Summary + detail split log</strong> (Keysight benchmark): click a message for description; needs a framework interface so app teams feed structured logs. <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a></li>
+<li><strong>Errors with real content</strong> — "They'll pop up a dialogue and… the information is just missing. I don't know what to do with that and I work here." Space for detail + possible fixes; no 32-character excuses. <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-setup-flow-friction.md">ae-dallas-jesse-setup-flow-friction</a></li>
+<li><strong>"Flat logging" is an app-team self-critique too</strong> — "we did not get a lot of information from it." → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-pcie-backward-compat-scaling.md">ae-joey-chiu-pcie-backward-compat-scaling</a></li>
+<li><strong>Verbose/debug log level + Export Log Files → zip</strong> (Riddick precedent) — AEs are "always sending stuff to the software team." <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-status-results-sessions-and-run-window.md">ae-travis-berger-status-results-sessions-and-run-window</a></li>
+<li><strong>Log visibility: discoverable, not always-popped</strong> — "you do not have to always pop things out for a user for convenience." <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a></li>
+<li><strong>Warning/splash/nag dialogs need show-again control</strong> — "really good control of, do you want to see this again over and over again?" <strong>Nadir</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-pain-points-and-automation.md">ae-nadir-kahn-pain-points-and-automation</a></li>
+<li><strong>Session-recall warnings must be actionable</strong> — today: "Contact your Tektronix local representative." <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md">ae-dallas-jesse-instruments-sessions-results-debug</a></li>
+</ul>
+<h2>4. Kill the Options junk drawer</h2>
+<ul>
+<li>"All the crap is in options" (product leader); "the option menu overall probably just needs somewhat of an overhaul rework… I hate the save and recall stuff being in here" (<strong>Will</strong>); "The options screen is very confusing. It's not options" (<strong>Travis</strong>); loop run modes "don't bury it in the menu. You got real estate… that's probably my number one" (<strong>Chris B</strong>); instrument settings "slightly hidden" (<strong>Joey's session</strong>). → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md">ae-will-teverovsky-session-files-options-and-program-context</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-bench-setup-and-instrument-connection.md">ae-travis-berger-bench-setup-and-instrument-connection</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-setup-waveforms-and-run-modes.md">ae-chrisb-setup-waveforms-and-run-modes</a>, <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-pcie-backward-compat-scaling.md">ae-joey-chiu-pcie-backward-compat-scaling</a></li>
+<li><strong>Placement pass over everything under Options</strong>: standard File-menu semantics for session save/recall; run modes (loop-until-fail/pass/×N) on the run surface; instruments as a first-class setup step.</li>
+<li><strong>Settings are "the top drawer" scattered everywhere — consolidate globally.</strong> <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-launcher-global-settings-and-setup-flow.md">ae-travis-berger-launcher-global-settings-and-setup-flow</a></li>
+<li><strong>Open decision 11 — the launcher/global-settings layer</strong> (R&amp;S single block-diagram launcher pattern): channel defaults, instrument connections, save-waveform, preferences hoisted above any one technology app. Resolve early in Phase 2 — it determines whether the junk-drawer fix is placement or architecture. <strong>Travis</strong> → same chunk; <a href="synthesis.html">synthesis.md §10</a>.</li>
+</ul>
+<h2>5. Instruments layer</h2>
+<ul>
+<li><strong>Connection settings co-located and top-level</strong> — "Customers don't know to go in there to connect"; duplicated today (Options + Configuration). <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-bench-setup-and-instrument-connection.md">ae-travis-berger-bench-setup-and-instrument-connection</a>; <strong>Joey's session consensus</strong> (physical-setup step) → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-joey-chiu-pcie-backward-compat-scaling.md">ae-joey-chiu-pcie-backward-compat-scaling</a></li>
+<li><strong>Liveness / pre-flight check</strong> — "can I ping it? Is it working?"; car-dashboard analogy ("is the AWG alive?"); Clarius has a connectivity LED. <strong>Will + product leader</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">ae-will-teverovsky-acquisitions-presets-status-and-results</a></li>
+<li><strong>LAN detection is flaky</strong> — "it doesn't always refresh in here… I usually just use USB if it's available." <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-bench-setup-and-instrument-connection.md">ae-travis-berger-bench-setup-and-instrument-connection</a></li>
+<li><strong>User-editable equipment allowlist</strong> — hard-coded model numbers break automation on B-revisions; "we wait three to six months for software updates so we can use an instrument that we came out with." <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md">ae-dallas-jesse-instruments-sessions-results-debug</a></li>
+<li><strong>Bandwidth/probe lockouts become warnings in user-defined mode</strong> (blockers only in compliance). <strong>Dallas/Jesse</strong> → same chunk.</li>
+<li><strong>VISA detection bug workaround is tribal knowledge</strong> — "Nine times out of 10, when I just do it from here, it doesn't show up." <strong>Dallas/Jesse</strong> → same chunk.</li>
+<li><strong>Reconnection guidance: always-on mini connection schematic</strong> — "otherwise I'll have spent hours, days… and realize I should have had that attenuator there, not there." <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-test-selection-and-contextual-help.md">ae-will-teverovsky-test-selection-and-contextual-help</a>; inline PNG schematic + full-screen + PDF link (root cause of today's Acrobat hack: the unresizable window). <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-bench-setup-and-instrument-connection.md">ae-travis-berger-bench-setup-and-instrument-connection</a></li>
+</ul>
+<h2>6. Sessions as OS citizens</h2>
+<ul>
+<li><strong>X: drive retired</strong> — "a hangover from NI TestStand, which has no rationale or requirement for anything we're doing now"; normal save-anywhere (remote/automation use case). <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-setup-flow-friction.md">ae-dallas-jesse-setup-flow-friction</a></li>
+<li><strong>Save/recall is "incredibly difficult and frustrating… I kind of have to coach [the customer] through it every time."</strong> <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-session-files-options-and-program-context.md">ae-will-teverovsky-session-files-options-and-program-context</a></li>
+<li><strong>Findable session files</strong> — "there's like a million folders, timestamp based… sort by date modified and then send me the latest one": visible save location, recent-sessions list, double-click file association. <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-status-results-sessions-and-run-window.md">ae-travis-berger-status-results-sessions-and-run-window</a></li>
+<li><strong>Session recall must be correct</strong> — "It doesn't recall the parameters correctly. It just — it's broken." <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md">ae-dallas-jesse-instruments-sessions-results-debug</a></li>
+<li><strong>DUT ID is the semantic-naming mechanism</strong> feeding report + folder names — bridges to the Phase 3 DUT-ID length fix. <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-status-results-sessions-and-run-window.md">ae-travis-berger-status-results-sessions-and-run-window</a></li>
+</ul>
+<h2>7. Status / Results consolidation (shell-level pattern)</h2>
+<ul>
+<li><strong>Lowest-friction first step: pass/fail column in Status</strong> (Clarius already merged them); target: one surface, progressive detail. <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">ae-will-teverovsky-acquisitions-presets-status-and-results</a></li>
+<li>"The results in the status, I would combine those." <strong>Chris B</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-setup-waveforms-and-run-modes.md">ae-chrisb-setup-waveforms-and-run-modes</a></li>
+<li><strong>Dual live-populate is confusing</strong>; "I usually just look at the PDFs if I'm being honest" — a facilitator committed on-record to "consolidating some of that." <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-status-results-sessions-and-run-window.md">ae-travis-berger-status-results-sessions-and-run-window</a></li>
+<li><strong>Counterweight (why Results might stay):</strong> multi-run report picking à la R&amp;S. <strong>Chris B</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-chrisb-reports-and-rerun-workflow.md">ae-chrisb-reports-and-rerun-workflow</a>. Open decision 3 in <a href="synthesis.html">synthesis.md §10</a>.</li>
+<li>"You'd be doing status, result, status, result" / "you can't see them both at the same time." <strong>Will</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-acquisitions-presets-status-and-results.md">ae-will-teverovsky-acquisitions-presets-status-and-results</a></li>
+</ul>
+<h2>8. Help system</h2>
+<ul>
+<li><strong>Layered contextual help</strong>: selection-aware F1 / global "?" → on-screen description → deep link into the reference section. NOT a question mark per setting ("the UI kind of gets very clumsy"; Clarius got "too many question marks" feedback). Positive per-setting-popup reference: "Riddick." <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a></li>
+<li><strong>Document-only help breaks flow</strong> — "They are all document files… you need to download it"; "In PDF, I just have to scroll, scroll, scroll." <strong>Tapo</strong> → same chunk; "I hate that you have to go through this Adobe Acrobat, all this like weird crap." <strong>Travis</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-bench-setup-and-instrument-connection.md">ae-travis-berger-bench-setup-and-instrument-connection</a></li>
+<li><strong>Help content is a reference guide, not an instruction manual</strong> — specialized domain, occasional lookup; MOI stays as the depth layer. <strong>Tapo</strong>, <strong>Will</strong> → chunks above + <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-will-teverovsky-test-selection-and-contextual-help.md">ae-will-teverovsky-test-selection-and-contextual-help</a></li>
+</ul>
+<h2>9. Automation contract (shell guarantee)</h2>
+<ul>
+<li>Scriptability guarantee across the shell — SCPI-like command per GUI action proposed; must run fully headless. <strong>Nadir</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-nadir-kahn-pain-points-and-automation.md">ae-nadir-kahn-pain-points-and-automation</a></li>
+<li>Scope against <strong>Travis's &lt;20%-automation datapoint</strong>: parity floor for scripters, not the majority workflow; most users sit at the scope, and licensing (stranded laptop licenses) is the real on-scope-vs-PC decider. → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-travis-berger-run-environments-adoption-and-reports.md">ae-travis-berger-run-environments-adoption-and-reports</a>. Open decision 10.</li>
+</ul>
+<h2>10. Cross-installation consistency governance</h2>
+<ul>
+<li>"They'll fix something in one and break something in the other one." <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-session-context-and-overall-reactions.md">ae-dallas-jesse-session-context-and-overall-reactions</a></li>
+<li>One identical workflow across side-by-side installations is a customer expectation. <strong>Tapo</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md">ae-tapo-parua-workflow-and-settings-architecture</a></li>
+<li>This is the design system's argument: the shell (and its tokens/components) is owned once, inherited everywhere. Column add/remove everywhere + TekScope's results-table configure as the shared table pattern (team-endorsed). <strong>Dallas/Jesse</strong> → <a href="https://github.com/bbkemp/tek-design-system/blob/main/corpus/sources/tek-express/walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md">ae-dallas-jesse-instruments-sessions-results-debug</a></li>
+</ul></article>
+  </main>
+</div>
+<script>
+function toggleTheme() {
+  const r = document.documentElement;
+  const cur = r.getAttribute('data-theme') ||
+    (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  r.setAttribute('data-theme', next);
+  localStorage.setItem('tek-reader-theme', next);
+}
+const saved = localStorage.getItem('tek-reader-theme');
+if (saved) document.documentElement.setAttribute('data-theme', saved);
+</script>
+</body>
+</html>
