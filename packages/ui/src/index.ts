@@ -11,6 +11,7 @@
  *             TekInput, TekLabel, TekButton, TekTextLink, TekCharacterCount,
  *             TekModal, TekFooter
  */
+export type { TekChangeEvent, TekChangeEventDetail, TekInputEvent, TekInputEventDetail, TekClickEvent } from './types.js';
 export { TekBaseSelector }       from './base-selector.js';
 export { TekCheckbox }           from './checkbox/checkbox.js';
 export { TekRadio }              from './radio/radio.js';
