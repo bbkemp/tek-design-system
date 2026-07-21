@@ -1,5 +1,6 @@
 ---
 provenance: observed
+class: screen
 software: TekExpress AppEmulator
 software_version: TBD
 screen_id: setup-preferences
