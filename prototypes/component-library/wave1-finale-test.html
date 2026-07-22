@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>tek-badge / tek-tooltip / tek-spinner — verification harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+<script type="module" src="../../packages/ui/dist/tek-ui.js"></script>
+<style>
+  body { background: var(--tek-colors-neutral-800, #1e1e1e); padding: 60px; font-family: var(--tek-fonts-family-geist, sans-serif); }
+</style>
+</head>
+<body>
+<tek-stack gap="s11" align="start">
+  <tek-row gap="s05" align="center">
+    <tek-badge>Badge</tek-badge>
+    <tek-badge type="blue">Blue</tek-badge>
+    <tek-badge type="success">Success</tek-badge>
+    <tek-badge type="warning">Warning</tek-badge>
+    <tek-badge type="error">Error</tek-badge>
+  </tek-row>
+
+  <tek-row gap="s09" align="center">
+    <tek-spinner size="sm"></tek-spinner>
+    <tek-spinner></tek-spinner>
+    <tek-spinner size="lg" tone="success"></tek-spinner>
+    <tek-spinner size="lg" tone="error" paused></tek-spinner>
+  </tek-row>
+
+  <tek-tooltip id="tip" content="Saves the current setup" delay="100">
+    <tek-button>Save</tek-button>
+  </tek-tooltip>
+</tek-stack>
+</body>
+</html>

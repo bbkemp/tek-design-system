@@ -433,6 +433,9 @@ const oppositeSideMap = {
   bottom: 'top',
   top: 'bottom'
 };
+function clamp(start, value, end) {
+  return max(start, min(value, end));
+}
 function evaluate(value, param) {
   return typeof value === 'function' ? value(param) : value;
 }
@@ -967,6 +970,78 @@ const offset$1 = function (options) {
         data: {
           ...diffCoords,
           placement
+        }
+      };
+    }
+  };
+};
+
+/**
+ * Optimizes the visibility of the floating element by shifting it in order to
+ * keep it in view when it will overflow the clipping boundary.
+ * @see https://floating-ui.com/docs/shift
+ */
+const shift$1 = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: 'shift',
+    options,
+    async fn(state) {
+      const {
+        x,
+        y,
+        placement,
+        platform
+      } = state;
+      const {
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = false,
+        limiter = {
+          fn: _ref => {
+            let {
+              x,
+              y
+            } = _ref;
+            return {
+              x,
+              y
+            };
+          }
+        },
+        ...detectOverflowOptions
+      } = evaluate(options, state);
+      const coords = {
+        x,
+        y
+      };
+      const overflow = await platform.detectOverflow(state, detectOverflowOptions);
+      const crossAxis = getSideAxis(placement);
+      const mainAxis = getOppositeAxis(crossAxis);
+      let mainAxisCoord = coords[mainAxis];
+      let crossAxisCoord = coords[crossAxis];
+      const clampCoord = (axis, coord) => clamp(coord + overflow[axis === 'y' ? 'top' : 'left'], coord, coord - overflow[axis === 'y' ? 'bottom' : 'right']);
+      if (checkMainAxis) {
+        mainAxisCoord = clampCoord(mainAxis, mainAxisCoord);
+      }
+      if (checkCrossAxis) {
+        crossAxisCoord = clampCoord(crossAxis, crossAxisCoord);
+      }
+      const limitedCoords = limiter.fn({
+        ...state,
+        [mainAxis]: mainAxisCoord,
+        [crossAxis]: crossAxisCoord
+      });
+      return {
+        ...limitedCoords,
+        data: {
+          x: limitedCoords.x - x,
+          y: limitedCoords.y - y,
+          enabled: {
+            [mainAxis]: checkMainAxis,
+            [crossAxis]: checkCrossAxis
+          }
         }
       };
     }
@@ -1919,6 +1994,13 @@ function autoUpdate(reference, floating, update, options) {
 const offset = offset$1;
 
 /**
+ * Optimizes the visibility of the floating element by shifting it in order to
+ * keep it in view when it will overflow the clipping boundary.
+ * @see https://floating-ui.com/docs/shift
+ */
+const shift = shift$1;
+
+/**
  * Optimizes the visibility of the floating element by flipping the `placement`
  * in order to keep it in view when the preferred placement(s) will overflow the
  * clipping boundary. Alternative to `autoPlacement`.
@@ -2498,6 +2580,230 @@ __decorate([
     n()
 ], TekTabs.prototype, "variant", void 0);
 customElements.define('tek-tabs', TekTabs);
+
+const BADGE_TYPES = ['neutral', 'blue', 'success', 'warning', 'error'];
+class TekBadge extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.type = 'neutral';
+    }
+    willUpdate() {
+        if (this.type && !BADGE_TYPES.includes(this.type)) {
+            console.warn(`<tek-badge> type="${this.type}" is not one of ${BADGE_TYPES.join(', ')}; falling back to neutral.`);
+            this.type = 'neutral';
+        }
+    }
+    render() {
+        return b `<slot></slot>`;
+    }
+}
+TekBadge.styles = i$4 `
+    :host {
+      display: inline-flex;
+      align-items: center;
+      padding: var(--tek-spacing-s02, 2px) var(--tek-spacing-s05, 8px);
+      border-radius: var(--tek-borders-radius-full, 9999px);
+      font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
+      font-size: var(--tek-fonts-text-size-xs, 10px);
+      line-height: var(--tek-fonts-text-line-height-xs, 12px);
+      white-space: nowrap;
+      background: var(--tek-color-badge-neutral-background, #333333);
+      color: var(--tek-color-badge-neutral-text, #cccccc);
+    }
+    :host([type='blue'])    { background: var(--tek-color-badge-blue-background, #33baea);    color: var(--tek-color-badge-blue-text, #1e1e1e); }
+    :host([type='success']) { background: var(--tek-color-badge-success-background, #42b54c); color: var(--tek-color-badge-success-text, #1e1e1e); }
+    :host([type='warning']) { background: var(--tek-color-badge-warning-background, #e0b732); color: var(--tek-color-badge-warning-text, #1e1e1e); }
+    :host([type='error'])   { background: var(--tek-color-badge-error-background, #e74848);   color: var(--tek-color-badge-error-text, #ffffff); }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekBadge.prototype, "type", void 0);
+customElements.define('tek-badge', TekBadge);
+
+class TekTooltip extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.content = '';
+        this.placement = 'top';
+        this.delay = 300;
+        this.open = false;
+        this.disabled = false;
+        this.panelId = `tek-tooltip-${++TekTooltip.idCounter}`;
+        this.scheduleShow = () => {
+            if (this.disabled || !this.content)
+                return;
+            clearTimeout(this.showTimer);
+            this.showTimer = setTimeout(() => this.show(), this.delay);
+        };
+        this.hide = () => {
+            clearTimeout(this.showTimer);
+            if (!this.open)
+                return;
+            this.open = false;
+            this.removeAttribute('aria-describedby');
+            document.removeEventListener('keydown', this.onKeyDown);
+            this.cleanupFloating?.();
+            this.cleanupFloating = undefined;
+        };
+        this.onKeyDown = (e) => {
+            if (e.key === 'Escape' && this.open)
+                this.hide();
+        };
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.addEventListener('mouseenter', this.scheduleShow);
+        this.addEventListener('mouseleave', this.hide);
+        this.addEventListener('focusin', this.scheduleShow);
+        this.addEventListener('focusout', this.hide);
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        this.hide();
+        this.removeEventListener('mouseenter', this.scheduleShow);
+        this.removeEventListener('mouseleave', this.hide);
+        this.removeEventListener('focusin', this.scheduleShow);
+        this.removeEventListener('focusout', this.hide);
+    }
+    show() {
+        if (this.open)
+            return;
+        this.open = true;
+        this.setAttribute('aria-describedby', this.panelId);
+        // Escape must dismiss even when focus is elsewhere (hover-open case)
+        document.addEventListener('keydown', this.onKeyDown);
+        const gap = parseFloat(getComputedStyle(this).getPropertyValue('--tek-spacing-s03')) || 4;
+        this.updateComplete.then(() => {
+            this.cleanupFloating = autoUpdate(this, this.panel, () => {
+                computePosition(this, this.panel, {
+                    placement: this.placement,
+                    middleware: [offset(gap), flip(), shift({ padding: 4 })]
+                }).then(({ x, y }) => {
+                    Object.assign(this.panel.style, { left: `${x}px`, top: `${y}px` });
+                });
+            });
+        });
+    }
+    render() {
+        return b `
+      <slot></slot>
+      <div class="panel" part="panel" id=${this.panelId} role="tooltip">${this.content}</div>
+    `;
+    }
+}
+TekTooltip.styles = i$4 `
+    :host {
+      display: inline-block;
+      position: relative;
+    }
+
+    .panel {
+      position: absolute;
+      z-index: 20;
+      display: none;
+      width: max-content;
+      max-width: 280px;
+      padding: var(--tek-spacing-s03, 4px) var(--tek-spacing-s05, 8px);
+      box-sizing: border-box;
+      background: var(--tek-color-menu-background-default, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-menu-border-default, #7b7b7b);
+      border-radius: var(--tek-borders-radius-03, 5px);
+      box-shadow: 0 4px 12px var(--tek-color-menu-shadow-default, rgba(0, 0, 0, 0.2));
+      font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
+      font-size: var(--tek-fonts-text-size-sm, 12px);
+      line-height: var(--tek-fonts-text-line-height-sm, 12px);
+      color: var(--tek-color-menu-text-default, #cccccc);
+      pointer-events: none;
+    }
+    :host([open]) .panel { display: block; }
+  `;
+TekTooltip.idCounter = 0;
+__decorate([
+    n()
+], TekTooltip.prototype, "content", void 0);
+__decorate([
+    n()
+], TekTooltip.prototype, "placement", void 0);
+__decorate([
+    n({ type: Number })
+], TekTooltip.prototype, "delay", void 0);
+__decorate([
+    n({ type: Boolean, reflect: true })
+], TekTooltip.prototype, "open", void 0);
+__decorate([
+    n({ type: Boolean })
+], TekTooltip.prototype, "disabled", void 0);
+__decorate([
+    e$1('.panel')
+], TekTooltip.prototype, "panel", void 0);
+customElements.define('tek-tooltip', TekTooltip);
+
+class TekSpinner extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.size = 'md';
+        this.tone = 'default';
+        this.paused = false;
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.setAttribute('role', 'status');
+        if (!this.hasAttribute('aria-label'))
+            this.setAttribute('aria-label', 'Loading');
+    }
+    render() {
+        return b `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" transform="rotate(-90 12 12)"></circle>
+      </svg>
+    `;
+    }
+}
+TekSpinner.styles = i$4 `
+    :host {
+      display: inline-block;
+      width: var(--tek-spacing-s11, 24px);
+      height: var(--tek-spacing-s11, 24px);
+      color: var(--tek-color-spinner-default, #33baea);
+    }
+    :host([size='sm']) { width: var(--tek-spacing-s09, 16px); height: var(--tek-spacing-s09, 16px); }
+    :host([size='lg']) { width: var(--tek-spacing-s15, 40px); height: var(--tek-spacing-s15, 40px); }
+    :host([tone='success']) { color: var(--tek-color-spinner-success, #42b54c); }
+    :host([tone='warning']) { color: var(--tek-color-spinner-warning, #e0b732); }
+    :host([tone='error'])   { color: var(--tek-color-spinner-error, #e74848); }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      animation: spin 1.2s linear infinite;
+    }
+    :host([paused]) svg { animation-play-state: paused; }
+    @media (prefers-reduced-motion: reduce) {
+      svg { animation: none; }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    circle {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: var(--tek-borders-width-04, 2px);
+      stroke-linecap: butt;
+      /* 270deg arc: 3/4 of circumference (2*pi*10 = 62.83) */
+      stroke-dasharray: 47.12 62.83;
+    }
+    :host([size='lg']) circle { stroke-width: var(--tek-borders-width-05, 3px); }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekSpinner.prototype, "size", void 0);
+__decorate([
+    n({ reflect: true })
+], TekSpinner.prototype, "tone", void 0);
+__decorate([
+    n({ type: Boolean, reflect: true })
+], TekSpinner.prototype, "paused", void 0);
+customElements.define('tek-spinner', TekSpinner);
 
 class TekCheckbox extends TekBaseSelector {
     constructor() {
@@ -3382,6 +3688,7 @@ TekFooter.styles = i$4 `
   `;
 customElements.define('tek-footer', TekFooter);
 
+exports.TekBadge = TekBadge;
 exports.TekBaseSelector = TekBaseSelector;
 exports.TekButton = TekButton;
 exports.TekCharacterCount = TekCharacterCount;
@@ -3398,9 +3705,11 @@ exports.TekRow = TekRow;
 exports.TekSelect = TekSelect;
 exports.TekSelector = TekSelector;
 exports.TekSelectorLabel = TekSelectorLabel;
+exports.TekSpinner = TekSpinner;
 exports.TekStack = TekStack;
 exports.TekTab = TekTab;
 exports.TekTabs = TekTabs;
 exports.TekTextLink = TekTextLink;
 exports.TekToggle = TekToggle;
+exports.TekTooltip = TekTooltip;
 //# sourceMappingURL=tek-ui.cjs.map
