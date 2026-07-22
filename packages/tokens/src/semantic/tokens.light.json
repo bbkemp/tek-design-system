@@ -409,6 +409,76 @@
           }
         }
       }
+    },
+    "badge": {
+      "neutral": {
+        "background": {
+          "$value": "{colors.neutral.200}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{colors.neutral.800}",
+          "$type": "color"
+        }
+      },
+      "blue": {
+        "background": {
+          "$value": "{colors.brand.tek-blue}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{colors.neutral.800}",
+          "$type": "color"
+        }
+      },
+      "success": {
+        "background": {
+          "$value": "{colors.ui.success-green}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{colors.neutral.800}",
+          "$type": "color"
+        }
+      },
+      "warning": {
+        "background": {
+          "$value": "{colors.ui.warning-yellow}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{colors.neutral.800}",
+          "$type": "color"
+        }
+      },
+      "error": {
+        "background": {
+          "$value": "{colors.ui.error-red}",
+          "$type": "color"
+        },
+        "text": {
+          "$value": "{colors.neutral.white}",
+          "$type": "color"
+        }
+      }
+    },
+    "spinner": {
+      "default": {
+        "$value": "{colors.brand.tek-blue}",
+        "$type": "color"
+      },
+      "success": {
+        "$value": "{colors.ui.success-green}",
+        "$type": "color"
+      },
+      "warning": {
+        "$value": "{colors.ui.warning-yellow}",
+        "$type": "color"
+      },
+      "error": {
+        "$value": "{colors.ui.error-red}",
+        "$type": "color"
+      }
     }
   }
 }
