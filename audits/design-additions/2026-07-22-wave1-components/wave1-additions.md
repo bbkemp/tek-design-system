@@ -54,6 +54,41 @@ Audit finding (2026-07-22): multi-line input already exists on both sides.
 - **Verified:** 8/8 behavioral checks (rows, min-heights, focus/filled state transitions, `tek-input` event, disabled). Harness: `prototypes/component-library/textarea-test.html`.
 - Building a separate `tek-textarea` would duplicate the trough and violate "if a component exists, use it." If arbitrary `rows` or autosize is ever needed, that's a `tek-input` enhancement, raised then — not speculative now.
 
+## 3. tek-tabs
+
+Built to the [rr-additions audit §3 spec](../2026-06-09-ds-v2-rr-component-additions/component-additions.md) (read in full first).
+
+### Figma
+
+| Set | Node ID | Variants |
+|---|---|---|
+| Tab | `8393:377` | Style = Pill / Nav × State = Inactive / Hover / Active / Disabled |
+| Tabs | `8393:395` | Orientation = Horizontal (pill group) / Vertical (nav) |
+
+- Pill container mirrors the input trough (container bg/border tokens, radius/full, width/01 stroke); text styles applied (`text/regular/sm` pill, `text/heading/regular/2xs` nav); nav accent bar width bound to `borders/width/05`.
+
+### New semantic tokens (12) — `color/tabs/*`
+
+Spec's token table reshaped to the `color/<component>/<part>/<state>` convention: `container/background|border`, `tab/text/inactive|active`, `tab/background/active|hover`, `nav/text/inactive|active`, `nav/background/active|hover`, `nav/accent/default`, `underline/border/active` (reserved).
+
+### Deviations from the spec (flagged, not silent)
+
+1. **Event renamed `tab-change` → `tek-change {value, previousValue}`** — every shipped component emits `tek-*` events; the spec predates that convention.
+2. **Underline variant deferred** — the spec itself marks it deferrable; the token is reserved, `variant="underline"` warns and falls back.
+3. **Alpha tints are raw values, not aliases** — Figma aliases can't carry opacity, so `tab/background/hover` (tek-blue 8%), `nav/background/active` (tek-blue 12%), `nav/background/hover` (n800 50%) hold RGBA derived from the live primitives. If the primitives change, these three need a manual touch — please review.
+4. **No disabled text token in the spec** — Disabled uses 50% opacity on the item. Flag if you want a real token.
+
+### Code
+
+- `packages/ui/src/tabs/tabs.ts` + `packages/ui/src/tab/tab.ts`. Roving tabindex, arrows (disabled-skipping + wrap), Home/End, Enter/Space, **manual activation** (focus ≠ select, per spec); parent assigns `data-style` pill/nav to items.
+- Verified: **13/13 behavioral checks** + screenshot matches spec anatomy. Harness: `prototypes/component-library/tabs-test.html`.
+
+### For Bryan
+
+- [ ] Convert the 2 Tabs `Content` frames to slots
+- [ ] Review the three raw-alpha tints (above) and the 50%-opacity disabled treatment
+- [ ] Publish → then Claude adds Code Connect for Tab/Tabs
+
 ## Still to come in wave 1
 
-tabs, badge, tooltip, spinner — same process (Figma-first, semantic tokens per component, blueprint-grounded Lit, behavioral verification). Note: `tek-tabs` has a full spec in [the rr-additions audit §3](../2026-06-09-ds-v2-rr-component-additions/component-additions.md) — read it before building.
+badge, tooltip, spinner — same process (Figma-first, semantic tokens per component, blueprint-grounded Lit, behavioral verification). Spinner also has an rr-audit spec (§7); tooltip should reuse the `color/menu/*` panel tokens.
