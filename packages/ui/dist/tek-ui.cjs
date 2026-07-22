@@ -2284,6 +2284,221 @@ __decorate([
 ], TekSelect.prototype, "menu", void 0);
 customElements.define('tek-select', TekSelect);
 
+class TekTab extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.value = '';
+        this.active = false;
+        this.disabled = false;
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.setAttribute('role', 'tab');
+    }
+    willUpdate() {
+        this.setAttribute('aria-selected', String(this.active));
+        if (this.disabled)
+            this.setAttribute('aria-disabled', 'true');
+        else
+            this.removeAttribute('aria-disabled');
+    }
+    render() {
+        return b `<slot></slot>`;
+    }
+}
+TekTab.styles = i$4 `
+    :host {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      box-sizing: border-box;
+      white-space: nowrap;
+      outline: none;
+    }
+
+    :host(:focus-visible) {
+      outline: 2px solid var(--tek-colors-brand-tek-blue, #33baea);
+      outline-offset: 1px;
+    }
+
+    :host([disabled]) {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* ---- pill (horizontal sub-tabs) ---- */
+    :host([data-style='pill']) {
+      padding: var(--tek-spacing-s05, 8px) var(--tek-spacing-s07, 12px);
+      border-radius: var(--tek-borders-radius-full, 9999px);
+      font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
+      font-size: var(--tek-fonts-text-size-sm, 12px);
+      line-height: var(--tek-fonts-text-line-height-sm, 12px);
+      color: var(--tek-color-tabs-tab-text-inactive, #979797);
+    }
+    :host([data-style='pill']:hover:not([active])) {
+      background: var(--tek-color-tabs-tab-background-hover, rgba(51, 186, 234, 0.08));
+    }
+    :host([data-style='pill'][active]) {
+      background: var(--tek-color-tabs-tab-background-active, #33baea);
+      color: var(--tek-color-tabs-tab-text-active, #1e1e1e);
+    }
+
+    /* ---- nav (vertical app navigation) ----
+       Figma Tab Style=Nav: Archivo SemiBold 14/22, +1% tracking; the active
+       accent is a flush, full-height bar on the tab's left edge (Bryan's
+       2026-07-22 call — the inset text-height bar was rejected). */
+    :host([data-style='nav']) {
+      padding: var(--tek-spacing-s06, 10px) var(--tek-spacing-s07, 12px);
+      border-left: var(--tek-borders-width-05, 3px) solid transparent;
+      font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
+      font-size: var(--tek-fonts-text-size-md, 13px);
+      line-height: var(--tek-fonts-text-line-height-md, 16px);
+      color: var(--tek-color-tabs-nav-text-inactive, #979797);
+    }
+    :host([data-style='nav']:hover:not([active])) {
+      background: var(--tek-color-tabs-nav-background-hover, rgba(30, 30, 30, 0.5));
+    }
+    :host([data-style='nav'][active]) {
+      border-left-color: var(--tek-color-tabs-nav-accent-default, #33baea);
+      background: var(--tek-color-tabs-nav-background-active, rgba(51, 186, 234, 0.12));
+      color: var(--tek-color-tabs-nav-text-active, #ffffff);
+    }
+  `;
+__decorate([
+    n()
+], TekTab.prototype, "value", void 0);
+__decorate([
+    n({ type: Boolean, reflect: true })
+], TekTab.prototype, "active", void 0);
+__decorate([
+    n({ type: Boolean, reflect: true })
+], TekTab.prototype, "disabled", void 0);
+customElements.define('tek-tab', TekTab);
+
+class TekTabs extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.orientation = 'horizontal';
+        this.variant = '';
+        this.syncTabs = () => {
+            const active = this.tabs.find(t => t.active) ?? this.enabledTabs[0];
+            for (const t of this.tabs) {
+                t.setAttribute('data-style', this.resolvedStyle);
+                t.tabIndex = t === active && !t.disabled ? 0 : -1;
+            }
+        };
+        this.onClick = (e) => {
+            const tab = e.target.closest?.('tek-tab');
+            if (tab && this.tabs.includes(tab))
+                this.select(tab);
+        };
+        this.onKeyDown = (e) => {
+            const tab = e.target.closest?.('tek-tab');
+            if (!tab)
+                return;
+            const tabs = this.enabledTabs;
+            const idx = tabs.indexOf(tab);
+            const { key } = e;
+            if (key === 'Enter' || key === ' ') {
+                e.preventDefault();
+                this.select(tab);
+                return;
+            }
+            let next;
+            if (key === 'ArrowRight' || key === 'ArrowDown')
+                next = tabs[(idx + 1) % tabs.length];
+            else if (key === 'ArrowLeft' || key === 'ArrowUp')
+                next = tabs[(idx - 1 + tabs.length) % tabs.length];
+            else if (key === 'Home')
+                next = tabs[0];
+            else if (key === 'End')
+                next = tabs[tabs.length - 1];
+            if (next) {
+                e.preventDefault();
+                for (const t of this.tabs)
+                    t.tabIndex = t === next ? 0 : -1;
+                next.focus();
+            }
+        };
+    }
+    get tabs() {
+        return Array.from(this.querySelectorAll('tek-tab'));
+    }
+    get enabledTabs() {
+        return this.tabs.filter(t => !t.disabled);
+    }
+    get value() {
+        return this.tabs.find(t => t.active)?.value ?? '';
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.setAttribute('role', 'tablist');
+        this.addEventListener('click', this.onClick);
+        this.addEventListener('keydown', this.onKeyDown);
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        this.removeEventListener('click', this.onClick);
+        this.removeEventListener('keydown', this.onKeyDown);
+    }
+    willUpdate() {
+        this.setAttribute('aria-orientation', this.orientation);
+        if (this.variant === 'underline') {
+            console.warn('<tek-tabs> variant="underline" is deferred (rr-audit §3); falling back to the orientation default.');
+            this.variant = '';
+        }
+    }
+    get resolvedStyle() {
+        return this.orientation === 'vertical' ? 'nav' : 'pill';
+    }
+    updated() {
+        this.syncTabs();
+    }
+    select(tab) {
+        if (tab.disabled || tab.active)
+            return;
+        const previousValue = this.value;
+        for (const t of this.tabs)
+            t.active = t === tab;
+        this.syncTabs();
+        this.dispatchEvent(new CustomEvent('tek-change', {
+            detail: { value: tab.value, previousValue }, bubbles: true, composed: true
+        }));
+    }
+    render() {
+        return b `<slot @slotchange=${this.syncTabs}></slot>`;
+    }
+}
+TekTabs.styles = i$4 `
+    :host {
+      display: inline-flex;
+      box-sizing: border-box;
+    }
+
+    :host([orientation='horizontal']) {
+      flex-direction: row;
+      gap: var(--tek-spacing-s02, 2px);
+      padding: var(--tek-spacing-s02, 2px);
+      background: var(--tek-color-tabs-container-background-default, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-tabs-container-border-default, #7b7b7b);
+      border-radius: var(--tek-borders-radius-full, 9999px);
+    }
+
+    :host([orientation='vertical']) {
+      flex-direction: column;
+      gap: var(--tek-spacing-s03, 4px);
+    }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekTabs.prototype, "orientation", void 0);
+__decorate([
+    n()
+], TekTabs.prototype, "variant", void 0);
+customElements.define('tek-tabs', TekTabs);
+
 class TekCheckbox extends TekBaseSelector {
     constructor() {
         super(...arguments);
@@ -3184,6 +3399,8 @@ exports.TekSelect = TekSelect;
 exports.TekSelector = TekSelector;
 exports.TekSelectorLabel = TekSelectorLabel;
 exports.TekStack = TekStack;
+exports.TekTab = TekTab;
+exports.TekTabs = TekTabs;
 exports.TekTextLink = TekTextLink;
 exports.TekToggle = TekToggle;
 //# sourceMappingURL=tek-ui.cjs.map
