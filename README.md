@@ -466,6 +466,9 @@ Breakpoints from Figma `Cxx` variables: xs=384px, sm=640px, xl=1280px.
 | Row (v2.02, ADR-0002) | 8377:373 | `packages/ui/src/row/row.ts` |
 | Grid (v2.02, ADR-0002) | 8377:446 | `packages/ui/src/grid/grid.ts` |
 | Page (v2.02, ADR-0002) | 8378:350 | `packages/ui/src/page/page.ts` |
+| Dropdown (v2.02, wave 1) | 8387:386 | `packages/ui/src/select/select.ts` |
+| DropdownItem (v2.02, wave 1) | 8386:346 | `packages/ui/src/option/option.ts` |
+| DropdownMenu (v2.02, wave 1) | 8386:347 | `packages/ui/src/select/select.ts` (menu part) |
 | Sign In — Mobile (dark) | 7134:600 | `prototypes/sign-in/index.html` |
 | Sign In — Tablet (dark) | 7135:638 | `prototypes/sign-in/index.html` |
 | Sign In — Desktop (dark) | 7134:598 | `prototypes/sign-in/index.html` |
