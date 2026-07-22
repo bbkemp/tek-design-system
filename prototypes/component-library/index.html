@@ -53,25 +53,25 @@
   --tek-fonts-heading-line-height-md: 32px;
 
   /* ── Color primitives — primitives/color.json ────────────── */
-  --tek-primitive-color-neutral-100:    #cccccc;
-  --tek-primitive-color-neutral-200:    #afafaf;
-  --tek-primitive-color-neutral-300:    #979797;
-  --tek-primitive-color-neutral-400:    #7b7b7b;
-  --tek-primitive-color-neutral-450:    #646464;
-  --tek-primitive-color-neutral-500:    #454545;
-  --tek-primitive-color-neutral-600:    #333333;
-  --tek-primitive-color-neutral-700:    #252525;
-  --tek-primitive-color-neutral-800:    #1e1e1e;
-  --tek-primitive-color-neutral-900:    #181818;
-  --tek-primitive-color-neutral-black:  #000000;
-  --tek-primitive-color-neutral-white:  #ffffff;
-  --tek-primitive-color-brand-tek-blue: #33baea;
-  --tek-primitive-color-ui-error:       #e74848;
-  --tek-primitive-color-ui-warning:     #e0b732;
-  --tek-primitive-color-ui-success:     #42b54c;
-  --tek-primitive-color-ui-shadow:      #00000033;
-  --tek-primitive-color-backdrop-dark:  #181818cc;
-  --tek-primitive-color-backdrop-light: #cccccccc;
+  --tek-colors-neutral-100:    #cccccc;
+  --tek-colors-neutral-200:    #afafaf;
+  --tek-colors-neutral-300:    #979797;
+  --tek-colors-neutral-400:    #7b7b7b;
+  --tek-colors-neutral-450:    #646464;
+  --tek-colors-neutral-500:    #454545;
+  --tek-colors-neutral-600:    #333333;
+  --tek-colors-neutral-700:    #252525;
+  --tek-colors-neutral-800:    #1e1e1e;
+  --tek-colors-neutral-900:    #181818;
+  --tek-colors-neutral-black:  #000000;
+  --tek-colors-neutral-white:  #ffffff;
+  --tek-colors-brand-tek-blue: #33baea;
+  --tek-colors-ui-error:       #e74848;
+  --tek-colors-ui-warning:     #e0b732;
+  --tek-colors-ui-success:     #42b54c;
+  --tek-colors-ui-shadow:      #00000033;
+  --tek-colors-backdrop-dark:  #181818cc;
+  --tek-colors-backdrop-light: #cccccccc;
 
   /* ── Semantic — dark defaults (semantic/tokens.json) ──────── */
   --tek-color-modal-background-default: #181818cc;
@@ -122,14 +122,14 @@
   --tek-color-icons-default:              #ffffff;
 
   /* ── Page chrome — doc-layer values, not component tokens ───── */
-  --cl-chrome-bg:         var(--tek-primitive-color-neutral-900);
+  --cl-chrome-bg:         var(--tek-colors-neutral-900);
   --cl-chrome-sidebar-bg: #0d0d0d;
   --cl-chrome-border:     #1f1f1f;
   --cl-preview-bar-bg:    #161616;
   --cl-preview-border:    #2a2a2a;
   --cl-code-bg:           #0d0d0d;
   --cl-divider:           #1a1a1a;
-  --cl-copy-btn-bg:       var(--tek-primitive-color-neutral-700);
+  --cl-copy-btn-bg:       var(--tek-colors-neutral-700);
   --cl-copy-btn-border:   #3a3a3a;
   --cl-token-row-hover:   #161616;
 }
@@ -181,7 +181,7 @@
 
 body {
   background: var(--cl-chrome-bg);
-  color: var(--tek-primitive-color-neutral-100);
+  color: var(--tek-colors-neutral-100);
   font-family: var(--tek-fonts-family-geist);
   font-size: var(--tek-fonts-text-size-lg);
   line-height: var(--tek-fonts-text-line-height-lg);
@@ -210,13 +210,13 @@ body {
   line-height: var(--tek-fonts-heading-line-height-xs);
   font-variation-settings: 'wdth' 120;
   letter-spacing: -0.02em;
-  color: var(--tek-primitive-color-neutral-white);
+  color: var(--tek-colors-neutral-white);
 }
 .sidebar-logo-sub {
   font-family: var(--tek-fonts-family-mono);
   font-size: var(--tek-fonts-text-size-xs);
   line-height: var(--tek-fonts-text-line-height-xs);
-  color: var(--tek-primitive-color-neutral-500);
+  color: var(--tek-colors-neutral-500);
   margin-top: 4px;
 }
 /* theme toggle in sidebar header */
@@ -238,19 +238,19 @@ body {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--tek-primitive-color-neutral-500);
+  color: var(--tek-colors-neutral-500);
 }
 .sidebar-link {
   display:block; padding: 6px 24px;
   font-family: var(--tek-fonts-family-geist);
   font-size: var(--tek-fonts-text-size-md);
   line-height: var(--tek-fonts-text-line-height-md);
-  color: var(--tek-primitive-color-neutral-400);
+  color: var(--tek-colors-neutral-400);
   text-decoration: none; cursor:pointer;
   transition: color 0.1s;
 }
-.sidebar-link:hover  { color: var(--tek-primitive-color-neutral-100); }
-.sidebar-link.active { color: var(--tek-primitive-color-brand-tek-blue); font-weight:500; }
+.sidebar-link:hover  { color: var(--tek-colors-neutral-100); }
+.sidebar-link.active { color: var(--tek-colors-brand-tek-blue); font-weight:500; }
 
 .main { padding: 48px 56px; max-width:900px; }
 .page-title {
@@ -260,14 +260,14 @@ body {
   line-height: 1;
   font-variation-settings: 'wdth' 120;
   letter-spacing: -0.03em;
-  color: var(--tek-primitive-color-neutral-white);
+  color: var(--tek-colors-neutral-white);
   margin-bottom: 8px;
 }
 .page-sub {
   font-family: var(--tek-fonts-family-geist);
   font-size: var(--tek-fonts-text-size-lg);
   line-height: var(--tek-fonts-text-line-height-lg);
-  color: var(--tek-primitive-color-neutral-400);
+  color: var(--tek-colors-neutral-400);
   margin-bottom: 56px;
   max-width: 480px;
 }
@@ -281,27 +281,27 @@ body {
   line-height: 28px;
   font-variation-settings: 'wdth' 120;
   letter-spacing: -0.02em;
-  color: var(--tek-primitive-color-neutral-white);
+  color: var(--tek-colors-neutral-white);
 }
 .section-tag {
   font-family: var(--tek-fonts-family-mono);
   font-size: var(--tek-fonts-text-size-xs);
   line-height: var(--tek-fonts-text-line-height-xs);
-  color: var(--tek-primitive-color-brand-tek-blue);
+  color: var(--tek-colors-brand-tek-blue);
   padding: 2px 8px;
-  border: 0.5px solid var(--tek-primitive-color-brand-tek-blue);
+  border: 0.5px solid var(--tek-colors-brand-tek-blue);
   border-radius: 3px;
   opacity: 0.7;
 }
 
-.preview-block { background: var(--tek-primitive-color-neutral-800); border: 0.5px solid var(--cl-preview-border); border-radius:8px 8px 0 0; overflow:hidden; }
+.preview-block { background: var(--tek-color-canvas-background-default, #1e1e1e); border: 0.5px solid var(--cl-preview-border); border-radius:8px 8px 0 0; overflow:hidden; }
 .preview-bar { display:flex; align-items:center; justify-content:space-between; padding:8px 16px; background: var(--cl-preview-bar-bg); border-bottom: 0.5px solid var(--cl-preview-border); }
-.preview-bar-label { font-family: var(--tek-fonts-family-mono); font-size: var(--tek-fonts-text-size-xs); color: var(--tek-primitive-color-neutral-500); letter-spacing:0.04em; }
+.preview-bar-label { font-family: var(--tek-fonts-family-mono); font-size: var(--tek-fonts-text-size-xs); color: var(--tek-colors-neutral-500); letter-spacing:0.04em; }
 .preview-canvas { padding:32px; display:flex; align-items:center; gap:32px; flex-wrap:wrap; }
 .preview-canvas.col { flex-direction:column; align-items:flex-start; gap:16px; }
 .preview-item { display:flex; flex-direction:column; align-items:center; gap:8px; }
 .preview-item.left { align-items:flex-start; min-width:260px; }
-.state-lbl { font-family: var(--tek-fonts-family-mono); font-size: var(--tek-fonts-text-size-xs); color: var(--tek-primitive-color-neutral-500); }
+.state-lbl { font-family: var(--tek-fonts-family-mono); font-size: var(--tek-fonts-text-size-xs); color: var(--tek-colors-neutral-500); }
 
 .code-wrap { position:relative; }
 .code-block {
@@ -313,14 +313,14 @@ body {
   font-family: var(--tek-fonts-family-mono);
   font-size: var(--tek-fonts-text-size-sm);
   line-height: 1.7;
-  color: var(--tek-primitive-color-neutral-300);
+  color: var(--tek-colors-neutral-300);
   overflow-x: auto;
   white-space: pre;
 }
-.kw   { color: var(--tek-primitive-color-brand-tek-blue); }
+.kw   { color: var(--tek-colors-brand-tek-blue); }
 .str  { color: #a8d8a8; }
 .attr { color: #f0c674; }
-.cmt  { color: var(--tek-primitive-color-neutral-500); }
+.cmt  { color: var(--tek-colors-neutral-500); }
 .copy-btn {
   position:absolute; top:10px; right:12px;
   font-family: var(--tek-fonts-family-mono);
@@ -329,10 +329,10 @@ body {
   background: var(--cl-copy-btn-bg);
   border: 0.5px solid var(--cl-copy-btn-border);
   border-radius: 4px;
-  color: var(--tek-primitive-color-neutral-300);
+  color: var(--tek-colors-neutral-300);
   cursor:pointer; transition:all 0.15s;
 }
-.copy-btn:hover  { background: var(--tek-primitive-color-neutral-500); color: var(--tek-primitive-color-neutral-white); }
+.copy-btn:hover  { background: var(--tek-colors-neutral-500); color: var(--tek-colors-neutral-white); }
 .copy-btn.copied { color: #a8d8a8; border-color: #a8d8a8; }
 
 .divider { border:none; border-top: 0.5px solid var(--cl-divider); margin:40px 0; }
@@ -343,7 +343,7 @@ body {
   text-align:left; padding:6px 12px;
   font-family: var(--tek-fonts-family-mono);
   font-size: var(--tek-fonts-text-size-xs);
-  color: var(--tek-primitive-color-neutral-500);
+  color: var(--tek-colors-neutral-500);
   border-bottom: 0.5px solid var(--cl-preview-border);
   font-weight:400;
 }
@@ -352,20 +352,26 @@ body {
   border-bottom: 0.5px solid var(--cl-divider);
   font-family: var(--tek-fonts-family-mono);
   font-size: var(--tek-fonts-text-size-xs);
-  color: var(--tek-primitive-color-neutral-400);
+  color: var(--tek-colors-neutral-400);
   vertical-align:middle;
 }
 .token-table tr:hover td { background: var(--cl-token-row-hover); }
 .swatch { display:inline-block; width:10px; height:10px; border-radius:2px; border: 0.5px solid var(--cl-copy-btn-border); margin-right:6px; vertical-align:middle; }
-.token-name  { color: var(--tek-primitive-color-neutral-200); }
-.token-group td { color: var(--tek-primitive-color-neutral-700); padding:8px 12px; font-size:9px; letter-spacing:0.08em; text-transform:uppercase; }
+.token-name  { color: var(--tek-colors-neutral-200); }
+.token-group td { color: var(--tek-colors-neutral-700); padding:8px 12px; font-size:9px; letter-spacing:0.08em; text-transform:uppercase; }
 
 code {
   font-family: var(--tek-fonts-family-mono);
   font-size: var(--tek-fonts-text-size-sm);
-  color: var(--tek-primitive-color-brand-tek-blue);
+  color: var(--tek-colors-brand-tek-blue);
 }
 </style>
+
+<!-- Real built packages — this page is an integration test like the sign-in pages.
+     The inline :root token block above is a legacy snapshot; the built stylesheet
+     below overrides it in cascade order. -->
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+<script type="module" src="../../packages/ui/dist/tek-ui.js?v=w1"></script>
 </head>
 <body>
 <div class="shell">
@@ -389,12 +395,21 @@ code {
       <a class="sidebar-link" onclick="nav(event,'selector-label')">SelectorLabel</a>
       <a class="sidebar-link" onclick="nav(event,'selector')">Selector</a>
       <span class="sidebar-section">Forms</span>
+      <a class="sidebar-link" onclick="nav(event,'label')">Label</a>
       <a class="sidebar-link" onclick="nav(event,'input')">Input</a>
+      <a class="sidebar-link" onclick="nav(event,'select')">Select</a>
       <a class="sidebar-link" onclick="nav(event,'charcount')">CharacterCount</a>
       <a class="sidebar-link" onclick="nav(event,'textlink')">TextLink</a>
       <span class="sidebar-section">Actions</span>
       <a class="sidebar-link" onclick="nav(event,'button')">Button</a>
+      <span class="sidebar-section">Navigation</span>
+      <a class="sidebar-link" onclick="nav(event,'tabs')">Tabs</a>
+      <span class="sidebar-section">Display</span>
+      <a class="sidebar-link" onclick="nav(event,'badge')">Badge</a>
+      <a class="sidebar-link" onclick="nav(event,'tooltip')">Tooltip</a>
+      <a class="sidebar-link" onclick="nav(event,'spinner')">Spinner</a>
       <span class="sidebar-section">Layout</span>
+      <a class="sidebar-link" onclick="nav(event,'layout')">Primitives</a>
       <a class="sidebar-link" onclick="nav(event,'modal')">Modal</a>
       <a class="sidebar-link" onclick="nav(event,'footer')">Footer</a>
       <span class="sidebar-section">Reference</span>
@@ -607,7 +622,7 @@ el.addEventListener(<span class="str">'tek-click'</span>, () <span class="kw">=&
       <div class="section-header"><h2 class="section-title">Modal</h2><span class="section-tag">tek-modal</span></div>
       <div class="preview-block">
         <div class="preview-bar"><span class="preview-bar-label">sign in — as designed in Figma</span></div>
-        <div class="preview-canvas" style="background:var(--tek-primitive-color-neutral-800);justify-content:center;">
+        <div class="preview-canvas" style="background:var(--tek-color-canvas-background-default,#1e1e1e);justify-content:center;">
           <tek-modal>
             <span slot="header">Sign In</span>
             <div slot="input-blocks" style="display:flex;flex-direction:column;gap:10px;width:100%;">
@@ -674,6 +689,132 @@ el.addEventListener(<span class="str">'tek-click'</span>, () <span class="kw">=&
     <hr class="divider">
 
     <!-- TOKEN REFERENCE -->
+    <section class="section" id="label">
+      <div class="section-header"><h2 class="section-title">Label</h2><span class="section-tag">tek-label</span></div>
+      <div class="preview-canvas">
+        <div class="preview-row">
+          <div class="preview-item left" style="width:220px"><tek-label>Email</tek-label><div class="state-lbl">Default</div></div>
+          <div class="preview-item left" style="width:220px"><tek-label optional>Email</tek-label><div class="state-lbl">Optional</div></div>
+          <div class="preview-item left" style="width:220px"><tek-label helper-text="Must be 8+ characters">Password</tek-label><div class="state-lbl">Helper</div></div>
+          <div class="preview-item left" style="width:220px"><tek-label char-count="10/52">Message</tek-label><div class="state-lbl">Char count</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="select">
+      <div class="section-header"><h2 class="section-title">Select</h2><span class="section-tag">tek-select · tek-option</span></div>
+      <div class="preview-canvas">
+        <div class="preview-row">
+          <div class="preview-item left" style="width:240px">
+            <tek-select placeholder="Select a channel">
+              <tek-option value="ch1">Channel 1</tek-option>
+              <tek-option value="ch2">Channel 2</tek-option>
+              <tek-option value="ch3" disabled>Channel 3 (unavailable)</tek-option>
+              <tek-option value="math">Math</tek-option>
+            </tek-select>
+            <div class="state-lbl">Interactive — keyboard: arrows, typeahead, Esc</div>
+          </div>
+          <div class="preview-item left" style="width:240px"><tek-select error placeholder="Select a channel"></tek-select><div class="state-lbl">Error</div></div>
+          <div class="preview-item left" style="width:240px"><tek-select disabled placeholder="Select a channel"></tek-select><div class="state-lbl">Disabled</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tabs">
+      <div class="section-header"><h2 class="section-title">Tabs</h2><span class="section-tag">tek-tabs · tek-tab</span></div>
+      <div class="preview-canvas">
+        <div class="preview-row">
+          <div class="preview-item left">
+            <tek-tabs orientation="horizontal" aria-label="Demo sub-tabs">
+              <tek-tab value="config" active>Configuration</tek-tab>
+              <tek-tab value="view">View Settings</tek-tab>
+              <tek-tab value="export" disabled>Export</tek-tab>
+            </tek-tabs>
+            <div class="state-lbl">Horizontal (pill)</div>
+          </div>
+          <div class="preview-item left">
+            <tek-tabs orientation="vertical" aria-label="Demo app nav">
+              <tek-tab value="setup" active>Setup</tek-tab>
+              <tek-tab value="status">Status</tek-tab>
+              <tek-tab value="results">Results</tek-tab>
+              <tek-tab value="reports">Reports</tek-tab>
+            </tek-tabs>
+            <div class="state-lbl">Vertical (nav)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="badge">
+      <div class="section-header"><h2 class="section-title">Badge</h2><span class="section-tag">tek-badge</span></div>
+      <div class="preview-canvas">
+        <div class="preview-row">
+          <div class="preview-item"><tek-badge>Neutral</tek-badge><div class="state-lbl">Neutral</div></div>
+          <div class="preview-item"><tek-badge type="blue">Blue</tek-badge><div class="state-lbl">Blue</div></div>
+          <div class="preview-item"><tek-badge type="success">Passing</tek-badge><div class="state-lbl">Success</div></div>
+          <div class="preview-item"><tek-badge type="warning">Degraded</tek-badge><div class="state-lbl">Warning</div></div>
+          <div class="preview-item"><tek-badge type="error">Failed</tek-badge><div class="state-lbl">Error</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tooltip">
+      <div class="section-header"><h2 class="section-title">Tooltip</h2><span class="section-tag">tek-tooltip</span></div>
+      <div class="preview-canvas">
+        <div class="preview-row">
+          <div class="preview-item">
+            <tek-tooltip content="Saves the current setup">
+              <tek-button>Hover me</tek-button>
+            </tek-tooltip>
+            <div class="state-lbl">Hover / focus · Esc dismisses</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="spinner">
+      <div class="section-header"><h2 class="section-title">Spinner</h2><span class="section-tag">tek-spinner</span></div>
+      <div class="preview-canvas">
+        <div class="preview-row">
+          <div class="preview-item"><tek-spinner size="sm"></tek-spinner><div class="state-lbl">sm</div></div>
+          <div class="preview-item"><tek-spinner></tek-spinner><div class="state-lbl">md</div></div>
+          <div class="preview-item"><tek-spinner size="lg"></tek-spinner><div class="state-lbl">lg</div></div>
+          <div class="preview-item"><tek-spinner size="lg" tone="success"></tek-spinner><div class="state-lbl">success</div></div>
+          <div class="preview-item"><tek-spinner size="lg" tone="warning"></tek-spinner><div class="state-lbl">warning</div></div>
+          <div class="preview-item"><tek-spinner size="lg" tone="error" paused></tek-spinner><div class="state-lbl">error · paused</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="layout">
+      <div class="section-header"><h2 class="section-title">Layout Primitives</h2><span class="section-tag">tek-stack · tek-row · tek-grid · tek-page</span></div>
+      <div class="preview-canvas">
+        <div class="preview-row">
+          <div class="preview-item left">
+            <tek-stack gap="s05" style="width:120px">
+              <div class="layout-ph"></div><div class="layout-ph"></div><div class="layout-ph"></div>
+            </tek-stack>
+            <div class="state-lbl">tek-stack gap="s05"</div>
+          </div>
+          <div class="preview-item left">
+            <tek-row gap="s05">
+              <div class="layout-ph" style="width:56px"></div><div class="layout-ph" style="width:56px"></div><div class="layout-ph" style="width:56px"></div>
+            </tek-row>
+            <div class="state-lbl">tek-row gap="s05"</div>
+          </div>
+          <div class="preview-item left">
+            <tek-grid columns="3" gap="s05" style="width:220px">
+              <div class="layout-ph"></div><div class="layout-ph"></div><div class="layout-ph"></div>
+              <div class="layout-ph"></div><div class="layout-ph"></div><div class="layout-ph"></div>
+            </tek-grid>
+            <div class="state-lbl">tek-grid columns="3"</div>
+          </div>
+        </div>
+        <div class="state-lbl" style="margin-top:8px">Gap accepts spacing token steps only (s02–s09, s11) — never raw px. tek-page frames whole pages (see the sign-in prototypes).</div>
+      </div>
+      <style>.layout-ph{height:28px;background:var(--tek-colors-neutral-600,#333);border-radius:var(--tek-borders-radius-03,5px);}</style>
+    </section>
+
     <section class="section" id="tokens">
       <div class="section-header"><h2 class="section-title">Token reference</h2><span class="section-tag">@bbkemp/tokens v1.0</span></div>
       <table class="token-table">
@@ -764,241 +905,9 @@ el.addEventListener(<span class="str">'tek-click'</span>, () <span class="kw">=&
 </div>
 
 <!-- ============================================================
-  @bbkemp/ui — Web Components — in production: import '@bbkemp/ui'
-  Inline definitions identical to packages/ui/src/.
-  CSS custom properties cascade through shadow DOM boundaries.
+  Components load from packages/ui/dist (see head) — no inline copies.
 ============================================================ -->
 <script>
-const SDR = `*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }`;
-
-customElements.define('tek-checkbox', class extends HTMLElement {
-  static get observedAttributes() { return ['checked','error','disabled']; }
-  connectedCallback() {
-    this._s = this.attachShadow({mode:'open'});
-    this.addEventListener('click', () => {
-      if (this.hasAttribute('disabled')) return;
-      this.hasAttribute('checked') ? this.removeAttribute('checked') : this.setAttribute('checked','');
-      this.dispatchEvent(new CustomEvent('tek-change',{bubbles:true,composed:true,detail:{checked:this.hasAttribute('checked')}}));
-    });
-    this._render();
-  }
-  attributeChangedCallback() { if (this._s) this._render(); }
-  _render() {
-    const checked=this.hasAttribute('checked'), error=this.hasAttribute('error'), disabled=this.hasAttribute('disabled');
-    const bc = error ? 'var(--tek-color-selector-border-error,#e74848)'
-               : checked ? 'var(--tek-color-selector-border-checked,#979797)'
-               : 'var(--tek-color-selector-border-unchecked,#7b7b7b)';
-    this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;flex-shrink:0;cursor:${disabled?'not-allowed':'pointer'};opacity:${disabled?'0.4':'1'};}
-.box{width:16px;height:16px;border-radius:3px;background:var(--tek-color-selector-background-default,#252525);border:0.5px solid ${bc};display:flex;align-items:center;justify-content:center;}</style>
-<div class="box">${checked?`<svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="var(--tek-color-icons-default,#fff)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}</div>`;
-  }
-});
-
-customElements.define('tek-radio', class extends HTMLElement {
-  static get observedAttributes() { return ['checked','error','disabled']; }
-  connectedCallback() {
-    this._s = this.attachShadow({mode:'open'});
-    this.addEventListener('click', () => {
-      if (this.hasAttribute('disabled') || this.hasAttribute('checked')) return;
-      const n = this.getAttribute('name');
-      if (n) document.querySelectorAll(`tek-radio[name="${n}"]`).forEach(r => r.removeAttribute('checked'));
-      this.setAttribute('checked','');
-      this.dispatchEvent(new CustomEvent('tek-change',{bubbles:true,composed:true,detail:{checked:true}}));
-    });
-    this._render();
-  }
-  attributeChangedCallback() { if (this._s) this._render(); }
-  _render() {
-    const checked=this.hasAttribute('checked'), error=this.hasAttribute('error'), disabled=this.hasAttribute('disabled');
-    const bc = error ? 'var(--tek-color-selector-border-error,#e74848)'
-               : checked ? 'var(--tek-color-selector-border-checked,#979797)'
-               : 'var(--tek-color-selector-border-unchecked,#7b7b7b)';
-    this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;flex-shrink:0;cursor:${disabled?'not-allowed':'pointer'};opacity:${disabled?'0.4':'1'};}
-.ring{width:16px;height:16px;border-radius:50%;background:var(--tek-color-selector-background-default,#252525);border:0.5px solid ${bc};display:flex;align-items:center;justify-content:center;}
-.dot{width:10px;height:10px;border-radius:50%;background:var(--tek-color-selector-background-checked,#cccccc);}</style>
-<div class="ring">${checked?'<div class="dot"></div>':''}</div>`;
-  }
-});
-
-customElements.define('tek-toggle', class extends HTMLElement {
-  static get observedAttributes() { return ['checked','error','disabled']; }
-  connectedCallback() {
-    this._s = this.attachShadow({mode:'open'});
-    this.addEventListener('click', () => {
-      if (this.hasAttribute('disabled')) return;
-      this.hasAttribute('checked') ? this.removeAttribute('checked') : this.setAttribute('checked','');
-      this.dispatchEvent(new CustomEvent('tek-change',{bubbles:true,composed:true,detail:{checked:this.hasAttribute('checked')}}));
-    });
-    this._render();
-  }
-  attributeChangedCallback() { if (this._s) this._render(); }
-  _render() {
-    const checked=this.hasAttribute('checked'), error=this.hasAttribute('error'), disabled=this.hasAttribute('disabled');
-    const tbc = error ? 'var(--tek-color-selector-border-error,#e74848)'
-                : checked ? 'var(--tek-color-selector-border-checked,#979797)'
-                : 'var(--tek-color-selector-border-unchecked,#7b7b7b)';
-    const thumbBg = checked ? 'var(--tek-color-selector-background-checked,#cccccc)'
-                            : 'var(--tek-color-selector-background-unchecked,#454545)';
-    const thumbBorder = (error||!checked) ? `0.5px solid ${error?'var(--tek-color-selector-border-error,#e74848)':'var(--tek-color-selector-border-unchecked,#7b7b7b)'}` : 'none';
-    this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;cursor:${disabled?'not-allowed':'pointer'};opacity:${disabled?'0.4':'1'};}
-.track{width:28px;height:14px;border-radius:9999px;background:var(--tek-color-selector-background-default,#252525);border:0.5px solid ${tbc};position:relative;}
-.thumb{position:absolute;top:0;left:${checked?'14px':'0px'};width:14px;height:14px;border-radius:50%;background:${thumbBg};border:${thumbBorder};transition:left 0.15s,background 0.15s;}</style>
-<div class="track"><div class="thumb"></div></div>`;
-  }
-});
-
-customElements.define('tek-selector-label', class extends HTMLElement {
-  static get observedAttributes() { return ['checked','error']; }
-  connectedCallback() { this._s = this.attachShadow({mode:'open'}); this._render(); }
-  attributeChangedCallback() { if (this._s) this._render(); }
-  _render() {
-    const checked=this.hasAttribute('checked'), error=this.hasAttribute('error');
-    const color = error ? 'var(--tek-color-selector-label-error,#ffffff)'
-                 : checked ? 'var(--tek-color-selector-label-checked,#ffffff)'
-                 : 'var(--tek-color-selector-label-unchecked,#cccccc)';
-    /* display:inline-flex so this aligns correctly as a flex child in tek-selector */
-    this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;}span{font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-sm,12px);line-height:var(--tek-fonts-text-line-height-sm,12px);letter-spacing:0.01em;font-weight:400;color:${color};transition:color 0.15s;}</style><span><slot></slot></span>`;
-  }
-});
-
-customElements.define('tek-selector', class extends HTMLElement {
-  static get observedAttributes() { return ['type','label','checked','error','disabled','name']; }
-  connectedCallback() {
-    this._s = this.attachShadow({mode:'open'});
-    this._render();
-    this._s.addEventListener('click', (e) => {
-      if (this.hasAttribute('disabled')) return;
-      const ctrl = this._s.querySelector('tek-checkbox,tek-radio,tek-toggle');
-      if (ctrl && e.composedPath().includes(ctrl)) return;
-      ctrl?.click();
-    });
-  }
-  attributeChangedCallback() { if (this._s) this._render(); }
-  _render() {
-    const type=this.getAttribute('type')||'checkbox', label=this.getAttribute('label')||'';
-    const checked=this.hasAttribute('checked')?'checked':'', error=this.hasAttribute('error')?'error':'';
-    const disabled=this.hasAttribute('disabled')?'disabled':'', name=this.getAttribute('name')?`name="${this.getAttribute('name')}"`:'' ;
-    this._s.innerHTML = `<style>${SDR}:host{display:inline-flex;align-items:center;gap:8px;cursor:${disabled?'not-allowed':'pointer'};user-select:none;}</style>
-<tek-${type} ${checked} ${error} ${disabled} ${name}></tek-${type}>
-<tek-selector-label ${checked} ${error}>${label}</tek-selector-label>`;
-    const ctrl=this._s.querySelector(`tek-${type}`), lbl=this._s.querySelector('tek-selector-label');
-    ctrl?.addEventListener('tek-change', (e) => {
-      e.detail.checked ? lbl.setAttribute('checked','') : lbl.removeAttribute('checked');
-      this.dispatchEvent(new CustomEvent('tek-change',{bubbles:true,composed:true,detail:e.detail}));
-    });
-  }
-});
-
-customElements.define('tek-input', class extends HTMLElement {
-  static get observedAttributes() { return ['state','height','placeholder','value','type']; }
-  connectedCallback() {
-    this._s = this.attachShadow({mode:'open'});
-    this._st = this.getAttribute('state') || 'default';
-    this._render();
-    this._s.addEventListener('focus', () => {
-      if (this._st === 'default') { this._st = 'focus'; this._applyStyle(); }
-    }, true);
-    this._s.addEventListener('blur', () => {
-      if (this._st !== 'error' && this._st !== 'disabled') {
-        const el = this._s.querySelector('input,textarea');
-        this._st = el?.value ? 'filled' : 'default';
-        this._applyStyle();
-      }
-    }, true);
-    this._s.addEventListener('input', () => {
-      const el = this._s.querySelector('input,textarea');
-      this.dispatchEvent(new CustomEvent('tek-input',{bubbles:true,composed:true,detail:{value:el?.value||''}}));
-    });
-  }
-  attributeChangedCallback(name, _, val) {
-    if (!this._s) return;
-    if (name === 'state') { this._st = val || 'default'; this._applyStyle(); }
-    else this._render();
-  }
-  _bc(s){return ({default:'var(--tek-color-input-border-default,#7b7b7b)',focus:'var(--tek-color-input-border-focus,#fff)',filled:'var(--tek-color-input-border-filled,#afafaf)',disabled:'var(--tek-color-input-border-disabled,#454545)',error:'var(--tek-color-input-border-error,#e74848)'})[s]||'var(--tek-color-input-border-default,#7b7b7b)';}
-  _tc(s){return ({default:'var(--tek-color-input-text-default,#979797)',focus:'var(--tek-color-input-text-focus,#fff)',filled:'var(--tek-color-input-text-filled,#cccccc)',disabled:'var(--tek-color-input-text-disabled,#454545)',error:'var(--tek-color-input-text-error,#fff)'})[s]||'var(--tek-color-input-text-default,#979797)';}
-  _css(s){return `${SDR}:host{display:block;cursor:${s==='disabled'?'not-allowed':'text'};}input,textarea{display:block;width:100%;background:var(--tek-color-input-background-default,#252525);border:0.5px solid ${this._bc(s)};border-radius:5px;padding:8px 4px 8px 10px !important;font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-lg,14px);line-height:var(--tek-fonts-text-line-height-lg,20px);letter-spacing:0.01em;color:${this._tc(s)};outline:none;resize:vertical;pointer-events:${s==='disabled'?'none':'auto'};}input::placeholder,textarea::placeholder{color:${this._tc(s)};opacity:0.7;}`;}
-  _applyStyle(){const sEl=this._s.querySelector('style');if(sEl)sEl.textContent=this._css(this._st||'default');}
-  _render(){
-    const s=this._st||'default', h=this.getAttribute('height')||'single';
-    const ph=this.getAttribute('placeholder')||'', val=this.getAttribute('value')||'', type=this.getAttribute('type')||'text';
-    const rows=h==='double'?2:h==='triple'?3:1;
-    const ac=type==='password'?'current-password':type==='email'?'email':'off';
-    const field=h!=='single'?`<textarea rows="${rows}" placeholder="${ph}">${val}</textarea>`:`<input type="${type}" placeholder="${ph}" value="${val}" autocomplete="${ac}">`;
-    this._s.innerHTML=`<style>${this._css(s)}</style>${field}`;
-  }
-});
-
-customElements.define('tek-character-count', class extends HTMLElement {
-  static get observedAttributes() { return ['count','max','state']; }
-  connectedCallback() { this._s = this.attachShadow({mode:'open'}); this._render(); }
-  attributeChangedCallback() { if (this._s) this._render(); }
-  _render() {
-    const count=parseInt(this.getAttribute('count')||'0'), max=parseInt(this.getAttribute('max')||'52'), state=this.getAttribute('state')||'default';
-    const colors={default:'var(--tek-color-input-character-count-default,#cccccc)',focus:'var(--tek-color-input-character-count-focus,#ffffff)',filled:'var(--tek-color-input-character-count-filled,#afafaf)',warning:'var(--tek-color-input-character-count-warning,#e0b732)',error:'var(--tek-color-input-character-count-error,#e74848)'};
-    const color=(state==='error'||count>max)?colors.error:state==='warning'?colors.warning:colors[state]||colors.default;
-    this._s.innerHTML = `<style>${SDR}:host{display:inline-block;}span{font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-xs,10px);line-height:var(--tek-fonts-text-line-height-xs,12px);letter-spacing:0.01em;color:${color};}</style><span>${count}/${max}</span>`;
-  }
-});
-
-customElements.define('tek-text-link', class extends HTMLElement {
-  static get observedAttributes() { return ['href','target']; }
-  connectedCallback() { this._s = this.attachShadow({mode:'open'}); this._render(); }
-  attributeChangedCallback() { if (this._s) this._render(); }
-  _render() {
-    const href=this.getAttribute('href')||'#', target=this.getAttribute('target')||'';
-    this._s.innerHTML = `<style>${SDR}:host{display:inline;}a{font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-xs,10px);line-height:var(--tek-fonts-text-line-height-xs,12px);letter-spacing:0.01em;color:var(--tek-color-text-link-default,#33baea);text-decoration:none;}a:hover{text-decoration:underline;text-underline-offset:2px;}</style>
-<a href="${href}"${target?` target="${target}"`:''} ><slot></slot></a>`;
-  }
-});
-
-customElements.define('tek-button', class extends HTMLElement {
-  static get observedAttributes() { return ['inactive','disabled']; }
-  connectedCallback() {
-    this._s = this.attachShadow({mode:'open'});
-    this.setAttribute('role','button');
-    this.addEventListener('click', () => {
-      if (this.hasAttribute('inactive')||this.hasAttribute('disabled')) return;
-      this.dispatchEvent(new CustomEvent('tek-click',{bubbles:true,composed:true}));
-    });
-    this._render();
-  }
-  attributeChangedCallback() { if (this._s) this._render(); }
-  _render() {
-    const inactive=this.hasAttribute('inactive')||this.hasAttribute('disabled');
-    const bg=inactive?'var(--tek-color-button-background-inactive,#181818)':'var(--tek-color-button-background-default,#1e1e1e)';
-    const border=inactive?'var(--tek-color-button-border-inactive,#454545)':'var(--tek-color-button-border-default,#33baea)';
-    const color=inactive?'var(--tek-color-button-text-inactive,#454545)':'var(--tek-color-button-text-default,#cccccc)';
-    this._s.innerHTML = `<style>${SDR}:host{display:inline-block;}button{background:${bg};border:1px solid ${border};border-radius:9999px;padding:10px 24px !important;font-family:var(--tek-fonts-family-archivo,'Archivo',sans-serif);font-size:var(--tek-fonts-heading-size-xs,16px);line-height:var(--tek-fonts-heading-line-height-xs,24px);font-weight:600;font-variation-settings:'wdth' 120;letter-spacing:0.01em;color:${color};cursor:${inactive?'not-allowed':'pointer'};transition:all 0.15s;white-space:nowrap;width:100%;}
-button:not(:disabled):hover{background:var(--tek-color-button-background-hover,#000);color:var(--tek-color-button-text-hover,#fff);}
-button:focus-visible{outline:2px solid var(--tek-color-button-border-default,#33baea);outline-offset:2px;}</style>
-<button ${inactive?'disabled':''}><slot></slot></button>`;
-  }
-});
-
-customElements.define('tek-modal', class extends HTMLElement {
-  connectedCallback() {
-    this._s = this.attachShadow({mode:'open'});
-    this._s.innerHTML = `<style>${SDR}:host{display:flex;flex-direction:column;gap:14px;background:var(--tek-color-modal-background-default,#181818cc);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:0.25px solid var(--tek-color-modal-border-default,#7b7b7b);border-radius:11px;padding:32px !important;width:100%;max-width:360px;box-shadow:0px 2px 6px 0px var(--tek-color-modal-shadow-default,#00000033);}
-.hd{font-family:var(--tek-fonts-family-archivo,'Archivo',sans-serif);font-size:var(--tek-fonts-heading-size-md,24px);line-height:var(--tek-fonts-heading-line-height-md,32px);font-weight:600;font-variation-settings:'wdth' 120;letter-spacing:0.01em;color:var(--tek-color-modal-text-default,#fff);}
-.in,.ac{display:flex;flex-direction:column;gap:10px;width:100%;}</style>
-<div class="hd"><slot name="header"></slot></div>
-<div class="in"><slot name="input-blocks"></slot></div>
-<div class="ac"><slot name="action-blocks"></slot></div>`;
-  }
-});
-
-customElements.define('tek-footer', class extends HTMLElement {
-  connectedCallback() {
-    this._s = this.attachShadow({mode:'open'});
-    this._s.innerHTML = `<style>${SDR}:host{display:flex;align-items:center;width:100%;height:36px;padding:12px 16px !important;background:var(--tek-color-footer-background-default,#252525);gap:8px;}
-.left{display:flex;align-items:center;gap:4px;flex-shrink:0;}
-.right{flex:1 0 0;font-family:var(--tek-fonts-family-geist,'Geist',system-ui,sans-serif);font-size:var(--tek-fonts-text-size-md,13px);line-height:var(--tek-fonts-text-line-height-md,16px);letter-spacing:0.01em;color:var(--tek-color-footer-text-default,#cccccc);text-align:right;}</style>
-<div class="left"><slot name="left"></slot></div>
-<div class="right"><slot></slot></div>`;
-  }
-});
-
 // Interactive demos
 document.getElementById('cb-interactive').addEventListener('tek-change', e => {
   document.getElementById('cb-lbl').textContent = e.detail.checked ? 'checked ✓' : 'click me';
