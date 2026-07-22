@@ -100,6 +100,8 @@
   <SolidColorBrush x:Key="TekBrushFooterTextDefault" Color="{StaticResource TekColorFooterTextDefault}"/>
   <Color x:Key="TekColorCanvasBackgroundDefault">#FF1E1E1E</Color>
   <SolidColorBrush x:Key="TekBrushCanvasBackgroundDefault" Color="{StaticResource TekColorCanvasBackgroundDefault}"/>
+  <Color x:Key="TekColorCanvasBackgroundRaised">#FF252525</Color>
+  <SolidColorBrush x:Key="TekBrushCanvasBackgroundRaised" Color="{StaticResource TekColorCanvasBackgroundRaised}"/>
   <Color x:Key="TekColorSelectBackgroundDefault">#FF252525</Color>
   <SolidColorBrush x:Key="TekBrushSelectBackgroundDefault" Color="{StaticResource TekColorSelectBackgroundDefault}"/>
   <Color x:Key="TekColorSelectBorderDefault">#FF7B7B7B</Color>
@@ -188,4 +190,78 @@
   <SolidColorBrush x:Key="TekBrushSpinnerWarning" Color="{StaticResource TekColorSpinnerWarning}"/>
   <Color x:Key="TekColorSpinnerError">#FFE74848</Color>
   <SolidColorBrush x:Key="TekBrushSpinnerError" Color="{StaticResource TekColorSpinnerError}"/>
+  <Color x:Key="TekColorStatusbarBackgroundDefault">#FF252525</Color>
+  <SolidColorBrush x:Key="TekBrushStatusbarBackgroundDefault" Color="{StaticResource TekColorStatusbarBackgroundDefault}"/>
+  <Color x:Key="TekColorStatusbarBackgroundError">#1AE74848</Color>
+  <SolidColorBrush x:Key="TekBrushStatusbarBackgroundError" Color="{StaticResource TekColorStatusbarBackgroundError}"/>
+  <Color x:Key="TekColorStatusbarBackgroundLoading">#1A33BAEA</Color>
+  <SolidColorBrush x:Key="TekBrushStatusbarBackgroundLoading" Color="{StaticResource TekColorStatusbarBackgroundLoading}"/>
+  <Color x:Key="TekColorStatusbarBorderDefault">#FF7B7B7B</Color>
+  <SolidColorBrush x:Key="TekBrushStatusbarBorderDefault" Color="{StaticResource TekColorStatusbarBorderDefault}"/>
+  <Color x:Key="TekColorStatusbarTextDefault">#FF979797</Color>
+  <SolidColorBrush x:Key="TekBrushStatusbarTextDefault" Color="{StaticResource TekColorStatusbarTextDefault}"/>
+  <Color x:Key="TekColorStatusbarTextRunning">#FF33BAEA</Color>
+  <SolidColorBrush x:Key="TekBrushStatusbarTextRunning" Color="{StaticResource TekColorStatusbarTextRunning}"/>
+  <Color x:Key="TekColorStatusbarTextSuccess">#FF42B54C</Color>
+  <SolidColorBrush x:Key="TekBrushStatusbarTextSuccess" Color="{StaticResource TekColorStatusbarTextSuccess}"/>
+  <Color x:Key="TekColorStatusbarTextWarning">#FFE0B732</Color>
+  <SolidColorBrush x:Key="TekBrushStatusbarTextWarning" Color="{StaticResource TekColorStatusbarTextWarning}"/>
+  <Color x:Key="TekColorStatusbarTextError">#FFE74848</Color>
+  <SolidColorBrush x:Key="TekBrushStatusbarTextError" Color="{StaticResource TekColorStatusbarTextError}"/>
+  <Color x:Key="TekColorGroupboxBackgroundDefault">#FF252525</Color>
+  <SolidColorBrush x:Key="TekBrushGroupboxBackgroundDefault" Color="{StaticResource TekColorGroupboxBackgroundDefault}"/>
+  <Color x:Key="TekColorGroupboxBorderDefault">#FF7B7B7B</Color>
+  <SolidColorBrush x:Key="TekBrushGroupboxBorderDefault" Color="{StaticResource TekColorGroupboxBorderDefault}"/>
+  <Color x:Key="TekColorGroupboxBorderError">#FFE74848</Color>
+  <SolidColorBrush x:Key="TekBrushGroupboxBorderError" Color="{StaticResource TekColorGroupboxBorderError}"/>
+  <Color x:Key="TekColorGroupboxLegendDefault">#FFFFFFFF</Color>
+  <SolidColorBrush x:Key="TekBrushGroupboxLegendDefault" Color="{StaticResource TekColorGroupboxLegendDefault}"/>
+  <Color x:Key="TekColorNavigationBackgroundDefault">#FF252525</Color>
+  <SolidColorBrush x:Key="TekBrushNavigationBackgroundDefault" Color="{StaticResource TekColorNavigationBackgroundDefault}"/>
+  <Color x:Key="TekColorNavigationBorderDefault">#FF7B7B7B</Color>
+  <SolidColorBrush x:Key="TekBrushNavigationBorderDefault" Color="{StaticResource TekColorNavigationBorderDefault}"/>
+  <Color x:Key="TekColorNavigationTextDefault">#FFFFFFFF</Color>
+  <SolidColorBrush x:Key="TekBrushNavigationTextDefault" Color="{StaticResource TekColorNavigationTextDefault}"/>
+  <Color x:Key="TekColorNavigationDividerDefault">#FF7B7B7B</Color>
+  <SolidColorBrush x:Key="TekBrushNavigationDividerDefault" Color="{StaticResource TekColorNavigationDividerDefault}"/>
+  <Color x:Key="TekColorProgressTrackBackground">#FF252525</Color>
+  <SolidColorBrush x:Key="TekBrushProgressTrackBackground" Color="{StaticResource TekColorProgressTrackBackground}"/>
+  <Color x:Key="TekColorProgressTrackBorder">#FF7B7B7B</Color>
+  <SolidColorBrush x:Key="TekBrushProgressTrackBorder" Color="{StaticResource TekColorProgressTrackBorder}"/>
+  <Color x:Key="TekColorProgressFillDefault">#FF33BAEA</Color>
+  <SolidColorBrush x:Key="TekBrushProgressFillDefault" Color="{StaticResource TekColorProgressFillDefault}"/>
+  <Color x:Key="TekColorProgressFillSuccess">#FF42B54C</Color>
+  <SolidColorBrush x:Key="TekBrushProgressFillSuccess" Color="{StaticResource TekColorProgressFillSuccess}"/>
+  <Color x:Key="TekColorProgressFillWarning">#FFE0B732</Color>
+  <SolidColorBrush x:Key="TekBrushProgressFillWarning" Color="{StaticResource TekColorProgressFillWarning}"/>
+  <Color x:Key="TekColorProgressFillError">#FFE74848</Color>
+  <SolidColorBrush x:Key="TekBrushProgressFillError" Color="{StaticResource TekColorProgressFillError}"/>
+  <Color x:Key="TekColorProgressLabelDefault">#FFFFFFFF</Color>
+  <SolidColorBrush x:Key="TekBrushProgressLabelDefault" Color="{StaticResource TekColorProgressLabelDefault}"/>
+  <Color x:Key="TekColorProgressMetaDefault">#FF979797</Color>
+  <SolidColorBrush x:Key="TekBrushProgressMetaDefault" Color="{StaticResource TekColorProgressMetaDefault}"/>
+  <Color x:Key="TekColorTableHeaderBackground">#FF252525</Color>
+  <SolidColorBrush x:Key="TekBrushTableHeaderBackground" Color="{StaticResource TekColorTableHeaderBackground}"/>
+  <Color x:Key="TekColorTableHeaderText">#FFFFFFFF</Color>
+  <SolidColorBrush x:Key="TekBrushTableHeaderText" Color="{StaticResource TekColorTableHeaderText}"/>
+  <Color x:Key="TekColorTableRowBackgroundDefault">#FF252525</Color>
+  <SolidColorBrush x:Key="TekBrushTableRowBackgroundDefault" Color="{StaticResource TekColorTableRowBackgroundDefault}"/>
+  <Color x:Key="TekColorTableRowBackgroundAlt">#FF1E1E1E</Color>
+  <SolidColorBrush x:Key="TekBrushTableRowBackgroundAlt" Color="{StaticResource TekColorTableRowBackgroundAlt}"/>
+  <Color x:Key="TekColorTableRowBackgroundHover">#0FFFFFFF</Color>
+  <SolidColorBrush x:Key="TekBrushTableRowBackgroundHover" Color="{StaticResource TekColorTableRowBackgroundHover}"/>
+  <Color x:Key="TekColorTableRowBackgroundSelected">#1F33BAEA</Color>
+  <SolidColorBrush x:Key="TekBrushTableRowBackgroundSelected" Color="{StaticResource TekColorTableRowBackgroundSelected}"/>
+  <Color x:Key="TekColorTableRowBackgroundError">#1AE74848</Color>
+  <SolidColorBrush x:Key="TekBrushTableRowBackgroundError" Color="{StaticResource TekColorTableRowBackgroundError}"/>
+  <Color x:Key="TekColorTableRowBackgroundSuccess">#1A42B54C</Color>
+  <SolidColorBrush x:Key="TekBrushTableRowBackgroundSuccess" Color="{StaticResource TekColorTableRowBackgroundSuccess}"/>
+  <Color x:Key="TekColorTableRowBorderSelected">#FF33BAEA</Color>
+  <SolidColorBrush x:Key="TekBrushTableRowBorderSelected" Color="{StaticResource TekColorTableRowBorderSelected}"/>
+  <Color x:Key="TekColorTableDividerDefault">#FF7B7B7B</Color>
+  <SolidColorBrush x:Key="TekBrushTableDividerDefault" Color="{StaticResource TekColorTableDividerDefault}"/>
+  <Color x:Key="TekColorTableTextDefault">#FFFFFFFF</Color>
+  <SolidColorBrush x:Key="TekBrushTableTextDefault" Color="{StaticResource TekColorTableTextDefault}"/>
+  <Color x:Key="TekColorTableTextMuted">#FF979797</Color>
+  <SolidColorBrush x:Key="TekBrushTableTextMuted" Color="{StaticResource TekColorTableTextMuted}"/>
 </ResourceDictionary>
