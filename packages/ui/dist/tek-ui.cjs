@@ -2690,6 +2690,70 @@ __decorate([
 ], TekStatusBar.prototype, "status", void 0);
 customElements.define('tek-status-bar', TekStatusBar);
 
+class TekGroupBox extends i$1 {
+    constructor() {
+        super(...arguments);
+        /** Legend text — always shown; the spec forbids untitled group boxes. */
+        this.label = '';
+        this.variant = 'default';
+        this.disabled = false;
+    }
+    willUpdate() {
+        if (this.disabled)
+            this.setAttribute('aria-disabled', 'true');
+        else
+            this.removeAttribute('aria-disabled');
+    }
+    render() {
+        return b `
+      <fieldset part="box" ?disabled=${this.disabled}>
+        <legend part="legend">${this.label}</legend>
+        <slot></slot>
+      </fieldset>
+    `;
+    }
+}
+TekGroupBox.styles = i$4 `
+    :host { display: block; }
+
+    fieldset {
+      display: flex;
+      flex-direction: column;
+      gap: var(--tek-spacing-s06, 10px);
+      margin: 0;
+      min-width: 0;
+      padding: var(--tek-spacing-s09, 16px);
+      background: var(--tek-color-groupbox-background-default, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-groupbox-border-default, #7b7b7b);
+      border-radius: var(--tek-borders-radius-05, 11px);
+    }
+
+    legend {
+      padding: 0 var(--tek-spacing-s03, 4px);
+      font-family: var(--tek-fonts-family-archivo, system-ui, sans-serif);
+      font-weight: 600;
+      font-size: var(--tek-fonts-heading-size-xs, 16px);
+      line-height: var(--tek-fonts-heading-line-height-xs, 24px);
+      letter-spacing: -0.02em;
+      color: var(--tek-color-groupbox-legend-default, #ffffff);
+    }
+
+    :host([variant='error']) fieldset { border-color: var(--tek-color-groupbox-border-error, #e74848); }
+    :host([variant='error']) legend { color: var(--tek-color-groupbox-border-error, #e74848); }
+
+    :host([disabled]) { opacity: 0.5; pointer-events: none; }
+  `;
+__decorate([
+    n()
+], TekGroupBox.prototype, "label", void 0);
+__decorate([
+    n({ reflect: true })
+], TekGroupBox.prototype, "variant", void 0);
+__decorate([
+    n({ type: Boolean, reflect: true })
+], TekGroupBox.prototype, "disabled", void 0);
+customElements.define('tek-group-box', TekGroupBox);
+
 class TekTooltip extends i$1 {
     constructor() {
         super(...arguments);
@@ -3765,6 +3829,7 @@ exports.TekCharacterCount = TekCharacterCount;
 exports.TekCheckbox = TekCheckbox;
 exports.TekFooter = TekFooter;
 exports.TekGrid = TekGrid;
+exports.TekGroupBox = TekGroupBox;
 exports.TekInput = TekInput;
 exports.TekLabel = TekLabel;
 exports.TekModal = TekModal;
