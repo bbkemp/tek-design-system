@@ -4,10 +4,11 @@
  * Figma: DS-v2 → v2.02 → Tooltip (node 8400:378)
  * Blueprint: Shoelace sl-tooltip (hover/focus model), tek-native.
  *
- * Wraps its target (default slot) and shows a menu-styled panel on hover or
- * focus after a short delay. Reuses the color/menu/* panel tokens — no
- * tooltip-specific tokens by design. Positioned with Floating UI
- * (offset + flip + shift); no arrow, matching the menu panel aesthetic.
+ * Wraps its target (default slot) and shows a panel on hover or focus after
+ * a short delay. Uses color/tooltip/* tokens — aliased to the same
+ * primitives as the dropdown panel (per-component namespaces, same-primitive
+ * pattern; Bryan 2026-07-22). Positioned with Floating UI (offset + flip +
+ * shift); no arrow by design.
  *
  * Usage:
  *   <tek-tooltip content="Saves the current setup">
@@ -36,14 +37,14 @@ export class TekTooltip extends LitElement {
       max-width: 280px;
       padding: var(--tek-spacing-s03, 4px) var(--tek-spacing-s05, 8px);
       box-sizing: border-box;
-      background: var(--tek-color-menu-background-default, #252525);
-      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-menu-border-default, #7b7b7b);
+      background: var(--tek-color-tooltip-background-default, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-tooltip-border-default, #7b7b7b);
       border-radius: var(--tek-borders-radius-03, 5px);
-      box-shadow: 0 4px 12px var(--tek-color-menu-shadow-default, rgba(0, 0, 0, 0.2));
+      box-shadow: 0 4px 12px var(--tek-color-tooltip-shadow-default, rgba(0, 0, 0, 0.2));
       font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
       font-size: var(--tek-fonts-text-size-sm, 12px);
       line-height: var(--tek-fonts-text-line-height-sm, 12px);
-      color: var(--tek-color-menu-text-default, #cccccc);
+      color: var(--tek-color-tooltip-text-default, #cccccc);
       pointer-events: none;
     }
     :host([open]) .panel { display: block; }

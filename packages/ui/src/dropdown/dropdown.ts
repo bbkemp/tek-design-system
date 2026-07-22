@@ -1,5 +1,5 @@
 /**
- * tek-select
+ * tek-dropdown
  *
  * Figma: DS-v2 → v2.02 → Dropdown (node 8387:386), DropdownMenu (8386:347)
  * Blueprint: Shoelace sl-select (API/keyboard/focus model) + Lion listbox
@@ -15,28 +15,28 @@
  * Error / Open.
  *
  * Tokens:
- *   --tek-color-select-background-default
- *   --tek-color-select-border-{default,focus,filled,disabled,error}
- *   --tek-color-select-text-{default,filled,disabled,error}
- *   --tek-color-menu-{background,border,shadow}-default
+ *   --tek-color-dropdown-background-default
+ *   --tek-color-dropdown-border-{default,focus,filled,disabled,error}
+ *   --tek-color-dropdown-text-{default,filled,disabled,error}
+ *   --tek-color-dropdown-menu-{background,border,shadow}-default
  *   --tek-spacing-s02..s06 · --tek-borders-radius-03 · --tek-borders-width-01
  *   --tek-fonts-family-geist · --tek-fonts-text-size-md · line-height-md
  *
  * Usage:
  *   <tek-label>Channel</tek-label>
- *   <tek-select placeholder="Select a channel">
- *     <tek-option value="ch1">Channel 1</tek-option>
- *     <tek-option value="ch2">Channel 2</tek-option>
- *   </tek-select>
+ *   <tek-dropdown placeholder="Select a channel">
+ *     <tek-dropdown-item value="ch1">Channel 1</tek-dropdown-item>
+ *     <tek-dropdown-item value="ch2">Channel 2</tek-dropdown-item>
+ *   </tek-dropdown>
  *
  * Events: tek-change {value}, tek-open, tek-close
  */
 import { css, html, LitElement, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { autoUpdate, computePosition, flip, offset, size } from '@floating-ui/dom';
-import type { TekOption } from '../option/option.js';
+import type { TekDropdownItem } from '../dropdown-item/dropdown-item.js';
 
-export class TekSelect extends LitElement {
+export class TekDropdown extends LitElement {
   static styles = css`
     :host {
       display: block;
@@ -55,8 +55,8 @@ export class TekSelect extends LitElement {
       padding: var(--tek-spacing-s05, 8px) var(--tek-spacing-s03, 4px)
                var(--tek-spacing-s05, 8px) var(--tek-spacing-s06, 10px);
       box-sizing: border-box;
-      background: var(--tek-color-select-background-default, #252525);
-      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-select-border-default, #7b7b7b);
+      background: var(--tek-color-dropdown-background-default, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-dropdown-border-default, #7b7b7b);
       border-radius: var(--tek-borders-radius-03, 5px);
       cursor: pointer;
       outline: none;
@@ -64,15 +64,15 @@ export class TekSelect extends LitElement {
 
     .trough:focus-visible,
     :host([open]) .trough {
-      border-color: var(--tek-color-select-border-focus, #ffffff);
+      border-color: var(--tek-color-dropdown-border-focus, #ffffff);
     }
 
     :host([error]) .trough {
-      border-color: var(--tek-color-select-border-error, #e74848);
+      border-color: var(--tek-color-dropdown-border-error, #e74848);
     }
 
     :host([disabled]) .trough {
-      border-color: var(--tek-color-select-border-disabled, #454545);
+      border-color: var(--tek-color-dropdown-border-disabled, #454545);
       cursor: not-allowed;
     }
 
@@ -84,12 +84,12 @@ export class TekSelect extends LitElement {
       text-overflow: ellipsis;
       font-size: var(--tek-fonts-text-size-md, 13px);
       line-height: var(--tek-fonts-text-line-height-md, 16px);
-      color: var(--tek-color-select-text-default, #979797);
+      color: var(--tek-color-dropdown-text-default, #979797);
     }
 
-    :host([data-filled]) .display { color: var(--tek-color-select-text-filled, #cccccc); }
-    :host([error]) .display { color: var(--tek-color-select-text-error, #ffffff); }
-    :host([disabled]) .display { color: var(--tek-color-select-text-disabled, #454545); }
+    :host([data-filled]) .display { color: var(--tek-color-dropdown-text-filled, #cccccc); }
+    :host([error]) .display { color: var(--tek-color-dropdown-text-error, #ffffff); }
+    :host([disabled]) .display { color: var(--tek-color-dropdown-text-disabled, #454545); }
 
     .caret {
       flex-shrink: 0;
@@ -98,7 +98,7 @@ export class TekSelect extends LitElement {
       transition: transform 120ms ease;
     }
     :host([open]) .caret { transform: rotate(180deg); }
-    :host([disabled]) .caret { color: var(--tek-color-select-text-disabled, #454545); }
+    :host([disabled]) .caret { color: var(--tek-color-dropdown-text-disabled, #454545); }
 
     .menu {
       position: absolute;
@@ -108,10 +108,10 @@ export class TekSelect extends LitElement {
       gap: 0;
       padding: var(--tek-spacing-s02, 2px);
       box-sizing: border-box;
-      background: var(--tek-color-menu-background-default, #252525);
-      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-menu-border-default, #7b7b7b);
+      background: var(--tek-color-dropdown-menu-background-default, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-dropdown-menu-border-default, #7b7b7b);
       border-radius: var(--tek-borders-radius-03, 5px);
-      box-shadow: 0 4px 12px var(--tek-color-menu-shadow-default, rgba(0, 0, 0, 0.2));
+      box-shadow: 0 4px 12px var(--tek-color-dropdown-menu-shadow-default, rgba(0, 0, 0, 0.2));
       overflow-y: auto;
     }
     :host([open]) .menu { display: flex; }
@@ -133,15 +133,15 @@ export class TekSelect extends LitElement {
   private typeBuffer = '';
   private typeTimer?: ReturnType<typeof setTimeout>;
 
-  private get options(): TekOption[] {
-    return Array.from(this.querySelectorAll<TekOption>('tek-option'));
+  private get options(): TekDropdownItem[] {
+    return Array.from(this.querySelectorAll<TekDropdownItem>('tek-dropdown-item'));
   }
 
-  private get enabledOptions(): TekOption[] {
+  private get enabledOptions(): TekDropdownItem[] {
     return this.options.filter(o => !o.disabled);
   }
 
-  private get currentOption(): TekOption | undefined {
+  private get currentOption(): TekDropdownItem | undefined {
     return this.options.find(o => o.current);
   }
 
@@ -174,7 +174,7 @@ export class TekSelect extends LitElement {
     for (const o of this.options) o.selected = o.value === this.value && this.value !== '';
   }
 
-  private setCurrent(option?: TekOption): void {
+  private setCurrent(option?: TekDropdownItem): void {
     for (const o of this.options) o.current = o === option;
     option?.scrollIntoView({ block: 'nearest' });
   }
@@ -195,7 +195,7 @@ export class TekSelect extends LitElement {
     if (returnFocus) this.trough?.focus({ preventScroll: true });
   }
 
-  private select(option: TekOption): void {
+  private select(option: TekDropdownItem): void {
     if (option.disabled) return;
     const changed = this.value !== option.value;
     this.value = option.value;
@@ -247,7 +247,7 @@ export class TekSelect extends LitElement {
   }
 
   private onMenuClick(e: Event): void {
-    const option = (e.target as HTMLElement).closest?.('tek-option') as TekOption | null;
+    const option = (e.target as HTMLElement).closest?.('tek-dropdown-item') as TekDropdownItem | null;
     if (option && this.options.includes(option)) this.select(option);
   }
 
@@ -338,4 +338,4 @@ export class TekSelect extends LitElement {
   }
 }
 
-customElements.define('tek-select', TekSelect);
+customElements.define('tek-dropdown', TekDropdown);

@@ -4,10 +4,11 @@
  * Figma: DS-v2 → v2.02 → Tooltip (node 8400:378)
  * Blueprint: Shoelace sl-tooltip (hover/focus model), tek-native.
  *
- * Wraps its target (default slot) and shows a menu-styled panel on hover or
- * focus after a short delay. Reuses the color/menu/* panel tokens — no
- * tooltip-specific tokens by design. Positioned with Floating UI
- * (offset + flip + shift); no arrow, matching the menu panel aesthetic.
+ * Wraps its target (default slot) and shows a panel on hover or focus after
+ * a short delay. Uses color/tooltip/* tokens — aliased to the same
+ * primitives as the dropdown panel (per-component namespaces, same-primitive
+ * pattern; Bryan 2026-07-22). Positioned with Floating UI (offset + flip +
+ * shift); no arrow by design.
  *
  * Usage:
  *   <tek-tooltip content="Saves the current setup">

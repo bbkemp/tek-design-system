@@ -341,7 +341,7 @@ TekPage.styles = i$4 `
   `;
 customElements.define('tek-page', TekPage);
 
-class TekOption extends i$1 {
+class TekDropdownItem extends i$1 {
     constructor() {
         super(...arguments);
         this.value = '';
@@ -369,7 +369,7 @@ class TekOption extends i$1 {
         return b `<slot></slot>`;
     }
 }
-TekOption.styles = i$4 `
+TekDropdownItem.styles = i$4 `
     :host {
       display: flex;
       align-items: center;
@@ -379,7 +379,7 @@ TekOption.styles = i$4 `
       font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
       font-size: var(--tek-fonts-text-size-md, 13px);
       line-height: var(--tek-fonts-text-line-height-md, 16px);
-      color: var(--tek-color-menu-text-default, #cccccc);
+      color: var(--tek-color-dropdown-menu-text-default, #cccccc);
       cursor: pointer;
       user-select: none;
       box-sizing: border-box;
@@ -387,32 +387,32 @@ TekOption.styles = i$4 `
 
     :host(:hover:not([disabled])),
     :host([current]:not([disabled])) {
-      background: var(--tek-color-menu-background-hover, #333333);
+      background: var(--tek-color-dropdown-menu-background-hover, #333333);
     }
 
     :host([selected]) {
-      background: var(--tek-color-menu-background-selected, #454545);
-      color: var(--tek-color-menu-text-selected, #ffffff);
+      background: var(--tek-color-dropdown-menu-background-selected, #454545);
+      color: var(--tek-color-dropdown-menu-text-selected, #ffffff);
     }
 
     :host([disabled]) {
-      color: var(--tek-color-menu-text-disabled, #454545);
+      color: var(--tek-color-dropdown-menu-text-disabled, #454545);
       cursor: not-allowed;
     }
   `;
 __decorate([
     n()
-], TekOption.prototype, "value", void 0);
+], TekDropdownItem.prototype, "value", void 0);
 __decorate([
     n({ type: Boolean, reflect: true })
-], TekOption.prototype, "disabled", void 0);
+], TekDropdownItem.prototype, "disabled", void 0);
 __decorate([
     n({ type: Boolean, reflect: true })
-], TekOption.prototype, "selected", void 0);
+], TekDropdownItem.prototype, "selected", void 0);
 __decorate([
     n({ type: Boolean, reflect: true })
-], TekOption.prototype, "current", void 0);
-customElements.define('tek-option', TekOption);
+], TekDropdownItem.prototype, "current", void 0);
+customElements.define('tek-dropdown-item', TekDropdownItem);
 
 /**
  * Custom positioning reference element.
@@ -2037,7 +2037,7 @@ const computePosition = (reference, floating, options) => {
   });
 };
 
-class TekSelect extends i$1 {
+class TekDropdown extends i$1 {
     constructor() {
         super(...arguments);
         this.value = '';
@@ -2054,7 +2054,7 @@ class TekSelect extends i$1 {
         };
     }
     get options() {
-        return Array.from(this.querySelectorAll('tek-option'));
+        return Array.from(this.querySelectorAll('tek-dropdown-item'));
     }
     get enabledOptions() {
         return this.options.filter(o => !o.disabled);
@@ -2159,7 +2159,7 @@ class TekSelect extends i$1 {
         this.open ? this.hide() : this.show();
     }
     onMenuClick(e) {
-        const option = e.target.closest?.('tek-option');
+        const option = e.target.closest?.('tek-dropdown-item');
         if (option && this.options.includes(option))
             this.select(option);
     }
@@ -2258,7 +2258,7 @@ class TekSelect extends i$1 {
     `;
     }
 }
-TekSelect.styles = i$4 `
+TekDropdown.styles = i$4 `
     :host {
       display: block;
       position: relative;
@@ -2276,8 +2276,8 @@ TekSelect.styles = i$4 `
       padding: var(--tek-spacing-s05, 8px) var(--tek-spacing-s03, 4px)
                var(--tek-spacing-s05, 8px) var(--tek-spacing-s06, 10px);
       box-sizing: border-box;
-      background: var(--tek-color-select-background-default, #252525);
-      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-select-border-default, #7b7b7b);
+      background: var(--tek-color-dropdown-background-default, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-dropdown-border-default, #7b7b7b);
       border-radius: var(--tek-borders-radius-03, 5px);
       cursor: pointer;
       outline: none;
@@ -2285,15 +2285,15 @@ TekSelect.styles = i$4 `
 
     .trough:focus-visible,
     :host([open]) .trough {
-      border-color: var(--tek-color-select-border-focus, #ffffff);
+      border-color: var(--tek-color-dropdown-border-focus, #ffffff);
     }
 
     :host([error]) .trough {
-      border-color: var(--tek-color-select-border-error, #e74848);
+      border-color: var(--tek-color-dropdown-border-error, #e74848);
     }
 
     :host([disabled]) .trough {
-      border-color: var(--tek-color-select-border-disabled, #454545);
+      border-color: var(--tek-color-dropdown-border-disabled, #454545);
       cursor: not-allowed;
     }
 
@@ -2305,12 +2305,12 @@ TekSelect.styles = i$4 `
       text-overflow: ellipsis;
       font-size: var(--tek-fonts-text-size-md, 13px);
       line-height: var(--tek-fonts-text-line-height-md, 16px);
-      color: var(--tek-color-select-text-default, #979797);
+      color: var(--tek-color-dropdown-text-default, #979797);
     }
 
-    :host([data-filled]) .display { color: var(--tek-color-select-text-filled, #cccccc); }
-    :host([error]) .display { color: var(--tek-color-select-text-error, #ffffff); }
-    :host([disabled]) .display { color: var(--tek-color-select-text-disabled, #454545); }
+    :host([data-filled]) .display { color: var(--tek-color-dropdown-text-filled, #cccccc); }
+    :host([error]) .display { color: var(--tek-color-dropdown-text-error, #ffffff); }
+    :host([disabled]) .display { color: var(--tek-color-dropdown-text-disabled, #454545); }
 
     .caret {
       flex-shrink: 0;
@@ -2319,7 +2319,7 @@ TekSelect.styles = i$4 `
       transition: transform 120ms ease;
     }
     :host([open]) .caret { transform: rotate(180deg); }
-    :host([disabled]) .caret { color: var(--tek-color-select-text-disabled, #454545); }
+    :host([disabled]) .caret { color: var(--tek-color-dropdown-text-disabled, #454545); }
 
     .menu {
       position: absolute;
@@ -2329,42 +2329,42 @@ TekSelect.styles = i$4 `
       gap: 0;
       padding: var(--tek-spacing-s02, 2px);
       box-sizing: border-box;
-      background: var(--tek-color-menu-background-default, #252525);
-      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-menu-border-default, #7b7b7b);
+      background: var(--tek-color-dropdown-menu-background-default, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-dropdown-menu-border-default, #7b7b7b);
       border-radius: var(--tek-borders-radius-03, 5px);
-      box-shadow: 0 4px 12px var(--tek-color-menu-shadow-default, rgba(0, 0, 0, 0.2));
+      box-shadow: 0 4px 12px var(--tek-color-dropdown-menu-shadow-default, rgba(0, 0, 0, 0.2));
       overflow-y: auto;
     }
     :host([open]) .menu { display: flex; }
   `;
 __decorate([
     n()
-], TekSelect.prototype, "value", void 0);
+], TekDropdown.prototype, "value", void 0);
 __decorate([
     n()
-], TekSelect.prototype, "placeholder", void 0);
+], TekDropdown.prototype, "placeholder", void 0);
 __decorate([
     n()
-], TekSelect.prototype, "name", void 0);
+], TekDropdown.prototype, "name", void 0);
 __decorate([
     n({ type: Boolean, reflect: true })
-], TekSelect.prototype, "disabled", void 0);
+], TekDropdown.prototype, "disabled", void 0);
 __decorate([
     n({ type: Boolean, reflect: true })
-], TekSelect.prototype, "error", void 0);
+], TekDropdown.prototype, "error", void 0);
 __decorate([
     n({ type: Boolean, reflect: true })
-], TekSelect.prototype, "open", void 0);
+], TekDropdown.prototype, "open", void 0);
 __decorate([
     r$1()
-], TekSelect.prototype, "displayLabel", void 0);
+], TekDropdown.prototype, "displayLabel", void 0);
 __decorate([
     e$1('.trough')
-], TekSelect.prototype, "trough", void 0);
+], TekDropdown.prototype, "trough", void 0);
 __decorate([
     e$1('.menu')
-], TekSelect.prototype, "menu", void 0);
-customElements.define('tek-select', TekSelect);
+], TekDropdown.prototype, "menu", void 0);
+customElements.define('tek-dropdown', TekDropdown);
 
 class TekTab extends i$1 {
     constructor() {
@@ -3186,14 +3186,14 @@ TekTooltip.styles = i$4 `
       max-width: 280px;
       padding: var(--tek-spacing-s03, 4px) var(--tek-spacing-s05, 8px);
       box-sizing: border-box;
-      background: var(--tek-color-menu-background-default, #252525);
-      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-menu-border-default, #7b7b7b);
+      background: var(--tek-color-tooltip-background-default, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-tooltip-border-default, #7b7b7b);
       border-radius: var(--tek-borders-radius-03, 5px);
-      box-shadow: 0 4px 12px var(--tek-color-menu-shadow-default, rgba(0, 0, 0, 0.2));
+      box-shadow: 0 4px 12px var(--tek-color-tooltip-shadow-default, rgba(0, 0, 0, 0.2));
       font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
       font-size: var(--tek-fonts-text-size-sm, 12px);
       line-height: var(--tek-fonts-text-line-height-sm, 12px);
-      color: var(--tek-color-menu-text-default, #cccccc);
+      color: var(--tek-color-tooltip-text-default, #cccccc);
       pointer-events: none;
     }
     :host([open]) .panel { display: block; }
@@ -4179,6 +4179,8 @@ exports.TekDataTableBody = TekDataTableBody;
 exports.TekDataTableCell = TekDataTableCell;
 exports.TekDataTableHead = TekDataTableHead;
 exports.TekDataTableRow = TekDataTableRow;
+exports.TekDropdown = TekDropdown;
+exports.TekDropdownItem = TekDropdownItem;
 exports.TekFooter = TekFooter;
 exports.TekGrid = TekGrid;
 exports.TekGroupBox = TekGroupBox;
@@ -4186,12 +4188,10 @@ exports.TekInput = TekInput;
 exports.TekLabel = TekLabel;
 exports.TekModal = TekModal;
 exports.TekNavigationPanel = TekNavigationPanel;
-exports.TekOption = TekOption;
 exports.TekPage = TekPage;
 exports.TekProgress = TekProgress;
 exports.TekRadio = TekRadio;
 exports.TekRow = TekRow;
-exports.TekSelect = TekSelect;
 exports.TekSelector = TekSelector;
 exports.TekSelectorLabel = TekSelectorLabel;
 exports.TekSpinner = TekSpinner;

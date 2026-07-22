@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>tek-dropdown — verification harness</title>
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+<script type="module" src="../../packages/ui/dist/tek-ui.js"></script>
+<style>
+  body { background: var(--tek-colors-neutral-800, #1e1e1e); padding: 40px; font-family: var(--tek-fonts-family-geist, sans-serif); }
+  main { max-width: 320px; }
+</style>
+</head>
+<body>
+<main>
+  <tek-stack gap="s09">
+    <tek-stack gap="s04">
+      <tek-label>Channel</tek-label>
+      <tek-dropdown id="sel" placeholder="Select a channel">
+        <tek-dropdown-item value="ch1">Channel 1</tek-dropdown-item>
+        <tek-dropdown-item value="ch2">Channel 2</tek-dropdown-item>
+        <tek-dropdown-item value="ch3" disabled>Channel 3 (unavailable)</tek-dropdown-item>
+        <tek-dropdown-item value="math">Math</tek-dropdown-item>
+      </tek-dropdown>
+    </tek-stack>
+    <tek-dropdown id="sel-error" error placeholder="Error state"></tek-dropdown>
+    <tek-dropdown id="sel-disabled" disabled placeholder="Disabled state"></tek-dropdown>
+  </tek-stack>
+</main>
+</body>
+</html>

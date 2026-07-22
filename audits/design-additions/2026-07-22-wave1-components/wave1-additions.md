@@ -41,7 +41,7 @@
 - [x] Convert `DropdownMenu` → `Content` frame to a slot — done 2026-07-22
 - [x] Bryan changed DropdownItem corner radius to `borders/radius/none` — mirrored in `tek-option` same day (16/16 checks still pass)
 - [ ] Review hover/selected menu background primitives (above)
-- [ ] Decide Dropdown vs Select naming (old V2.01 "Select" is a checkbox-group — deprecate/rename?)
+- [x] **RESOLVED (Bryan, 2026-07-22): dropdown wins across the board.** V2.01 "Select" keeps its name (selector-group: checkboxes/radios/toggles). Token QA found `color/menu/*` broke the per-component namespace pattern → renamed `color/select/*` → `color/dropdown/*` and `color/menu/*` → `color/dropdown/menu/*` (Figma renames preserve IDs; bindings intact). Code renamed: `tek-select` → `tek-dropdown` (`src/dropdown/`), `tek-option` → `tek-dropdown-item` (`src/dropdown-item/`). Tooltip got its own `color/tooltip/*` (4 tokens aliasing the same primitives as the dropdown panel — the same-primitive pattern, per-component namespaces). `canvas` deferred as the sanctioned surface-foundation namespace. ⚠ Needs: one Token Push (renamed + tooltip tokens) and a manual Code Connect disconnect on Dropdown/DropdownMenu/DropdownItem in the Figma UI so Claude can remap to the new paths.
 - [x] Published + Code Connect mapped (Dropdown/DropdownItem → TekSelect/TekOption) — done 2026-07-22
 - [ ] Run a Token Push so the 18 new tokens land in `packages/tokens`
 

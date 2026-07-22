@@ -1,25 +1,25 @@
 /**
- * tek-option
+ * tek-dropdown-item
  *
  * Figma: DS-v2 → v2.02 → DropdownItem (node 8386:346)
  * Blueprint: Shoelace sl-option (anatomy/API), tek-native implementation.
  *
- * One entry in a tek-select menu. `selected` and `current` reflect so the
+ * One entry in a tek-dropdown menu. `selected` and `current` reflect so the
  * Figma states (Default / Hover / Selected / Disabled) map to attributes.
  *
  * Tokens:
- *   --tek-color-menu-text-default | selected | disabled
- *   --tek-color-menu-background-hover | selected
+ *   --tek-color-dropdown-menu-text-default | selected | disabled
+ *   --tek-color-dropdown-menu-background-hover | selected
  *   --tek-spacing-s03, s04, s06 · --tek-borders-radius-none
  *   --tek-fonts-family-geist · --tek-fonts-text-size-md · line-height-md
  *
  * Usage:
- *   <tek-option value="ch1">Channel 1</tek-option>
+ *   <tek-dropdown-item value="ch1">Channel 1</tek-dropdown-item>
  */
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 
-export class TekOption extends LitElement {
+export class TekDropdownItem extends LitElement {
   static styles = css`
     :host {
       display: flex;
@@ -30,7 +30,7 @@ export class TekOption extends LitElement {
       font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
       font-size: var(--tek-fonts-text-size-md, 13px);
       line-height: var(--tek-fonts-text-line-height-md, 16px);
-      color: var(--tek-color-menu-text-default, #cccccc);
+      color: var(--tek-color-dropdown-menu-text-default, #cccccc);
       cursor: pointer;
       user-select: none;
       box-sizing: border-box;
@@ -38,16 +38,16 @@ export class TekOption extends LitElement {
 
     :host(:hover:not([disabled])),
     :host([current]:not([disabled])) {
-      background: var(--tek-color-menu-background-hover, #333333);
+      background: var(--tek-color-dropdown-menu-background-hover, #333333);
     }
 
     :host([selected]) {
-      background: var(--tek-color-menu-background-selected, #454545);
-      color: var(--tek-color-menu-text-selected, #ffffff);
+      background: var(--tek-color-dropdown-menu-background-selected, #454545);
+      color: var(--tek-color-dropdown-menu-text-selected, #ffffff);
     }
 
     :host([disabled]) {
-      color: var(--tek-color-menu-text-disabled, #454545);
+      color: var(--tek-color-dropdown-menu-text-disabled, #454545);
       cursor: not-allowed;
     }
   `;
@@ -79,4 +79,4 @@ export class TekOption extends LitElement {
   }
 }
 
-customElements.define('tek-option', TekOption);
+customElements.define('tek-dropdown-item', TekDropdownItem);
