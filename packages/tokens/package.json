@@ -1,6 +1,6 @@
 {
   "name": "@bbkemp/tokens",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "Design tokens for the Tek design system",
   "main": "dist/tek.tokens.js",
   "exports": {
