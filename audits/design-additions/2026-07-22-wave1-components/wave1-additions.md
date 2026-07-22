@@ -38,10 +38,11 @@
 
 ### For Bryan to review
 
-- [ ] Convert `DropdownMenu` → `Content` frame to a slot (1 frame)
+- [x] Convert `DropdownMenu` → `Content` frame to a slot — done 2026-07-22
+- [x] Bryan changed DropdownItem corner radius to `borders/radius/none` — mirrored in `tek-option` same day (16/16 checks still pass)
 - [ ] Review hover/selected menu background primitives (above)
 - [ ] Decide Dropdown vs Select naming (old V2.01 "Select" is a checkbox-group — deprecate/rename?)
-- [ ] Publish the library update → then Claude re-runs Code Connect for Dropdown/DropdownItem/DropdownMenu
+- [x] Published + Code Connect mapped (Dropdown/DropdownItem → TekSelect/TekOption) — done 2026-07-22
 - [ ] Run a Token Push so the 18 new tokens land in `packages/tokens`
 
 ## Still to come in wave 1
