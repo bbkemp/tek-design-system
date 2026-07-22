@@ -2704,30 +2704,29 @@ class TekGroupBox extends i$1 {
     }
     render() {
         return b `
-      <fieldset part="box" ?disabled=${this.disabled}>
-        <legend part="legend">${this.label}</legend>
+      <div class="box" part="box" role="group" aria-label=${this.label}>
+        <div class="legend" part="legend">${this.label}</div>
         <slot></slot>
-      </fieldset>
+      </div>
     `;
     }
 }
 TekGroupBox.styles = i$4 `
     :host { display: block; }
 
-    fieldset {
+    .box {
       display: flex;
       flex-direction: column;
       gap: var(--tek-spacing-s06, 10px);
-      margin: 0;
       min-width: 0;
       padding: var(--tek-spacing-s09, 16px);
       background: var(--tek-color-groupbox-background-default, #252525);
       border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-groupbox-border-default, #7b7b7b);
       border-radius: var(--tek-borders-radius-05, 11px);
+      box-sizing: border-box;
     }
 
-    legend {
-      padding: 0 var(--tek-spacing-s03, 4px);
+    .legend {
       font-family: var(--tek-fonts-family-archivo, system-ui, sans-serif);
       font-weight: 600;
       font-size: var(--tek-fonts-heading-size-xs, 16px);
@@ -2736,8 +2735,8 @@ TekGroupBox.styles = i$4 `
       color: var(--tek-color-groupbox-legend-default, #ffffff);
     }
 
-    :host([variant='error']) fieldset { border-color: var(--tek-color-groupbox-border-error, #e74848); }
-    :host([variant='error']) legend { color: var(--tek-color-groupbox-border-error, #e74848); }
+    :host([variant='error']) .box { border-color: var(--tek-color-groupbox-border-error, #e74848); }
+    :host([variant='error']) .legend { color: var(--tek-color-groupbox-border-error, #e74848); }
 
     :host([disabled]) { opacity: 0.5; pointer-events: none; }
   `;

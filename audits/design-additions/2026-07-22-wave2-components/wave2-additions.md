@@ -43,10 +43,10 @@ Built to spec §4.
 
 Built to spec §1.
 
-- **Figma:** GroupBox set (`8408:456`) — Variant=Default/Error + State=Disabled (sparse). Fieldset pattern: legend sits on the border, masked by its own raised-surface fill; sample content = Selector instances; `Content` frame awaits slot conversion.
+- **Figma:** GroupBox set (`8408:456`) — Variant=Default/Error + State=Disabled (sparse). **Title is in-flow inside the box as the first row (Bryan, 2026-07-22 — matches the Tek Express reference; the border-straddling fieldset legend was built first and rejected).** Sample content = Selector instances; `Content` frame awaits slot conversion.
 - **New tokens (5):** `color/canvas/background/raised` (⚠ prerequisite the spec assumed but the file lacked — dark n700 / light white, please review) + `color/groupbox/{background/default,border/default,border/error,legend/default}`. `groupbox/background` **aliases the raised token** (semantic→semantic) per the spec's surface-tier intent.
-- **⚠ Legend type:** `text/heading/regular/xs` (Archivo) **per spec §1**, which explicitly designates it a structural cue. Deliberate exception to the Geist-only component rule — confirm, or I swap to `text/bold/sm`.
-- **Code:** native `<fieldset>/<legend>` (`packages/ui/src/group-box/group-box.ts`) — `label` (always shown, per spec), `variant=error`, `disabled`. Verified **8/8 checks** + screenshot. Harness: `prototypes/component-library/groupbox-test.html`.
+- **Title type:** `text/heading/regular/xs` (Archivo) — **confirmed by Bryan** as the intended exception to the Geist-only component rule (group titles are headings).
+- **Code:** `role=group` container with in-flow title (`packages/ui/src/group-box/group-box.ts`) — `label` (always shown, per spec), `variant=error`, `disabled`. Verified **8/8 checks** + screenshot. Harness: `prototypes/component-library/groupbox-test.html`.
 
 ## Still to come in wave 2
 
