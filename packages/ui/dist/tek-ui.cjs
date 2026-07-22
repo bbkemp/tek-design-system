@@ -2620,6 +2620,76 @@ __decorate([
 ], TekBadge.prototype, "type", void 0);
 customElements.define('tek-badge', TekBadge);
 
+class TekStatusBar extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.variant = 'default';
+        this.status = 'ready';
+    }
+    render() {
+        return b `
+      <div class="flag" part="build-flag"><slot name="build-flag"></slot></div>
+      <div class="text" part="status-text" role="status"><slot></slot></div>
+      <div class="actions" part="actions"><slot name="actions"></slot></div>
+    `;
+    }
+}
+TekStatusBar.styles = i$4 `
+    :host {
+      display: flex;
+      align-items: center;
+      gap: var(--tek-spacing-s05, 8px);
+      height: 32px;
+      padding: var(--tek-spacing-s05, 8px) var(--tek-spacing-s07, 12px);
+      box-sizing: border-box;
+      width: 100%;
+      background-color: var(--tek-color-statusbar-background-default, #252525);
+      border-top: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-statusbar-border-default, #7b7b7b);
+      font-family: var(--tek-fonts-family-mono, monospace);
+      font-size: var(--tek-fonts-text-size-xs, 10px);
+      line-height: var(--tek-fonts-text-line-height-xs, 12px);
+    }
+
+    /* variant tint layers over the default background, like the Figma fills */
+    :host([variant='error']) {
+      background-image: linear-gradient(
+        var(--tek-color-statusbar-background-error, rgba(231, 72, 72, 0.1)),
+        var(--tek-color-statusbar-background-error, rgba(231, 72, 72, 0.1)));
+    }
+    :host([variant='loading']) {
+      background-image: linear-gradient(
+        var(--tek-color-statusbar-background-loading, rgba(51, 186, 234, 0.1)),
+        var(--tek-color-statusbar-background-loading, rgba(51, 186, 234, 0.1)));
+    }
+
+    .text {
+      flex: 1 1 0;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      color: var(--tek-color-statusbar-text-default, #979797);
+    }
+    :host([status='running']) .text { color: var(--tek-color-statusbar-text-running, #33baea); }
+    :host([status='success']) .text { color: var(--tek-color-statusbar-text-success, #42b54c); }
+    :host([status='warning']) .text { color: var(--tek-color-statusbar-text-warning, #e0b732); }
+    :host([status='error'])   .text { color: var(--tek-color-statusbar-text-error,   #e74848); }
+
+    .flag, .actions {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: var(--tek-spacing-s03, 4px);
+    }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekStatusBar.prototype, "variant", void 0);
+__decorate([
+    n({ reflect: true })
+], TekStatusBar.prototype, "status", void 0);
+customElements.define('tek-status-bar', TekStatusBar);
+
 class TekTooltip extends i$1 {
     constructor() {
         super(...arguments);
@@ -3707,6 +3777,7 @@ exports.TekSelector = TekSelector;
 exports.TekSelectorLabel = TekSelectorLabel;
 exports.TekSpinner = TekSpinner;
 exports.TekStack = TekStack;
+exports.TekStatusBar = TekStatusBar;
 exports.TekTab = TekTab;
 exports.TekTabs = TekTabs;
 exports.TekTextLink = TekTextLink;

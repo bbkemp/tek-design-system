@@ -22,6 +22,7 @@ export { TekSelect }             from './select/select.js';
 export { TekTab }                from './tab/tab.js';
 export { TekTabs }               from './tabs/tabs.js';
 export { TekBadge }              from './badge/badge.js';
+export { TekStatusBar }          from './status-bar/status-bar.js';
 export { TekTooltip }            from './tooltip/tooltip.js';
 export { TekSpinner }            from './spinner/spinner.js';
 export { TekCheckbox }           from './checkbox/checkbox.js';
