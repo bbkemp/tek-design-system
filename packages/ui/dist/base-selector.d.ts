@@ -1,14 +1,9 @@
-export declare abstract class TekBaseSelector extends HTMLElement {
-    static get observedAttributes(): string[];
-    get checked(): boolean;
-    set checked(v: boolean);
-    get error(): boolean;
-    set error(v: boolean);
-    get disabled(): boolean;
-    set disabled(v: boolean);
+import { LitElement } from 'lit';
+export declare abstract class TekBaseSelector extends LitElement {
+    checked: boolean;
+    error: boolean;
+    disabled: boolean;
     connectedCallback(): void;
     disconnectedCallback(): void;
-    attributeChangedCallback(_n: string, o: string | null, n: string | null): void;
     protected _click: () => void;
-    protected abstract render(): void;
 }

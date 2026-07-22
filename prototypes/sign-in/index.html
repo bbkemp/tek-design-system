@@ -38,62 +38,58 @@
   <source src="./img/bg-mov.mp4" type="video/mp4">
 </video>
 
-<div class="page-wrap">
+<tek-page>
 
-  <div class="wrap">
-
-    <header class="logo-header">
-      <div class="logo-lockup" role="img" aria-label="TekCloud">
+  <header class="logo-header">
+    <tek-stack align="center">
+      <tek-row class="logo-lockup" gap="s06" align="center" role="img" aria-label="TekCloud">
         <img class="logo-icon" src="./img/IconLogo.svg" alt="">
         <img class="logo-type" src="./img/TypeLogo.svg" alt="TekCloud">
-      </div>
-    </header>
+      </tek-row>
+    </tek-stack>
+  </header>
 
-    <tek-modal>
+  <tek-modal>
 
-      <span slot="header">Sign In</span>
+    <span slot="header">Sign In</span>
 
-      <div id="signin-input-blocks" slot="input-blocks"
-           style="display:flex;flex-direction:column;gap:var(--tek-spacing-s09,16px);width:100%;">
+    <tek-stack id="signin-input-blocks" slot="input-blocks" gap="s09" style="width:100%">
 
-        <div class="field">
-          <tek-label>Email</tek-label>
-          <tek-input placeholder="Enter email" type="email"
-                     autocomplete="email" style="display:block;width:100%"></tek-input>
-        </div>
+      <tek-stack class="field" gap="s04">
+        <tek-label>Email</tek-label>
+        <tek-input placeholder="Enter email" type="email"
+                   autocomplete="email" style="display:block;width:100%"></tek-input>
+      </tek-stack>
 
-        <div class="field">
-          <div class="form-label-row">
-            <tek-label>Password</tek-label>
-            <tek-text-link href="#">Forgot password?</tek-text-link>
-          </div>
-          <tek-input placeholder="Enter password" type="password"
-                     autocomplete="current-password" style="display:block;width:100%"></tek-input>
-        </div>
+      <tek-stack class="field" gap="s04">
+        <tek-row class="form-label-row" justify="between" align="center">
+          <tek-label>Password</tek-label>
+          <tek-text-link href="#">Forgot password?</tek-text-link>
+        </tek-row>
+        <tek-input placeholder="Enter password" type="password"
+                   autocomplete="current-password" style="display:block;width:100%"></tek-input>
+      </tek-stack>
 
-        <tek-selector type="checkbox" label="Stay signed in" style="width:100%"></tek-selector>
+      <tek-selector type="checkbox" label="Stay signed in" style="width:100%"></tek-selector>
 
-      </div>
+    </tek-stack>
 
-      <div id="signin-action-blocks" slot="action-blocks"
-           style="width:100%;display:flex;flex-direction:column;gap:var(--tek-spacing-s06,10px);">
-        <tek-button style="width:100%;display:block">Sign In</tek-button>
-      </div>
+    <tek-stack id="signin-action-blocks" slot="action-blocks" gap="s06" style="width:100%">
+      <tek-button style="width:100%;display:block">Sign In</tek-button>
+    </tek-stack>
 
-    </tek-modal>
+  </tek-modal>
 
-  </div>
-
-  <tek-footer>
-    <div slot="left" style="display:flex;align-items:center;gap:4px;">
+  <tek-footer slot="footer">
+    <tek-row slot="left" gap="s03" align="center">
       <span style="font-size:16px;line-height:1;" aria-hidden="true">🌚</span>
       <tek-toggle id="theme-toggle" aria-label="Toggle light mode"></tek-toggle>
       <span style="font-size:16px;line-height:1;" aria-hidden="true">🌝</span>
-    </div>
+    </tek-row>
     ©2026 Tektronix. All Rights Reserved.
   </tek-footer>
 
-</div>
+</tek-page>
 
 <script type="module">
 /* Theme toggle */
@@ -101,9 +97,9 @@ document.getElementById('theme-toggle').addEventListener('tek-change', e => {
   document.documentElement.setAttribute('data-theme', e.detail.checked ? 'light' : 'dark');
 });
 
-/* AutoAnimate */
+/* AutoAnimate — tek-page host children are the old .wrap children */
 if (typeof autoAnimate !== 'undefined') {
-  autoAnimate(document.querySelector('.wrap'));
+  autoAnimate(document.querySelector('tek-page'));
   autoAnimate(document.getElementById('signin-input-blocks'));
   autoAnimate(document.getElementById('signin-action-blocks'));
 }

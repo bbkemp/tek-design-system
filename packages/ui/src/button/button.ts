@@ -16,106 +16,112 @@
  *   <tek-button variant="secondary">Cancel</tek-button>
  *   <tek-button inactive>Sign In</tek-button>
  */
-const STYLES = `
-  :host {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border-radius: var(--tek-borders-radius-full, 9999px);
-    border: 1px solid var(--tek-color-button-border-default, #33baea);
-    background: var(--tek-color-button-background-default, #1e1e1e);
-    padding: var(--tek-spacing-s07, 12px) var(--tek-spacing-s11, 24px);
-    cursor: pointer;
-    outline: none;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
-    box-sizing: border-box;
-    width: 100%;
-  }
+import { css, html, LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
 
-  :host([variant="secondary"]) {
-    padding: var(--tek-spacing-s04, 6px) var(--tek-spacing-s08, 14px);
-  }
+export class TekButton extends LitElement {
+  static styles = css`
+    :host {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-radius: var(--tek-borders-radius-full, 9999px);
+      border: 1px solid var(--tek-color-button-border-default, #33baea);
+      background: var(--tek-color-button-background-default, #1e1e1e);
+      padding: var(--tek-spacing-s07, 12px) var(--tek-spacing-s11, 24px);
+      cursor: pointer;
+      outline: none;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      box-sizing: border-box;
+      width: 100%;
+    }
 
-  .label {
-    display: block;
-    width: 100%;
-    font-family: var(--tek-fonts-family-archivo, sans-serif);
-    font-size: var(--tek-fonts-heading-size-xs, 16px);
-    font-weight: 600;
-    font-style: normal;
-    font-variation-settings: 'wdth' 106;
-    line-height: var(--tek-fonts-heading-line-height-xs, 24px);
-    letter-spacing: 0.32px;
-    color: var(--tek-color-button-text-default, #cccccc);
-    text-align: center;
-    white-space: nowrap;
-    transition: color 0.15s;
-  }
+    :host([variant="secondary"]) {
+      padding: var(--tek-spacing-s04, 6px) var(--tek-spacing-s08, 14px);
+    }
 
-  :host([variant="secondary"]) .label {
-    font-size: var(--tek-fonts-text-size-md, 13px);
-    font-weight: 534;
-    line-height: var(--tek-fonts-text-line-height-md, 16px);
-    letter-spacing: 0.13px;
-  }
+    .label {
+      display: block;
+      width: 100%;
+      font-family: var(--tek-fonts-family-archivo, sans-serif);
+      font-size: var(--tek-fonts-heading-size-xs, 16px);
+      font-weight: 600;
+      font-style: normal;
+      font-variation-settings: 'wdth' 106;
+      line-height: var(--tek-fonts-heading-line-height-xs, 24px);
+      letter-spacing: 0.32px;
+      color: var(--tek-color-button-text-default, #cccccc);
+      text-align: center;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
 
-  :host(:hover:not([inactive]):not([disabled])) {
-    background: var(--tek-color-button-background-hover, #000000);
-    border-color: var(--tek-color-button-border-hover, #33baea);
-  }
-  :host(:hover:not([inactive]):not([disabled])) .label {
-    color: var(--tek-color-button-text-hover, #ffffff);
-  }
+    :host([variant="secondary"]) .label {
+      font-size: var(--tek-fonts-text-size-md, 13px);
+      font-weight: 534;
+      line-height: var(--tek-fonts-text-line-height-md, 16px);
+      letter-spacing: 0.13px;
+    }
 
-  :host([inactive]),
-  :host([disabled]) {
-    background: var(--tek-color-button-background-inactive, #181818);
-    border-color: var(--tek-color-button-border-inactive, #454545);
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-  :host([inactive]) .label,
-  :host([disabled]) .label {
-    color: var(--tek-color-button-text-inactive, #454545);
-  }
+    :host(:hover:not([inactive]):not([disabled])) {
+      background: var(--tek-color-button-background-hover, #000000);
+      border-color: var(--tek-color-button-border-hover, #33baea);
+    }
+    :host(:hover:not([inactive]):not([disabled])) .label {
+      color: var(--tek-color-button-text-hover, #ffffff);
+    }
 
-  :host(:focus-visible) {
-    box-shadow: 0 0 0 2px var(--tek-color-button-border-default, #33baea);
-  }
-`;
+    :host([inactive]),
+    :host([disabled]) {
+      background: var(--tek-color-button-background-inactive, #181818);
+      border-color: var(--tek-color-button-border-inactive, #454545);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    :host([inactive]) .label,
+    :host([disabled]) .label {
+      color: var(--tek-color-button-text-inactive, #454545);
+    }
 
-export class TekButton extends HTMLElement {
-  static get observedAttributes() { return ['variant','inactive','disabled']; }
+    :host(:focus-visible) {
+      box-shadow: 0 0 0 2px var(--tek-color-button-border-default, #33baea);
+    }
+  `;
 
-  get variant()  { return this.getAttribute('variant') || 'primary'; }
-  get inactive() { return this.hasAttribute('inactive'); }
-  get disabled() { return this.hasAttribute('disabled'); }
-
-  private _shadow = this.attachShadow({ mode: 'open' });
+  @property() variant = 'primary';
+  @property({ type: Boolean }) inactive = false;
+  @property({ type: Boolean }) disabled = false;
 
   connectedCallback() {
+    super.connectedCallback();
     this.setAttribute('role', 'button');
-    this.setAttribute('tabindex', (this.inactive || this.disabled) ? '-1' : '0');
-    if (this.inactive || this.disabled) this.setAttribute('aria-disabled', 'true');
-    this.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault();
-        if (!this.inactive && !this.disabled) {
-          this.dispatchEvent(new CustomEvent('tek-click', { bubbles: true, composed: true }));
-        }
-      }
-    });
-    this.addEventListener('click', () => {
-      if (!this.inactive && !this.disabled) {
-        this.dispatchEvent(new CustomEvent('tek-click', { bubbles: true, composed: true }));
-      }
-    });
-    this._render();
+    this.addEventListener('keydown', this._onKeydown);
+    this.addEventListener('click', this._onClick);
   }
 
-  attributeChangedCallback() {
-    this._render();
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('keydown', this._onKeydown);
+    this.removeEventListener('click', this._onClick);
+  }
+
+  private _onKeydown = (e: KeyboardEvent) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      this._emit();
+    }
+  };
+
+  private _onClick = () => { this._emit(); };
+
+  private _emit() {
+    if (!this.inactive && !this.disabled) {
+      this.dispatchEvent(new CustomEvent('tek-click', { bubbles: true, composed: true }));
+    }
+  }
+
+  updated() {
     const isDisabled = this.inactive || this.disabled;
     this.setAttribute('tabindex', isDisabled ? '-1' : '0');
     if (isDisabled) {
@@ -125,11 +131,8 @@ export class TekButton extends HTMLElement {
     }
   }
 
-  private _render() {
-    this._shadow.innerHTML = `
-      <style>${STYLES}</style>
-      <span class="label" part="label"><slot></slot></span>
-    `;
+  render() {
+    return html`<span class="label" part="label"><slot></slot></span>`;
   }
 }
 customElements.define('tek-button', TekButton);
