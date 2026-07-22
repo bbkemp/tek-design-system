@@ -77,6 +77,20 @@ export const tokens = {
   "tek-color-tabs-nav-background-active": "rgba(51, 186, 234, 0.12)",
   "tek-color-tabs-nav-background-hover": "rgba(30, 30, 30, 0.5)",
   "tek-color-tabs-nav-accent-default": "#33baea",
-  "tek-color-tabs-underline-border-active": "#33baea"
+  "tek-color-tabs-underline-border-active": "#33baea",
+  "tek-color-badge-neutral-background": "#333333",
+  "tek-color-badge-neutral-text": "#cccccc",
+  "tek-color-badge-blue-background": "#33baea",
+  "tek-color-badge-blue-text": "#1e1e1e",
+  "tek-color-badge-success-background": "#42b54c",
+  "tek-color-badge-success-text": "#1e1e1e",
+  "tek-color-badge-warning-background": "#e0b732",
+  "tek-color-badge-warning-text": "#1e1e1e",
+  "tek-color-badge-error-background": "#e74848",
+  "tek-color-badge-error-text": "#ffffff",
+  "tek-color-spinner-default": "#33baea",
+  "tek-color-spinner-success": "#42b54c",
+  "tek-color-spinner-warning": "#e0b732",
+  "tek-color-spinner-error": "#e74848"
 };
 export default tokens;
