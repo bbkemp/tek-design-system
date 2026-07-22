@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>tek-progress — verification harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+<script type="module" src="../../packages/ui/dist/tek-ui.js"></script>
+<style> body { background: var(--tek-colors-neutral-800, #1e1e1e); padding: 40px; max-width: 360px; } </style>
+</head>
+<body>
+<tek-stack gap="s11">
+  <tek-progress id="p1" value="62">
+    <span slot="label">stage 3 of 4 · iteration 1 · acquiring…</span>
+    <span slot="meta">00:08:14 · est 00:04:58 remaining</span>
+  </tek-progress>
+  <tek-progress id="p-sm" size="sm" value="30"></tek-progress>
+  <tek-progress id="p-lg" size="lg" tone="success" value="100"></tek-progress>
+  <tek-progress id="p-warn" tone="warning" value="85"></tek-progress>
+  <tek-progress id="p-err" tone="error" value="41"></tek-progress>
+  <tek-progress id="p-ind" variant="indeterminate">
+    <span slot="label">Generating report…</span>
+  </tek-progress>
+</tek-stack>
+</body>
+</html>

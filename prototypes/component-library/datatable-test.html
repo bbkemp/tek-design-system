@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>tek-data-table — verification harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+<script type="module" src="../../packages/ui/dist/tek-ui.js"></script>
+<style> body { background: var(--tek-colors-neutral-800, #1e1e1e); padding: 40px; max-width: 720px; } </style>
+</head>
+<body>
+<tek-data-table id="dt" aria-label="Test results" style="--tek-table-columns: 2fr 1fr 1.5fr 0.6fr;">
+  <tek-data-table-head>
+    <tek-data-table-row>
+      <tek-data-table-cell>Test Name</tek-data-table-cell>
+      <tek-data-table-cell>Status</tek-data-table-cell>
+      <tek-data-table-cell>Waveform</tek-data-table-cell>
+      <tek-data-table-cell align="end">Duration</tek-data-table-cell>
+    </tek-data-table-row>
+  </tek-data-table-head>
+  <tek-data-table-body>
+    <tek-data-table-row id="r1">
+      <tek-data-table-cell>Algorithm Library Measurement with an extremely long name that truncates</tek-data-table-cell>
+      <tek-data-table-cell><tek-badge type="blue">To be started</tek-badge></tek-data-table-cell>
+      <tek-data-table-cell>TX-RX-VOC-01.wfm</tek-data-table-cell>
+      <tek-data-table-cell align="end">00:14</tek-data-table-cell>
+    </tek-data-table-row>
+    <tek-data-table-row id="r2" state="success">
+      <tek-data-table-cell>TX Rise Time</tek-data-table-cell>
+      <tek-data-table-cell><tek-badge type="success">Passed</tek-badge></tek-data-table-cell>
+      <tek-data-table-cell>TX-RX-VOC-02.wfm</tek-data-table-cell>
+      <tek-data-table-cell align="end">01:42</tek-data-table-cell>
+    </tek-data-table-row>
+    <tek-data-table-row id="r3" state="error">
+      <tek-data-table-cell>RX Eye Height</tek-data-table-cell>
+      <tek-data-table-cell><tek-badge type="error">Failed</tek-badge></tek-data-table-cell>
+      <tek-data-table-cell>TX-RX-VOC-03.wfm</tek-data-table-cell>
+      <tek-data-table-cell align="end">00:58</tek-data-table-cell>
+    </tek-data-table-row>
+    <tek-data-table-row id="r4" selected>
+      <tek-data-table-cell>Common Mode Voltage</tek-data-table-cell>
+      <tek-data-table-cell><tek-badge type="blue">Queued</tek-badge></tek-data-table-cell>
+      <tek-data-table-cell>—</tek-data-table-cell>
+      <tek-data-table-cell align="end">—</tek-data-table-cell>
+    </tek-data-table-row>
+  </tek-data-table-body>
+</tek-data-table>
+</body>
+</html>

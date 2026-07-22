@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>tek-status-bar — verification harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+<script type="module" src="../../packages/ui/dist/tek-ui.js"></script>
+<style>
+  body { background: var(--tek-colors-neutral-800, #1e1e1e); padding: 40px; }
+  tek-status-bar { margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<tek-status-bar id="sb-ready">
+  <tek-badge slot="build-flag" type="warning">Not Intended For Public Release</tek-badge>
+  Ready.
+</tek-status-bar>
+<tek-status-bar id="sb-running" status="running">Running TX rise time measurement…</tek-status-bar>
+<tek-status-bar status="success">Test complete.</tek-status-bar>
+<tek-status-bar status="warning">Completed with warnings.</tek-status-bar>
+<tek-status-bar status="error">Connection to instrument lost.</tek-status-bar>
+<tek-status-bar id="sb-err" variant="error" status="error">Unrecoverable error — restart required.</tek-status-bar>
+<tek-status-bar id="sb-load" variant="loading" status="running">Loading…</tek-status-bar>
+</body>
+</html>

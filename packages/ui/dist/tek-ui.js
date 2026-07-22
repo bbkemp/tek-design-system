@@ -339,7 +339,7 @@ TekPage.styles = i$4 `
   `;
 customElements.define('tek-page', TekPage);
 
-class TekOption extends i$1 {
+class TekDropdownItem extends i$1 {
     constructor() {
         super(...arguments);
         this.value = '';
@@ -367,7 +367,7 @@ class TekOption extends i$1 {
         return b `<slot></slot>`;
     }
 }
-TekOption.styles = i$4 `
+TekDropdownItem.styles = i$4 `
     :host {
       display: flex;
       align-items: center;
@@ -377,7 +377,7 @@ TekOption.styles = i$4 `
       font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
       font-size: var(--tek-fonts-text-size-md, 13px);
       line-height: var(--tek-fonts-text-line-height-md, 16px);
-      color: var(--tek-color-menu-text-default, #cccccc);
+      color: var(--tek-color-dropdown-menu-text-default, #cccccc);
       cursor: pointer;
       user-select: none;
       box-sizing: border-box;
@@ -385,32 +385,32 @@ TekOption.styles = i$4 `
 
     :host(:hover:not([disabled])),
     :host([current]:not([disabled])) {
-      background: var(--tek-color-menu-background-hover, #333333);
+      background: var(--tek-color-dropdown-menu-background-hover, #333333);
     }
 
     :host([selected]) {
-      background: var(--tek-color-menu-background-selected, #454545);
-      color: var(--tek-color-menu-text-selected, #ffffff);
+      background: var(--tek-color-dropdown-menu-background-selected, #454545);
+      color: var(--tek-color-dropdown-menu-text-selected, #ffffff);
     }
 
     :host([disabled]) {
-      color: var(--tek-color-menu-text-disabled, #454545);
+      color: var(--tek-color-dropdown-menu-text-disabled, #454545);
       cursor: not-allowed;
     }
   `;
 __decorate([
     n()
-], TekOption.prototype, "value", void 0);
+], TekDropdownItem.prototype, "value", void 0);
 __decorate([
     n({ type: Boolean, reflect: true })
-], TekOption.prototype, "disabled", void 0);
+], TekDropdownItem.prototype, "disabled", void 0);
 __decorate([
     n({ type: Boolean, reflect: true })
-], TekOption.prototype, "selected", void 0);
+], TekDropdownItem.prototype, "selected", void 0);
 __decorate([
     n({ type: Boolean, reflect: true })
-], TekOption.prototype, "current", void 0);
-customElements.define('tek-option', TekOption);
+], TekDropdownItem.prototype, "current", void 0);
+customElements.define('tek-dropdown-item', TekDropdownItem);
 
 /**
  * Custom positioning reference element.
@@ -2035,7 +2035,7 @@ const computePosition = (reference, floating, options) => {
   });
 };
 
-class TekSelect extends i$1 {
+class TekDropdown extends i$1 {
     constructor() {
         super(...arguments);
         this.value = '';
@@ -2052,7 +2052,7 @@ class TekSelect extends i$1 {
         };
     }
     get options() {
-        return Array.from(this.querySelectorAll('tek-option'));
+        return Array.from(this.querySelectorAll('tek-dropdown-item'));
     }
     get enabledOptions() {
         return this.options.filter(o => !o.disabled);
@@ -2157,7 +2157,7 @@ class TekSelect extends i$1 {
         this.open ? this.hide() : this.show();
     }
     onMenuClick(e) {
-        const option = e.target.closest?.('tek-option');
+        const option = e.target.closest?.('tek-dropdown-item');
         if (option && this.options.includes(option))
             this.select(option);
     }
@@ -2256,7 +2256,7 @@ class TekSelect extends i$1 {
     `;
     }
 }
-TekSelect.styles = i$4 `
+TekDropdown.styles = i$4 `
     :host {
       display: block;
       position: relative;
@@ -2274,8 +2274,8 @@ TekSelect.styles = i$4 `
       padding: var(--tek-spacing-s05, 8px) var(--tek-spacing-s03, 4px)
                var(--tek-spacing-s05, 8px) var(--tek-spacing-s06, 10px);
       box-sizing: border-box;
-      background: var(--tek-color-select-background-default, #252525);
-      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-select-border-default, #7b7b7b);
+      background: var(--tek-color-dropdown-background-default, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-dropdown-border-default, #7b7b7b);
       border-radius: var(--tek-borders-radius-03, 5px);
       cursor: pointer;
       outline: none;
@@ -2283,15 +2283,15 @@ TekSelect.styles = i$4 `
 
     .trough:focus-visible,
     :host([open]) .trough {
-      border-color: var(--tek-color-select-border-focus, #ffffff);
+      border-color: var(--tek-color-dropdown-border-focus, #ffffff);
     }
 
     :host([error]) .trough {
-      border-color: var(--tek-color-select-border-error, #e74848);
+      border-color: var(--tek-color-dropdown-border-error, #e74848);
     }
 
     :host([disabled]) .trough {
-      border-color: var(--tek-color-select-border-disabled, #454545);
+      border-color: var(--tek-color-dropdown-border-disabled, #454545);
       cursor: not-allowed;
     }
 
@@ -2303,12 +2303,12 @@ TekSelect.styles = i$4 `
       text-overflow: ellipsis;
       font-size: var(--tek-fonts-text-size-md, 13px);
       line-height: var(--tek-fonts-text-line-height-md, 16px);
-      color: var(--tek-color-select-text-default, #979797);
+      color: var(--tek-color-dropdown-text-default, #979797);
     }
 
-    :host([data-filled]) .display { color: var(--tek-color-select-text-filled, #cccccc); }
-    :host([error]) .display { color: var(--tek-color-select-text-error, #ffffff); }
-    :host([disabled]) .display { color: var(--tek-color-select-text-disabled, #454545); }
+    :host([data-filled]) .display { color: var(--tek-color-dropdown-text-filled, #cccccc); }
+    :host([error]) .display { color: var(--tek-color-dropdown-text-error, #ffffff); }
+    :host([disabled]) .display { color: var(--tek-color-dropdown-text-disabled, #454545); }
 
     .caret {
       flex-shrink: 0;
@@ -2317,7 +2317,7 @@ TekSelect.styles = i$4 `
       transition: transform 120ms ease;
     }
     :host([open]) .caret { transform: rotate(180deg); }
-    :host([disabled]) .caret { color: var(--tek-color-select-text-disabled, #454545); }
+    :host([disabled]) .caret { color: var(--tek-color-dropdown-text-disabled, #454545); }
 
     .menu {
       position: absolute;
@@ -2327,42 +2327,42 @@ TekSelect.styles = i$4 `
       gap: 0;
       padding: var(--tek-spacing-s02, 2px);
       box-sizing: border-box;
-      background: var(--tek-color-menu-background-default, #252525);
-      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-menu-border-default, #7b7b7b);
+      background: var(--tek-color-dropdown-menu-background-default, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-dropdown-menu-border-default, #7b7b7b);
       border-radius: var(--tek-borders-radius-03, 5px);
-      box-shadow: 0 4px 12px var(--tek-color-menu-shadow-default, rgba(0, 0, 0, 0.2));
+      box-shadow: 0 4px 12px var(--tek-color-dropdown-menu-shadow-default, rgba(0, 0, 0, 0.2));
       overflow-y: auto;
     }
     :host([open]) .menu { display: flex; }
   `;
 __decorate([
     n()
-], TekSelect.prototype, "value", void 0);
+], TekDropdown.prototype, "value", void 0);
 __decorate([
     n()
-], TekSelect.prototype, "placeholder", void 0);
+], TekDropdown.prototype, "placeholder", void 0);
 __decorate([
     n()
-], TekSelect.prototype, "name", void 0);
+], TekDropdown.prototype, "name", void 0);
 __decorate([
     n({ type: Boolean, reflect: true })
-], TekSelect.prototype, "disabled", void 0);
+], TekDropdown.prototype, "disabled", void 0);
 __decorate([
     n({ type: Boolean, reflect: true })
-], TekSelect.prototype, "error", void 0);
+], TekDropdown.prototype, "error", void 0);
 __decorate([
     n({ type: Boolean, reflect: true })
-], TekSelect.prototype, "open", void 0);
+], TekDropdown.prototype, "open", void 0);
 __decorate([
     r$1()
-], TekSelect.prototype, "displayLabel", void 0);
+], TekDropdown.prototype, "displayLabel", void 0);
 __decorate([
     e$1('.trough')
-], TekSelect.prototype, "trough", void 0);
+], TekDropdown.prototype, "trough", void 0);
 __decorate([
     e$1('.menu')
-], TekSelect.prototype, "menu", void 0);
-customElements.define('tek-select', TekSelect);
+], TekDropdown.prototype, "menu", void 0);
+customElements.define('tek-dropdown', TekDropdown);
 
 class TekTab extends i$1 {
     constructor() {
@@ -2618,6 +2618,487 @@ __decorate([
 ], TekBadge.prototype, "type", void 0);
 customElements.define('tek-badge', TekBadge);
 
+class TekStatusBar extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.variant = 'default';
+        this.status = 'ready';
+    }
+    render() {
+        return b `
+      <div class="flag" part="build-flag"><slot name="build-flag"></slot></div>
+      <div class="text" part="status-text" role="status"><slot></slot></div>
+      <div class="actions" part="actions"><slot name="actions"></slot></div>
+    `;
+    }
+}
+TekStatusBar.styles = i$4 `
+    :host {
+      display: flex;
+      align-items: center;
+      gap: var(--tek-spacing-s05, 8px);
+      height: 32px;
+      padding: var(--tek-spacing-s05, 8px) var(--tek-spacing-s07, 12px);
+      box-sizing: border-box;
+      width: 100%;
+      background-color: var(--tek-color-statusbar-background-default, #252525);
+      border-top: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-statusbar-border-default, #7b7b7b);
+      font-family: var(--tek-fonts-family-mono, monospace);
+      font-size: var(--tek-fonts-text-size-xs, 10px);
+      line-height: var(--tek-fonts-text-line-height-xs, 12px);
+    }
+
+    /* variant tint layers over the default background, like the Figma fills */
+    :host([variant='error']) {
+      background-image: linear-gradient(
+        var(--tek-color-statusbar-background-error, rgba(231, 72, 72, 0.1)),
+        var(--tek-color-statusbar-background-error, rgba(231, 72, 72, 0.1)));
+    }
+    :host([variant='loading']) {
+      background-image: linear-gradient(
+        var(--tek-color-statusbar-background-loading, rgba(51, 186, 234, 0.1)),
+        var(--tek-color-statusbar-background-loading, rgba(51, 186, 234, 0.1)));
+    }
+
+    .text {
+      flex: 1 1 0;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      color: var(--tek-color-statusbar-text-default, #979797);
+    }
+    :host([status='running']) .text { color: var(--tek-color-statusbar-text-running, #33baea); }
+    :host([status='success']) .text { color: var(--tek-color-statusbar-text-success, #42b54c); }
+    :host([status='warning']) .text { color: var(--tek-color-statusbar-text-warning, #e0b732); }
+    :host([status='error'])   .text { color: var(--tek-color-statusbar-text-error,   #e74848); }
+
+    .flag, .actions {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: var(--tek-spacing-s03, 4px);
+    }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekStatusBar.prototype, "variant", void 0);
+__decorate([
+    n({ reflect: true })
+], TekStatusBar.prototype, "status", void 0);
+customElements.define('tek-status-bar', TekStatusBar);
+
+class TekGroupBox extends i$1 {
+    constructor() {
+        super(...arguments);
+        /** Legend text — always shown; the spec forbids untitled group boxes. */
+        this.label = '';
+        this.variant = 'default';
+        this.disabled = false;
+    }
+    willUpdate() {
+        if (this.disabled)
+            this.setAttribute('aria-disabled', 'true');
+        else
+            this.removeAttribute('aria-disabled');
+    }
+    render() {
+        return b `
+      <div class="box" part="box" role="group" aria-label=${this.label}>
+        <div class="legend" part="legend">${this.label}</div>
+        <slot></slot>
+      </div>
+    `;
+    }
+}
+TekGroupBox.styles = i$4 `
+    :host { display: block; }
+
+    .box {
+      display: flex;
+      flex-direction: column;
+      gap: var(--tek-spacing-s06, 10px);
+      min-width: 0;
+      padding: var(--tek-spacing-s09, 16px);
+      background: var(--tek-color-groupbox-background-default, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-groupbox-border-default, #7b7b7b);
+      border-radius: var(--tek-borders-radius-05, 11px);
+      box-sizing: border-box;
+    }
+
+    .legend {
+      font-family: var(--tek-fonts-family-archivo, system-ui, sans-serif);
+      font-weight: 600;
+      font-size: var(--tek-fonts-heading-size-xs, 16px);
+      line-height: var(--tek-fonts-heading-line-height-xs, 24px);
+      letter-spacing: -0.02em;
+      color: var(--tek-color-groupbox-legend-default, #ffffff);
+    }
+
+    :host([variant='error']) .box { border-color: var(--tek-color-groupbox-border-error, #e74848); }
+    :host([variant='error']) .legend { color: var(--tek-color-groupbox-border-error, #e74848); }
+
+    :host([disabled]) { opacity: 0.5; pointer-events: none; }
+  `;
+__decorate([
+    n()
+], TekGroupBox.prototype, "label", void 0);
+__decorate([
+    n({ reflect: true })
+], TekGroupBox.prototype, "variant", void 0);
+__decorate([
+    n({ type: Boolean, reflect: true })
+], TekGroupBox.prototype, "disabled", void 0);
+customElements.define('tek-group-box', TekGroupBox);
+
+class TekNavigationPanel extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.variant = 'full';
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.setAttribute('role', 'navigation');
+    }
+    onFootSlotChange(e) {
+        const slot = e.target;
+        slot.parentElement?.classList.toggle('has-content', slot.assignedNodes().length > 0);
+    }
+    render() {
+        return b `
+      <div class="brand" part="brand"><slot name="brand"></slot></div>
+      <div class="nav" part="nav"><slot name="nav"></slot></div>
+      <div class="foot" part="foot"><slot name="foot" @slotchange=${this.onFootSlotChange}></slot></div>
+    `;
+    }
+}
+TekNavigationPanel.styles = i$4 `
+    :host {
+      display: flex;
+      flex-direction: column;
+      width: var(--tek-navigation-panel-width, 184px);
+      height: 100%;
+      box-sizing: border-box;
+      padding: var(--tek-spacing-s05, 8px) 0;
+      background: var(--tek-color-navigation-background-default, #252525);
+      border-right: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-navigation-border-default, #7b7b7b);
+    }
+    :host([variant='text-only']) { width: var(--tek-navigation-panel-width, 96px); }
+    :host([variant='icon-only']) { width: var(--tek-navigation-panel-width, 56px); }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--tek-spacing-s03, 4px);
+      padding: var(--tek-spacing-s07, 12px);
+      font-family: var(--tek-fonts-family-archivo, system-ui, sans-serif);
+      font-weight: 600;
+      font-size: var(--tek-fonts-heading-size-2xs, 14px);
+      line-height: var(--tek-fonts-heading-line-height-2xs, 22px);
+      color: var(--tek-color-navigation-text-default, #ffffff);
+    }
+    :host([variant='icon-only']) .brand { justify-content: center; }
+
+    .nav { display: block; }
+
+    .foot {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--tek-spacing-s06, 10px);
+      padding: var(--tek-spacing-s07, 12px);
+      border-top: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-navigation-divider-default, #7b7b7b);
+    }
+    .foot:not(.has-content) { display: none; }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekNavigationPanel.prototype, "variant", void 0);
+customElements.define('tek-navigation-panel', TekNavigationPanel);
+
+class TekProgress extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.variant = 'determinate';
+        this.value = 0;
+        this.max = 100;
+        this.size = 'md';
+        this.tone = 'default';
+        this.paused = false;
+    }
+    get pct() {
+        return Math.min(100, Math.max(0, (this.value / (this.max || 100)) * 100));
+    }
+    willUpdate() {
+        this.setAttribute('role', 'progressbar');
+        if (this.variant === 'indeterminate') {
+            this.removeAttribute('aria-valuenow');
+            this.setAttribute('aria-busy', 'true');
+        }
+        else {
+            this.setAttribute('aria-valuemin', '0');
+            this.setAttribute('aria-valuemax', String(this.max));
+            this.setAttribute('aria-valuenow', String(this.value));
+            this.removeAttribute('aria-busy');
+        }
+    }
+    updated(changed) {
+        if (changed.has('value') && this.variant === 'determinate' && this.value >= this.max) {
+            this.dispatchEvent(new CustomEvent('tek-complete', {
+                detail: { value: this.value }, bubbles: true, composed: true
+            }));
+        }
+    }
+    render() {
+        const indet = this.variant === 'indeterminate';
+        return b `
+      <div class="label" part="label"><slot name="label"></slot></div>
+      <div class="track" part="track">
+        <div class="fill" part="fill" style=${indet ? A : `width:${this.pct}%`}></div>
+      </div>
+      <div class="meta-row" part="meta">
+        <span>${indet ? '' : `${Math.round(this.pct)}%`}</span>
+        <span><slot name="meta"></slot></span>
+      </div>
+    `;
+    }
+}
+TekProgress.styles = i$4 `
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: var(--tek-spacing-s03, 4px);
+      width: 100%;
+    }
+
+    .label {
+      font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
+      font-size: var(--tek-fonts-text-size-sm, 12px);
+      line-height: var(--tek-fonts-text-line-height-sm, 12px);
+      color: var(--tek-color-progress-label-default, #ffffff);
+    }
+
+    .track {
+      position: relative;
+      height: 8px;
+      background: var(--tek-color-progress-track-background, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-progress-track-border, #7b7b7b);
+      border-radius: var(--tek-borders-radius-02, 3px);
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    :host([size='sm']) .track { height: 4px; }
+    :host([size='lg']) .track { height: 12px; }
+
+    .fill {
+      height: 100%;
+      background: var(--tek-color-progress-fill-default, #33baea);
+      transition: width 200ms ease;
+    }
+    :host([tone='success']) .fill { background: var(--tek-color-progress-fill-success, #42b54c); }
+    :host([tone='warning']) .fill { background: var(--tek-color-progress-fill-warning, #e0b732); }
+    :host([tone='error'])   .fill { background: var(--tek-color-progress-fill-error,   #e74848); }
+
+    :host([variant='indeterminate']) .fill {
+      position: absolute;
+      width: 40%;
+      animation: slide 1.4s ease-in-out infinite;
+    }
+    :host([paused]) .fill { animation-play-state: paused; }
+    @media (prefers-reduced-motion: reduce) {
+      :host([variant='indeterminate']) .fill { animation: none; left: 30%; }
+    }
+    @keyframes slide {
+      from { left: -40%; }
+      to   { left: 100%; }
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--tek-spacing-s03, 4px);
+      font-family: var(--tek-fonts-family-mono, monospace);
+      font-size: var(--tek-fonts-text-size-xs, 10px);
+      line-height: var(--tek-fonts-text-line-height-xs, 12px);
+      color: var(--tek-color-progress-meta-default, #979797);
+    }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekProgress.prototype, "variant", void 0);
+__decorate([
+    n({ type: Number })
+], TekProgress.prototype, "value", void 0);
+__decorate([
+    n({ type: Number })
+], TekProgress.prototype, "max", void 0);
+__decorate([
+    n({ reflect: true })
+], TekProgress.prototype, "size", void 0);
+__decorate([
+    n({ reflect: true })
+], TekProgress.prototype, "tone", void 0);
+__decorate([
+    n({ type: Boolean, reflect: true })
+], TekProgress.prototype, "paused", void 0);
+customElements.define('tek-progress', TekProgress);
+
+class TekDataTable extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.variant = 'readonly';
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.setAttribute('role', 'table');
+    }
+    willUpdate() {
+        if (this.variant !== 'readonly') {
+            console.warn(`<tek-data-table> variant="${this.variant}" is v2 (rr-audit §2 ships readonly first); falling back.`);
+            this.variant = 'readonly';
+        }
+    }
+    render() {
+        return b `<slot></slot>`;
+    }
+}
+TekDataTable.styles = i$4 `
+    :host {
+      display: block;
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-table-divider-default, #7b7b7b);
+      border-radius: var(--tek-borders-radius-05, 11px);
+      overflow: hidden;
+    }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekDataTable.prototype, "variant", void 0);
+class TekDataTableHead extends i$1 {
+    connectedCallback() {
+        super.connectedCallback();
+        this.setAttribute('role', 'rowgroup');
+    }
+    render() { return b `<slot></slot>`; }
+}
+TekDataTableHead.styles = i$4 `:host { display: block; }`;
+class TekDataTableBody extends i$1 {
+    connectedCallback() {
+        super.connectedCallback();
+        this.setAttribute('role', 'rowgroup');
+    }
+    render() { return b `<slot></slot>`; }
+}
+TekDataTableBody.styles = i$4 `:host { display: block; }`;
+class TekDataTableRow extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.selected = false;
+        this.state = 'default';
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.setAttribute('role', 'row');
+        const ctx = this.closest('tek-data-table-head') ? 'head' : 'body';
+        this.setAttribute('data-context', ctx);
+    }
+    render() { return b `<slot></slot>`; }
+}
+TekDataTableRow.styles = i$4 `
+    :host {
+      position: relative;
+      display: grid;
+      grid-template-columns: var(--tek-table-columns, repeat(4, 1fr));
+      align-items: center;
+      column-gap: var(--tek-spacing-s06, 10px);
+      padding: var(--tek-spacing-s07, 12px);
+      background-color: var(--tek-color-table-row-background-default, #252525);
+      border-bottom: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-table-divider-default, #7b7b7b);
+      font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
+      font-size: var(--tek-fonts-text-size-md, 13px);
+      line-height: var(--tek-fonts-text-line-height-md, 16px);
+      color: var(--tek-color-table-text-default, #ffffff);
+      box-sizing: border-box;
+    }
+    :host(:last-child) { border-bottom: none; }
+
+    /* header rows */
+    :host([data-context='head']) {
+      padding-top: var(--tek-spacing-s06, 10px);
+      padding-bottom: var(--tek-spacing-s06, 10px);
+      background-color: var(--tek-color-table-header-background, #252525);
+      color: var(--tek-color-table-header-text, #ffffff);
+      font-size: var(--tek-fonts-text-size-xs, 10px);
+      line-height: var(--tek-fonts-text-line-height-xs, 12px);
+    }
+
+    /* body row states — tints layer over the default bg, like the Figma fills */
+    :host([data-context='body']:hover) {
+      background-image: linear-gradient(var(--tek-color-table-row-background-hover, rgba(255,255,255,0.06)),
+                                        var(--tek-color-table-row-background-hover, rgba(255,255,255,0.06)));
+    }
+    :host([state='error']) {
+      background-image: linear-gradient(var(--tek-color-table-row-background-error, rgba(231,72,72,0.1)),
+                                        var(--tek-color-table-row-background-error, rgba(231,72,72,0.1)));
+    }
+    :host([state='success']) {
+      background-image: linear-gradient(var(--tek-color-table-row-background-success, rgba(66,181,76,0.1)),
+                                        var(--tek-color-table-row-background-success, rgba(66,181,76,0.1)));
+    }
+    :host([selected]) {
+      background-image: linear-gradient(var(--tek-color-table-row-background-selected, rgba(51,186,234,0.12)),
+                                        var(--tek-color-table-row-background-selected, rgba(51,186,234,0.12)));
+    }
+    :host([selected])::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: var(--tek-borders-width-05, 3px);
+      background: var(--tek-color-table-row-border-selected, #33baea);
+    }
+    :host([state='disabled']) {
+      color: var(--tek-color-table-text-muted, #979797);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  `;
+__decorate([
+    n({ type: Boolean, reflect: true })
+], TekDataTableRow.prototype, "selected", void 0);
+__decorate([
+    n({ reflect: true })
+], TekDataTableRow.prototype, "state", void 0);
+class TekDataTableCell extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.align = 'start';
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        const inHead = this.closest('tek-data-table-head');
+        this.setAttribute('role', inHead ? 'columnheader' : 'cell');
+    }
+    render() { return b `<slot></slot>`; }
+}
+TekDataTableCell.styles = i$4 `
+    :host {
+      display: block;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    :host([align='center']) { text-align: center; }
+    :host([align='end']) { text-align: end; }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekDataTableCell.prototype, "align", void 0);
+customElements.define('tek-data-table', TekDataTable);
+customElements.define('tek-data-table-head', TekDataTableHead);
+customElements.define('tek-data-table-body', TekDataTableBody);
+customElements.define('tek-data-table-row', TekDataTableRow);
+customElements.define('tek-data-table-cell', TekDataTableCell);
+
 class TekTooltip extends i$1 {
     constructor() {
         super(...arguments);
@@ -2703,14 +3184,14 @@ TekTooltip.styles = i$4 `
       max-width: 280px;
       padding: var(--tek-spacing-s03, 4px) var(--tek-spacing-s05, 8px);
       box-sizing: border-box;
-      background: var(--tek-color-menu-background-default, #252525);
-      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-menu-border-default, #7b7b7b);
+      background: var(--tek-color-tooltip-background-default, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-tooltip-border-default, #7b7b7b);
       border-radius: var(--tek-borders-radius-03, 5px);
-      box-shadow: 0 4px 12px var(--tek-color-menu-shadow-default, rgba(0, 0, 0, 0.2));
+      box-shadow: 0 4px 12px var(--tek-color-tooltip-shadow-default, rgba(0, 0, 0, 0.2));
       font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
       font-size: var(--tek-fonts-text-size-sm, 12px);
       line-height: var(--tek-fonts-text-line-height-sm, 12px);
-      color: var(--tek-color-menu-text-default, #cccccc);
+      color: var(--tek-color-tooltip-text-default, #cccccc);
       pointer-events: none;
     }
     :host([open]) .panel { display: block; }
@@ -3686,5 +4167,5 @@ TekFooter.styles = i$4 `
   `;
 customElements.define('tek-footer', TekFooter);
 
-export { TekBadge, TekBaseSelector, TekButton, TekCharacterCount, TekCheckbox, TekFooter, TekGrid, TekInput, TekLabel, TekModal, TekOption, TekPage, TekRadio, TekRow, TekSelect, TekSelector, TekSelectorLabel, TekSpinner, TekStack, TekTab, TekTabs, TekTextLink, TekToggle, TekTooltip };
+export { TekBadge, TekBaseSelector, TekButton, TekCharacterCount, TekCheckbox, TekDataTable, TekDataTableBody, TekDataTableCell, TekDataTableHead, TekDataTableRow, TekDropdown, TekDropdownItem, TekFooter, TekGrid, TekGroupBox, TekInput, TekLabel, TekModal, TekNavigationPanel, TekPage, TekProgress, TekRadio, TekRow, TekSelector, TekSelectorLabel, TekSpinner, TekStack, TekStatusBar, TekTab, TekTabs, TekTextLink, TekToggle, TekTooltip };
 //# sourceMappingURL=tek-ui.js.map

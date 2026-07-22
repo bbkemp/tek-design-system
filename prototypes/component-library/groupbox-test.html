@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>tek-group-box — verification harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+<script type="module" src="../../packages/ui/dist/tek-ui.js"></script>
+<style> body { background: var(--tek-colors-neutral-800, #1e1e1e); padding: 40px; } </style>
+</head>
+<body>
+<tek-stack gap="s11" style="max-width: 400px">
+  <tek-group-box id="gb" label="Execution Options">
+    <tek-selector type="checkbox" label="Highlight yellow warning messages" checked></tek-selector>
+    <tek-selector type="checkbox" label="Acquire/Analyze each test separately"></tek-selector>
+    <tek-selector type="checkbox" label="Enable Logging"></tek-selector>
+  </tek-group-box>
+  <tek-group-box id="gb-err" label="Report Update Mode" variant="error">
+    <tek-selector type="radio" name="rum" label="Replace current test results" checked></tek-selector>
+    <tek-selector type="radio" name="rum" label="Append to existing report"></tek-selector>
+  </tek-group-box>
+  <tek-group-box id="gb-dis" label="User logo" disabled>
+    <tek-selector type="checkbox" label="Include logo in report"></tek-selector>
+  </tek-group-box>
+</tek-stack>
+</body>
+</html>

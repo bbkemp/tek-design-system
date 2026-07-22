@@ -466,14 +466,20 @@ Breakpoints from Figma `Cxx` variables: xs=384px, sm=640px, xl=1280px.
 | Row (v2.02, ADR-0002) | 8377:373 | `packages/ui/src/row/row.ts` |
 | Grid (v2.02, ADR-0002) | 8377:446 | `packages/ui/src/grid/grid.ts` |
 | Page (v2.02, ADR-0002) | 8378:350 | `packages/ui/src/page/page.ts` |
-| Dropdown (v2.02, wave 1) | 8387:386 | `packages/ui/src/select/select.ts` |
-| DropdownItem (v2.02, wave 1) | 8386:346 | `packages/ui/src/option/option.ts` |
-| DropdownMenu (v2.02, wave 1) | 8386:347 | `packages/ui/src/select/select.ts` (menu part) |
+| Dropdown (v2.02, wave 1) | 8387:386 | `packages/ui/src/dropdown/dropdown.ts` |
+| DropdownItem (v2.02, wave 1) | 8386:346 | `packages/ui/src/dropdown-item/dropdown-item.ts` |
+| DropdownMenu (v2.02, wave 1) | 8386:347 | `packages/ui/src/dropdown/dropdown.ts` (menu part) |
 | Tabs (v2.02, wave 1) | 8393:395 | `packages/ui/src/tabs/tabs.ts` |
 | Tab (v2.02, wave 1) | 8393:377 | `packages/ui/src/tab/tab.ts` |
 | Badge (v2.02, wave 1) | 8400:377 | `packages/ui/src/badge/badge.ts` |
 | Tooltip (v2.02, wave 1) | 8400:378 | `packages/ui/src/tooltip/tooltip.ts` |
 | Spinner (v2.02, wave 1) | 8401:391 | `packages/ui/src/spinner/spinner.ts` |
+| StatusBar (v2.02, wave 2) | 8406:409 | `packages/ui/src/status-bar/status-bar.ts` |
+| GroupBox (v2.02, wave 2) | 8408:456 | `packages/ui/src/group-box/group-box.ts` |
+| NavigationPanel (v2.02, wave 2) | 8411:503 | `packages/ui/src/navigation-panel/navigation-panel.ts` |
+| Progress (v2.02, wave 2) | 8413:560 | `packages/ui/src/progress/progress.ts` |
+| DataTable (v2.02, wave 2) | 8415:513 | `packages/ui/src/data-table/data-table.ts` |
+| TableRow (v2.02, wave 2) | 8415:512 | `packages/ui/src/data-table/data-table.ts` (row part) |
 | Sign In — Mobile (dark) | 7134:600 | `prototypes/sign-in/index.html` |
 | Sign In — Tablet (dark) | 7135:638 | `prototypes/sign-in/index.html` |
 | Sign In — Desktop (dark) | 7134:598 | `prototypes/sign-in/index.html` |

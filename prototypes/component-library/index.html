@@ -177,7 +177,15 @@
   --tek-color-icons-default:              #000000;
 }
 
-*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+/* box-sizing is safe globally — margin/padding reset is NOT: a bare
+   `* { padding:0 }` in light DOM beats every component's :host padding
+   (the pre-refresh inline component copies fought this with !important;
+   the real packages correctly don't). Scoped reset, same pattern as
+   prototypes/sign-in/page-layout.css. */
+*,*::before,*::after { box-sizing:border-box; }
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li,
+blockquote, figure, figcaption, dl, dt, dd, pre,
+table, th, td { margin:0; padding:0; }
 
 body {
   background: var(--cl-chrome-bg);
@@ -397,7 +405,7 @@ code {
       <span class="sidebar-section">Forms</span>
       <a class="sidebar-link" onclick="nav(event,'label')">Label</a>
       <a class="sidebar-link" onclick="nav(event,'input')">Input</a>
-      <a class="sidebar-link" onclick="nav(event,'select')">Select</a>
+      <a class="sidebar-link" onclick="nav(event,'dropdown')">Dropdown</a>
       <a class="sidebar-link" onclick="nav(event,'charcount')">CharacterCount</a>
       <a class="sidebar-link" onclick="nav(event,'textlink')">TextLink</a>
       <span class="sidebar-section">Actions</span>
@@ -701,21 +709,21 @@ el.addEventListener(<span class="str">'tek-click'</span>, () <span class="kw">=&
       </div>
     </section>
 
-    <section class="section" id="select">
-      <div class="section-header"><h2 class="section-title">Select</h2><span class="section-tag">tek-select · tek-option</span></div>
+    <section class="section" id="dropdown">
+      <div class="section-header"><h2 class="section-title">Dropdown</h2><span class="section-tag">tek-dropdown · tek-dropdown-item</span></div>
       <div class="preview-canvas">
         <div class="preview-row">
           <div class="preview-item left" style="width:240px">
-            <tek-select placeholder="Select a channel">
-              <tek-option value="ch1">Channel 1</tek-option>
-              <tek-option value="ch2">Channel 2</tek-option>
-              <tek-option value="ch3" disabled>Channel 3 (unavailable)</tek-option>
-              <tek-option value="math">Math</tek-option>
-            </tek-select>
+            <tek-dropdown placeholder="Select a channel">
+              <tek-dropdown-item value="ch1">Channel 1</tek-dropdown-item>
+              <tek-dropdown-item value="ch2">Channel 2</tek-dropdown-item>
+              <tek-dropdown-item value="ch3" disabled>Channel 3 (unavailable)</tek-dropdown-item>
+              <tek-dropdown-item value="math">Math</tek-dropdown-item>
+            </tek-dropdown>
             <div class="state-lbl">Interactive — keyboard: arrows, typeahead, Esc</div>
           </div>
-          <div class="preview-item left" style="width:240px"><tek-select error placeholder="Select a channel"></tek-select><div class="state-lbl">Error</div></div>
-          <div class="preview-item left" style="width:240px"><tek-select disabled placeholder="Select a channel"></tek-select><div class="state-lbl">Disabled</div></div>
+          <div class="preview-item left" style="width:240px"><tek-dropdown error placeholder="Select a channel"></tek-dropdown><div class="state-lbl">Error</div></div>
+          <div class="preview-item left" style="width:240px"><tek-dropdown disabled placeholder="Select a channel"></tek-dropdown><div class="state-lbl">Disabled</div></div>
         </div>
       </div>
     </section>
