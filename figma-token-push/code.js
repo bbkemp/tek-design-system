@@ -20,6 +20,11 @@ figma.ui.onmessage = async function(msg) {
     var stored = await figma.clientStorage.getAsync("gh_pat");
     figma.ui.postMessage({ type: "LOAD_PAT", value: stored ? stored : "" });
   }
+  if (msg.type === "SAVE_BRANCH") { await figma.clientStorage.setAsync("gh_branch", msg.value); }
+  if (msg.type === "GET_BRANCH") {
+    var storedBranch = await figma.clientStorage.getAsync("gh_branch");
+    figma.ui.postMessage({ type: "LOAD_BRANCH", value: storedBranch ? storedBranch : "main" });
+  }
   if (msg.type === "CLOSE") { figma.closePlugin(); }
   if (msg.type === "NOTIFY") { figma.notify(msg.message, { error: msg.error }); }
 };
