@@ -36,8 +36,8 @@ Built to spec §4.
 ### For Bryan
 
 - [ ] Review the 10% tint strength on error/loading backgrounds
-- [ ] Publish → Code Connect (also still pending from wave 1: Tab, Tabs, Badge, Tooltip, Spinner)
-- [ ] Token Push for the 9 new tokens
+- [x] Published + Code Connect mapped — all 11 sets across both waves (2026-07-22)
+- [x] Token Push done — all 38 wave-2 tokens live in packages/tokens (2026-07-22)
 
 ## 2. tek-group-box
 
