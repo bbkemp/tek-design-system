@@ -412,6 +412,12 @@ code {
       <a class="sidebar-link" onclick="nav(event,'button')">Button</a>
       <span class="sidebar-section">Navigation</span>
       <a class="sidebar-link" onclick="nav(event,'tabs')">Tabs</a>
+      <span class="sidebar-section">App Shell</span>
+      <a class="sidebar-link" onclick="nav(event,'statusbar')">StatusBar</a>
+      <a class="sidebar-link" onclick="nav(event,'navpanel')">NavigationPanel</a>
+      <a class="sidebar-link" onclick="nav(event,'groupbox')">GroupBox</a>
+      <a class="sidebar-link" onclick="nav(event,'progress')">Progress</a>
+      <a class="sidebar-link" onclick="nav(event,'datatable')">DataTable</a>
       <span class="sidebar-section">Display</span>
       <a class="sidebar-link" onclick="nav(event,'badge')">Badge</a>
       <a class="sidebar-link" onclick="nav(event,'tooltip')">Tooltip</a>
@@ -821,6 +827,107 @@ el.addEventListener(<span class="str">'tek-click'</span>, () <span class="kw">=&
         <div class="state-lbl" style="margin-top:8px">Gap accepts spacing token steps only (s02–s09, s11) — never raw px. tek-page frames whole pages (see the sign-in prototypes).</div>
       </div>
       <style>.layout-ph{height:28px;background:var(--tek-colors-neutral-600,#333);border-radius:var(--tek-borders-radius-03,5px);}</style>
+    </section>
+
+    <section class="section" id="statusbar">
+      <div class="section-header"><h2 class="section-title">StatusBar</h2><span class="section-tag">tek-status-bar</span></div>
+      <div class="preview-canvas col">
+        <tek-status-bar style="width:100%">
+          <tek-badge slot="build-flag" type="warning">Not Intended For Public Release</tek-badge>
+          Ready.
+        </tek-status-bar>
+        <tek-status-bar status="running" style="width:100%">Running TX rise time measurement…</tek-status-bar>
+        <tek-status-bar variant="error" status="error" style="width:100%">Unrecoverable error — restart required.</tek-status-bar>
+      </div>
+    </section>
+
+    <section class="section" id="navpanel">
+      <div class="section-header"><h2 class="section-title">NavigationPanel</h2><span class="section-tag">tek-navigation-panel</span></div>
+      <div class="preview-canvas">
+        <div style="height:320px;display:flex">
+          <tek-navigation-panel aria-label="Demo">
+            <span slot="brand">TekExpress</span>
+            <tek-tabs slot="nav" orientation="vertical" aria-label="Sections">
+              <tek-tab value="setup" active>Setup</tek-tab>
+              <tek-tab value="status">Status</tek-tab>
+              <tek-tab value="results">Results</tek-tab>
+            </tek-tabs>
+            <tek-button slot="foot">Start</tek-button>
+          </tek-navigation-panel>
+        </div>
+        <div style="height:320px;display:flex">
+          <tek-navigation-panel variant="text-only" aria-label="Demo narrow">
+            <span slot="brand">TekExpress</span>
+            <tek-tabs slot="nav" orientation="vertical" aria-label="Sections">
+              <tek-tab value="setup" active>Setup</tek-tab>
+              <tek-tab value="status">Status</tek-tab>
+            </tek-tabs>
+          </tek-navigation-panel>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="groupbox">
+      <div class="section-header"><h2 class="section-title">GroupBox</h2><span class="section-tag">tek-group-box</span></div>
+      <div class="preview-canvas">
+        <tek-group-box label="Execution Options" style="width:300px">
+          <tek-selector type="checkbox" label="Highlight yellow warnings" checked></tek-selector>
+          <tek-selector type="checkbox" label="Enable Logging"></tek-selector>
+        </tek-group-box>
+        <tek-group-box label="Report Update Mode" variant="error" style="width:300px">
+          <tek-selector type="radio" name="lib-rum" label="Replace current results" checked></tek-selector>
+          <tek-selector type="radio" name="lib-rum" label="Append to report"></tek-selector>
+        </tek-group-box>
+      </div>
+    </section>
+
+    <section class="section" id="progress">
+      <div class="section-header"><h2 class="section-title">Progress</h2><span class="section-tag">tek-progress</span></div>
+      <div class="preview-canvas col" style="max-width:360px">
+        <tek-progress value="62">
+          <span slot="label">stage 3 of 4 · acquiring…</span>
+          <span slot="meta">est 00:04:58 remaining</span>
+        </tek-progress>
+        <tek-progress size="lg" tone="success" value="100"></tek-progress>
+        <tek-progress tone="error" value="41"></tek-progress>
+        <tek-progress variant="indeterminate"><span slot="label">Generating report…</span></tek-progress>
+      </div>
+    </section>
+
+    <section class="section" id="datatable">
+      <div class="section-header"><h2 class="section-title">DataTable</h2><span class="section-tag">tek-data-table</span></div>
+      <div class="preview-canvas col">
+        <tek-data-table aria-label="Demo results" style="--tek-table-columns: 2fr 1fr 1.5fr 0.6fr; width:100%">
+          <tek-data-table-head>
+            <tek-data-table-row>
+              <tek-data-table-cell>Test Name</tek-data-table-cell>
+              <tek-data-table-cell>Status</tek-data-table-cell>
+              <tek-data-table-cell>Waveform</tek-data-table-cell>
+              <tek-data-table-cell align="end">Duration</tek-data-table-cell>
+            </tek-data-table-row>
+          </tek-data-table-head>
+          <tek-data-table-body>
+            <tek-data-table-row>
+              <tek-data-table-cell>Algorithm Library Measurement</tek-data-table-cell>
+              <tek-data-table-cell><tek-badge type="blue">To be started</tek-badge></tek-data-table-cell>
+              <tek-data-table-cell>TX-RX-VOC-01.wfm</tek-data-table-cell>
+              <tek-data-table-cell align="end">00:14</tek-data-table-cell>
+            </tek-data-table-row>
+            <tek-data-table-row state="success">
+              <tek-data-table-cell>TX Rise Time</tek-data-table-cell>
+              <tek-data-table-cell><tek-badge type="success">Passed</tek-badge></tek-data-table-cell>
+              <tek-data-table-cell>TX-RX-VOC-02.wfm</tek-data-table-cell>
+              <tek-data-table-cell align="end">01:42</tek-data-table-cell>
+            </tek-data-table-row>
+            <tek-data-table-row state="error">
+              <tek-data-table-cell>RX Eye Height</tek-data-table-cell>
+              <tek-data-table-cell><tek-badge type="error">Failed</tek-badge></tek-data-table-cell>
+              <tek-data-table-cell>TX-RX-VOC-03.wfm</tek-data-table-cell>
+              <tek-data-table-cell align="end">00:58</tek-data-table-cell>
+            </tek-data-table-row>
+          </tek-data-table-body>
+        </tek-data-table>
+      </div>
     </section>
 
     <section class="section" id="tokens">
