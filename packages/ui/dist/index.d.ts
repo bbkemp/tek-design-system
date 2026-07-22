@@ -17,6 +17,8 @@ export { TekStack } from './stack/stack.js';
 export { TekRow } from './row/row.js';
 export { TekGrid } from './grid/grid.js';
 export { TekPage } from './page/page.js';
+export { TekOption } from './option/option.js';
+export { TekSelect } from './select/select.js';
 export { TekCheckbox } from './checkbox/checkbox.js';
 export { TekRadio } from './radio/radio.js';
 export { TekToggle } from './toggle/toggle.js';
