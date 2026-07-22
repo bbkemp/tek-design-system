@@ -2607,7 +2607,7 @@ TekBadge.styles = i$4 `
       font-size: var(--tek-fonts-text-size-xs, 10px);
       line-height: var(--tek-fonts-text-line-height-xs, 12px);
       white-space: nowrap;
-      background: var(--tek-color-badge-neutral-background, #454545);
+      background: var(--tek-color-badge-neutral-background, #333333);
       color: var(--tek-color-badge-neutral-text, #cccccc);
     }
     :host([type='blue'])    { background: var(--tek-color-badge-blue-background, #33baea);    color: var(--tek-color-badge-blue-text, #1e1e1e); }
