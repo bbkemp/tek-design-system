@@ -24,6 +24,7 @@ export { TekTabs }               from './tabs/tabs.js';
 export { TekBadge }              from './badge/badge.js';
 export { TekStatusBar }          from './status-bar/status-bar.js';
 export { TekGroupBox }           from './group-box/group-box.js';
+export { TekNavigationPanel }    from './navigation-panel/navigation-panel.js';
 export { TekTooltip }            from './tooltip/tooltip.js';
 export { TekSpinner }            from './spinner/spinner.js';
 export { TekCheckbox }           from './checkbox/checkbox.js';

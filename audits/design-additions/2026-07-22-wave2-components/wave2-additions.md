@@ -48,6 +48,16 @@ Built to spec §1.
 - **Title type:** `text/heading/regular/xs` (Archivo) — **confirmed by Bryan** as the intended exception to the Geist-only component rule (group titles are headings).
 - **Code:** `role=group` container with in-flow title (`packages/ui/src/group-box/group-box.ts`) — `label` (always shown, per spec), `variant=error`, `disabled`. Verified **8/8 checks** + screenshot. Harness: `prototypes/component-library/groupbox-test.html`.
 
+## 3. tek-navigation-panel
+
+Built to spec §6.
+
+- **Figma:** NavigationPanel set (`8411:503`) — Variant = Full (184) / Text-only (96) / Icon-only (56). Pure chrome composition: Brand region (Tek Icon + Archivo 2xs wordmark), Nav region = **instance of the shipped Tabs Orientation=Vertical set** (never reimplemented, per the spec's composition rule), spacer, Foot region (divider + Button instances) pinned to bottom. Icon-only nav shows icon placeholders (icon tabs are app-slotted content in code).
+- **New tokens (4):** `color/navigation/{background,border,text,divider}/default` — bg aliases `color/canvas/background/raised`.
+- **⚠ PROPOSED:** widths 184/96/56 have no spacing tokens — raw in Figma/code, overridable via `--tek-navigation-panel-width`. Propose `spacing/panel/{full,text,icon}` if these recur.
+- **Loading state** (spec's rare tabs→spinner swap) is app-slotted content, not a component variant — deliberately omitted.
+- **Code:** `role=navigation`, three slots, foot auto-hides when empty, variant widths; container-query switching is the app-shell's job per spec. Verified **8/8 checks** (incl. tek-change propagating through the slotted tabs) + screenshot. Harness: `prototypes/component-library/navpanel-test.html`.
+
 ## Still to come in wave 2
 
-navigation-panel (§6), progress (§5), data-table + status-pill (§2).
+progress (§5), data-table + status-pill (§2).

@@ -476,6 +476,7 @@ Breakpoints from Figma `Cxx` variables: xs=384px, sm=640px, xl=1280px.
 | Spinner (v2.02, wave 1) | 8401:391 | `packages/ui/src/spinner/spinner.ts` |
 | StatusBar (v2.02, wave 2) | 8406:409 | `packages/ui/src/status-bar/status-bar.ts` |
 | GroupBox (v2.02, wave 2) | 8408:456 | `packages/ui/src/group-box/group-box.ts` |
+| NavigationPanel (v2.02, wave 2) | 8411:503 | `packages/ui/src/navigation-panel/navigation-panel.ts` |
 | Sign In — Mobile (dark) | 7134:600 | `prototypes/sign-in/index.html` |
 | Sign In — Tablet (dark) | 7135:638 | `prototypes/sign-in/index.html` |
 | Sign In — Desktop (dark) | 7134:598 | `prototypes/sign-in/index.html` |

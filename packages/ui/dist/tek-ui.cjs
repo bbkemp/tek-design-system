@@ -2753,6 +2753,71 @@ __decorate([
 ], TekGroupBox.prototype, "disabled", void 0);
 customElements.define('tek-group-box', TekGroupBox);
 
+class TekNavigationPanel extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.variant = 'full';
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.setAttribute('role', 'navigation');
+    }
+    onFootSlotChange(e) {
+        const slot = e.target;
+        slot.parentElement?.classList.toggle('has-content', slot.assignedNodes().length > 0);
+    }
+    render() {
+        return b `
+      <div class="brand" part="brand"><slot name="brand"></slot></div>
+      <div class="nav" part="nav"><slot name="nav"></slot></div>
+      <div class="foot" part="foot"><slot name="foot" @slotchange=${this.onFootSlotChange}></slot></div>
+    `;
+    }
+}
+TekNavigationPanel.styles = i$4 `
+    :host {
+      display: flex;
+      flex-direction: column;
+      width: var(--tek-navigation-panel-width, 184px);
+      height: 100%;
+      box-sizing: border-box;
+      padding: var(--tek-spacing-s05, 8px) 0;
+      background: var(--tek-color-navigation-background-default, #252525);
+      border-right: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-navigation-border-default, #7b7b7b);
+    }
+    :host([variant='text-only']) { width: var(--tek-navigation-panel-width, 96px); }
+    :host([variant='icon-only']) { width: var(--tek-navigation-panel-width, 56px); }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--tek-spacing-s03, 4px);
+      padding: var(--tek-spacing-s07, 12px);
+      font-family: var(--tek-fonts-family-archivo, system-ui, sans-serif);
+      font-weight: 600;
+      font-size: var(--tek-fonts-heading-size-2xs, 14px);
+      line-height: var(--tek-fonts-heading-line-height-2xs, 22px);
+      color: var(--tek-color-navigation-text-default, #ffffff);
+    }
+    :host([variant='icon-only']) .brand { justify-content: center; }
+
+    .nav { display: block; }
+
+    .foot {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--tek-spacing-s06, 10px);
+      padding: var(--tek-spacing-s07, 12px);
+      border-top: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-navigation-divider-default, #7b7b7b);
+    }
+    .foot:not(.has-content) { display: none; }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekNavigationPanel.prototype, "variant", void 0);
+customElements.define('tek-navigation-panel', TekNavigationPanel);
+
 class TekTooltip extends i$1 {
     constructor() {
         super(...arguments);
@@ -3832,6 +3897,7 @@ exports.TekGroupBox = TekGroupBox;
 exports.TekInput = TekInput;
 exports.TekLabel = TekLabel;
 exports.TekModal = TekModal;
+exports.TekNavigationPanel = TekNavigationPanel;
 exports.TekOption = TekOption;
 exports.TekPage = TekPage;
 exports.TekRadio = TekRadio;
