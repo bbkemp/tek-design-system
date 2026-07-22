@@ -478,6 +478,8 @@ Breakpoints from Figma `Cxx` variables: xs=384px, sm=640px, xl=1280px.
 | GroupBox (v2.02, wave 2) | 8408:456 | `packages/ui/src/group-box/group-box.ts` |
 | NavigationPanel (v2.02, wave 2) | 8411:503 | `packages/ui/src/navigation-panel/navigation-panel.ts` |
 | Progress (v2.02, wave 2) | 8413:560 | `packages/ui/src/progress/progress.ts` |
+| DataTable (v2.02, wave 2) | 8415:513 | `packages/ui/src/data-table/data-table.ts` |
+| TableRow (v2.02, wave 2) | 8415:512 | `packages/ui/src/data-table/data-table.ts` (row part) |
 | Sign In — Mobile (dark) | 7134:600 | `prototypes/sign-in/index.html` |
 | Sign In — Tablet (dark) | 7135:638 | `prototypes/sign-in/index.html` |
 | Sign In — Desktop (dark) | 7134:598 | `prototypes/sign-in/index.html` |

@@ -2945,6 +2945,162 @@ __decorate([
 ], TekProgress.prototype, "paused", void 0);
 customElements.define('tek-progress', TekProgress);
 
+class TekDataTable extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.variant = 'readonly';
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.setAttribute('role', 'table');
+    }
+    willUpdate() {
+        if (this.variant !== 'readonly') {
+            console.warn(`<tek-data-table> variant="${this.variant}" is v2 (rr-audit §2 ships readonly first); falling back.`);
+            this.variant = 'readonly';
+        }
+    }
+    render() {
+        return b `<slot></slot>`;
+    }
+}
+TekDataTable.styles = i$4 `
+    :host {
+      display: block;
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-table-divider-default, #7b7b7b);
+      border-radius: var(--tek-borders-radius-05, 11px);
+      overflow: hidden;
+    }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekDataTable.prototype, "variant", void 0);
+class TekDataTableHead extends i$1 {
+    connectedCallback() {
+        super.connectedCallback();
+        this.setAttribute('role', 'rowgroup');
+    }
+    render() { return b `<slot></slot>`; }
+}
+TekDataTableHead.styles = i$4 `:host { display: block; }`;
+class TekDataTableBody extends i$1 {
+    connectedCallback() {
+        super.connectedCallback();
+        this.setAttribute('role', 'rowgroup');
+    }
+    render() { return b `<slot></slot>`; }
+}
+TekDataTableBody.styles = i$4 `:host { display: block; }`;
+class TekDataTableRow extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.selected = false;
+        this.state = 'default';
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.setAttribute('role', 'row');
+        const ctx = this.closest('tek-data-table-head') ? 'head' : 'body';
+        this.setAttribute('data-context', ctx);
+    }
+    render() { return b `<slot></slot>`; }
+}
+TekDataTableRow.styles = i$4 `
+    :host {
+      position: relative;
+      display: grid;
+      grid-template-columns: var(--tek-table-columns, repeat(4, 1fr));
+      align-items: center;
+      column-gap: var(--tek-spacing-s06, 10px);
+      padding: var(--tek-spacing-s07, 12px);
+      background-color: var(--tek-color-table-row-background-default, #252525);
+      border-bottom: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-table-divider-default, #7b7b7b);
+      font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
+      font-size: var(--tek-fonts-text-size-md, 13px);
+      line-height: var(--tek-fonts-text-line-height-md, 16px);
+      color: var(--tek-color-table-text-default, #ffffff);
+      box-sizing: border-box;
+    }
+    :host(:last-child) { border-bottom: none; }
+
+    /* header rows */
+    :host([data-context='head']) {
+      padding-top: var(--tek-spacing-s06, 10px);
+      padding-bottom: var(--tek-spacing-s06, 10px);
+      background-color: var(--tek-color-table-header-background, #252525);
+      color: var(--tek-color-table-header-text, #ffffff);
+      font-size: var(--tek-fonts-text-size-xs, 10px);
+      line-height: var(--tek-fonts-text-line-height-xs, 12px);
+    }
+
+    /* body row states — tints layer over the default bg, like the Figma fills */
+    :host([data-context='body']:hover) {
+      background-image: linear-gradient(var(--tek-color-table-row-background-hover, rgba(255,255,255,0.06)),
+                                        var(--tek-color-table-row-background-hover, rgba(255,255,255,0.06)));
+    }
+    :host([state='error']) {
+      background-image: linear-gradient(var(--tek-color-table-row-background-error, rgba(231,72,72,0.1)),
+                                        var(--tek-color-table-row-background-error, rgba(231,72,72,0.1)));
+    }
+    :host([state='success']) {
+      background-image: linear-gradient(var(--tek-color-table-row-background-success, rgba(66,181,76,0.1)),
+                                        var(--tek-color-table-row-background-success, rgba(66,181,76,0.1)));
+    }
+    :host([selected]) {
+      background-image: linear-gradient(var(--tek-color-table-row-background-selected, rgba(51,186,234,0.12)),
+                                        var(--tek-color-table-row-background-selected, rgba(51,186,234,0.12)));
+    }
+    :host([selected])::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: var(--tek-borders-width-05, 3px);
+      background: var(--tek-color-table-row-border-selected, #33baea);
+    }
+    :host([state='disabled']) {
+      color: var(--tek-color-table-text-muted, #979797);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  `;
+__decorate([
+    n({ type: Boolean, reflect: true })
+], TekDataTableRow.prototype, "selected", void 0);
+__decorate([
+    n({ reflect: true })
+], TekDataTableRow.prototype, "state", void 0);
+class TekDataTableCell extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.align = 'start';
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        const inHead = this.closest('tek-data-table-head');
+        this.setAttribute('role', inHead ? 'columnheader' : 'cell');
+    }
+    render() { return b `<slot></slot>`; }
+}
+TekDataTableCell.styles = i$4 `
+    :host {
+      display: block;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    :host([align='center']) { text-align: center; }
+    :host([align='end']) { text-align: end; }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekDataTableCell.prototype, "align", void 0);
+customElements.define('tek-data-table', TekDataTable);
+customElements.define('tek-data-table-head', TekDataTableHead);
+customElements.define('tek-data-table-body', TekDataTableBody);
+customElements.define('tek-data-table-row', TekDataTableRow);
+customElements.define('tek-data-table-cell', TekDataTableCell);
+
 class TekTooltip extends i$1 {
     constructor() {
         super(...arguments);
@@ -4018,6 +4174,11 @@ exports.TekBaseSelector = TekBaseSelector;
 exports.TekButton = TekButton;
 exports.TekCharacterCount = TekCharacterCount;
 exports.TekCheckbox = TekCheckbox;
+exports.TekDataTable = TekDataTable;
+exports.TekDataTableBody = TekDataTableBody;
+exports.TekDataTableCell = TekDataTableCell;
+exports.TekDataTableHead = TekDataTableHead;
+exports.TekDataTableRow = TekDataTableRow;
 exports.TekFooter = TekFooter;
 exports.TekGrid = TekGrid;
 exports.TekGroupBox = TekGroupBox;

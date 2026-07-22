@@ -67,6 +67,19 @@ Built to spec §5.
 - **Deviation flagged:** spec's `progress-complete` event ships as **`tek-complete`** per the DS event convention.
 - **Code:** `variant/value/max/size/tone/paused`, label + meta slots, live percent readout, full progressbar ARIA (aria-busy for indeterminate), CSS-only stripe animation frozen under `prefers-reduced-motion` (spec requirement, tested in a reduced-motion context). Verified **8/8 checks** + screenshot. Harness: `prototypes/component-library/progress-test.html`.
 
-## Still to come in wave 2
+## 5. tek-data-table — wave-2 finale
 
-data-table + status-pill (§2) — the big one, last per §10.
+Built to spec §2, **v1 readonly only per the spec's own scoping note** (selectable/editable are v2; the attr warns + falls back).
+
+- **Figma:** TableRow set (`8415:512`, 6 row states — tints layer over the raised row bg; Selected uses the flush 3px accent pattern) + composed DataTable (`8415:513`, header + row instances in the radius/05 clipped container). Fixed cell widths are the contract (corpus 17:30 — users scan by position).
+- **tek-status-pill: RESOLVED — it's tek-badge.** The anatomy's `tone="info"` = `type="blue"`; all other tones exist. Cells slot badges; no duplicate component built.
+- **New tokens (12):** `color/table/header/{background,text}`, `row/background/{default,alt,hover,selected,error,success}`, `row/border/selected`, `divider/default`, `text/{default,muted}`. ⚠ Four are raw alpha tints (hover white 6%, selected blue 12%, error red 10%, success green 10%); ⚠ `row/background/alt` light-mode is a placeholder (= white) until striping ships (spec marks striping TBD).
+- **Columns API:** single `--tek-table-columns` custom prop (e.g. `"2fr 1fr 1.5fr 0.6fr"`) — the §11 "CSS custom property" decision, one prop instead of the spec's per-column `--col-N` sketch (flagged).
+- **Code:** five elements in `packages/ui/src/data-table/data-table.ts` (`tek-data-table`, `-head`, `-body`, `-row`, `-cell`) — full table ARIA, head/body context auto-detected, ellipsis truncation, row states, unvirtualized per §11. Verified **12/12 checks** (incl. header/body column alignment and real-hover tinting) + screenshot. Harness: `prototypes/component-library/datatable-test.html`.
+
+## Wave 2 complete
+
+status-bar ✓ · group-box ✓ · navigation-panel ✓ · progress ✓ · data-table ✓ (status-pill resolved as tek-badge)
+
+**Cumulative new tokens this wave: 38** (statusbar 9 · groupbox 5 incl. canvas/raised · navigation 4 · progress 8 · table 12) — one Token Push covers all.
+**Code Connect backlog once Bryan publishes:** Tab, Tabs, Badge, Tooltip, Spinner (wave 1) + StatusBar, GroupBox, NavigationPanel, Progress, TableRow, DataTable.
