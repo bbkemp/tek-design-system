@@ -177,7 +177,15 @@
   --tek-color-icons-default:              #000000;
 }
 
-*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+/* box-sizing is safe globally — margin/padding reset is NOT: a bare
+   `* { padding:0 }` in light DOM beats every component's :host padding
+   (the pre-refresh inline component copies fought this with !important;
+   the real packages correctly don't). Scoped reset, same pattern as
+   prototypes/sign-in/page-layout.css. */
+*,*::before,*::after { box-sizing:border-box; }
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li,
+blockquote, figure, figcaption, dl, dt, dd, pre,
+table, th, td { margin:0; padding:0; }
 
 body {
   background: var(--cl-chrome-bg);
@@ -487,50 +495,50 @@ el.addEventListener(<span class="str">'tek-change'</span>, e <span class="kw">=&
 
     <!-- SELECTOR LABEL -->
     <section class="section" id="selector-label">
-      <div class="section-header"><h2 class="section-title">SelectorLabel</h2><span class="section-tag">tek-dropdownor-label</span></div>
+      <div class="section-header"><h2 class="section-title">SelectorLabel</h2><span class="section-tag">tek-selector-label</span></div>
       <div class="preview-block">
         <div class="preview-bar"><span class="preview-bar-label">all states</span></div>
         <div class="preview-canvas">
-          <div class="preview-item left"><tek-dropdownor-label>Please select</tek-dropdownor-label><div class="state-lbl">Unchecked</div></div>
-          <div class="preview-item left"><tek-dropdownor-label checked>Please select</tek-dropdownor-label><div class="state-lbl">Checked</div></div>
-          <div class="preview-item left"><tek-dropdownor-label error>Please select</tek-dropdownor-label><div class="state-lbl">Error</div></div>
+          <div class="preview-item left"><tek-selector-label>Please select</tek-selector-label><div class="state-lbl">Unchecked</div></div>
+          <div class="preview-item left"><tek-selector-label checked>Please select</tek-selector-label><div class="state-lbl">Checked</div></div>
+          <div class="preview-item left"><tek-selector-label error>Please select</tek-selector-label><div class="state-lbl">Error</div></div>
         </div>
       </div>
       <div class="code-wrap"><pre class="code-block" id="code-label"><span class="kw">import</span> <span class="str">'@bbkemp/ui'</span>
 
-<span class="attr">&lt;tek-dropdownor-label&gt;</span>Please select<span class="attr">&lt;/tek-dropdownor-label&gt;</span>
-<span class="attr">&lt;tek-dropdownor-label</span> <span class="kw">checked</span><span class="attr">&gt;</span>Please select<span class="attr">&lt;/tek-dropdownor-label&gt;</span>
-<span class="attr">&lt;tek-dropdownor-label</span> <span class="kw">error</span><span class="attr">&gt;</span>Please select<span class="attr">&lt;/tek-dropdownor-label&gt;</span></pre><button class="copy-btn" onclick="copy('code-label',this)">Copy</button></div>
+<span class="attr">&lt;tek-selector-label&gt;</span>Please select<span class="attr">&lt;/tek-selector-label&gt;</span>
+<span class="attr">&lt;tek-selector-label</span> <span class="kw">checked</span><span class="attr">&gt;</span>Please select<span class="attr">&lt;/tek-selector-label&gt;</span>
+<span class="attr">&lt;tek-selector-label</span> <span class="kw">error</span><span class="attr">&gt;</span>Please select<span class="attr">&lt;/tek-selector-label&gt;</span></pre><button class="copy-btn" onclick="copy('code-label',this)">Copy</button></div>
     </section>
 
     <!-- SELECTOR -->
     <section class="section" id="selector">
-      <div class="section-header"><h2 class="section-title">Selector</h2><span class="section-tag">tek-dropdownor</span></div>
+      <div class="section-header"><h2 class="section-title">Selector</h2><span class="section-tag">tek-selector</span></div>
       <div class="preview-block">
         <div class="preview-bar"><span class="preview-bar-label">checkbox · radio · toggle — click any to toggle</span></div>
         <div class="preview-canvas col">
           <div class="row">
-            <tek-dropdownor type="checkbox" label="Please select"></tek-dropdownor>
-            <tek-dropdownor type="checkbox" label="Please select" checked></tek-dropdownor>
-            <tek-dropdownor type="checkbox" label="Please select" error></tek-dropdownor>
+            <tek-selector type="checkbox" label="Please select"></tek-selector>
+            <tek-selector type="checkbox" label="Please select" checked></tek-selector>
+            <tek-selector type="checkbox" label="Please select" error></tek-selector>
           </div>
           <div class="row">
-            <tek-dropdownor type="radio" name="sel-r" label="Please select"></tek-dropdownor>
-            <tek-dropdownor type="radio" name="sel-r" label="Please select" checked></tek-dropdownor>
-            <tek-dropdownor type="radio" name="sel-r" label="Please select" error></tek-dropdownor>
+            <tek-selector type="radio" name="sel-r" label="Please select"></tek-selector>
+            <tek-selector type="radio" name="sel-r" label="Please select" checked></tek-selector>
+            <tek-selector type="radio" name="sel-r" label="Please select" error></tek-selector>
           </div>
           <div class="row">
-            <tek-dropdownor type="toggle" label="Please select"></tek-dropdownor>
-            <tek-dropdownor type="toggle" label="Please select" checked></tek-dropdownor>
-            <tek-dropdownor type="toggle" label="Please select" error></tek-dropdownor>
+            <tek-selector type="toggle" label="Please select"></tek-selector>
+            <tek-selector type="toggle" label="Please select" checked></tek-selector>
+            <tek-selector type="toggle" label="Please select" error></tek-selector>
           </div>
         </div>
       </div>
       <div class="code-wrap"><pre class="code-block" id="code-sel"><span class="kw">import</span> <span class="str">'@bbkemp/ui'</span>
 
-<span class="attr">&lt;tek-dropdownor</span> <span class="kw">type</span>=<span class="str">"checkbox"</span> <span class="kw">label</span>=<span class="str">"Enable feature"</span><span class="attr">&gt;&lt;/tek-dropdownor&gt;</span>
-<span class="attr">&lt;tek-dropdownor</span> <span class="kw">type</span>=<span class="str">"radio"</span>    <span class="kw">name</span>=<span class="str">"group"</span> <span class="kw">label</span>=<span class="str">"Option A"</span><span class="attr">&gt;&lt;/tek-dropdownor&gt;</span>
-<span class="attr">&lt;tek-dropdownor</span> <span class="kw">type</span>=<span class="str">"toggle"</span>   <span class="kw">label</span>=<span class="str">"Live mode"</span> <span class="kw">checked</span><span class="attr">&gt;&lt;/tek-dropdownor&gt;</span></pre><button class="copy-btn" onclick="copy('code-sel',this)">Copy</button></div>
+<span class="attr">&lt;tek-selector</span> <span class="kw">type</span>=<span class="str">"checkbox"</span> <span class="kw">label</span>=<span class="str">"Enable feature"</span><span class="attr">&gt;&lt;/tek-selector&gt;</span>
+<span class="attr">&lt;tek-selector</span> <span class="kw">type</span>=<span class="str">"radio"</span>    <span class="kw">name</span>=<span class="str">"group"</span> <span class="kw">label</span>=<span class="str">"Option A"</span><span class="attr">&gt;&lt;/tek-selector&gt;</span>
+<span class="attr">&lt;tek-selector</span> <span class="kw">type</span>=<span class="str">"toggle"</span>   <span class="kw">label</span>=<span class="str">"Live mode"</span> <span class="kw">checked</span><span class="attr">&gt;&lt;/tek-selector&gt;</span></pre><button class="copy-btn" onclick="copy('code-sel',this)">Copy</button></div>
     </section>
 
     <hr class="divider">
@@ -637,7 +645,7 @@ el.addEventListener(<span class="str">'tek-click'</span>, () <span class="kw">=&
                 </div>
                 <tek-input type="password" placeholder="Enter message here" style="display:block"></tek-input>
               </div>
-              <tek-dropdownor type="checkbox" label="Stay signed in"></tek-dropdownor>
+              <tek-selector type="checkbox" label="Stay signed in"></tek-selector>
             </div>
             <div slot="action-blocks" style="width:100%;">
               <tek-button style="width:100%;display:block">Sign In</tek-button>
@@ -652,7 +660,7 @@ el.addEventListener(<span class="str">'tek-click'</span>, () <span class="kw">=&
   <span class="attr">&lt;div</span> <span class="kw">slot</span>=<span class="str">"input-blocks"</span><span class="attr">&gt;</span>
     <span class="attr">&lt;tek-input</span> <span class="kw">placeholder</span>=<span class="str">"Email"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
     <span class="attr">&lt;tek-input</span> <span class="kw">type</span>=<span class="str">"password"</span> <span class="kw">placeholder</span>=<span class="str">"Password"</span><span class="attr">&gt;&lt;/tek-input&gt;</span>
-    <span class="attr">&lt;tek-dropdownor</span> <span class="kw">type</span>=<span class="str">"checkbox"</span> <span class="kw">label</span>=<span class="str">"Stay signed in"</span><span class="attr">&gt;&lt;/tek-dropdownor&gt;</span>
+    <span class="attr">&lt;tek-selector</span> <span class="kw">type</span>=<span class="str">"checkbox"</span> <span class="kw">label</span>=<span class="str">"Stay signed in"</span><span class="attr">&gt;&lt;/tek-selector&gt;</span>
   <span class="attr">&lt;/div&gt;</span>
   <span class="attr">&lt;div</span> <span class="kw">slot</span>=<span class="str">"action-blocks"</span><span class="attr">&gt;</span>
     <span class="attr">&lt;tek-button&gt;</span>Sign In<span class="attr">&lt;/tek-button&gt;</span>
