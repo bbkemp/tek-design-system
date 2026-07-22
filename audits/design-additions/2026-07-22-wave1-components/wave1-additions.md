@@ -45,6 +45,15 @@
 - [x] Published + Code Connect mapped (Dropdown/DropdownItem → TekSelect/TekOption) — done 2026-07-22
 - [ ] Run a Token Push so the 18 new tokens land in `packages/tokens`
 
+## 2. tek-textarea — RESOLVED: already covered, no new component
+
+Audit finding (2026-07-22): multi-line input already exists on both sides.
+
+- **Figma:** the Input set (`7003:495`, V2.01) carries `Height = Single / Double / Triple` across all five states — 15 variants. Multi-line *is* Input in this system; there is no separate Textarea set, and Figma is the source of truth.
+- **Code:** `tek-input` already renders `<textarea rows=2|3>` for `height="double|triple"` with full token styling and min-heights 48/64 matching the Figma variants.
+- **Verified:** 8/8 behavioral checks (rows, min-heights, focus/filled state transitions, `tek-input` event, disabled). Harness: `prototypes/component-library/textarea-test.html`.
+- Building a separate `tek-textarea` would duplicate the trough and violate "if a component exists, use it." If arbitrary `rows` or autosize is ever needed, that's a `tek-input` enhancement, raised then — not speculative now.
+
 ## Still to come in wave 1
 
-textarea, tabs, badge, tooltip, spinner — same process (Figma-first, semantic tokens per component, blueprint-grounded Lit, behavioral verification).
+tabs, badge, tooltip, spinner — same process (Figma-first, semantic tokens per component, blueprint-grounded Lit, behavioral verification). Note: `tek-tabs` has a full spec in [the rr-additions audit §3](../2026-06-09-ds-v2-rr-component-additions/component-additions.md) — read it before building.

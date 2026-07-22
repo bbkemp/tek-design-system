@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>tek-input textarea mode — verification harness</title>
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+<script type="module" src="../../packages/ui/dist/tek-ui.js"></script>
+<style>
+  body { background: var(--tek-colors-neutral-800, #1e1e1e); padding: 40px; font-family: var(--tek-fonts-family-geist, sans-serif); }
+  main { max-width: 320px; }
+</style>
+</head>
+<body>
+<main>
+  <tek-stack gap="s09">
+    <tek-stack gap="s04">
+      <tek-label>Message (double)</tek-label>
+      <tek-input id="ta2" height="double" placeholder="Enter message here"></tek-input>
+    </tek-stack>
+    <tek-stack gap="s04">
+      <tek-label>Message (triple)</tek-label>
+      <tek-input id="ta3" height="triple" placeholder="Enter message here"></tek-input>
+    </tek-stack>
+    <tek-input id="taDis" height="double" state="disabled" placeholder="Disabled"></tek-input>
+  </tek-stack>
+</main>
+</body>
+</html>
