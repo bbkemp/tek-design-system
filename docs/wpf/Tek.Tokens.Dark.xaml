@@ -160,4 +160,32 @@
   <SolidColorBrush x:Key="TekBrushTabsNavAccentDefault" Color="{StaticResource TekColorTabsNavAccentDefault}"/>
   <Color x:Key="TekColorTabsUnderlineBorderActive">#FF33BAEA</Color>
   <SolidColorBrush x:Key="TekBrushTabsUnderlineBorderActive" Color="{StaticResource TekColorTabsUnderlineBorderActive}"/>
+  <Color x:Key="TekColorBadgeNeutralBackground">#FF333333</Color>
+  <SolidColorBrush x:Key="TekBrushBadgeNeutralBackground" Color="{StaticResource TekColorBadgeNeutralBackground}"/>
+  <Color x:Key="TekColorBadgeNeutralText">#FFCCCCCC</Color>
+  <SolidColorBrush x:Key="TekBrushBadgeNeutralText" Color="{StaticResource TekColorBadgeNeutralText}"/>
+  <Color x:Key="TekColorBadgeBlueBackground">#FF33BAEA</Color>
+  <SolidColorBrush x:Key="TekBrushBadgeBlueBackground" Color="{StaticResource TekColorBadgeBlueBackground}"/>
+  <Color x:Key="TekColorBadgeBlueText">#FF1E1E1E</Color>
+  <SolidColorBrush x:Key="TekBrushBadgeBlueText" Color="{StaticResource TekColorBadgeBlueText}"/>
+  <Color x:Key="TekColorBadgeSuccessBackground">#FF42B54C</Color>
+  <SolidColorBrush x:Key="TekBrushBadgeSuccessBackground" Color="{StaticResource TekColorBadgeSuccessBackground}"/>
+  <Color x:Key="TekColorBadgeSuccessText">#FF1E1E1E</Color>
+  <SolidColorBrush x:Key="TekBrushBadgeSuccessText" Color="{StaticResource TekColorBadgeSuccessText}"/>
+  <Color x:Key="TekColorBadgeWarningBackground">#FFE0B732</Color>
+  <SolidColorBrush x:Key="TekBrushBadgeWarningBackground" Color="{StaticResource TekColorBadgeWarningBackground}"/>
+  <Color x:Key="TekColorBadgeWarningText">#FF1E1E1E</Color>
+  <SolidColorBrush x:Key="TekBrushBadgeWarningText" Color="{StaticResource TekColorBadgeWarningText}"/>
+  <Color x:Key="TekColorBadgeErrorBackground">#FFE74848</Color>
+  <SolidColorBrush x:Key="TekBrushBadgeErrorBackground" Color="{StaticResource TekColorBadgeErrorBackground}"/>
+  <Color x:Key="TekColorBadgeErrorText">#FFFFFFFF</Color>
+  <SolidColorBrush x:Key="TekBrushBadgeErrorText" Color="{StaticResource TekColorBadgeErrorText}"/>
+  <Color x:Key="TekColorSpinnerDefault">#FF33BAEA</Color>
+  <SolidColorBrush x:Key="TekBrushSpinnerDefault" Color="{StaticResource TekColorSpinnerDefault}"/>
+  <Color x:Key="TekColorSpinnerSuccess">#FF42B54C</Color>
+  <SolidColorBrush x:Key="TekBrushSpinnerSuccess" Color="{StaticResource TekColorSpinnerSuccess}"/>
+  <Color x:Key="TekColorSpinnerWarning">#FFE0B732</Color>
+  <SolidColorBrush x:Key="TekBrushSpinnerWarning" Color="{StaticResource TekColorSpinnerWarning}"/>
+  <Color x:Key="TekColorSpinnerError">#FFE74848</Color>
+  <SolidColorBrush x:Key="TekBrushSpinnerError" Color="{StaticResource TekColorSpinnerError}"/>
 </ResourceDictionary>
