@@ -65,7 +65,8 @@ Built to the [rr-additions audit §3 spec](../2026-06-09-ds-v2-rr-component-addi
 | Tab | `8393:377` | Style = Pill / Nav × State = Inactive / Hover / Active / Disabled |
 | Tabs | `8393:395` | Orientation = Horizontal (pill group) / Vertical (nav) |
 
-- Pill container mirrors the input trough (container bg/border tokens, radius/full, width/01 stroke); text styles applied (`text/regular/sm` pill, `text/heading/regular/2xs` nav); nav accent bar width bound to `borders/width/05`.
+- Pill container mirrors the input trough (container bg/border tokens, radius/full, width/01 stroke); nav accent bar width bound to `borders/width/05`.
+- **Type rule (Bryan, 2026-07-22): components carry Geist type styles only** — pill = `text/regular/sm`, nav = `text/regular/lg` (the heading ramp was tried and rejected as too bold). Font variables are referenced *inside* the type styles, never bound directly on component text; if no style covers a case, it's a conversation, not a workaround. A QA sweep after the fix confirms **zero unstyled text nodes** across all wave-1 + layout sets (the Dropdown trough and DropdownItem texts were also corrected to `text/regular/md` — they'd copied Input's legacy font-variable binding).
 - **Accent design call (Bryan, 2026-07-22):** the nav accent is a **flush, full-height bar on the tab's left edge** — in Figma an absolutely-positioned fill (STRETCH vertical), in code a `border-left`. The first-built inset text-height bar was reviewed and rejected. Nav padding is equal in all states, so text does not shift on activation (asserted in the behavioral suite).
 
 ### New semantic tokens (12) — `color/tabs/*`
