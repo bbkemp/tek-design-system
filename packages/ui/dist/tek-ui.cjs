@@ -95,6 +95,233 @@ __decorate([
     n({ type: Boolean, reflect: true })
 ], TekBaseSelector.prototype, "disabled", void 0);
 
+const STACK_GAP_STEPS = ['s02', 's03', 's04', 's05', 's06', 's07', 's08', 's09', 's11'];
+class TekStack extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.gap = 's05';
+        this.align = 'stretch';
+    }
+    willUpdate() {
+        if (this.gap && !STACK_GAP_STEPS.includes(this.gap)) {
+            console.warn(`<tek-stack> gap="${this.gap}" is not a spacing token step (${STACK_GAP_STEPS.join(', ')}); falling back to s05.`);
+            this.gap = 's05';
+        }
+    }
+    render() {
+        return b `<slot></slot>`;
+    }
+}
+TekStack.styles = i$4 `
+    :host {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      box-sizing: border-box;
+      gap: var(--tek-spacing-s05, 8px);
+    }
+
+    :host([gap='s02']) { gap: var(--tek-spacing-s02, 2px); }
+    :host([gap='s03']) { gap: var(--tek-spacing-s03, 4px); }
+    :host([gap='s04']) { gap: var(--tek-spacing-s04, 6px); }
+    :host([gap='s05']) { gap: var(--tek-spacing-s05, 8px); }
+    :host([gap='s06']) { gap: var(--tek-spacing-s06, 10px); }
+    :host([gap='s07']) { gap: var(--tek-spacing-s07, 12px); }
+    :host([gap='s08']) { gap: var(--tek-spacing-s08, 14px); }
+    :host([gap='s09']) { gap: var(--tek-spacing-s09, 16px); }
+    :host([gap='s11']) { gap: var(--tek-spacing-s11, 24px); }
+
+    :host([align='start'])   { align-items: flex-start; }
+    :host([align='center'])  { align-items: center; }
+    :host([align='end'])     { align-items: flex-end; }
+    :host([align='stretch']) { align-items: stretch; }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekStack.prototype, "gap", void 0);
+__decorate([
+    n({ reflect: true })
+], TekStack.prototype, "align", void 0);
+customElements.define('tek-stack', TekStack);
+
+const ROW_GAP_STEPS = ['s02', 's03', 's04', 's05', 's06', 's07', 's08', 's09', 's11'];
+class TekRow extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.gap = 's05';
+        this.align = 'stretch';
+        this.justify = 'start';
+    }
+    willUpdate() {
+        if (this.gap && !ROW_GAP_STEPS.includes(this.gap)) {
+            console.warn(`<tek-row> gap="${this.gap}" is not a spacing token step (${ROW_GAP_STEPS.join(', ')}); falling back to s05.`);
+            this.gap = 's05';
+        }
+    }
+    render() {
+        return b `<slot></slot>`;
+    }
+}
+TekRow.styles = i$4 `
+    :host {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      box-sizing: border-box;
+      gap: var(--tek-spacing-s05, 8px);
+    }
+
+    :host([gap='s02']) { gap: var(--tek-spacing-s02, 2px); }
+    :host([gap='s03']) { gap: var(--tek-spacing-s03, 4px); }
+    :host([gap='s04']) { gap: var(--tek-spacing-s04, 6px); }
+    :host([gap='s05']) { gap: var(--tek-spacing-s05, 8px); }
+    :host([gap='s06']) { gap: var(--tek-spacing-s06, 10px); }
+    :host([gap='s07']) { gap: var(--tek-spacing-s07, 12px); }
+    :host([gap='s08']) { gap: var(--tek-spacing-s08, 14px); }
+    :host([gap='s09']) { gap: var(--tek-spacing-s09, 16px); }
+    :host([gap='s11']) { gap: var(--tek-spacing-s11, 24px); }
+
+    :host([align='start'])   { align-items: flex-start; }
+    :host([align='center'])  { align-items: center; }
+    :host([align='end'])     { align-items: flex-end; }
+    :host([align='stretch']) { align-items: stretch; }
+
+    :host([justify='start'])   { justify-content: flex-start; }
+    :host([justify='center'])  { justify-content: center; }
+    :host([justify='end'])     { justify-content: flex-end; }
+    :host([justify='between']) { justify-content: space-between; }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekRow.prototype, "gap", void 0);
+__decorate([
+    n({ reflect: true })
+], TekRow.prototype, "align", void 0);
+__decorate([
+    n({ reflect: true })
+], TekRow.prototype, "justify", void 0);
+customElements.define('tek-row', TekRow);
+
+const GRID_GAP_STEPS = ['s05', 's09', 's11'];
+const GRID_COLUMNS = ['2', '3', '4'];
+class TekGrid extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.gap = 's09';
+        this.columns = '3';
+    }
+    willUpdate() {
+        if (this.gap && !GRID_GAP_STEPS.includes(this.gap)) {
+            console.warn(`<tek-grid> gap="${this.gap}" is not a spacing token step (${GRID_GAP_STEPS.join(', ')}); falling back to s09.`);
+            this.gap = 's09';
+        }
+        if (this.columns && !GRID_COLUMNS.includes(this.columns)) {
+            console.warn(`<tek-grid> columns="${this.columns}" must be one of ${GRID_COLUMNS.join(', ')}; falling back to 3.`);
+            this.columns = '3';
+        }
+    }
+    render() {
+        return b `<slot></slot>`;
+    }
+}
+TekGrid.styles = i$4 `
+    :host {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      box-sizing: border-box;
+      gap: var(--tek-spacing-s09, 16px);
+    }
+
+    :host([gap='s05']) { gap: var(--tek-spacing-s05, 8px); }
+    :host([gap='s09']) { gap: var(--tek-spacing-s09, 16px); }
+    :host([gap='s11']) { gap: var(--tek-spacing-s11, 24px); }
+
+    :host([columns='2']) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    :host([columns='3']) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    :host([columns='4']) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekGrid.prototype, "gap", void 0);
+__decorate([
+    n({ reflect: true })
+], TekGrid.prototype, "columns", void 0);
+customElements.define('tek-grid', TekGrid);
+
+/**
+ * tek-page
+ *
+ * Figma: DS-v2 → v2.02 → Page (node 8378:350)
+ * ADR-0002: layout primitives — always start with layout.
+ *
+ * Page frame primitive. Encodes the responsive `.wrap` contract from the
+ * sign-in reference pages as container queries — the code analog of the
+ * Figma Breakpoint variants (Mobile / SM / XL):
+ *
+ *   Mobile          padding s17 / s13 / s11 (top / sides / bottom), top-aligned
+ *   ≥ 640px  (c04)  side padding s19
+ *   ≥ 1280px (c07)  padding s19 all round, content vertically centered
+ *   All             section rhythm gap s17
+ *
+ * Layout-only: the canvas background stays on the page/body theme layer
+ * (the Figma component shows color/canvas/background/default as context;
+ * code keeps the host transparent so page-level backdrops show through).
+ *
+ * Tokens:
+ *   --tek-spacing-s11, --tek-spacing-s13, --tek-spacing-s17, --tek-spacing-s19
+ *
+ * Usage:
+ *   <tek-page>
+ *     <header>…</header>
+ *     <tek-modal>…</tek-modal>
+ *   </tek-page>
+ */
+class TekPage extends i$1 {
+    render() {
+        return b `<div class="wrap" part="wrap"><slot></slot></div><slot name="footer"></slot>`;
+    }
+}
+TekPage.styles = i$4 `
+    :host {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      width: 100%;
+      box-sizing: border-box;
+      container-type: inline-size;
+      container-name: page;
+    }
+
+    .wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--tek-spacing-s17, 48px);
+      padding: var(--tek-spacing-s17, 48px) var(--tek-spacing-s13, 32px) var(--tek-spacing-s11, 24px);
+      width: 100%;
+      min-height: 1px;
+      box-sizing: border-box;
+    }
+
+    @container page (min-width: 640px) {
+      .wrap {
+        padding: var(--tek-spacing-s17, 48px) var(--tek-spacing-s19, 64px) var(--tek-spacing-s11, 24px);
+      }
+    }
+
+    @container page (min-width: 1280px) {
+      .wrap {
+        position: relative;
+        justify-content: center;
+        padding: var(--tek-spacing-s19, 64px);
+      }
+    }
+  `;
+customElements.define('tek-page', TekPage);
+
 class TekCheckbox extends TekBaseSelector {
     constructor() {
         super(...arguments);
@@ -983,12 +1210,16 @@ exports.TekButton = TekButton;
 exports.TekCharacterCount = TekCharacterCount;
 exports.TekCheckbox = TekCheckbox;
 exports.TekFooter = TekFooter;
+exports.TekGrid = TekGrid;
 exports.TekInput = TekInput;
 exports.TekLabel = TekLabel;
 exports.TekModal = TekModal;
+exports.TekPage = TekPage;
 exports.TekRadio = TekRadio;
+exports.TekRow = TekRow;
 exports.TekSelector = TekSelector;
 exports.TekSelectorLabel = TekSelectorLabel;
+exports.TekStack = TekStack;
 exports.TekTextLink = TekTextLink;
 exports.TekToggle = TekToggle;
 //# sourceMappingURL=tek-ui.cjs.map

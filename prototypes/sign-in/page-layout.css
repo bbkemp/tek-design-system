@@ -1,6 +1,10 @@
 /* Tek Design System — shared page layout
    Link this in every preview page:
    <link rel="stylesheet" href="./page-layout.css">
+
+   Layout composition lives in the ADR-0002 primitives (tek-page, tek-stack,
+   tek-row, tek-grid) — this file carries only the reset, the page backdrop,
+   and page-specific rules (logo sizing, XL logo positioning, typography).
 */
 
 /* box-sizing safe to apply globally — does NOT affect shadow DOM :host padding */
@@ -21,8 +25,8 @@ body {
   display: flex;
   flex-direction: column;
   font-family: var(--tek-fonts-family-geist);
-  color: var(--tek-primitive-color-neutral-100);
-  background-color: var(--tek-primitive-color-neutral-800);
+  color: var(--tek-colors-neutral-100);
+  background-color: var(--tek-colors-neutral-800);
   position: relative;
   overflow-x: hidden;
 }
@@ -38,71 +42,27 @@ body {
     radial-gradient(ellipse at 20% 50%, rgba(80,60,140,0.55) 0%, transparent 55%),
     radial-gradient(ellipse at 80% 20%, rgba(180,100,80,0.35) 0%, transparent 50%),
     radial-gradient(ellipse at 70% 80%, rgba(30,50,120,0.4)  0%, transparent 50%),
-    var(--tek-primitive-color-neutral-800);
-}
-
-.page-wrap {
-  position: relative; z-index: 1;
-  display: flex; flex-direction: column;
-  min-height: 100vh; width: 100%;
-  container-type: inline-size;
-  container-name: page;
-}
-
-.wrap {
-  flex: 1;
-  display: flex; flex-direction: column;
-  align-items: center;
-  gap: var(--tek-spacing-s17, 48px);
-  padding: var(--tek-spacing-s17, 48px) var(--tek-spacing-s13, 32px) var(--tek-spacing-s11, 24px);
-  width: 100%; min-height: 1px;
+    var(--tek-colors-neutral-800);
 }
 
 .logo-header {
-  display: flex; flex-direction: column;
-  align-items: center;
   width: 100%; flex-shrink: 0;
 }
 
-.logo-lockup { display: flex; align-items: center; gap: var(--tek-spacing-s06, 10px); }
 .logo-icon   { height: 105px; width: auto; display: block; }
 .logo-type   { height: 16px; width: auto; display: block; }
 
 tek-modal { flex-shrink: 0; }
 
-/* Field wrapper: label stacked above input */
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--tek-spacing-s04, 6px);
-  width: 100%;
-}
-
-/* Two inputs side by side */
-.field-row {
-  display: flex;
-  gap: var(--tek-spacing-s05, 8px);
-  width: 100%;
-}
-
-.field-row .field { flex: 1 1 0; min-width: 0; }
+/* Row of flexible fields: each child shares the width equally */
+.field-row > tek-stack { flex: 1 1 0; min-width: 0; }
 
 /* Label row with link (e.g. Password + Forgot password?) */
-.form-label-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
 .form-label-row tek-label { width: auto; flex-shrink: 0; }
 .form-label-row tek-text-link { flex-shrink: 0; white-space: nowrap; }
 
-/* Link row below action button */
+/* Link row below action button — typography only, layout is tek-row */
 .signin-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--tek-spacing-s02, 4px);
   font-family: var(--tek-fonts-family-geist);
   font-size: var(--tek-fonts-text-size-xs);
   line-height: var(--tek-fonts-text-line-height-xs);
@@ -110,28 +70,19 @@ tek-modal { flex-shrink: 0; }
 }
 
 /* ============================================================
-   RESPONSIVE — Container queries
-   Breakpoints from Figma Cxx variables: xs=384, sm=640, xl=1280
+   RESPONSIVE — Container queries against the tek-page container.
+   Breakpoints from Figma Cxx variables: xs=384, sm=640, xl=1280.
+   tek-page owns the .wrap padding/centering at each breakpoint;
+   only page-specific element behavior remains here.
 ============================================================ */
 
-@container page (min-width: 640px) {
-  .wrap { padding: var(--tek-spacing-s17, 48px) var(--tek-spacing-s19, 64px) var(--tek-spacing-s11, 24px); }
-  /* logo stays same size as mobile — both use 105/16 from Figma */
-}
-
 @container page (min-width: 1280px) {
-  .wrap {
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    padding: var(--tek-spacing-s19, 64px);
-  }
   .logo-header {
     position: absolute;
     top: var(--tek-spacing-s19, 64px);
     left: var(--tek-spacing-s19, 64px);
-    align-items: flex-start;
   }
+  .logo-header tek-stack { align-items: flex-start; }
   .logo-icon { height: 128px; }
   .logo-type { height: 23px; }
   tek-modal {

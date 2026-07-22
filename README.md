@@ -462,6 +462,10 @@ Breakpoints from Figma `Cxx` variables: xs=384px, sm=640px, xl=1280px.
 | Button | 202:2605 | `packages/ui/src/button/button.ts` |
 | Modal | 7003:2158 | `packages/ui/src/modal/modal.ts` |
 | Footer | 7003:2168 | `packages/ui/src/footer/footer.ts` |
+| Stack (v2.02, ADR-0002) | 8376:373 | `packages/ui/src/stack/stack.ts` |
+| Row (v2.02, ADR-0002) | 8377:373 | `packages/ui/src/row/row.ts` |
+| Grid (v2.02, ADR-0002) | 8377:446 | `packages/ui/src/grid/grid.ts` |
+| Page (v2.02, ADR-0002) | 8378:350 | `packages/ui/src/page/page.ts` |
 | Sign In — Mobile (dark) | 7134:600 | `prototypes/sign-in/index.html` |
 | Sign In — Tablet (dark) | 7135:638 | `prototypes/sign-in/index.html` |
 | Sign In — Desktop (dark) | 7134:598 | `prototypes/sign-in/index.html` |
