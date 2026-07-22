@@ -2316,7 +2316,7 @@ TekTab.styles = i$4 `
     }
 
     :host(:focus-visible) {
-      outline: 2px solid var(--tek-colors-brand-tek-blue, #29c0e7);
+      outline: 2px solid var(--tek-colors-brand-tek-blue, #33baea);
       outline-offset: 1px;
     }
 
@@ -2332,33 +2332,44 @@ TekTab.styles = i$4 `
       border-radius: var(--tek-borders-radius-full, 9999px);
       font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
       font-size: var(--tek-fonts-text-size-sm, 12px);
-      line-height: var(--tek-fonts-text-line-height-sm, 14px);
+      line-height: var(--tek-fonts-text-line-height-sm, 12px);
       color: var(--tek-color-tabs-tab-text-inactive, #979797);
     }
     :host([data-style='pill']:hover:not([active])) {
-      background: var(--tek-color-tabs-tab-background-hover, rgba(41, 192, 231, 0.08));
+      background: var(--tek-color-tabs-tab-background-hover, rgba(51, 186, 234, 0.08));
     }
     :host([data-style='pill'][active]) {
-      background: var(--tek-color-tabs-tab-background-active, #29c0e7);
+      background: var(--tek-color-tabs-tab-background-active, #33baea);
       color: var(--tek-color-tabs-tab-text-active, #1e1e1e);
     }
 
-    /* ---- nav (vertical app navigation) ---- */
+    /* ---- nav (vertical app navigation) ----
+       Figma Tab Style=Nav: Archivo SemiBold 14/22, +1% tracking; the active
+       accent is an INSET bar (starts after 8px padding, text-height tall),
+       not a flush full-height border. */
     :host([data-style='nav']) {
       padding: var(--tek-spacing-s06, 10px) var(--tek-spacing-s07, 12px);
-      border-left: var(--tek-borders-width-05, 3px) solid transparent;
       font-family: var(--tek-fonts-family-archivo, system-ui, sans-serif);
+      font-weight: 600;
       font-size: var(--tek-fonts-heading-size-2xs, 14px);
-      line-height: var(--tek-fonts-heading-line-height-2xs, 16px);
+      line-height: var(--tek-fonts-heading-line-height-2xs, 22px);
+      letter-spacing: 0.01em;
       color: var(--tek-color-tabs-nav-text-inactive, #979797);
     }
     :host([data-style='nav']:hover:not([active])) {
       background: var(--tek-color-tabs-nav-background-hover, rgba(30, 30, 30, 0.5));
     }
     :host([data-style='nav'][active]) {
-      border-left-color: var(--tek-color-tabs-nav-accent-default, #29c0e7);
-      background: var(--tek-color-tabs-nav-background-active, rgba(41, 192, 231, 0.12));
+      padding-left: var(--tek-spacing-s05, 8px);
+      background: var(--tek-color-tabs-nav-background-active, rgba(51, 186, 234, 0.12));
       color: var(--tek-color-tabs-nav-text-active, #ffffff);
+    }
+    :host([data-style='nav'][active])::before {
+      content: '';
+      flex-shrink: 0;
+      width: var(--tek-borders-width-05, 3px);
+      height: var(--tek-fonts-heading-line-height-2xs, 22px);
+      background: var(--tek-color-tabs-nav-accent-default, #33baea);
     }
   `;
 __decorate([
