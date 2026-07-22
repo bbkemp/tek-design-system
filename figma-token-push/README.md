@@ -54,3 +54,12 @@ Flat W3C DTCG JSON, nested by collection → variable name path:
 ```
 
 Aliases are written as DTCG reference syntax: `{collection.path.to.token}`
+
+## Target branch (release workflow)
+
+The **Target branch** field chooses where pushes land (default `main`, remembered between sessions; the dropdown lists live branches once a PAT is saved).
+
+- **`main`** — production: `publish-tokens.yml` fires and publishes `@bbkemp/tokens` immediately.
+- **A working/release branch** (e.g. `claude/release-v2.03`) — tokens land on the open PR instead; **packages do NOT publish** until the PR merges to main. The plugin shows a warning row when a non-main branch is selected, and refuses to push to a branch that doesn't exist on GitHub.
+
+This supports the release cycle: design freely on a `vX.XX (working)` Figma page, push tokens into the release PR as you go, and production only updates at merge.
