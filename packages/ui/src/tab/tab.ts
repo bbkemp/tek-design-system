@@ -58,10 +58,11 @@ export class TekTab extends LitElement {
 
     /* ---- nav (vertical app navigation) ----
        Figma Tab Style=Nav: Archivo SemiBold 14/22, +1% tracking; the active
-       accent is an INSET bar (starts after 8px padding, text-height tall),
-       not a flush full-height border. */
+       accent is a flush, full-height bar on the tab's left edge (Bryan's
+       2026-07-22 call — the inset text-height bar was rejected). */
     :host([data-style='nav']) {
       padding: var(--tek-spacing-s06, 10px) var(--tek-spacing-s07, 12px);
+      border-left: var(--tek-borders-width-05, 3px) solid transparent;
       font-family: var(--tek-fonts-family-archivo, system-ui, sans-serif);
       font-weight: 600;
       font-size: var(--tek-fonts-heading-size-2xs, 14px);
@@ -73,16 +74,9 @@ export class TekTab extends LitElement {
       background: var(--tek-color-tabs-nav-background-hover, rgba(30, 30, 30, 0.5));
     }
     :host([data-style='nav'][active]) {
-      padding-left: var(--tek-spacing-s05, 8px);
+      border-left-color: var(--tek-color-tabs-nav-accent-default, #33baea);
       background: var(--tek-color-tabs-nav-background-active, rgba(51, 186, 234, 0.12));
       color: var(--tek-color-tabs-nav-text-active, #ffffff);
-    }
-    :host([data-style='nav'][active])::before {
-      content: '';
-      flex-shrink: 0;
-      width: var(--tek-borders-width-05, 3px);
-      height: var(--tek-fonts-heading-line-height-2xs, 22px);
-      background: var(--tek-color-tabs-nav-accent-default, #33baea);
     }
   `;
 
