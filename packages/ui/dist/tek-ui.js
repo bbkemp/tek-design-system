@@ -2816,6 +2816,133 @@ __decorate([
 ], TekNavigationPanel.prototype, "variant", void 0);
 customElements.define('tek-navigation-panel', TekNavigationPanel);
 
+class TekProgress extends i$1 {
+    constructor() {
+        super(...arguments);
+        this.variant = 'determinate';
+        this.value = 0;
+        this.max = 100;
+        this.size = 'md';
+        this.tone = 'default';
+        this.paused = false;
+    }
+    get pct() {
+        return Math.min(100, Math.max(0, (this.value / (this.max || 100)) * 100));
+    }
+    willUpdate() {
+        this.setAttribute('role', 'progressbar');
+        if (this.variant === 'indeterminate') {
+            this.removeAttribute('aria-valuenow');
+            this.setAttribute('aria-busy', 'true');
+        }
+        else {
+            this.setAttribute('aria-valuemin', '0');
+            this.setAttribute('aria-valuemax', String(this.max));
+            this.setAttribute('aria-valuenow', String(this.value));
+            this.removeAttribute('aria-busy');
+        }
+    }
+    updated(changed) {
+        if (changed.has('value') && this.variant === 'determinate' && this.value >= this.max) {
+            this.dispatchEvent(new CustomEvent('tek-complete', {
+                detail: { value: this.value }, bubbles: true, composed: true
+            }));
+        }
+    }
+    render() {
+        const indet = this.variant === 'indeterminate';
+        return b `
+      <div class="label" part="label"><slot name="label"></slot></div>
+      <div class="track" part="track">
+        <div class="fill" part="fill" style=${indet ? A : `width:${this.pct}%`}></div>
+      </div>
+      <div class="meta-row" part="meta">
+        <span>${indet ? '' : `${Math.round(this.pct)}%`}</span>
+        <span><slot name="meta"></slot></span>
+      </div>
+    `;
+    }
+}
+TekProgress.styles = i$4 `
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: var(--tek-spacing-s03, 4px);
+      width: 100%;
+    }
+
+    .label {
+      font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
+      font-size: var(--tek-fonts-text-size-sm, 12px);
+      line-height: var(--tek-fonts-text-line-height-sm, 12px);
+      color: var(--tek-color-progress-label-default, #ffffff);
+    }
+
+    .track {
+      position: relative;
+      height: 8px;
+      background: var(--tek-color-progress-track-background, #252525);
+      border: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-progress-track-border, #7b7b7b);
+      border-radius: var(--tek-borders-radius-02, 3px);
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    :host([size='sm']) .track { height: 4px; }
+    :host([size='lg']) .track { height: 12px; }
+
+    .fill {
+      height: 100%;
+      background: var(--tek-color-progress-fill-default, #33baea);
+      transition: width 200ms ease;
+    }
+    :host([tone='success']) .fill { background: var(--tek-color-progress-fill-success, #42b54c); }
+    :host([tone='warning']) .fill { background: var(--tek-color-progress-fill-warning, #e0b732); }
+    :host([tone='error'])   .fill { background: var(--tek-color-progress-fill-error,   #e74848); }
+
+    :host([variant='indeterminate']) .fill {
+      position: absolute;
+      width: 40%;
+      animation: slide 1.4s ease-in-out infinite;
+    }
+    :host([paused]) .fill { animation-play-state: paused; }
+    @media (prefers-reduced-motion: reduce) {
+      :host([variant='indeterminate']) .fill { animation: none; left: 30%; }
+    }
+    @keyframes slide {
+      from { left: -40%; }
+      to   { left: 100%; }
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--tek-spacing-s03, 4px);
+      font-family: var(--tek-fonts-family-mono, monospace);
+      font-size: var(--tek-fonts-text-size-xs, 10px);
+      line-height: var(--tek-fonts-text-line-height-xs, 12px);
+      color: var(--tek-color-progress-meta-default, #979797);
+    }
+  `;
+__decorate([
+    n({ reflect: true })
+], TekProgress.prototype, "variant", void 0);
+__decorate([
+    n({ type: Number })
+], TekProgress.prototype, "value", void 0);
+__decorate([
+    n({ type: Number })
+], TekProgress.prototype, "max", void 0);
+__decorate([
+    n({ reflect: true })
+], TekProgress.prototype, "size", void 0);
+__decorate([
+    n({ reflect: true })
+], TekProgress.prototype, "tone", void 0);
+__decorate([
+    n({ type: Boolean, reflect: true })
+], TekProgress.prototype, "paused", void 0);
+customElements.define('tek-progress', TekProgress);
+
 class TekTooltip extends i$1 {
     constructor() {
         super(...arguments);
@@ -3884,5 +4011,5 @@ TekFooter.styles = i$4 `
   `;
 customElements.define('tek-footer', TekFooter);
 
-export { TekBadge, TekBaseSelector, TekButton, TekCharacterCount, TekCheckbox, TekFooter, TekGrid, TekGroupBox, TekInput, TekLabel, TekModal, TekNavigationPanel, TekOption, TekPage, TekRadio, TekRow, TekSelect, TekSelector, TekSelectorLabel, TekSpinner, TekStack, TekStatusBar, TekTab, TekTabs, TekTextLink, TekToggle, TekTooltip };
+export { TekBadge, TekBaseSelector, TekButton, TekCharacterCount, TekCheckbox, TekFooter, TekGrid, TekGroupBox, TekInput, TekLabel, TekModal, TekNavigationPanel, TekOption, TekPage, TekProgress, TekRadio, TekRow, TekSelect, TekSelector, TekSelectorLabel, TekSpinner, TekStack, TekStatusBar, TekTab, TekTabs, TekTextLink, TekToggle, TekTooltip };
 //# sourceMappingURL=tek-ui.js.map

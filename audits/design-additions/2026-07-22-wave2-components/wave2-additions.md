@@ -58,6 +58,15 @@ Built to spec §6.
 - **Loading state** (spec's rare tabs→spinner swap) is app-slotted content, not a component variant — deliberately omitted.
 - **Code:** `role=navigation`, three slots, foot auto-hides when empty, variant widths; container-query switching is the app-shell's job per spec. Verified **8/8 checks** (incl. tek-change propagating through the slotted tabs) + screenshot. Harness: `prototypes/component-library/navpanel-test.html`.
 
+## 4. tek-progress
+
+Built to spec §5.
+
+- **Figma:** Progress set (`8413:560`) — Determinate × Size(sm/md/lg) × Tone(4) = 12 + one Indeterminate. Full anatomy per spec: label (`text/regular/sm`), track (radius/02, width/01 border, clipped fill at 62%), meta row (`text/mono/xs`). Indeterminate stripe is static in Figma; animation is code-only per spec.
+- **New tokens (8):** `color/progress/track/{background,border}`, `fill/{default,success,warning,error}`, `label/default`, `meta/default`.
+- **Deviation flagged:** spec's `progress-complete` event ships as **`tek-complete`** per the DS event convention.
+- **Code:** `variant/value/max/size/tone/paused`, label + meta slots, live percent readout, full progressbar ARIA (aria-busy for indeterminate), CSS-only stripe animation frozen under `prefers-reduced-motion` (spec requirement, tested in a reduced-motion context). Verified **8/8 checks** + screenshot. Harness: `prototypes/component-library/progress-test.html`.
+
 ## Still to come in wave 2
 
-progress (§5), data-table + status-pill (§2).
+data-table + status-pill (§2) — the big one, last per §10.
