@@ -10,7 +10,7 @@
  * Tokens:
  *   --tek-color-menu-text-default | selected | disabled
  *   --tek-color-menu-background-hover | selected
- *   --tek-spacing-s03, s04, s06 · --tek-borders-radius-03
+ *   --tek-spacing-s03, s04, s06 · --tek-borders-radius-none
  *   --tek-fonts-family-geist · --tek-fonts-text-size-md · line-height-md
  *
  * Usage:

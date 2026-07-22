@@ -375,7 +375,7 @@ TekOption.styles = i$4 `
       align-items: center;
       gap: var(--tek-spacing-s03, 4px);
       padding: var(--tek-spacing-s04, 6px) var(--tek-spacing-s06, 10px);
-      border-radius: var(--tek-borders-radius-03, 5px);
+      border-radius: var(--tek-borders-radius-none, 0);
       font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
       font-size: var(--tek-fonts-text-size-md, 13px);
       line-height: var(--tek-fonts-text-line-height-md, 16px);

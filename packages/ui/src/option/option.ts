@@ -10,7 +10,7 @@
  * Tokens:
  *   --tek-color-menu-text-default | selected | disabled
  *   --tek-color-menu-background-hover | selected
- *   --tek-spacing-s03, s04, s06 · --tek-borders-radius-03
+ *   --tek-spacing-s03, s04, s06 · --tek-borders-radius-none
  *   --tek-fonts-family-geist · --tek-fonts-text-size-md · line-height-md
  *
  * Usage:
@@ -26,7 +26,7 @@ export class TekOption extends LitElement {
       align-items: center;
       gap: var(--tek-spacing-s03, 4px);
       padding: var(--tek-spacing-s04, 6px) var(--tek-spacing-s06, 10px);
-      border-radius: var(--tek-borders-radius-03, 5px);
+      border-radius: var(--tek-borders-radius-none, 0);
       font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
       font-size: var(--tek-fonts-text-size-md, 13px);
       line-height: var(--tek-fonts-text-line-height-md, 16px);
