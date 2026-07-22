@@ -471,6 +471,9 @@ Breakpoints from Figma `Cxx` variables: xs=384px, sm=640px, xl=1280px.
 | DropdownMenu (v2.02, wave 1) | 8386:347 | `packages/ui/src/select/select.ts` (menu part) |
 | Tabs (v2.02, wave 1) | 8393:395 | `packages/ui/src/tabs/tabs.ts` |
 | Tab (v2.02, wave 1) | 8393:377 | `packages/ui/src/tab/tab.ts` |
+| Badge (v2.02, wave 1) | 8400:377 | `packages/ui/src/badge/badge.ts` |
+| Tooltip (v2.02, wave 1) | 8400:378 | `packages/ui/src/tooltip/tooltip.ts` |
+| Spinner (v2.02, wave 1) | 8401:391 | `packages/ui/src/spinner/spinner.ts` |
 | Sign In — Mobile (dark) | 7134:600 | `prototypes/sign-in/index.html` |
 | Sign In — Tablet (dark) | 7135:638 | `prototypes/sign-in/index.html` |
 | Sign In — Desktop (dark) | 7134:598 | `prototypes/sign-in/index.html` |

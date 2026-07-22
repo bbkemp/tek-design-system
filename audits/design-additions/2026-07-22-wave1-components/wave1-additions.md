@@ -91,6 +91,35 @@ Spec's token table reshaped to the `color/<component>/<part>/<state>` convention
 - [ ] Review the three raw-alpha tints (above) and the 50%-opacity disabled treatment
 - [ ] Publish → then Claude adds Code Connect for Tab/Tabs
 
-## Still to come in wave 1
+## 4. tek-badge
 
-badge, tooltip, spinner — same process (Figma-first, semantic tokens per component, blueprint-grounded Lit, behavioral verification). Spinner also has an rr-audit spec (§7); tooltip should reuse the `color/menu/*` panel tokens.
+- **Figma:** Badge set (`8400:377`) — Type = Neutral / Blue / Success / Warning / Error. Pill radius-full, `text/regular/xs` style, padding s02×s05.
+- **Tokens (10):** `color/badge/<type>/background` + `text` — status types (blue/success/warning/error) constant across modes like the existing error tokens; neutral flips n500/n100 (dark) ↔ n200/n800 (light). Dark text (n800) on blue/success/warning fills, white on error — please eyeball contrast.
+- **Code:** `packages/ui/src/badge/badge.ts` — `type` attr with invalid-value fallback + warn.
+
+## 5. tek-tooltip
+
+- **Figma:** Tooltip component (`8400:378`) — **zero new tokens**: reuses the `color/menu/*` panel namespace (bg/border/text/shadow) exactly as planned when that namespace was minted. `text/regular/sm` style. No arrow by design — matches the menu panel aesthetic.
+- **Code:** `packages/ui/src/tooltip/tooltip.ts` — wraps the target, hover/focus show after 300ms delay, Floating UI offset(s03)+flip+shift, `role=tooltip` + `aria-describedby`, Escape dismisses (document-level while open).
+
+## 6. tek-spinner
+
+Built to the [rr-audit §7 spec](../2026-06-09-ds-v2-rr-component-additions/component-additions.md).
+
+- **Figma:** Spinner set (`8401:391`) — Size sm/md/lg × Tone Default/Success/Warning/Error, 270° arc ellipses, fills bound to `color/spinner/*`, **diameters bound to spacing s09/s11/s15** (16/24/40 — all on the scale).
+- **Tokens (4):** `color/spinner/{default,success,warning,error}` → brand/tek-blue + the ui status colors (spec's `colors/status/*` names mapped to the actual `colors/ui/*` primitives).
+- **Code:** `packages/ui/src/spinner/spinner.ts` — SVG arc, 360°/1.2s, `paused` attr freezes, **`prefers-reduced-motion` disables the spin** (spec requirement), `role=status` + default aria-label.
+- **Deviation:** spec's 2.5px md stroke has no token — snapped to `borders/width/04` (2px) per the four-point rule (sm+md = width/04, lg = width/05).
+
+**Verification (all three):** 16/16 Playwright behavioral checks incl. reduced-motion context + screenshot matching the Figma sets. Harness: `prototypes/component-library/wave1-finale-test.html`.
+
+### For Bryan (finale batch)
+
+- [ ] Review badge text-on-fill contrast choices and the no-arrow tooltip call
+- [ ] Publish → then Claude adds Code Connect (Badge/Tooltip/Spinner + the still-unmapped Tab/Tabs)
+- [ ] Token Push for the 14 new tokens (badge 10 + spinner 4)
+
+## Wave 1 complete
+
+select ✓ · textarea (resolved: Input covers it) ✓ · tabs ✓ · badge ✓ · tooltip ✓ · spinner ✓
+
