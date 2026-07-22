@@ -35,8 +35,11 @@ Every screen or composed view — in Figma or code — starts with layout primit
 ### Figma side
 
 - Real components in DS-v2, using **Figma Slots** for free-form children.
-- **Gap is a variant axis**, capped to the spacing steps that occur in real compositions: `s02, s05, s06, s08, s09, s11`. A variant axis cannot hold a raw pixel value — tokenization is structural, not disciplinary.
+- **Gap is a variant axis**, capped to the spacing steps that occur in real compositions: `s02, s04, s05, s06, s08, s09, s11`. (`s04` was added to the original six during the build — the sign-in reference pages use it for the label→input gap, and an axis that can't express the reference pages fails its own "real-world steps" test.) A variant axis cannot hold a raw pixel value — tokenization is structural, not disciplinary.
+- **Page uses a Breakpoint axis (Mobile/SM/XL), not a Gap axis** — page-level layout varies by breakpoint (width `c02`/`c04`/`c07` × padding × alignment, encoding the `.wrap` container-query contract from `page-layout.css`), with the `s17` section rhythm constant across variants.
 - Every other property (padding, radius, fills where present) binds to variables per hard constraint #9.
+
+**Build record (2026-07-22):** all four sets exist on DS-v2 page v2.02 — see [the additions audit](../../audits/design-additions/2026-07-22-layout-primitives/layout-primitives-additions.md) for node IDs and findings. Confirmed live: grid gaps and widths are variable-bindable; the Slots API is absent from the plugin API, so the per-variant `Content` frames await manual slot conversion (the fallback below).
 
 ### Code side
 
