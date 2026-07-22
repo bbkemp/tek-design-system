@@ -1,6 +1,6 @@
 {
   "name": "@bbkemp/ui",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Web Components for the Tek design system",
   "type": "module",
   "main": "dist/tek-ui.cjs",
