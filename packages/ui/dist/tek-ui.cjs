@@ -2353,8 +2353,8 @@ TekTab.styles = i$4 `
       padding: var(--tek-spacing-s06, 10px) var(--tek-spacing-s07, 12px);
       border-left: var(--tek-borders-width-05, 3px) solid transparent;
       font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
-      font-size: var(--tek-fonts-text-size-lg, 14px);
-      line-height: var(--tek-fonts-text-line-height-lg, 20px);
+      font-size: var(--tek-fonts-text-size-md, 13px);
+      line-height: var(--tek-fonts-text-line-height-md, 16px);
       color: var(--tek-color-tabs-nav-text-inactive, #979797);
     }
     :host([data-style='nav']:hover:not([active])) {
