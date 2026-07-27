@@ -232,8 +232,8 @@ Docs claiming "planned" for things that shipped (or vice versa). Each is a small
 
 | ID | Decision | Sources in tension |
 |---|---|---|
-| OD-1 | **Where does product-level work live?** Tek Express redesign backlog (T) + competitive gaps (M) in this repo's issues, or deferred to the future PRD/product repo (audits/README § Future home already anticipates a move) | uxr/, audits/competitive/, audits/README L63-65 |
-| OD-2 | **Project structure:** one "Tek Roadmap" Project with a Theme field, vs two Projects (DS infra / Tek Express product) | this audit |
+| OD-1 | ~~**Where does product-level work live?**~~ **DECIDED 2026-07-27 (Bryan):** Tek Express backlog (T) + competitive gaps (M) stay in the docs as-is; not filed as issues in this repo. Revisit when the PRD/product repo lands. | uxr/, audits/competitive/, audits/README L63-65 |
+| OD-2 | ~~**Project structure**~~ **DECIDED 2026-07-27 (Bryan):** one Project — Bryan's existing design-system Project, using repo labels as themes. DS-side clusters filed as issues 2026-07-27. | this audit |
 | OD-3 | Chart library for `tek-plot` — "highest-impact unresolved decision in the corpus" | baseline report; synthesis OD 5 |
 | OD-4 | Icon strategy: `tek-icon` in `@bbkemp/ui` vs separate icons package | redesign-additions § 3.9 vs bench-audit § 6E |
 | OD-5 | `tek-field`: component (redesign-additions § 3.4) vs pattern-doc only (rr-additions § 12) — **sources disagree** | both |
@@ -267,6 +267,10 @@ Everything else in this audit is untracked.
   - **Source doc**: text field with the file § section (so every issue stays traceable to its doc)
 - **Labels** mirroring Conventional-Commit scopes (`tokens`, `ui`, `mcp`, `corpus`, `figma`, `docs`, `uxr`) so issues connect to the existing commit/changelog convention.
 - **Milestones** only where the docs already define phases (mcp-server-plan P1/P2; corpus phases; UXR phases).
+
+## Filing record
+
+**2026-07-27:** all DS-side items (clusters A–L, the S1–S6 doc-hygiene batch, and DS-relevant decision issues OD-3/4/5/6/7/9/13) were filed as GitHub issues with theme + P0/P1/P2 labels. Per OD-1, clusters T and M were **not** filed — they stay in `uxr/` and `audits/competitive/` until the product/PRD home exists. Product-side open decisions (OD-8, 10, 11, 12, 14) likewise remain doc-only.
 
 ## Suggested filing plan
 
