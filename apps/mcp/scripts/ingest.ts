@@ -196,6 +196,7 @@ interface ManifestDeclaration {
   customElement?: boolean;
   tagName?: string;
   description?: string;
+  members?: { privacy?: string }[];
   [key: string]: unknown;
 }
 
@@ -212,11 +213,17 @@ function loadComponents(): ComponentRow[] {
   for (const mod of manifest.modules ?? []) {
     for (const decl of mod.declarations ?? []) {
       if (decl.customElement && typeof decl.tagName === "string") {
+        // Private/protected members are implementation detail — consumers of the
+        // MCP tools only need the public surface.
+        const declaration = {
+          ...decl,
+          members: (decl.members ?? []).filter((m) => m.privacy !== "private" && m.privacy !== "protected"),
+        };
         rows.push({
           tag: decl.tagName,
           description: typeof decl.description === "string" && decl.description ? decl.description : null,
           modulePath: mod.path?.replace(/^(\.\.\/)+/, "") ?? null,
-          declaration: decl,
+          declaration,
         });
       }
     }

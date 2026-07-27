@@ -7,11 +7,12 @@
   "module": "dist/tek-ui.js",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/tek-ui.js",
       "require": "./dist/tek-ui.cjs"
     }
   },
-  "types": "dist/tek-ui.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],

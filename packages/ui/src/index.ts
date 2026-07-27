@@ -12,6 +12,7 @@
  *             TekModal, TekFooter
  * Layout primitives (ADR-0002): TekStack, TekRow, TekGrid, TekPage
  */
+export type { TekChangeEvent, TekChangeEventDetail, TekInputEvent, TekInputEventDetail, TekClickEvent } from './types.js';
 export { TekBaseSelector }       from './base-selector.js';
 export { TekStack }              from './stack/stack.js';
 export { TekRow }                from './row/row.js';
