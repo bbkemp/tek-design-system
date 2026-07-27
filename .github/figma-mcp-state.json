@@ -1,6 +1,7 @@
 {
   "tools": [
     "add_code_connect_map",
+    "create_design_system_rules",
     "create_new_file",
     "download_assets",
     "generate_diagram",
@@ -12,6 +13,7 @@
     "get_figjam",
     "get_libraries",
     "get_metadata",
+    "get_motion_context",
     "get_screenshot",
     "get_shader_effect",
     "get_shader_fill",
@@ -28,5 +30,5 @@
     "May 1, 2026::May 1, 2026 Faster file transitions on desktop New release Update Desktop app Figma Copy link Move between files in the ",
     "May 28, 2026::May 28, 2026 Visually edit your codebase with Make New release Figma Make AI Desktop app Design Development Copy link Co"
   ],
-  "lastChecked": "2026-06-29T16:35:01.927Z"
+  "lastChecked": "2026-07-27T15:38:08.170Z"
 }
