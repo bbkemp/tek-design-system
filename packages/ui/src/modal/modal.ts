@@ -1,42 +1,4 @@
-const STYLES = `
-  :host {
-    display: flex;
-    flex-direction: column;
-    gap: var(--tek-spacing-s08, 14px);
-    background: var(--tek-color-modal-background-default, #181818);
-    border: 0.25px solid var(--tek-color-modal-border-default, #7b7b7b);
-    border-radius: var(--tek-borders-radius-05, 11px);
-    padding: var(--tek-modal-padding, var(--tek-spacing-s13, 32px));
-    width: 100%;
-    max-width: 360px;
-    box-sizing: border-box;
-    overflow: clip;
-    box-shadow: 0px 2px 6px 0px var(--tek-color-modal-shadow-default, rgba(0,0,0,0.2));
-  }
-
-  .header {
-    font-family: var(--tek-fonts-family-archivo, sans-serif);
-    font-size: var(--tek-modal-heading-size, var(--tek-fonts-heading-size-md, 24px));
-    font-weight: 600;
-    font-variation-settings: 'wdth' 106;
-    line-height: var(--tek-modal-heading-line-height, var(--tek-fonts-heading-line-height-md, 32px));
-    letter-spacing: 0;
-    color: var(--tek-color-modal-text-default, #ffffff);
-  }
-
-  .input-blocks {
-    display: flex;
-    flex-direction: column;
-    gap: var(--tek-spacing-s06, 10px);
-    width: 100%;
-  }
-
-  .action-blocks {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-`;
+import { css, html, LitElement } from 'lit';
 
 /**
  * Modal card: header, form fields, and action buttons stacked in a bordered,
@@ -81,14 +43,49 @@ const STYLES = `
  * @cssprop --tek-fonts-heading-size-md - Default header font size.
  * @cssprop --tek-fonts-heading-line-height-md - Default header line height.
  */
-export class TekModal extends HTMLElement {
-  private _shadow = this.attachShadow({ mode: 'open' });
+export class TekModal extends LitElement {
+  static styles = css`
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: var(--tek-spacing-s08, 14px);
+      background: var(--tek-color-modal-background-default, #181818);
+      border: 0.25px solid var(--tek-color-modal-border-default, #7b7b7b);
+      border-radius: var(--tek-borders-radius-05, 11px);
+      padding: var(--tek-modal-padding, var(--tek-spacing-s13, 32px));
+      width: 100%;
+      max-width: 360px;
+      box-sizing: border-box;
+      overflow: clip;
+      box-shadow: 0px 2px 6px 0px var(--tek-color-modal-shadow-default, rgba(0,0,0,0.2));
+    }
 
-  connectedCallback() { this._render(); }
+    .header {
+      font-family: var(--tek-fonts-family-archivo, sans-serif);
+      font-size: var(--tek-modal-heading-size, var(--tek-fonts-heading-size-md, 24px));
+      font-weight: 600;
+      font-variation-settings: 'wdth' 106;
+      line-height: var(--tek-modal-heading-line-height, var(--tek-fonts-heading-line-height-md, 32px));
+      letter-spacing: 0;
+      color: var(--tek-color-modal-text-default, #ffffff);
+    }
 
-  private _render() {
-    this._shadow.innerHTML = `
-      <style>${STYLES}</style>
+    .input-blocks {
+      display: flex;
+      flex-direction: column;
+      gap: var(--tek-spacing-s06, 10px);
+      width: 100%;
+    }
+
+    .action-blocks {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+  `;
+
+  render() {
+    return html`
       <div class="header" part="header">
         <slot name="header"></slot>
       </div>

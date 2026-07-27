@@ -1,3 +1,4 @@
+import { LitElement, type PropertyValues, type TemplateResult } from 'lit';
 /**
  * Composite selector row: a checkbox/radio/toggle control plus a state-synced
  * label. Two modes — self-contained (set `label`, the control is rendered in
@@ -28,7 +29,7 @@
  * @attr {boolean} disabled - Disabled state; forwarded to the inner control and label.
  * @attr {string} label - Self-contained mode: label text. When absent, the default slot is used instead.
  * @attr {("checkbox"|"radio"|"toggle")} [type="checkbox"] - Which control to render in self-contained mode.
- * @attr {string} name - Radio-group name, passed through to the inner `tek-radio`.
+ * @attr {string} name - Group name, passed through to the inner control (used by `tek-radio` for grouping).
  *
  * @fires {CustomEvent} tek-change - Bubbles up from the inner control when toggled, with `detail.checked`.
  *
@@ -38,20 +39,23 @@
  *
  * @cssprop --tek-spacing-s05 - Gap between control and label.
  */
-export declare class TekSelector extends HTMLElement {
-    static get observedAttributes(): string[];
-    get checked(): boolean;
-    set checked(v: boolean);
-    get error(): boolean;
-    get disabled(): boolean;
-    private _shadow;
+export declare class TekSelector extends LitElement {
+    static styles: import("lit").CSSResult;
+    checked: boolean;
+    error: boolean;
+    disabled: boolean;
+    label: string | null;
+    type: string;
+    name: string | null;
     connectedCallback(): void;
     disconnectedCallback(): void;
-    attributeChangedCallback(n: string, o: string | null, v: string | null): void;
     private _getCtrl;
     private _getLbl;
+    private _onTekChange;
     private _onClick;
     private _sync;
-    private _syncChildren;
-    private _render;
+    updated(changed: PropertyValues): void;
+    firstUpdated(): void;
+    private _controlTpl;
+    render(): TemplateResult<1>;
 }

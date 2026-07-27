@@ -1,3 +1,4 @@
+import { LitElement } from 'lit';
 /**
  * Character counter for text fields, rendered as `current/max` (or just `current` when no max).
  *
@@ -27,13 +28,10 @@
  * @cssprop --tek-color-input-character-count-error - Count color, error state.
  * @cssprop --tek-color-input-character-count-warning - Count color, warning state.
  */
-export declare class TekCharacterCount extends HTMLElement {
-    static get observedAttributes(): string[];
-    get current(): number;
-    get max(): number;
-    get state(): string;
-    private _shadow;
-    connectedCallback(): void;
-    attributeChangedCallback(): void;
-    private _render;
+export declare class TekCharacterCount extends LitElement {
+    static styles: import("lit").CSSResult;
+    current: number;
+    max: number;
+    state: string;
+    render(): import("lit-html").TemplateResult<1>;
 }

@@ -1,3 +1,4 @@
+import { LitElement } from 'lit';
 /**
  * Modal card: header, form fields, and action buttons stacked in a bordered,
  * shadowed container. Max-width 360px, 32px padding, 11px radius. Composition
@@ -41,8 +42,7 @@
  * @cssprop --tek-fonts-heading-size-md - Default header font size.
  * @cssprop --tek-fonts-heading-line-height-md - Default header line height.
  */
-export declare class TekModal extends HTMLElement {
-    private _shadow;
-    connectedCallback(): void;
-    private _render;
+export declare class TekModal extends LitElement {
+    static styles: import("lit").CSSResult;
+    render(): import("lit-html").TemplateResult<1>;
 }

@@ -1,3 +1,4 @@
+import { LitElement, type PropertyValues } from 'lit';
 /**
  * Text input field. Single height renders an `<input>`; double/triple render a
  * `<textarea>` (48px / 64px). The `state` attribute is auto-managed on
@@ -42,17 +43,17 @@
  * @cssprop --tek-fonts-text-size-lg - Field font size.
  * @cssprop --tek-fonts-text-line-height-lg - Field line height.
  */
-export declare class TekInput extends HTMLElement {
-    static get observedAttributes(): string[];
-    get state(): string;
-    get height(): string;
-    get placeholder(): string;
-    get value(): string;
-    set value(v: string);
-    get type(): string;
-    private _shadow;
-    connectedCallback(): void;
-    attributeChangedCallback(name: string): void;
-    private _esc;
-    private _render;
+export declare class TekInput extends LitElement {
+    static styles: import("lit").CSSResult;
+    state: string;
+    height: string;
+    placeholder: string;
+    value: string;
+    type: string;
+    private get _field();
+    private _onFocus;
+    private _onBlur;
+    private _onInput;
+    updated(changed: PropertyValues): void;
+    render(): import("lit-html").TemplateResult<1>;
 }

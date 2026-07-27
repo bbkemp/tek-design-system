@@ -38,88 +38,84 @@
   <source src="./img/bg-mov.mp4" type="video/mp4">
 </video>
 
-<div class="page-wrap">
+<tek-page>
 
-  <div class="wrap">
-
-    <header class="logo-header">
-      <div class="logo-lockup" role="img" aria-label="TekCloud">
+  <header class="logo-header">
+    <tek-stack align="center">
+      <tek-row class="logo-lockup" gap="s06" align="center" role="img" aria-label="TekCloud">
         <img class="logo-icon" src="./img/IconLogo.svg" alt="">
         <img class="logo-type" src="./img/TypeLogo.svg" alt="TekCloud">
-      </div>
-    </header>
+      </tek-row>
+    </tek-stack>
+  </header>
 
-    <tek-modal>
+  <tek-modal>
 
-      <span slot="header">Create Account</span>
+    <span slot="header">Create Account</span>
 
-      <div id="signup-input-blocks" slot="input-blocks"
-           style="display:flex;flex-direction:column;gap:var(--tek-spacing-s09,16px);width:100%;">
+    <tek-stack id="signup-input-blocks" slot="input-blocks" gap="s09" style="width:100%">
 
-        <div class="field-row">
-          <div class="field">
-            <tek-label>First name</tek-label>
-            <tek-input placeholder="First" type="text" autocomplete="given-name"
-                       style="display:block;width:100%"></tek-input>
-          </div>
-          <div class="field">
-            <tek-label>Last name</tek-label>
-            <tek-input placeholder="Last" type="text" autocomplete="family-name"
-                       style="display:block;width:100%"></tek-input>
-          </div>
-        </div>
-
-        <div class="field">
-          <tek-label>Email</tek-label>
-          <tek-input placeholder="you@example.com" type="email" autocomplete="email"
+      <tek-row class="field-row" gap="s05">
+        <tek-stack class="field" gap="s04">
+          <tek-label>First name</tek-label>
+          <tek-input placeholder="First" type="text" autocomplete="given-name"
                      style="display:block;width:100%"></tek-input>
-        </div>
-
-        <div class="field">
-          <tek-label helper-text="Must be at least 8 characters">Password</tek-label>
-          <tek-input placeholder="Create a password" type="password" autocomplete="new-password"
+        </tek-stack>
+        <tek-stack class="field" gap="s04">
+          <tek-label>Last name</tek-label>
+          <tek-input placeholder="Last" type="text" autocomplete="family-name"
                      style="display:block;width:100%"></tek-input>
-        </div>
+        </tek-stack>
+      </tek-row>
 
-        <div class="field">
-          <tek-label>Confirm password</tek-label>
-          <tek-input placeholder="Re-enter password" type="password" autocomplete="new-password"
-                     style="display:block;width:100%"></tek-input>
-        </div>
+      <tek-stack class="field" gap="s04">
+        <tek-label>Email</tek-label>
+        <tek-input placeholder="you@example.com" type="email" autocomplete="email"
+                   style="display:block;width:100%"></tek-input>
+      </tek-stack>
 
-        <tek-selector id="terms-selector" type="checkbox"
-          label="I agree to the terms of service" style="width:100%"></tek-selector>
+      <tek-stack class="field" gap="s04">
+        <tek-label helper-text="Must be at least 8 characters">Password</tek-label>
+        <tek-input placeholder="Create a password" type="password" autocomplete="new-password"
+                   style="display:block;width:100%"></tek-input>
+      </tek-stack>
 
-      </div>
+      <tek-stack class="field" gap="s04">
+        <tek-label>Confirm password</tek-label>
+        <tek-input placeholder="Re-enter password" type="password" autocomplete="new-password"
+                   style="display:block;width:100%"></tek-input>
+      </tek-stack>
 
-      <div id="signup-action-blocks" slot="action-blocks"
-           style="width:100%;display:flex;flex-direction:column;gap:var(--tek-spacing-s07,12px);">
+      <tek-selector id="terms-selector" type="checkbox"
+        label="I agree to the terms of service" style="width:100%"></tek-selector>
 
-        <tek-button id="create-btn" inactive style="width:100%;display:block">
-          Create Account
-        </tek-button>
+    </tek-stack>
 
-        <div class="signin-row">
-          <span>Already have an account?</span>
-          <tek-text-link href="index.html">Sign in</tek-text-link>
-        </div>
+    <tek-stack id="signup-action-blocks" slot="action-blocks" gap="s07" style="width:100%">
 
-      </div>
+      <tek-button id="create-btn" inactive style="width:100%;display:block">
+        Create Account
+      </tek-button>
 
-    </tek-modal>
+      <tek-row class="signin-row" gap="s02" justify="center" align="center">
+        <span>Already have an account?</span>
+        <tek-text-link href="index.html">Sign in</tek-text-link>
+      </tek-row>
 
-  </div>
+    </tek-stack>
 
-  <tek-footer>
-    <div slot="left" style="display:flex;align-items:center;gap:4px;">
+  </tek-modal>
+
+  <tek-footer slot="footer">
+    <tek-row slot="left" gap="s03" align="center">
       <span style="font-size:16px;line-height:1;" aria-hidden="true">🌚</span>
       <tek-toggle id="theme-toggle" aria-label="Toggle light mode"></tek-toggle>
       <span style="font-size:16px;line-height:1;" aria-hidden="true">🌝</span>
-    </div>
+    </tek-row>
     ©2026 Tektronix. All Rights Reserved.
   </tek-footer>
 
-</div>
+</tek-page>
 
 <script type="module">
 /* Theme toggle */
@@ -133,9 +129,9 @@ document.getElementById('terms-selector').addEventListener('tek-change', e => {
   e.detail.checked ? btn.removeAttribute('inactive') : btn.setAttribute('inactive', '');
 });
 
-/* AutoAnimate */
+/* AutoAnimate — tek-page host children are the old .wrap children */
 if (typeof autoAnimate !== 'undefined') {
-  autoAnimate(document.querySelector('.wrap'));
+  autoAnimate(document.querySelector('tek-page'));
   autoAnimate(document.getElementById('signup-input-blocks'));
   autoAnimate(document.getElementById('signup-action-blocks'));
 }

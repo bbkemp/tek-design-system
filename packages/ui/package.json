@@ -1,6 +1,6 @@
 {
   "name": "@bbkemp/ui",
-  "version": "1.0.12",
+  "version": "1.0.17",
   "description": "Web Components for the Tek design system",
   "type": "module",
   "main": "dist/tek-ui.cjs",
@@ -27,8 +27,13 @@
     "@bbkemp/tokens": "^1.0.0"
   },
   "devDependencies": {
-    "rollup": "^4.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-typescript": "^11.0.0",
+    "rollup": "^4.0.0",
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@floating-ui/dom": "^1.8.0",
+    "lit": "^3.3.3"
   }
 }

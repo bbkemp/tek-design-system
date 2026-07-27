@@ -1,3 +1,4 @@
+import { LitElement } from 'lit';
 /**
  * Small inline text link in Tek blue; underlines on hover.
  *
@@ -21,12 +22,9 @@
  * @cssprop --tek-fonts-family-geist - Link font family.
  * @cssprop --tek-fonts-text-line-height-xs - Link line height.
  */
-export declare class TekTextLink extends HTMLElement {
-    static get observedAttributes(): string[];
-    get href(): string;
-    get target(): string;
-    private _shadow;
-    connectedCallback(): void;
-    attributeChangedCallback(): void;
-    private _render;
+export declare class TekTextLink extends LitElement {
+    static styles: import("lit").CSSResult;
+    href: string;
+    target: string;
+    render(): import("lit-html").TemplateResult<1>;
 }

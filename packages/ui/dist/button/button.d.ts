@@ -1,3 +1,4 @@
+import { LitElement } from 'lit';
 /**
  * Pill-shaped action button.
  *
@@ -44,13 +45,16 @@
  * @cssprop --tek-fonts-text-size-md - Secondary label font size.
  * @cssprop --tek-fonts-text-line-height-md - Secondary label line height.
  */
-export declare class TekButton extends HTMLElement {
-    static get observedAttributes(): string[];
-    get variant(): string;
-    get inactive(): boolean;
-    get disabled(): boolean;
-    private _shadow;
+export declare class TekButton extends LitElement {
+    static styles: import("lit").CSSResult;
+    variant: string;
+    inactive: boolean;
+    disabled: boolean;
     connectedCallback(): void;
-    attributeChangedCallback(): void;
-    private _render;
+    disconnectedCallback(): void;
+    private _onKeydown;
+    private _onClick;
+    private _emit;
+    updated(): void;
+    render(): import("lit-html").TemplateResult<1>;
 }

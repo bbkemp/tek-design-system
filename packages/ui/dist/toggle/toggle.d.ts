@@ -29,8 +29,10 @@ import { TekBaseSelector } from '../base-selector.js';
  * @cssprop --tek-borders-radius-full - Track and thumb radius (pill/circle).
  */
 export declare class TekToggle extends TekBaseSelector {
-    private _shadow;
+    static styles: import("lit").CSSResult;
     connectedCallback(): void;
-    attributeChangedCallback(n: string, o: string | null, v: string | null): void;
-    protected render(): void;
+    disconnectedCallback(): void;
+    private _onKeydown;
+    updated(): void;
+    render(): import("lit-html").TemplateResult<1>;
 }

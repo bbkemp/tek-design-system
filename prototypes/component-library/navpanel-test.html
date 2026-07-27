@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>tek-navigation-panel — verification harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+<script type="module" src="../../packages/ui/dist/tek-ui.js"></script>
+<style>
+  body { background: var(--tek-colors-neutral-800, #1e1e1e); padding: 40px; }
+  .shells { display: flex; gap: 32px; align-items: flex-start; }
+  .shell { height: 480px; display: flex; }
+</style>
+</head>
+<body>
+<div class="shells">
+  <div class="shell">
+    <tek-navigation-panel id="np-full" aria-label="Application">
+      <span slot="brand">TekExpress</span>
+      <tek-tabs slot="nav" orientation="vertical" aria-label="Sections">
+        <tek-tab value="setup" active>Setup</tek-tab>
+        <tek-tab value="status">Status</tek-tab>
+        <tek-tab value="results">Results</tek-tab>
+        <tek-tab value="reports">Reports</tek-tab>
+      </tek-tabs>
+      <tek-button slot="foot">Start</tek-button>
+    </tek-navigation-panel>
+  </div>
+  <div class="shell">
+    <tek-navigation-panel id="np-text" variant="text-only" aria-label="Application">
+      <span slot="brand">TekExpress</span>
+      <tek-tabs slot="nav" orientation="vertical" aria-label="Sections">
+        <tek-tab value="setup" active>Setup</tek-tab>
+        <tek-tab value="status">Status</tek-tab>
+      </tek-tabs>
+    </tek-navigation-panel>
+  </div>
+  <div class="shell">
+    <tek-navigation-panel id="np-icon" variant="icon-only" aria-label="Application"></tek-navigation-panel>
+  </div>
+</div>
+</body>
+</html>

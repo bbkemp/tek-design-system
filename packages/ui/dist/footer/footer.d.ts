@@ -1,3 +1,4 @@
+import { LitElement } from 'lit';
 /**
  * Page footer bar: left-aligned utility slot (e.g. theme toggle) and
  * right-aligned text. 36px tall, full width.
@@ -25,8 +26,7 @@
  * @cssprop --tek-color-footer-text-default - Right-side text color.
  * @cssprop --tek-fonts-family-geist - Text font family.
  */
-export declare class TekFooter extends HTMLElement {
-    private _shadow;
-    connectedCallback(): void;
-    private _render;
+export declare class TekFooter extends LitElement {
+    static styles: import("lit").CSSResult;
+    render(): import("lit-html").TemplateResult<1>;
 }

@@ -15,6 +15,7 @@ authored_date: 2026-07-16
 **Trigger:** A live query for `tek-button` returned the `variant` attribute with no allowed values — the answer had to be completed by reading source. External consumers (Broc, Hermes, any MCP client) cannot do that fallback.
 **Related:** [docs/mcp-server-plan.md](../../docs/mcp-server-plan.md) (P1/P2 hardening), CLAUDE.md "What's in flight" → MCP endpoint hardening.
 **Status:** P0-1, P0-2, P1-1, P1-2, P1-3, and P2-1 fixed on this branch (class-level JSDoc across all 12 components + private-member stripping in ingest). Remaining open: P2-2 (corpus embedding), P2-3 (eval cases + CI description gate), and the TS-union-types question (Open decision 2).
+**2026-07-27 update:** merged with `main` after the Lit conversion (ADR-0001) — JSDoc re-grafted onto the Lit implementations, coverage re-verified. The 20 wave-1/2 components that landed since this audit (`tek-badge`, `tek-dropdown`, `tek-tabs`, `tek-data-table` family, layout primitives, …) are **undocumented in the manifest** — same gap, new surface. Follow-up: annotate them to this file's pattern; the P2-3 CI gate would have caught this automatically.
 
 ---
 

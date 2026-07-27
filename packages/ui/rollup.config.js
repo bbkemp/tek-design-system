@@ -1,4 +1,5 @@
 import typescript from '@rollup/plugin-typescript';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 export default {
   input: 'src/index.ts',
@@ -6,6 +7,8 @@ export default {
     { file: 'dist/tek-ui.js',  format: 'es',  sourcemap: true },
     { file: 'dist/tek-ui.cjs', format: 'cjs', sourcemap: true }
   ],
-  plugins: [typescript({ tsconfig: './tsconfig.json' })],
+  // lit is bundled (not external) so prototype pages can import dist/tek-ui.js
+  // directly without a module resolver.
+  plugins: [nodeResolve(), typescript({ tsconfig: './tsconfig.json' })],
   external: []
 };

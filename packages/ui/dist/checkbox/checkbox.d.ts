@@ -28,8 +28,10 @@ import { TekBaseSelector } from '../base-selector.js';
  * @cssprop --tek-color-icons-default - Checkmark stroke color.
  */
 export declare class TekCheckbox extends TekBaseSelector {
-    private _shadow;
+    static styles: import("lit").CSSResult;
     connectedCallback(): void;
-    attributeChangedCallback(n: string, o: string | null, v: string | null): void;
-    protected render(): void;
+    disconnectedCallback(): void;
+    private _onKeydown;
+    updated(): void;
+    render(): import("lit-html").TemplateResult<1>;
 }

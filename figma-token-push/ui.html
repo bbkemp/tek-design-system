@@ -138,6 +138,17 @@
   </div>
 </div>
 
+<div class="field">
+  <label>Target branch</label>
+  <div class="input-row">
+    <input type="text" id="branch" list="branchList" value="main" autocomplete="off" spellcheck="false" />
+  </div>
+  <datalist id="branchList"></datalist>
+  <div class="warning-row" id="branchNote" style="display:none">
+    Working branch — tokens land on the PR, packages will NOT publish until it merges to main.
+  </div>
+</div>
+
 <div class="file-list" id="fileList">
   <div class="file-row" id="placeholder-row">
     <span class="name muted">Files will appear after push</span>
@@ -153,8 +164,38 @@
 
 <script>
 const REPO   = "bbkemp/tek-design-system";
-const BRANCH = "main";
 const GH_API = `https://api.github.com/repos/${REPO}/contents/`;
+
+const branchInput = document.getElementById("branch");
+const branchNote  = document.getElementById("branchNote");
+function currentBranch() { return branchInput.value.trim() || "main"; }
+function refreshBranchNote() { branchNote.style.display = currentBranch() === "main" ? "none" : "block"; }
+branchInput.addEventListener("change", () => {
+  refreshBranchNote();
+  parent.postMessage({ pluginMessage: { type: "SAVE_BRANCH", value: currentBranch() } }, "*");
+});
+branchInput.addEventListener("input", refreshBranchNote);
+
+// Fill the datalist with live branches so Bryan can pick instead of typing
+async function loadBranchList() {
+  const pat = patInput.value.trim();
+  if (!pat) return;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/branches?per_page=100`, {
+      headers: { Authorization: `token ${pat}` }
+    });
+    if (!res.ok) return;
+    const branches = await res.json();
+    const dl = document.getElementById("branchList");
+    dl.innerHTML = "";
+    for (const b of branches) {
+      const opt = document.createElement("option");
+      opt.value = b.name;
+      dl.appendChild(opt);
+    }
+  } catch (e) { /* datalist is a convenience — typing still works */ }
+}
+branchInput.addEventListener("focus", loadBranchList);
 
 const patInput = document.getElementById("pat");
 const saveBtn  = document.getElementById("saveBtn");
@@ -168,6 +209,12 @@ window.onmessage = async (event) => {
 
   if (msg.type === "LOAD_PAT") {
     if (msg.value) patInput.value = msg.value;
+    loadBranchList();
+  }
+
+  if (msg.type === "LOAD_BRANCH") {
+    branchInput.value = msg.value || "main";
+    refreshBranchNote();
   }
 
   if (msg.type === "TOKENS_READY") {
@@ -181,6 +228,7 @@ window.onmessage = async (event) => {
 };
 
 parent.postMessage({ pluginMessage: { type: "GET_PAT" } }, "*");
+parent.postMessage({ pluginMessage: { type: "GET_BRANCH" } }, "*");
 
 saveBtn.addEventListener("click", () => {
   const val = patInput.value.trim();
@@ -233,6 +281,19 @@ async function commitAllFiles(files, warnings) {
   }
 
   const pat = patInput.value.trim();
+  // Capture the branch once per push so a mid-push edit can't split commits
+  const BRANCH = currentBranch();
+  // Verify the branch exists before touching any file
+  {
+    const check = await fetch(`https://api.github.com/repos/${REPO}/branches/${encodeURIComponent(BRANCH)}`, {
+      headers: { Authorization: `token ${pat}` }
+    });
+    if (check.status === 404) {
+      setStatus(`Branch "${BRANCH}" doesn't exist on GitHub — ask Claude to open the release PR first, or switch back to main.`, "error");
+      pushBtn.disabled = false;
+      return;
+    }
+  }
   const headers = {
     "Authorization": `Bearer ${pat}`,
     "Content-Type": "application/json",

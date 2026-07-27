@@ -1,3 +1,4 @@
+import { LitElement } from 'lit';
 /**
  * Form-field label with optional marker, helper text, and inline character
  * count. Sits above a `tek-input`.
@@ -38,11 +39,12 @@
  * @cssprop --tek-color-input-character-count-default - Char-count color.
  * @cssprop --tek-color-input-text-error - Helper color when helper-state="error".
  */
-export declare class TekLabel extends HTMLElement {
-    static get observedAttributes(): string[];
-    private shadow;
-    constructor();
-    connectedCallback(): void;
-    attributeChangedCallback(): void;
-    private render;
+export declare class TekLabel extends LitElement {
+    static styles: import("lit").CSSResult;
+    optional: boolean;
+    helperText: string | null;
+    charCount: string | null;
+    link: string | null;
+    helperState: string | null;
+    render(): import("lit-html").TemplateResult<1>;
 }

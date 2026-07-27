@@ -1,3 +1,4 @@
+import { LitElement } from 'lit';
 /**
  * Text label for a selector control, color-synced to the control's
  * checked/error/disabled state. `<tek-selector>` keeps these attributes in
@@ -25,16 +26,10 @@
  * @cssprop --tek-color-selector-label-checked - Text color when checked.
  * @cssprop --tek-color-selector-label-error - Text color in error state.
  */
-export declare class TekSelectorLabel extends HTMLElement {
-    static get observedAttributes(): string[];
-    get checked(): boolean;
-    set checked(v: boolean);
-    get error(): boolean;
-    set error(v: boolean);
-    get disabled(): boolean;
-    set disabled(v: boolean);
-    private _shadow;
-    connectedCallback(): void;
-    attributeChangedCallback(): void;
-    private _render;
+export declare class TekSelectorLabel extends LitElement {
+    static styles: import("lit").CSSResult;
+    checked: boolean;
+    error: boolean;
+    disabled: boolean;
+    render(): import("lit-html").TemplateResult<1>;
 }

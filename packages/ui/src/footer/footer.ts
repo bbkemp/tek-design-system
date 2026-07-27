@@ -1,34 +1,4 @@
-const STYLES = `
-  :host {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 36px;
-    padding: 12px 16px;
-    box-sizing: border-box;
-    background: var(--tek-color-footer-background-default, #252525);
-  }
-
-  .left {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-
-  .right {
-    flex: 1 0 0;
-    font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
-    font-size: 12px;
-    font-weight: 400;
-    font-style: normal;
-    line-height: 12px;
-    color: var(--tek-color-footer-text-default, #cccccc);
-    text-align: right;
-    min-height: 1px;
-    min-width: 1px;
-  }
-`;
+import { css, html, LitElement } from 'lit';
 
 /**
  * Page footer bar: left-aligned utility slot (e.g. theme toggle) and
@@ -57,14 +27,41 @@ const STYLES = `
  * @cssprop --tek-color-footer-text-default - Right-side text color.
  * @cssprop --tek-fonts-family-geist - Text font family.
  */
-export class TekFooter extends HTMLElement {
-  private _shadow = this.attachShadow({ mode: 'open' });
+export class TekFooter extends LitElement {
+  static styles = css`
+    :host {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 36px;
+      padding: 12px 16px;
+      box-sizing: border-box;
+      background: var(--tek-color-footer-background-default, #252525);
+    }
 
-  connectedCallback() { this._render(); }
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
 
-  private _render() {
-    this._shadow.innerHTML = `
-      <style>${STYLES}</style>
+    .right {
+      flex: 1 0 0;
+      font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
+      font-size: 12px;
+      font-weight: 400;
+      font-style: normal;
+      line-height: 12px;
+      color: var(--tek-color-footer-text-default, #cccccc);
+      text-align: right;
+      min-height: 1px;
+      min-width: 1px;
+    }
+  `;
+
+  render() {
+    return html`
       <div class="left" part="left"><slot name="left"></slot></div>
       <div class="right" part="right"><slot></slot></div>
     `;

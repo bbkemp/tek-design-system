@@ -1,25 +1,24 @@
+import { LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
+
 /**
  * Shared base for the selector-family controls (tek-checkbox, tek-radio,
- * tek-toggle): checked/error/disabled attribute reflection, click-to-toggle,
+ * tek-toggle): checked/error/disabled reactive properties, click-to-toggle,
  * and the `tek-change` dispatch. Not a custom element itself — subclasses
  * document their own API for the manifest.
  */
-export abstract class TekBaseSelector extends HTMLElement {
-  static get observedAttributes() { return ['checked','error','disabled']; }
-  get checked()  { return this.hasAttribute('checked'); }
-  set checked(v) { v ? this.setAttribute('checked','') : this.removeAttribute('checked'); }
-  get error()    { return this.hasAttribute('error'); }
-  set error(v)   { v ? this.setAttribute('error','')   : this.removeAttribute('error'); }
-  get disabled() { return this.hasAttribute('disabled'); }
-  set disabled(v){ v ? this.setAttribute('disabled',''):this.removeAttribute('disabled'); }
+export abstract class TekBaseSelector extends LitElement {
+  @property({ type: Boolean, reflect: true }) checked = false;
+  @property({ type: Boolean, reflect: true }) error = false;
+  @property({ type: Boolean, reflect: true }) disabled = false;
 
   connectedCallback() {
-    this.render();
-    if (!this.disabled) this.addEventListener('click', this._click);
+    super.connectedCallback();
+    this.addEventListener('click', this._click);
   }
-  disconnectedCallback() { this.removeEventListener('click', this._click); }
-  attributeChangedCallback(_n: string, o: string|null, n: string|null) {
-    if (o !== n) this.render();
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('click', this._click);
   }
 
   protected _click = () => {
@@ -29,6 +28,4 @@ export abstract class TekBaseSelector extends HTMLElement {
       bubbles: true, composed: true, detail: { checked: this.checked }
     }));
   };
-
-  protected abstract render(): void;
 }
