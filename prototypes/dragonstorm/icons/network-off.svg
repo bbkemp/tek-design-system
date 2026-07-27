@@ -1,13 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <!-- Network disconnected (network with an X over it) — Dragon Storm GDM9061 status bar -->
-  <g stroke="#afafaf" stroke-width="1.5">
-    <rect x="9" y="3" width="6" height="5" rx="1"/>
-    <rect x="3" y="15" width="6" height="5" rx="1"/>
-    <rect x="15" y="15" width="6" height="5" rx="1"/>
-    <path d="M12 8v3M6 15v-1h12v1"/>
-  </g>
-  <g stroke="#e74848" stroke-width="1.9">
-    <path d="M13.0 2.0 19.4 8.4"/>
-    <path d="M19.4 2.0 13.0 8.4"/>
-  </g>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14 3H10C9.44772 3 9 3.44772 9 4V7C9 7.55228 9.44772 8 10 8H14C14.5523 8 15 7.55228 15 7V4C15 3.44772 14.5523 3 14 3Z" stroke="#AFAFAF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 15H4C3.44772 15 3 15.4477 3 16V19C3 19.5523 3.44772 20 4 20H8C8.55228 20 9 19.5523 9 19V16C9 15.4477 8.55228 15 8 15Z" stroke="#AFAFAF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M20 15H16C15.4477 15 15 15.4477 15 16V19C15 19.5523 15.4477 20 16 20H20C20.5523 20 21 19.5523 21 19V16C21 15.4477 20.5523 15 20 15Z" stroke="#AFAFAF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 8V12M12 12H6V15M12 12H18V15" stroke="#AFAFAF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6 6.39999L18 18.4" stroke="#E74848" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 6.39999L6 18.4" stroke="#E74848" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
