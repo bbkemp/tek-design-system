@@ -4,4 +4,6 @@
 <path d="M35.5 6.5H24.5C23.6716 6.5 23 7.17157 23 8V16C23 16.8284 23.6716 17.5 24.5 17.5H35.5C36.3284 17.5 37 16.8284 37 16V8C37 7.17157 36.3284 6.5 35.5 6.5Z" stroke="#AFAFAF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M32 11.4C32.7732 11.4 33.4 10.7732 33.4 10C33.4 9.22681 32.7732 8.60001 32 8.60001C31.2268 8.60001 30.6 9.22681 30.6 10C30.6 10.7732 31.2268 11.4 32 11.4Z" fill="#AFAFAF"/>
 <path d="M32 15.4C32.7732 15.4 33.4 14.7732 33.4 14C33.4 13.2268 32.7732 12.6 32 12.6C31.2268 12.6 30.6 13.2268 30.6 14C30.6 14.7732 31.2268 15.4 32 15.4Z" fill="#AFAFAF"/>
+<path d="M8 7L17.4 16.4" stroke="#E74848" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M17.4 7L8 16.4" stroke="#E74848" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
