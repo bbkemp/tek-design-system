@@ -42,6 +42,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
  *
  * @cssprop --tek-spacing-s05 - Gap between control and label.
  */
+export type TekSelectorType = 'checkbox' | 'radio' | 'toggle';
+
 export class TekSelector extends LitElement {
   static styles = css`
     :host { display:inline-flex; gap:0; align-items:center; padding:0; cursor:pointer; user-select:none; }
@@ -53,7 +55,7 @@ export class TekSelector extends LitElement {
   @property({ type: Boolean, reflect: true }) error = false;
   @property({ type: Boolean, reflect: true }) disabled = false;
   @property() label: string | null = null;
-  @property() type = 'checkbox';
+  @property() type: TekSelectorType = 'checkbox';
   @property() name: string | null = null;
 
   connectedCallback() {

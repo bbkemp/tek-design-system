@@ -28,10 +28,11 @@ import { LitElement } from 'lit';
  * @cssprop --tek-color-input-character-count-error - Count color, error state.
  * @cssprop --tek-color-input-character-count-warning - Count color, warning state.
  */
+export type TekCharacterCountState = 'default' | 'focus' | 'filled' | 'error' | 'warning';
 export declare class TekCharacterCount extends LitElement {
     static styles: import("lit").CSSResult;
     current: number;
     max: number;
-    state: string;
+    state: TekCharacterCountState;
     render(): import("lit-html").TemplateResult<1>;
 }

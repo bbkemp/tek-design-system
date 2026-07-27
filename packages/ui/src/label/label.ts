@@ -41,6 +41,8 @@ import { property } from 'lit/decorators.js';
  * @cssprop --tek-color-input-character-count-default - Char-count color.
  * @cssprop --tek-color-input-text-error - Helper color when helper-state="error".
  */
+export type TekLabelHelperState = 'error';
+
 export class TekLabel extends LitElement {
   static styles = css`
     :host {
@@ -113,7 +115,7 @@ export class TekLabel extends LitElement {
   @property({ attribute: 'helper-text' }) helperText: string | null = null;
   @property({ attribute: 'char-count' }) charCount: string | null = null;
   @property() link: string | null = null;
-  @property({ attribute: 'helper-state' }) helperState: string | null = null;
+  @property({ attribute: 'helper-state' }) helperState: TekLabelHelperState | null = null;
 
   render() {
     return html`
