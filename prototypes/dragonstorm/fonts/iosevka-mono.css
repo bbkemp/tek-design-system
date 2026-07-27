@@ -1,0 +1,82 @@
+/* ============================================================================
+   Iosevka Mono — Tek's custom monospace (self-hosted, web subset)
+   ----------------------------------------------------------------------------
+   Exported from the font-lab builder (prototypes/font-lab/) — the "Option B"
+   no-rebuild path: the PLAIN Iosevka faces are shipped as-is and the chosen
+   OpenType character variants are applied in CSS (not baked into the files).
+
+   Face set = exactly what the GDM9061 "Dragon Storm" screens use
+   (family-per-width, upright, mono spacing):
+
+     Iosevka Mono Ultra Condensed   400
+     Iosevka Mono Condensed         400 · 500 · 600 · 700
+     Iosevka Mono Extended          400 · 500 · 600
+
+   Subset charset (from build-fonts.sh): Basic Latin + Latin-1 + instrument
+   symbols (Ω µ ° − ± × ÷ arrows ∞ etc.). All OpenType features retained.
+
+   Character variants (from the prototype's applied font-feature-settings):
+     cv04 7  ·  cv07 1  ·  cv08 2  ·  cv09 3   — digit variants for 4/7/8/9.
+   Because this is the no-rebuild path, they are NOT in the font files; apply
+   them via `--tek-mono-features` below (or seal them in with a rebuild later).
+   ========================================================================== */
+
+/* ── Ultra Condensed ─────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "Iosevka Mono Ultra Condensed";
+  font-style: normal; font-weight: 400; font-display: swap;
+  src: url("./IosevkaMono-UltraCondensed.woff2") format("woff2");
+}
+
+/* ── Condensed (400/500/600/700) ─────────────────────────────────────────── */
+@font-face {
+  font-family: "Iosevka Mono Condensed";
+  font-style: normal; font-weight: 400; font-display: swap;
+  src: url("./IosevkaMono-Condensed.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Iosevka Mono Condensed";
+  font-style: normal; font-weight: 500; font-display: swap;
+  src: url("./IosevkaMono-CondensedMedium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Iosevka Mono Condensed";
+  font-style: normal; font-weight: 600; font-display: swap;
+  src: url("./IosevkaMono-CondensedSemiBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Iosevka Mono Condensed";
+  font-style: normal; font-weight: 700; font-display: swap;
+  src: url("./IosevkaMono-CondensedBold.woff2") format("woff2");
+}
+
+/* ── Extended (400/500/600) ──────────────────────────────────────────────── */
+@font-face {
+  font-family: "Iosevka Mono Extended";
+  font-style: normal; font-weight: 400; font-display: swap;
+  src: url("./IosevkaMono-Extended.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Iosevka Mono Extended";
+  font-style: normal; font-weight: 500; font-display: swap;
+  src: url("./IosevkaMono-ExtendedMedium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Iosevka Mono Extended";
+  font-style: normal; font-weight: 600; font-display: swap;
+  src: url("./IosevkaMono-ExtendedSemiBold.woff2") format("woff2");
+}
+
+/* ── Character-variant defaults (Option B — applied in CSS) ───────────────────
+   These are the digit variants the Dragon Storm build locked in. They can't be
+   attached to a @font-face in a cross-browser way, so expose them as a token and
+   apply on any element using the mono families. Sealing them into the font files
+   (a rebuild) would make this unnecessary — that's the Option-A upgrade path. */
+:root {
+  --tek-mono-features: "cv04" 7, "cv07" 1, "cv08" 2, "cv09" 3;
+}
+
+/* Opt-in helper: put this class (or the declaration) on mono text/readouts. */
+.tek-mono-features {
+  font-feature-settings: var(--tek-mono-features);
+}
