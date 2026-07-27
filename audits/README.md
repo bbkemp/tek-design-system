@@ -28,6 +28,8 @@ audits/
 ├── design-additions/<YYYY-MM-DD>-<slug>/   ← Claude Design redesign briefs, gap analyses, baseline audits
 │   └── *.md                                ← variable layout per audit (report.md, gap-analysis.md, etc.)
 ├── mcp/<YYYY-MM-DD>-<slug>.md              ← infrastructure audits of the Tek MCP Endpoint
+├── planning/<YYYY-MM-DD>-<slug>/           ← roadmap/planning surfacing audits (docs → Issues/Projects)
+│   └── report.md
 └── prototype/<YYYY-MM-DD>-<slug>/
     ├── report.md                           ← prototype-qa
     ├── screenshot-diff.md                  ← prototype-screenshot-diff
@@ -39,6 +41,7 @@ audits/
 - **`competitive/`** — Tek-authored interpretation of competitor products (decks, feature matrices, UX critiques). Vendor-authored manuals and datasheets go in the corpus instead, as a peer subject source under `corpus/sources/<vendor>-<sku>/` — see [`corpus/README.md`](../corpus/README.md#competitor-products). Source assets local-only via `.gitignore`; synthesized `report.md` committed.
 - **`design-additions/`** — Claude Design / Claude Code outputs for in-flight redesign work: build specs, additions audits, prompt iterations, cohesion reviews, baseline audits of the corpus or other systems. Each folder is dated and represents a snapshot in time. Layout per folder is flexible — `report.md` is the default but multi-file audits (separate `gap-analysis.md`, `cd-prompt.md`, etc.) are common.
 - **`mcp/`** — infrastructure audits of the Tek MCP Endpoint (`apps/mcp/`): tool-surface gaps, manifest coverage, retrieval quality. Flat dated files, hand-authored. Findings are ranked P0/P1/P2 and typically feed [`docs/mcp-server-plan.md`](../docs/mcp-server-plan.md) hardening work. First entry: [`mcp/2026-07-16-component-manifest-gaps.md`](./mcp/2026-07-16-component-manifest-gaps.md).
+- **`planning/`** — roadmap-surfacing audits: exhaustive sweeps of the repo's planning/discovery docs (tek-system-core, mcp-server-plan, ADRs, UXR, additions audits) that inventory outstanding items as candidate GitHub Issues, flag stale doc claims, and collect open decisions. Hand-authored snapshots; the repo docs themselves remain the system of record. First entry: [`planning/2026-07-27-roadmap-surfacing/report.md`](./planning/2026-07-27-roadmap-surfacing/report.md).
 - **`prototype/`** — `prototype-qa` output: a corpus screen audited against the current Design System v2. Includes a side-by-side screenshot diff when close matches are flagged.
 
 ### Planned audit types
