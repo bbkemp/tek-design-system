@@ -14,7 +14,7 @@ Every artifact under `audits/` is **interpretation**, not observed fact, and is 
    > **This document is interpretation, authored by <authors> on <date>.** It is opinion and synthesis, not observed fact. The system of record is the cited corpus entries (`provenance: observed`). When this analysis and a corpus entry disagree, the corpus wins — and this file should be corrected.
    ```
 
-3. **Cite corpus sources.** Every factual claim about a product should be traceable to a `provenance: observed` corpus chunk; the rankings and verdicts are the authored judgment to argue with.
+3. **Cite corpus sources.** Every factual claim about a product should be traceable to a `provenance: observed` corpus chunk; the rankings and verdicts are the authored judgment to argue with. (For `mcp/` infrastructure audits the system of record is the repo itself — claims cite repo paths and SHAs instead of corpus chunks, and the banner names the repo as the source that wins.)
 
 This applies equally to UXR synthesis (`uxr/`) and any future analytics-analysis surface — see the corpus README for why summaries-of-real-data are still `authored-analysis`.
 
@@ -27,6 +27,7 @@ audits/
 │   └── assets/                             ← source decks, screenshots, vendor PDFs (local-only)
 ├── design-additions/<YYYY-MM-DD>-<slug>/   ← Claude Design redesign briefs, gap analyses, baseline audits
 │   └── *.md                                ← variable layout per audit (report.md, gap-analysis.md, etc.)
+├── mcp/<YYYY-MM-DD>-<slug>.md              ← infrastructure audits of the Tek MCP Endpoint
 └── prototype/<YYYY-MM-DD>-<slug>/
     ├── report.md                           ← prototype-qa
     ├── screenshot-diff.md                  ← prototype-screenshot-diff
@@ -37,6 +38,7 @@ audits/
 
 - **`competitive/`** — Tek-authored interpretation of competitor products (decks, feature matrices, UX critiques). Vendor-authored manuals and datasheets go in the corpus instead, as a peer subject source under `corpus/sources/<vendor>-<sku>/` — see [`corpus/README.md`](../corpus/README.md#competitor-products). Source assets local-only via `.gitignore`; synthesized `report.md` committed.
 - **`design-additions/`** — Claude Design / Claude Code outputs for in-flight redesign work: build specs, additions audits, prompt iterations, cohesion reviews, baseline audits of the corpus or other systems. Each folder is dated and represents a snapshot in time. Layout per folder is flexible — `report.md` is the default but multi-file audits (separate `gap-analysis.md`, `cd-prompt.md`, etc.) are common.
+- **`mcp/`** — infrastructure audits of the Tek MCP Endpoint (`apps/mcp/`): tool-surface gaps, manifest coverage, retrieval quality. Flat dated files, hand-authored. Findings are ranked P0/P1/P2 and typically feed [`docs/mcp-server-plan.md`](../docs/mcp-server-plan.md) hardening work. First entry: [`mcp/2026-07-16-component-manifest-gaps.md`](./mcp/2026-07-16-component-manifest-gaps.md).
 - **`prototype/`** — `prototype-qa` output: a corpus screen audited against the current Design System v2. Includes a side-by-side screenshot diff when close matches are flagged.
 
 ### Planned audit types
@@ -54,7 +56,7 @@ Invoke the matching skill in Claude Code (or any tool that reads the mirrors und
 - `code-design-qa` — runs against `packages/ui/`, root `*.html`, and `prototypes/` by default
 - `prototype-qa` — pass a Figma frame URL or a local HTML/JSX path; auto-invokes `prototype-screenshot-diff` for any close matches
 
-Competitive audits and design-additions audits are hand-authored today; no skill auto-produces them. A template skeleton + worked example for `competitive/` is on the follow-up list.
+Competitive audits, design-additions audits, and mcp audits are hand-authored today; no skill auto-produces them. A template skeleton + worked example for `competitive/` is on the follow-up list.
 
 Each skill accepts an `output-dir` override.
 
