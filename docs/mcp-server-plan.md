@@ -147,7 +147,7 @@ Each step is PR-sized. After step 8, "install" for a teammate is pasting one URL
 
 | # | Step | Notes |
 |---|---|---|
-| 9 | Eval gate in CI | Fail PRs that regress retrieval on the curated set, like `refresh-index --check` gates index drift. |
+| 9 | Eval gate in CI | **Shipped** 2026-07-27 — [`.github/workflows/eval-gate.yml`](../.github/workflows/eval-gate.yml) fails PRs touching `apps/mcp/**` that regress retrieval on the curated set, against the production endpoint. Scoped narrower than `refresh-index --check`'s eventual target: it validates retrieval *logic*, not a PR's own corpus/token content, since ingestion still only runs on push to `main`. Per-PR preview ingest is the follow-up to close that gap. |
 | 10 | XAML fast-follow | Join `docs/wpf/` resource keys into token results (Decision 2). |
 | 11 | Usage logging | Which tools get called, which queries miss — feeds the eval set and proves value. |
 | 12 | Link rotation runbook | One-step secret rotation documented, so a leaked link is a 5-minute fix. |

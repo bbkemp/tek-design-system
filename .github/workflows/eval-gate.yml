@@ -1,0 +1,22 @@
+name: MCP eval gate
+
+on:
+  pull_request:
+    paths:
+      - "apps/mcp/**"
+      - ".github/workflows/eval-gate.yml"
+
+jobs:
+  eval:
+    name: npm run eval --workspace=apps/mcp
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run eval --workspace=apps/mcp
+        env:
+          TEK_MCP_URL: ${{ secrets.TEK_MCP_URL }}

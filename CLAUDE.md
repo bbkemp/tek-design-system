@@ -77,7 +77,7 @@ npm run build:ui        # if components changed
 npm run build:mcp       # if the MCP endpoint app changed
 ```
 
-For MCP endpoint changes, also run the eval harness against a deployment before merging retrieval-affecting work: `TEK_MCP_URL=<endpoint> npm run eval --workspace=apps/mcp`.
+For MCP endpoint changes, also run the eval harness against a deployment before merging retrieval-affecting work: `TEK_MCP_URL=<endpoint> npm run eval --workspace=apps/mcp`. PRs touching `apps/mcp/**` also run this automatically in CI (`.github/workflows/eval-gate.yml`) against the production endpoint and fail on recall/exact-match regressions — see `apps/mcp/README.md#eval-harness` for what it does and doesn't catch.
 
 Verify in a local server before claiming a fix works. VS Code Live Server (port 5500) is the canonical local-dev URL — open `prototypes/sign-in/index.html`, `prototypes/sign-in/signup.html`, or `prototypes/component-library/index.html`. The sign-in pages import from `packages/*/dist/` directly, so they exercise the real built packages and function as integration tests.
 
@@ -98,7 +98,7 @@ These are flagged here so you don't act as if they exist, and don't propose them
 | `npm run new:component` Plop scaffold | Part 3 |
 | Storybook / component explorer | Part 4 (`apps/storybook`) |
 | Per-component `.styles.ts` / `.test.ts` / `.stories.ts` split | Part 3 |
-| MCP endpoint hardening — eval gate in CI, XAML keys in token results, usage logging, org SSO (endpoint itself is **shipped**, see `apps/mcp/`) | Part 1 + [docs/mcp-server-plan.md](./docs/mcp-server-plan.md) P1/P2 |
+| MCP endpoint hardening — XAML keys in token results, usage logging, org SSO (endpoint itself is **shipped**; eval gate in CI is also **shipped**, see `.github/workflows/eval-gate.yml` — per-PR preview ingest for corpus-content changes is still open, see `apps/mcp/README.md#eval-harness`) | Part 1 + [docs/mcp-server-plan.md](./docs/mcp-server-plan.md) P1/P2 |
 | UXR + analytics taxonomy | Part 5 |
 
 Until namespace migration ships, packages and imports inside this repo use `@bbkemp/*`. Don't pre-emptively rename in code.
