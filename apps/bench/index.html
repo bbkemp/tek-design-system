@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tek Bench — DS Workstation</title>
+
+<!-- Fonts — Geist (body/UI) + Archivo (headings), same set as the reference pages -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Archivo:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!--
+  @bbkemp/tokens — complete build (primitives + dark/light semantic)
+  Requires: npm run build:tokens
+  bench.css carries value fallbacks, so the shell still renders unbuilt.
+-->
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+<link rel="stylesheet" href="./bench.css">
+</head>
+<body>
+
+<nav class="rail" id="rail" aria-label="Bench tools">
+  <div class="rail-header">
+    <div class="rail-title">Tek Bench</div>
+    <div class="rail-sub">design system workstation</div>
+  </div>
+  <!-- groups injected by bench.js -->
+  <div class="rail-footer">
+    Serve from the repo root (Live Server / <code>npx serve</code>).<br>
+    Add a tool: one entry in <a href="./tools.js">tools.js</a>.
+  </div>
+</nav>
+
+<div class="stage-col">
+
+  <div class="toolbar" id="toolbar" hidden>
+    <span class="toolbar-name" id="tb-name"></span>
+    <span class="badge" id="tb-badge"></span>
+    <span class="toolbar-source" id="tb-source" title=""></span>
+    <div class="toolbar-actions">
+      <select class="chrome-select" id="tb-width" aria-label="Frame width">
+        <option value="">Full width</option>
+        <option value="1280px">Desktop · 1280</option>
+        <option value="1194px">iPad landscape · 1194</option>
+        <option value="834px">iPad portrait · 834</option>
+        <option value="390px">Phone · 390</option>
+      </select>
+      <button class="chrome-btn" id="tb-reload" type="button" title="Reload the tool frame">Reload</button>
+      <a class="chrome-btn" id="tb-open" target="_blank" rel="noopener" title="Open the tool in its own tab">Standalone ↗</a>
+    </div>
+  </div>
+
+  <div class="home" id="home"><!-- cards injected by bench.js --></div>
+
+  <div class="stage" id="stage" hidden></div>
+
+</div>
+
+<script type="module" src="./bench.js"></script>
+</body>
+</html>

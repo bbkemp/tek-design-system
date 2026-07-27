@@ -1,0 +1,290 @@
+/* Tek Bench — workstation chrome.
+   Every value traces to a --tek-* token (built from @bbkemp/tokens);
+   fallbacks mirror the built values so the shell degrades gracefully
+   when dist/ hasn't been built yet.
+   Chrome is intentionally dark-only, matching the component library's
+   sidebar convention — tools manage their own theming inside the frame. */
+
+*, *::before, *::after { box-sizing: border-box; }
+body, h1, h2, h3, p, ul, ol, li { margin: 0; padding: 0; }
+
+/* the toolbar/stage/home swap on [hidden] — must beat their display:flex */
+[hidden] { display: none !important; }
+
+:root {
+  --bench-bg:      var(--tek-colors-neutral-900, #181818);
+  --bench-panel:   var(--tek-colors-neutral-800, #1e1e1e);
+  --bench-field:   var(--tek-colors-neutral-700, #252525);
+  --bench-line:    var(--tek-colors-neutral-600, #333333);
+  --bench-line-hi: var(--tek-colors-neutral-500, #454545);
+  --bench-muted:   var(--tek-colors-neutral-400, #7b7b7b);
+  --bench-text:    var(--tek-colors-neutral-100, #cccccc);
+  --bench-ink:     var(--tek-colors-neutral-white, #ffffff);
+  --bench-accent:  var(--tek-colors-brand-tek-blue, #33baea);
+  --bench-rail-bg: var(--tek-colors-neutral-black, #000000);
+
+  --bench-sans: var(--tek-fonts-family-geist, 'Geist'), ui-sans-serif, system-ui, sans-serif;
+  --bench-head: var(--tek-fonts-family-archivo, 'Archivo'), var(--bench-sans);
+  --bench-mono: var(--tek-fonts-family-mono, 'Geist Mono'), ui-monospace, monospace;
+}
+
+html, body { height: 100%; }
+
+body {
+  display: flex;
+  background: var(--bench-bg);
+  color: var(--bench-text);
+  font-family: var(--bench-sans);
+  font-size: var(--tek-fonts-text-size-md, 13px);
+  line-height: var(--tek-fonts-text-line-height-md, 16px);
+  overflow: hidden;
+}
+
+/* ── Rail ──────────────────────────────────────────────────────────── */
+
+.rail {
+  flex: 0 0 248px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bench-rail-bg);
+  border-right: var(--tek-borders-width-01, 1px) solid var(--bench-line);
+  overflow-y: auto;
+}
+
+.rail-header {
+  padding: var(--tek-spacing-s09, 16px);
+  border-bottom: var(--tek-borders-width-01, 1px) solid var(--bench-line);
+}
+
+.rail-title {
+  font-family: var(--bench-head);
+  font-weight: 500;
+  font-size: var(--tek-fonts-heading-size-xs, 16px);
+  line-height: var(--tek-fonts-heading-line-height-xs, 24px);
+  color: var(--bench-ink);
+}
+
+.rail-sub {
+  font-family: var(--bench-mono);
+  font-size: var(--tek-fonts-text-size-xs, 10px);
+  line-height: var(--tek-fonts-text-line-height-xs, 12px);
+  color: var(--bench-muted);
+  letter-spacing: 0.04em;
+  margin-top: var(--tek-spacing-s02, 2px);
+}
+
+.rail-group { padding: var(--tek-spacing-s07, 12px) var(--tek-spacing-s05, 8px) var(--tek-spacing-s03, 4px); }
+
+.rail-group-label {
+  font-size: var(--tek-fonts-text-size-xs, 10px);
+  line-height: var(--tek-fonts-text-line-height-xs, 12px);
+  color: var(--bench-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0 var(--tek-spacing-s05, 8px);
+  margin-bottom: var(--tek-spacing-s03, 4px);
+}
+
+.rail-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--bench-text);
+  font: inherit;
+  padding: var(--tek-spacing-s04, 6px) var(--tek-spacing-s05, 8px);
+  border-radius: var(--tek-borders-radius-03, 5px);
+  cursor: pointer;
+}
+
+.rail-item:hover { background: var(--bench-panel); color: var(--bench-ink); }
+
+.rail-item.active {
+  background: var(--bench-field);
+  color: var(--bench-ink);
+  box-shadow: inset 2px 0 0 var(--bench-accent);
+}
+
+.rail-footer {
+  margin-top: auto;
+  padding: var(--tek-spacing-s09, 16px);
+  border-top: var(--tek-borders-width-01, 1px) solid var(--bench-line);
+  font-size: var(--tek-fonts-text-size-xs, 10px);
+  line-height: 1.5;
+  color: var(--bench-muted);
+}
+.rail-footer a { color: var(--bench-accent); text-decoration: none; }
+.rail-footer a:hover { text-decoration: underline; }
+
+/* ── Stage column ──────────────────────────────────────────────────── */
+
+.stage-col {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--tek-spacing-s07, 12px);
+  padding: var(--tek-spacing-s06, 10px) var(--tek-spacing-s09, 16px);
+  background: var(--bench-panel);
+  border-bottom: var(--tek-borders-width-01, 1px) solid var(--bench-line);
+  min-height: 52px;
+}
+
+.toolbar-name {
+  font-family: var(--bench-head);
+  font-weight: 400;
+  font-size: var(--tek-fonts-heading-size-xs, 16px);
+  line-height: var(--tek-fonts-heading-line-height-xs, 24px);
+  color: var(--bench-ink);
+  white-space: nowrap;
+}
+
+.badge {
+  font-family: var(--bench-mono);
+  font-size: var(--tek-fonts-text-size-xs, 10px);
+  line-height: var(--tek-fonts-text-line-height-xs, 12px);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: var(--tek-spacing-s02, 2px) var(--tek-spacing-s04, 6px);
+  border-radius: var(--tek-borders-radius-02, 3px);
+  border: var(--tek-borders-width-01, 1px) solid var(--bench-line-hi);
+  color: var(--bench-muted);
+}
+.badge.tool      { color: var(--bench-accent); border-color: var(--bench-accent); }
+.badge.reference { color: var(--tek-colors-ui-success-green, #42b54c); border-color: var(--tek-colors-ui-success-green, #42b54c); }
+.badge.drop      { color: var(--tek-colors-ui-warning-yellow, #e0b732); border-color: var(--tek-colors-ui-warning-yellow, #e0b732); }
+
+.toolbar-source {
+  font-family: var(--bench-mono);
+  font-size: var(--tek-fonts-text-size-xs, 10px);
+  color: var(--bench-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.toolbar-actions { display: flex; gap: var(--tek-spacing-s04, 6px); flex: 0 0 auto; }
+
+.chrome-btn,
+.chrome-select {
+  background: var(--bench-field);
+  color: var(--bench-text);
+  border: var(--tek-borders-width-01, 1px) solid var(--bench-line-hi);
+  border-radius: var(--tek-borders-radius-03, 5px);
+  padding: var(--tek-spacing-s03, 4px) var(--tek-spacing-s06, 10px);
+  font: inherit;
+  font-size: var(--tek-fonts-text-size-sm, 12px);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tek-spacing-s03, 4px);
+}
+.chrome-btn:hover, .chrome-select:hover { border-color: var(--bench-muted); color: var(--bench-ink); }
+
+/* ── Stage ─────────────────────────────────────────────────────────── */
+
+.stage {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  min-height: 0;
+  background: var(--bench-bg);
+}
+
+.stage iframe {
+  border: none;
+  width: 100%;
+  height: 100%;
+  background: var(--bench-bg);
+}
+
+/* fixed-width simulation: frame floats centered with a hairline edge */
+.stage.sized { padding: var(--tek-spacing-s09, 16px); overflow: auto; }
+.stage.sized iframe {
+  width: var(--frame-w, 100%);
+  max-width: 100%;
+  flex: 0 0 auto;
+  align-self: stretch;
+  border: var(--tek-borders-width-01, 1px) solid var(--bench-line);
+  border-radius: var(--tek-borders-radius-04, 7px);
+}
+
+/* ── Home view ─────────────────────────────────────────────────────── */
+
+.home {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: var(--tek-spacing-s13, 32px);
+}
+
+.home-title {
+  font-family: var(--bench-head);
+  font-weight: 400;
+  font-size: var(--tek-fonts-heading-size-md, 24px);
+  line-height: var(--tek-fonts-heading-line-height-md, 32px);
+  color: var(--bench-ink);
+}
+
+.home-sub {
+  color: var(--bench-muted);
+  max-width: 560px;
+  margin-top: var(--tek-spacing-s05, 8px);
+}
+
+.home-group-label {
+  font-size: var(--tek-fonts-text-size-xs, 10px);
+  color: var(--bench-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: var(--tek-spacing-s13, 32px) 0 var(--tek-spacing-s06, 10px);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--tek-spacing-s07, 12px);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tek-spacing-s05, 8px);
+  text-align: left;
+  background: var(--bench-panel);
+  border: var(--tek-borders-width-01, 1px) solid var(--bench-line);
+  border-radius: var(--tek-borders-radius-05, 11px);
+  padding: var(--tek-spacing-s09, 16px);
+  color: var(--bench-text);
+  font: inherit;
+  cursor: pointer;
+}
+.card:hover { border-color: var(--bench-line-hi); background: var(--bench-field); }
+
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: var(--tek-spacing-s05, 8px); }
+
+.card-name {
+  font-family: var(--bench-head);
+  font-weight: 500;
+  font-size: var(--tek-fonts-text-size-lg, 14px);
+  line-height: var(--tek-fonts-text-line-height-lg, 20px);
+  color: var(--bench-ink);
+}
+
+.card-desc { font-size: var(--tek-fonts-text-size-sm, 12px); line-height: 1.5; color: var(--bench-muted); }
+
+.card-source {
+  font-family: var(--bench-mono);
+  font-size: var(--tek-fonts-text-size-xs, 10px);
+  color: var(--bench-muted);
+  margin-top: auto;
+}
