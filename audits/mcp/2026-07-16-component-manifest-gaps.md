@@ -1,3 +1,12 @@
+---
+provenance: authored-analysis
+authored_by: [Claude Code (Fable 5), Bryan Kemp]
+authored_date: 2026-07-16
+---
+
+> ## ⚠️ Authored analysis — not corpus
+> **This document is interpretation, authored by Claude Code and Bryan Kemp on 2026-07-16.** It is opinion and synthesis, not observed fact. The system of record for this infrastructure audit is the repo itself at the cited paths and SHA. When this analysis and the code disagree, the code wins — and this file should be corrected.
+
 # MCP Component Manifest — Gap Audit
 
 **Date:** 2026-07-16
@@ -81,7 +90,7 @@ Verification for step 1: `npm run manifest --workspace=apps/mcp`, diff `generate
 
 ## Open decisions
 
-1. **Single source of truth for component docs.** Recommend converting the file-header comments into the class-level JSDoc (one block, CEM-readable) rather than maintaining both. Requires touching every component file — flag for Broc's awareness since it churns `packages/ui` diffs.
-2. **Should allowed values also become TS union types?** `variant: 'primary' | 'secondary'` getters in `types.ts` would give strict-mode enforcement in addition to docs. More invasive; could ride the parked ui type-declaration work instead of this pass.
-3. **New audit family.** This file creates `audits/mcp/` alongside `design-additions`/`competitive`/`prototype` — [audits/README.md](../README.md) doesn't define it yet. Bless it (and update the README) or relocate this snapshot.
-4. **P2-2 embedding scope.** Whether component summaries belong in the same vector corpus as observed product documentation, or as a separate searchable surface — provenance semantics ('observed' vs generated-from-code) need a call.
+1. **Single source of truth for component docs.** ~~Recommend converting the file-header comments into the class-level JSDoc (one block, CEM-readable) rather than maintaining both.~~ **Resolved 2026-07-21:** converted — class-level JSDoc is the single source; file headers removed. Flagged for Broc's awareness since it churns `packages/ui` diffs.
+2. **Should allowed values also become TS union types?** `variant: 'primary' | 'secondary'` getters in `types.ts` would give strict-mode enforcement in addition to docs. More invasive; recommend riding the parked ui type-declaration work instead of this pass. Still open.
+3. **New audit family.** ~~This file creates `audits/mcp/` alongside `design-additions`/`competitive`/`prototype` — [audits/README.md](../README.md) doesn't define it yet.~~ **Resolved 2026-07-27:** blessed by Bryan; `mcp/` is now defined in [audits/README.md](../README.md).
+4. **P2-2 embedding scope.** Whether component summaries belong in the same vector corpus as observed product documentation, or as a separate searchable surface — provenance semantics ('observed' vs generated-from-code) need a call. Still open.
