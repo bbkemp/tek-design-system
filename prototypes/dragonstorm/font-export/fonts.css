@@ -1,0 +1,85 @@
+/* ============================================================================
+   GDM9061 "Dragon Storm" — font + type spec for vendor handoff
+   ----------------------------------------------------------------------------
+   Static .ttf, all features baked (no OpenType feature-settings needed):
+     - Iosevka Mono (Ultra Condensed / Condensed / Extended) — the readouts &
+       values. Digit variants cv04/07/08/09 are BAKED as defaults (4/7/8/9
+       already render correctly with no feature applied).
+     - Geist (Regular/Medium/Bold) — labels, softkeys, status.
+     - Archivo Expanded (Medium/SemiBold) — titles & config tabs (the wdth 120
+       cut, instanced to static).
+   Colors are DS primitives (hex inline so this file is self-contained).
+   Type roles + values mirror the annotated doc:
+     audits/design-additions/2026-06-30-gw-gdm9061-reskin/typography-annotation.md
+   ========================================================================== */
+
+/* ── @font-face (./ttf/*.ttf) ─────────────────────────────────────────────── */
+@font-face{font-family:"Iosevka Mono Ultra Condensed";font-weight:400;font-style:normal;src:url("./ttf/IosevkaMono-UltraCondensed.ttf") format("truetype");}
+@font-face{font-family:"Iosevka Mono Condensed";font-weight:400;font-style:normal;src:url("./ttf/IosevkaMono-Condensed.ttf") format("truetype");}
+@font-face{font-family:"Iosevka Mono Condensed";font-weight:500;font-style:normal;src:url("./ttf/IosevkaMono-CondensedMedium.ttf") format("truetype");}
+@font-face{font-family:"Iosevka Mono Condensed";font-weight:600;font-style:normal;src:url("./ttf/IosevkaMono-CondensedSemiBold.ttf") format("truetype");}
+@font-face{font-family:"Iosevka Mono Condensed";font-weight:700;font-style:normal;src:url("./ttf/IosevkaMono-CondensedBold.ttf") format("truetype");}
+@font-face{font-family:"Iosevka Mono Extended";font-weight:400;font-style:normal;src:url("./ttf/IosevkaMono-Extended.ttf") format("truetype");}
+@font-face{font-family:"Iosevka Mono Extended";font-weight:500;font-style:normal;src:url("./ttf/IosevkaMono-ExtendedMedium.ttf") format("truetype");}
+@font-face{font-family:"Iosevka Mono Extended";font-weight:600;font-style:normal;src:url("./ttf/IosevkaMono-ExtendedSemiBold.ttf") format("truetype");}
+@font-face{font-family:"Geist";font-weight:400;font-style:normal;src:url("./ttf/Geist-Regular.ttf") format("truetype");}
+@font-face{font-family:"Geist";font-weight:500;font-style:normal;src:url("./ttf/Geist-Medium.ttf") format("truetype");}
+@font-face{font-family:"Geist";font-weight:700;font-style:normal;src:url("./ttf/Geist-Bold.ttf") format("truetype");}
+@font-face{font-family:"Archivo Expanded";font-weight:500;font-style:normal;src:url("./ttf/Archivo_Expanded-Medium.ttf") format("truetype");}
+@font-face{font-family:"Archivo Expanded";font-weight:600;font-style:normal;src:url("./ttf/Archivo_Expanded-SemiBold.ttf") format("truetype");}
+
+/* ── Type styles (device-native px @ 480×272) — from the annotated doc ─────── */
+
+/* Readouts (Iosevka Mono, tight line-height = size) */
+.ds-readout-primary        {font-family:"Iosevka Mono Ultra Condensed";font-weight:400;font-size:116px;line-height:112px;color:#ffffff;}
+.ds-readout-dual           {font-family:"Iosevka Mono Ultra Condensed";font-weight:400;font-size:74px;line-height:74px;letter-spacing:-1px;color:#ffffff;}
+.ds-readout-stat           {font-family:"Iosevka Mono Condensed";font-weight:400;font-size:71px;line-height:71px;letter-spacing:-2px;color:#ffffff;}
+.ds-readout-trend          {font-family:"Iosevka Mono Condensed";font-weight:500;font-size:38px;letter-spacing:-0.6px;color:#ffffff;}
+.ds-readout-dual-secondary {font-family:"Iosevka Mono Condensed";font-weight:400;font-size:15px;color:#afafaf;}
+
+/* Units */
+.ds-unit-primary  {font-family:"Iosevka Mono Condensed";font-weight:600;font-size:24px;line-height:24px;color:#ffffff;}
+.ds-unit-dual     {font-family:"Iosevka Mono Condensed";font-weight:600;font-size:20px;color:#ffffff;}
+.ds-unit-overload {font-family:"Geist";font-weight:600;font-size:24px;line-height:24px;color:#e0b732;} /* as-built (ratified) */
+
+/* Chrome — status bar + header */
+.ds-chrome-title       {font-family:"Archivo Expanded";font-weight:600;font-size:17px;letter-spacing:0.3px;color:#ffffff;}
+.ds-chrome-clock       {font-family:"Iosevka Mono Condensed";font-weight:500;font-size:16px;letter-spacing:-0.5px;color:#ffffff;}
+.ds-chrome-mode-chip   {font-family:"Iosevka Mono Extended";font-weight:600;font-size:10px;letter-spacing:-0.1px;color:#afafaf;}
+.ds-chrome-usb-letter  {font-family:"Iosevka Mono Condensed";font-weight:700;font-size:14px;color:#ffffff;}
+.ds-chrome-lan-x       {font-family:"Geist";font-weight:700;font-size:12px;color:#e74848;}
+.ds-chrome-tab-badge   {font-family:"Iosevka Mono Condensed";font-weight:700;font-size:9.5px;color:#ffffff;}
+.ds-chrome-range-label {font-family:"Geist";font-weight:500;font-size:12px;color:#afafaf;}
+.ds-chrome-auto-badge  {font-family:"Geist";font-weight:700;font-size:12px;color:#000000;}
+.ds-chrome-range-value {font-family:"Iosevka Mono Condensed";font-weight:600;font-size:12px;color:#ffffff;}
+.ds-chrome-trig-chip   {font-family:"Iosevka Mono Condensed";font-weight:400;font-size:13px;color:#ffffff;}
+.ds-chrome-status-chip {font-family:"Iosevka Mono Condensed";font-weight:400;font-size:13px;color:#cccccc;}
+.ds-chrome-azero-pill  {font-family:"Geist";font-weight:400;font-size:13px;color:#afafaf;}
+.ds-chrome-math-flag   {font-family:"Iosevka Mono Condensed";font-weight:400;font-size:14px;color:#afafaf;}
+
+/* Controls — measurement footer */
+.ds-control-label       {font-family:"Geist";font-weight:500;font-size:10px;line-height:10px;letter-spacing:0.6px;text-transform:uppercase;color:#cccccc;}
+.ds-control-value       {font-family:"Iosevka Mono Condensed";font-weight:500;font-size:15px;line-height:15px;letter-spacing:-0.3px;color:#33baea;}
+.ds-control-toggle-on   {font-family:"Iosevka Mono Condensed";font-weight:400;font-size:12px;color:#000000;}
+.ds-control-toggle-off  {font-family:"Iosevka Mono Condensed";font-weight:400;font-size:12px;color:#979797;}
+.ds-control-menu-item   {font-family:"Iosevka Mono Condensed";font-weight:500;font-size:14px;letter-spacing:0.2px;color:#ffffff;}
+.ds-control-menu-item-sel{font-family:"Iosevka Mono Condensed";font-weight:700;font-size:14px;letter-spacing:0.2px;color:#000000;}
+
+/* Data — stats / trend / histogram */
+.ds-data-stat-label {font-family:"Iosevka Mono Condensed";font-weight:400;font-size:13px;line-height:16.25px;letter-spacing:0.3px;color:#e0b732;} /* Stats screens: 14px/17.5 */
+.ds-data-stat-value {font-family:"Iosevka Mono Condensed";font-weight:400;font-size:13px;line-height:16.25px;letter-spacing:0.3px;color:#ffffff;} /* Stats screens: 14px/17.5 */
+.ds-data-axis       {font-family:"Iosevka Mono Condensed";font-weight:400;font-size:11px;color:#cccccc;}
+.ds-data-count      {font-family:"Iosevka Mono Condensed";font-weight:400;font-size:10px;color:#e0b732;}
+.ds-data-status-flag{font-family:"Geist";font-weight:500;font-size:12px;color:#e74848;}
+
+/* Config screens */
+.ds-config-tab-active  {font-family:"Archivo Expanded";font-weight:600;font-size:12px;letter-spacing:0.4px;color:#000000;}
+.ds-config-tab-inactive{font-family:"Archivo Expanded";font-weight:500;font-size:12px;letter-spacing:0.4px;color:#cccccc;}
+.ds-config-menu-flag   {font-family:"Geist";font-weight:500;font-size:12px;color:#e0b732;}
+.ds-config-row-label   {font-family:"Geist";font-weight:400;font-size:12px;letter-spacing:0.6px;color:#ffffff;}
+.ds-config-section     {font-family:"Iosevka Mono Extended";font-weight:500;font-size:10px;letter-spacing:-0.2px;text-transform:uppercase;color:#33baea;}
+.ds-config-value       {font-family:"Iosevka Mono Extended";font-weight:400;font-size:10px;letter-spacing:-0.5px;color:#ffffff;}
+.ds-config-field-num   {font-family:"Iosevka Mono Extended";font-weight:400;font-size:11px;letter-spacing:-1.4px;color:#ffffff;}
+.ds-config-open-link   {font-family:"Iosevka Mono Extended";font-weight:400;font-size:11px;letter-spacing:-0.5px;color:#ffffff;}
+.ds-config-unit        {font-family:"Geist";font-weight:400;font-size:11px;color:#cccccc;}
+.ds-softkey            {font-family:"Geist";font-weight:400;font-size:11px;letter-spacing:0.6px;text-transform:uppercase;color:#cccccc;}
