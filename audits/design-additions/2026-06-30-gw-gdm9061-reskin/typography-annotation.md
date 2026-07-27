@@ -111,8 +111,8 @@ The consolidated set to implement. Names are Dragon-Storm-local (`ds/<group>/<ro
 ### Config screens (System / Display / Interface / Lan Setup)
 | Style | Family | Wt | Size | LS | Color | Scale | Screens |
 |---|---|---|---|---|---|---|---|
-| `ds/config/tab-active` | Archivo (`wdth 120`) | 600 | 12 | 0.4 | `#000` | text-sm (12) | 10–13 |
-| `ds/config/tab-inactive` | Archivo (`wdth 120`) | 500 | 12 | 0.4 | `#cccccc` | text-sm (12) | 10–13 |
+| `ds/config/tab-active` | Archivo (`wdth 120`) | 600 | 11 | 0.4 | `#000` | ⚠ one-off | 10–13 |
+| `ds/config/tab-inactive` | Archivo (`wdth 120`) | 500 | 11 | 0.4 | `#cccccc` | ⚠ one-off | 10–13 |
 | `ds/config/menu-flag` | Geist | 500 | 12 | 0 | `#e0b732` | text-sm (12) | 10–13 |
 | `ds/config/row-label` | Geist | 400 | 12 | 0.6 | white | text-sm (12) | 10–13 |
 | `ds/config/section` | Iosevka Mono **Extended** | 500 | 10 | −0.2 | `#33baea` | `mono-xs` (10) UPPER | 10–13 |
@@ -213,8 +213,8 @@ As Trend, plus:
 Shared config vocabulary (no readout / footer control block):
 | Element | Style |
 |---|---|
-| active tab (`System`…) | `ds/config/tab-active` (Archivo 600 `wdth120` · 12 · 0.4 · `#000`) |
-| inactive tabs | `ds/config/tab-inactive` (Archivo 500 `wdth120` · 12 · `#cccccc`) |
+| active tab (`System`…) | `ds/config/tab-active` (Archivo 600 `wdth120` · 11 · 0.4 · `#000`) |
+| inactive tabs | `ds/config/tab-inactive` (Archivo 500 `wdth120` · 11 · `#cccccc`) |
 | `MENU` | `ds/config/menu-flag` (Geist 500 · 12 · `#e0b732`) |
 | row labels (`Beep` `IP Address` …) | `ds/config/row-label` (Geist 400 · 12 · 0.6 · white) |
 | left-nav sections (`Date/Time` `Protocol` …) | `ds/config/section` (Iosevka Mono Extended 500 · 10 · −0.2 · UPPER · `#33baea`) |
