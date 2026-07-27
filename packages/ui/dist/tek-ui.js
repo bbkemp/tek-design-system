@@ -3572,46 +3572,6 @@ customElements.define('tek-selector-label', TekSelectorLabel);
  * SPDX-License-Identifier: BSD-3-Clause
  */const o=o=>o??A;
 
-/**
- * Composite selector row: a checkbox/radio/toggle control plus a state-synced
- * label. Two modes — self-contained (set `label`, the control is rendered in
- * shadow DOM) or slot-based (slot in your own control + `<tek-selector-label>`).
- * Styling comes from the composed child components.
- *
- * Figma: DS-v2 → Selector (node 7002:378).
- *
- * Usage — self-contained:
- * ```html
- * <tek-selector type="checkbox" label="Enable feature"></tek-selector>
- * <tek-selector type="radio" name="group" label="Option A"></tek-selector>
- * <tek-selector type="toggle" label="Live mode"></tek-selector>
- * ```
- *
- * Usage — slot-based:
- * ```html
- * <tek-selector>
- *   <tek-checkbox></tek-checkbox>
- *   <tek-selector-label>Enable feature</tek-selector-label>
- * </tek-selector>
- * ```
- *
- * @summary Checkbox/radio/toggle control paired with a state-synced label.
- *
- * @attr {boolean} checked - Checked state; forwarded to the inner control and label.
- * @attr {boolean} error - Error state; forwarded to the inner control and label.
- * @attr {boolean} disabled - Disabled state; forwarded to the inner control and label.
- * @attr {string} label - Self-contained mode: label text. When absent, the default slot is used instead.
- * @attr {("checkbox"|"radio"|"toggle")} [type="checkbox"] - Which control to render in self-contained mode.
- * @attr {string} name - Group name, passed through to the inner control (used by `tek-radio` for grouping).
- *
- * @fires {CustomEvent} tek-change - Bubbles up from the inner control when toggled, with `detail.checked`.
- *
- * @slot - Slot-based mode: a selector control (`tek-checkbox`/`tek-radio`/`tek-toggle`) plus a `tek-selector-label`.
- *
- * @csspart inner - The row container div.
- *
- * @cssprop --tek-spacing-s05 - Gap between control and label.
- */
 class TekSelector extends i$1 {
     constructor() {
         super(...arguments);
@@ -3763,50 +3723,6 @@ const t={ATTRIBUTE:1,PROPERTY:3,BOOLEAN_ATTRIBUTE:4},e=t=>(...e)=>({_$litDirecti
  * SPDX-License-Identifier: BSD-3-Clause
  */const l=e(class extends i{constructor(r$1){if(super(r$1),r$1.type!==t.PROPERTY&&r$1.type!==t.ATTRIBUTE&&r$1.type!==t.BOOLEAN_ATTRIBUTE)throw Error("The `live` directive is not allowed on child or event bindings");if(!r(r$1))throw Error("`live` bindings can only contain a single expression")}render(r){return r}update(i,[t$1]){if(t$1===E||t$1===A)return t$1;const o=i.element,l=i.name;if(i.type===t.PROPERTY){if(t$1===o[l])return E}else if(i.type===t.BOOLEAN_ATTRIBUTE){if(!!t$1===o.hasAttribute(l))return E}else if(i.type===t.ATTRIBUTE&&o.getAttribute(l)===t$1+"")return E;return p(i),t$1}});
 
-/**
- * Text input field. Single height renders an `<input>`; double/triple render a
- * `<textarea>` (48px / 64px). The `state` attribute is auto-managed on
- * focus/blur (default → focus → filled) but can be set explicitly.
- *
- * Figma: DS-v2 → Input (node 7003:495). Geist 14px / lh 20px.
- *
- * Usage:
- * ```html
- * <tek-input placeholder="Email"></tek-input>
- * <tek-input type="password" placeholder="Password"></tek-input>
- * <tek-input height="triple" placeholder="Message"></tek-input>
- * <tek-input state="error" value="not-an-email"></tek-input>
- * ```
- *
- * @summary Text input with default/focus/filled/disabled/error states and three heights.
- *
- * @attr {("default"|"focus"|"filled"|"disabled"|"error")} [state="default"] - Visual state. Auto-managed on focus/blur; set explicitly for disabled/error.
- * @attr {("single"|"double"|"triple")} [height="single"] - Field height. Double and triple render a textarea.
- * @attr {string} placeholder - Placeholder text.
- * @attr {string} value - Field value. Also settable via the `value` property.
- * @attr {string} [type="text"] - Native input type (text, password, email, …). Single height only.
- *
- * @fires {CustomEvent} tek-input - Fired on every keystroke, with `detail.value`. Bubbles, composed.
- *
- * @cssprop --tek-color-input-background-default - Field background.
- * @cssprop --tek-color-input-border-default - Border, default state.
- * @cssprop --tek-color-input-border-focus - Border, focus state.
- * @cssprop --tek-color-input-border-filled - Border, filled state.
- * @cssprop --tek-color-input-border-disabled - Border, disabled state.
- * @cssprop --tek-color-input-border-error - Border, error state.
- * @cssprop --tek-color-input-text-default - Text/placeholder color, default state.
- * @cssprop --tek-color-input-text-focus - Text color, focus state.
- * @cssprop --tek-color-input-text-filled - Text color, filled state.
- * @cssprop --tek-color-input-text-disabled - Text color, disabled state.
- * @cssprop --tek-color-input-text-error - Text color, error state.
- * @cssprop --tek-borders-radius-03 - Corner radius.
- * @cssprop --tek-spacing-s02 - Right padding.
- * @cssprop --tek-spacing-s05 - Vertical padding.
- * @cssprop --tek-spacing-s06 - Left padding.
- * @cssprop --tek-fonts-family-geist - Field font family.
- * @cssprop --tek-fonts-text-size-lg - Field font size.
- * @cssprop --tek-fonts-text-line-height-lg - Field line height.
- */
 class TekInput extends i$1 {
     constructor() {
         super(...arguments);
@@ -3915,52 +3831,6 @@ __decorate([
 ], TekInput.prototype, "type", void 0);
 customElements.define('tek-input', TekInput);
 
-/**
- * Pill-shaped action button.
- *
- * Figma: DS-v2 → Button (node 202:2605).
- * Primary: px-24 py-12, Archivo SemiBold 600 16px / lh 24px. Secondary: px-14 py-6, Archivo 13px / lh 16px.
- * Fills its container (`width: 100%`) — size it via a wrapper.
- *
- * Usage:
- * ```html
- * <tek-button>Sign In</tek-button>
- * <tek-button variant="secondary">Cancel</tek-button>
- * <tek-button inactive>Sign In</tek-button>
- * ```
- *
- * @summary Pill-shaped action button — primary/secondary variants, default/hover/inactive states.
- *
- * @attr {("primary"|"secondary")} [variant="primary"] - Visual variant: primary (large, 16px label) or secondary (compact, 13px label).
- * @attr {boolean} inactive - Greys the button out and blocks activation. Styled identically to disabled.
- * @attr {boolean} disabled - Greys the button out and blocks activation.
- *
- * @fires {CustomEvent} tek-click - Fired on click or Space/Enter, unless inactive/disabled. Bubbles, composed.
- *
- * @slot - Button label.
- *
- * @csspart label - The label span.
- *
- * @cssprop --tek-color-button-background-default - Background, default state.
- * @cssprop --tek-color-button-background-hover - Background on hover.
- * @cssprop --tek-color-button-background-inactive - Background when inactive/disabled.
- * @cssprop --tek-color-button-border-default - Border, default state.
- * @cssprop --tek-color-button-border-hover - Border on hover. Also the focus-ring color.
- * @cssprop --tek-color-button-border-inactive - Border when inactive/disabled.
- * @cssprop --tek-color-button-text-default - Label color, default state.
- * @cssprop --tek-color-button-text-hover - Label color on hover.
- * @cssprop --tek-color-button-text-inactive - Label color when inactive/disabled.
- * @cssprop --tek-borders-radius-full - Corner radius (pill).
- * @cssprop --tek-spacing-s07 - Primary vertical padding.
- * @cssprop --tek-spacing-s11 - Primary horizontal padding.
- * @cssprop --tek-spacing-s04 - Secondary vertical padding.
- * @cssprop --tek-spacing-s08 - Secondary horizontal padding.
- * @cssprop --tek-fonts-family-archivo - Label font family.
- * @cssprop --tek-fonts-heading-size-xs - Primary label font size.
- * @cssprop --tek-fonts-heading-line-height-xs - Primary label line height.
- * @cssprop --tek-fonts-text-size-md - Secondary label font size.
- * @cssprop --tek-fonts-text-line-height-md - Secondary label line height.
- */
 class TekButton extends i$1 {
     constructor() {
         super(...arguments);
@@ -4084,46 +3954,6 @@ __decorate([
 ], TekButton.prototype, "disabled", void 0);
 customElements.define('tek-button', TekButton);
 
-/**
- * Form-field label with optional marker, helper text, and inline character
- * count. Sits above a `tek-input`.
- *
- * Figma: DS-v2 → Label (node 780:10209). Geist Regular 13px / lh 16px.
- *
- * Usage:
- * ```html
- * <tek-label>Email</tek-label>
- * <tek-label optional>Email</tek-label>
- * <tek-label helper-text="Must be 8+ characters">Password</tek-label>
- * <tek-label helper-text="Too short" helper-state="error">Password</tek-label>
- * <tek-label char-count="10/52">Message</tek-label>
- * ```
- *
- * @summary Form-field label with optional/helper-text/char-count variants.
- *
- * @attr {boolean} optional - Appends an italic "(optional)" marker.
- * @attr {string} helper-text - Helper line rendered below the label.
- * @attr {string} char-count - Character count rendered right-aligned, e.g. "10/52".
- * @attr {("error")} helper-state - Set to "error" to color the helper text red.
- * @attr {string} link - Reserved for the Figma Link variant; not rendered yet.
- *
- * @slot - Label text.
- *
- * @csspart text - The label text container.
- * @csspart helper - The helper-text div (when helper-text is set).
- *
- * @cssprop --tek-spacing-s02 - Gap between label row and helper text.
- * @cssprop --tek-fonts-family-geist - Font family for all text.
- * @cssprop --tek-fonts-text-size-md - Label font size.
- * @cssprop --tek-fonts-text-line-height-md - Label line height.
- * @cssprop --tek-fonts-text-size-sm - "(optional)" marker font size.
- * @cssprop --tek-fonts-text-size-xs - Helper and char-count font size.
- * @cssprop --tek-fonts-text-line-height-xs - Helper and char-count line height.
- * @cssprop --tek-color-input-label-default - Label text color.
- * @cssprop --tek-color-input-helper-default - Helper and "(optional)" color.
- * @cssprop --tek-color-input-character-count-default - Char-count color.
- * @cssprop --tek-color-input-text-error - Helper color when helper-state="error".
- */
 class TekLabel extends i$1 {
     constructor() {
         super(...arguments);
@@ -4296,35 +4126,6 @@ __decorate([
 ], TekTextLink.prototype, "target", void 0);
 customElements.define('tek-text-link', TekTextLink);
 
-/**
- * Character counter for text fields, rendered as `current/max` (or just `current` when no max).
- *
- * Figma: DS-v2 → CharacterCount (node 7011:143). Geist Regular 10px.
- *
- * Usage:
- * ```html
- * <tek-character-count current="10" max="52"></tek-character-count>
- * <tek-character-count current="50" max="52" state="warning"></tek-character-count>
- * <tek-character-count current="53" max="52" state="error"></tek-character-count>
- * ```
- *
- * @summary Character counter (current/max) with default/focus/filled/error/warning states.
- *
- * @attr {number} [current=0] - Characters typed so far.
- * @attr {number} [max=0] - Character limit. When 0 or absent, only `current` is shown.
- * @attr {("default"|"focus"|"filled"|"error"|"warning")} [state="default"] - Visual state; colors the count.
- *
- * @csspart count - The count span.
- *
- * @cssprop --tek-fonts-family-geist - Count font family.
- * @cssprop --tek-fonts-text-size-xs - Count font size.
- * @cssprop --tek-fonts-text-line-height-xs - Count line height.
- * @cssprop --tek-color-input-character-count-default - Count color, default state.
- * @cssprop --tek-color-input-character-count-focus - Count color, focus state.
- * @cssprop --tek-color-input-character-count-filled - Count color, filled state.
- * @cssprop --tek-color-input-character-count-error - Count color, error state.
- * @cssprop --tek-color-input-character-count-warning - Count color, warning state.
- */
 class TekCharacterCount extends i$1 {
     constructor() {
         super(...arguments);

@@ -45,9 +45,10 @@ import { LitElement } from 'lit';
  * @cssprop --tek-fonts-text-size-md - Secondary label font size.
  * @cssprop --tek-fonts-text-line-height-md - Secondary label line height.
  */
+export type TekButtonVariant = 'primary' | 'secondary';
 export declare class TekButton extends LitElement {
     static styles: import("lit").CSSResult;
-    variant: string;
+    variant: TekButtonVariant;
     inactive: boolean;
     disabled: boolean;
     connectedCallback(): void;

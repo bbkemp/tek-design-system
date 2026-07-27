@@ -47,6 +47,8 @@ import { property } from 'lit/decorators.js';
  * @cssprop --tek-fonts-text-size-md - Secondary label font size.
  * @cssprop --tek-fonts-text-line-height-md - Secondary label line height.
  */
+export type TekButtonVariant = 'primary' | 'secondary';
+
 export class TekButton extends LitElement {
   static styles = css`
     :host {
@@ -117,7 +119,7 @@ export class TekButton extends LitElement {
     }
   `;
 
-  @property() variant = 'primary';
+  @property() variant: TekButtonVariant = 'primary';
   @property({ type: Boolean }) inactive = false;
   @property({ type: Boolean }) disabled = false;
 

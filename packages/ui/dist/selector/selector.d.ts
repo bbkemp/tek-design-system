@@ -39,13 +39,14 @@ import { LitElement, type PropertyValues, type TemplateResult } from 'lit';
  *
  * @cssprop --tek-spacing-s05 - Gap between control and label.
  */
+export type TekSelectorType = 'checkbox' | 'radio' | 'toggle';
 export declare class TekSelector extends LitElement {
     static styles: import("lit").CSSResult;
     checked: boolean;
     error: boolean;
     disabled: boolean;
     label: string | null;
-    type: string;
+    type: TekSelectorType;
     name: string | null;
     connectedCallback(): void;
     disconnectedCallback(): void;

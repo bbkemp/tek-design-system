@@ -43,10 +43,12 @@ import { LitElement, type PropertyValues } from 'lit';
  * @cssprop --tek-fonts-text-size-lg - Field font size.
  * @cssprop --tek-fonts-text-line-height-lg - Field line height.
  */
+export type TekInputState = 'default' | 'focus' | 'filled' | 'disabled' | 'error';
+export type TekInputHeight = 'single' | 'double' | 'triple';
 export declare class TekInput extends LitElement {
     static styles: import("lit").CSSResult;
-    state: string;
-    height: string;
+    state: TekInputState;
+    height: TekInputHeight;
     placeholder: string;
     value: string;
     type: string;

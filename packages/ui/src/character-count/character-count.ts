@@ -30,6 +30,8 @@ import { property } from 'lit/decorators.js';
  * @cssprop --tek-color-input-character-count-error - Count color, error state.
  * @cssprop --tek-color-input-character-count-warning - Count color, warning state.
  */
+export type TekCharacterCountState = 'default' | 'focus' | 'filled' | 'error' | 'warning';
+
 export class TekCharacterCount extends LitElement {
   static styles = css`
     :host {
@@ -52,7 +54,7 @@ export class TekCharacterCount extends LitElement {
 
   @property({ type: Number }) current = 0;
   @property({ type: Number }) max = 0;
-  @property() state = 'default';
+  @property() state: TekCharacterCountState = 'default';
 
   render() {
     const text = this.max > 0 ? `${this.current}/${this.max}` : `${this.current}`;

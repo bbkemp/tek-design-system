@@ -33,6 +33,12 @@ export interface TekInputEventDetail {
 export type TekInputEvent = CustomEvent<TekInputEventDetail>;
 /** Fired by tek-button on activation (click, Space, Enter). No detail. */
 export type TekClickEvent = CustomEvent<unknown>;
+/** Allowed values of the enum-like tek-* attributes, re-exported from their components. */
+export type { TekButtonVariant } from './button/button.js';
+export type { TekCharacterCountState } from './character-count/character-count.js';
+export type { TekInputState, TekInputHeight } from './input/input.js';
+export type { TekSelectorType } from './selector/selector.js';
+export type { TekLabelHelperState } from './label/label.js';
 declare global {
     interface HTMLElementTagNameMap {
         'tek-checkbox': TekCheckbox;

@@ -46,6 +46,9 @@ import { live } from 'lit/directives/live.js';
  * @cssprop --tek-fonts-text-size-lg - Field font size.
  * @cssprop --tek-fonts-text-line-height-lg - Field line height.
  */
+export type TekInputState = 'default' | 'focus' | 'filled' | 'disabled' | 'error';
+export type TekInputHeight = 'single' | 'double' | 'triple';
+
 export class TekInput extends LitElement {
   static styles = css`
     :host {
@@ -86,8 +89,8 @@ export class TekInput extends LitElement {
     :host([state="disabled"]) { pointer-events: none; }
   `;
 
-  @property({ reflect: true }) state = 'default';
-  @property() height = 'single';
+  @property({ reflect: true }) state: TekInputState = 'default';
+  @property() height: TekInputHeight = 'single';
   @property() placeholder = '';
   @property() value = '';
   @property() type = 'text';
