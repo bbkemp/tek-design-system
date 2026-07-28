@@ -165,8 +165,8 @@ SESSIONS = [
     ("Joey Chiu + drop-in field AE", "2026-07-14 · 38:11", "ae-joey-chiu-"),
     ("Nadir Kahn", "2026-07-14 · 23:17", "ae-nadir-kahn-"),
     ("Chris B", "2026-07-15 · 23:49", "ae-chrisb-"),
-    ("Dallas + Jesse", "2026-07-15 · 1:19:17", "ae-dallas-jesse-"),
-    ("Sam", "2026-07-15 · 9:35 (truncated — DDR follow-up pending)", "ae-sam-"),
+    ("Dallas + Tony", "2026-07-15 · 1:19:17", "ae-dallas-tony-"),
+    ("Joe Swelland", "2026-07-15 · 9:35 (truncated — DDR follow-up pending)", "ae-joe-swelland-"),
     ("Travis Berger", "2026-07-15 · 1:14:53 (re-record)", "ae-travis-berger-"),
 ]
 

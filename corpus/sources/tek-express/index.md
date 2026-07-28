@@ -290,15 +290,15 @@ The pre-existing audit PDF (`uploads/pdfs/UI-app-emulator-audit.pdf`) describes 
 |---|---|---|---|
 | [ae-chrisb-reports-and-rerun-workflow](walkthroughs/ae-chrisb-reports-and-rerun-workflow.md) | AE Interview — Chris B: Reports, Rerun-One-Test Workflow, and Report Output Review | 2026-07-15 | reports-configuration |
 | [ae-chrisb-setup-waveforms-and-run-modes](walkthroughs/ae-chrisb-setup-waveforms-and-run-modes.md) | AE Interview — Chris B: Pre-Recorded Waveforms, Test Modes, Status/Results, and Run-Mode Asks | 2026-07-15 | setup-acquisitions → status-test-status → status-log-view → results |
-| [ae-dallas-jesse-compliance-mode-and-test-selection](walkthroughs/ae-dallas-jesse-compliance-mode-and-test-selection.md) | AE Interview (Dallas & Jesse) — Compliance vs. User-Defined Mode, Acquisition Speed, Presets, and Signal Validation | 2026-07-15 | setup-dut → setup-test-selection → setup-acquisitions → status-test-status |
-| [ae-dallas-jesse-instruments-sessions-results-debug](walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md) | AE Interview (Dallas & Jesse) — Instrument Config, Session Files, Status/Results Tables, Debug Workflow, and Pause | 2026-07-15 | setup-acquisitions-probe-config → setup-preferences → status-test-status → results → plots |
-| [ae-dallas-jesse-session-context-and-overall-reactions](walkthroughs/ae-dallas-jesse-session-context-and-overall-reactions.md) | AE Interview (Dallas & Jesse) — Session Context, Prototype Framing, and Overall Workflow Reactions | 2026-07-15 | — |
-| [ae-dallas-jesse-setup-flow-friction](walkthroughs/ae-dallas-jesse-setup-flow-friction.md) | AE Interview (Dallas & Jesse) — Setup Flow Friction: Test Selection, Interdependent Settings, Waveform Files, and Naming | 2026-07-15 | setup-test-selection → setup-dut → results |
+| [ae-dallas-tony-compliance-mode-and-test-selection](walkthroughs/ae-dallas-tony-compliance-mode-and-test-selection.md) | AE Interview (Dallas & Tony) — Compliance vs. User-Defined Mode, Acquisition Speed, Presets, and Signal Validation | 2026-07-15 | setup-dut → setup-test-selection → setup-acquisitions → status-test-status |
+| [ae-dallas-tony-instruments-sessions-results-debug](walkthroughs/ae-dallas-tony-instruments-sessions-results-debug.md) | AE Interview (Dallas & Tony) — Instrument Config, Session Files, Status/Results Tables, Debug Workflow, and Pause | 2026-07-15 | setup-acquisitions-probe-config → setup-preferences → status-test-status → results → plots |
+| [ae-dallas-tony-session-context-and-overall-reactions](walkthroughs/ae-dallas-tony-session-context-and-overall-reactions.md) | AE Interview (Dallas & Tony) — Session Context, Prototype Framing, and Overall Workflow Reactions | 2026-07-15 | — |
+| [ae-dallas-tony-setup-flow-friction](walkthroughs/ae-dallas-tony-setup-flow-friction.md) | AE Interview (Dallas & Tony) — Setup Flow Friction: Test Selection, Interdependent Settings, Waveform Files, and Naming | 2026-07-15 | setup-test-selection → setup-dut → results |
 | [ae-joey-chiu-dut-id-limits-and-prototype-reaction](walkthroughs/ae-joey-chiu-dut-id-limits-and-prototype-reaction.md) | AE Interview (Joey Chiu session) — DUT ID / Path-Length Limits and Prototype Reactions | 2026-07-14 | setup-dut |
 | [ae-joey-chiu-pcie-backward-compat-scaling](walkthroughs/ae-joey-chiu-pcie-backward-compat-scaling.md) | AE Interview (Joey Chiu) — PCIe Backward-Compatibility Scaling and Test Setup | 2026-07-14 | setup-dut → setup-test-selection → setup-test-selection-config → setup-acquisitions → setup-test-selection-limits-editor |
 | [ae-nadir-kahn-competitive-landscape-and-visual-direction](walkthroughs/ae-nadir-kahn-competitive-landscape-and-visual-direction.md) | AE Interview — Nadir Kahn: Competitive Landscape, Visual Hierarchy, and the Match-TekScope Directive | 2026-07-14 | — |
 | [ae-nadir-kahn-pain-points-and-automation](walkthroughs/ae-nadir-kahn-pain-points-and-automation.md) | AE Interview — Nadir Kahn: Prototype First Reaction, Reporting Pain Points, and Automation Requirements | 2026-07-14 | — |
-| [ae-sam-ddr-memory-feedback](walkthroughs/ae-sam-ddr-memory-feedback.md) | AE Feedback Session — Sam (DDR / Memory) | 2026-07-15 | — |
+| [ae-joe-swelland-ddr-memory-feedback](walkthroughs/ae-joe-swelland-ddr-memory-feedback.md) | AE Feedback Session — Joe Swelland (DDR / Memory) | 2026-07-15 | — |
 | [ae-tapo-parua-prototype-ui-feedback](walkthroughs/ae-tapo-parua-prototype-ui-feedback.md) | AE SME Session (Tapo Parua) — Prototype UI Feedback: Logs, Results, Reports, Help, Navigation | — | — |
 | [ae-tapo-parua-workflow-and-settings-architecture](walkthroughs/ae-tapo-parua-workflow-and-settings-architecture.md) | AE SME Session (Tapo Parua) — TekExpress Workflow Architecture and Settings Placement | — | — |
 | [ae-travis-berger-bench-setup-and-instrument-connection](walkthroughs/ae-travis-berger-bench-setup-and-instrument-connection.md) | AE Interview — Travis Berger: PCIe Bench Setup, Instrument Connection Friction, and Channel Defaults | 2026-07-15 | setup-dut → setup-acquisitions |
@@ -617,42 +617,42 @@ The pre-existing audit PDF (`uploads/pdfs/UI-app-emulator-audit.pdf`) describes 
 | walkthrough `ae-chrisb-setup-waveforms-and-run-modes` | screen `results` | related_screens |
 | walkthrough `ae-chrisb-setup-waveforms-and-run-modes` | screen `running-test` | related_screens |
 | walkthrough `ae-chrisb-setup-waveforms-and-run-modes` | screen `options-dropdown` | related_screens |
-| walkthrough `ae-dallas-jesse-compliance-mode-and-test-selection` | screen `setup-dut` | screens_visited |
-| walkthrough `ae-dallas-jesse-compliance-mode-and-test-selection` | screen `setup-test-selection` | screens_visited |
-| walkthrough `ae-dallas-jesse-compliance-mode-and-test-selection` | screen `setup-acquisitions` | screens_visited |
-| walkthrough `ae-dallas-jesse-compliance-mode-and-test-selection` | screen `status-test-status` | screens_visited |
-| walkthrough `ae-dallas-jesse-compliance-mode-and-test-selection` | screen `setup-dut` | related_screens |
-| walkthrough `ae-dallas-jesse-compliance-mode-and-test-selection` | screen `setup-test-selection` | related_screens |
-| walkthrough `ae-dallas-jesse-compliance-mode-and-test-selection` | screen `setup-test-selection-config` | related_screens |
-| walkthrough `ae-dallas-jesse-compliance-mode-and-test-selection` | screen `setup-acquisitions` | related_screens |
-| walkthrough `ae-dallas-jesse-compliance-mode-and-test-selection` | screen `status-test-status` | related_screens |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `setup-acquisitions-probe-config` | screens_visited |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `setup-preferences` | screens_visited |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `status-test-status` | screens_visited |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `results` | screens_visited |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `plots` | screens_visited |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `setup-acquisitions-probe-config` | related_screens |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `setup-preferences` | related_screens |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `setup-preferences-email-settings` | related_screens |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `setup-dut-session-browser` | related_screens |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `status-test-status` | related_screens |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `status-log-view` | related_screens |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `results` | related_screens |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `plots` | related_screens |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `reports-configuration` | related_screens |
-| walkthrough `ae-dallas-jesse-instruments-sessions-results-debug` | screen `running-test` | related_screens |
-| walkthrough `ae-dallas-jesse-session-context-and-overall-reactions` | screen `setup-dut` | related_screens |
-| walkthrough `ae-dallas-jesse-session-context-and-overall-reactions` | screen `setup-test-selection` | related_screens |
-| walkthrough `ae-dallas-jesse-session-context-and-overall-reactions` | screen `running-test` | related_screens |
-| walkthrough `ae-dallas-jesse-setup-flow-friction` | screen `setup-test-selection` | screens_visited |
-| walkthrough `ae-dallas-jesse-setup-flow-friction` | screen `setup-dut` | screens_visited |
-| walkthrough `ae-dallas-jesse-setup-flow-friction` | screen `results` | screens_visited |
-| walkthrough `ae-dallas-jesse-setup-flow-friction` | screen `setup-test-selection` | related_screens |
-| walkthrough `ae-dallas-jesse-setup-flow-friction` | screen `setup-test-selection-config` | related_screens |
-| walkthrough `ae-dallas-jesse-setup-flow-friction` | screen `setup-dut` | related_screens |
-| walkthrough `ae-dallas-jesse-setup-flow-friction` | screen `setup-dut-session-browser` | related_screens |
-| walkthrough `ae-dallas-jesse-setup-flow-friction` | screen `setup-acquisitions` | related_screens |
-| walkthrough `ae-dallas-jesse-setup-flow-friction` | screen `results` | related_screens |
+| walkthrough `ae-dallas-tony-compliance-mode-and-test-selection` | screen `setup-dut` | screens_visited |
+| walkthrough `ae-dallas-tony-compliance-mode-and-test-selection` | screen `setup-test-selection` | screens_visited |
+| walkthrough `ae-dallas-tony-compliance-mode-and-test-selection` | screen `setup-acquisitions` | screens_visited |
+| walkthrough `ae-dallas-tony-compliance-mode-and-test-selection` | screen `status-test-status` | screens_visited |
+| walkthrough `ae-dallas-tony-compliance-mode-and-test-selection` | screen `setup-dut` | related_screens |
+| walkthrough `ae-dallas-tony-compliance-mode-and-test-selection` | screen `setup-test-selection` | related_screens |
+| walkthrough `ae-dallas-tony-compliance-mode-and-test-selection` | screen `setup-test-selection-config` | related_screens |
+| walkthrough `ae-dallas-tony-compliance-mode-and-test-selection` | screen `setup-acquisitions` | related_screens |
+| walkthrough `ae-dallas-tony-compliance-mode-and-test-selection` | screen `status-test-status` | related_screens |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `setup-acquisitions-probe-config` | screens_visited |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `setup-preferences` | screens_visited |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `status-test-status` | screens_visited |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `results` | screens_visited |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `plots` | screens_visited |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `setup-acquisitions-probe-config` | related_screens |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `setup-preferences` | related_screens |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `setup-preferences-email-settings` | related_screens |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `setup-dut-session-browser` | related_screens |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `status-test-status` | related_screens |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `status-log-view` | related_screens |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `results` | related_screens |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `plots` | related_screens |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `reports-configuration` | related_screens |
+| walkthrough `ae-dallas-tony-instruments-sessions-results-debug` | screen `running-test` | related_screens |
+| walkthrough `ae-dallas-tony-session-context-and-overall-reactions` | screen `setup-dut` | related_screens |
+| walkthrough `ae-dallas-tony-session-context-and-overall-reactions` | screen `setup-test-selection` | related_screens |
+| walkthrough `ae-dallas-tony-session-context-and-overall-reactions` | screen `running-test` | related_screens |
+| walkthrough `ae-dallas-tony-setup-flow-friction` | screen `setup-test-selection` | screens_visited |
+| walkthrough `ae-dallas-tony-setup-flow-friction` | screen `setup-dut` | screens_visited |
+| walkthrough `ae-dallas-tony-setup-flow-friction` | screen `results` | screens_visited |
+| walkthrough `ae-dallas-tony-setup-flow-friction` | screen `setup-test-selection` | related_screens |
+| walkthrough `ae-dallas-tony-setup-flow-friction` | screen `setup-test-selection-config` | related_screens |
+| walkthrough `ae-dallas-tony-setup-flow-friction` | screen `setup-dut` | related_screens |
+| walkthrough `ae-dallas-tony-setup-flow-friction` | screen `setup-dut-session-browser` | related_screens |
+| walkthrough `ae-dallas-tony-setup-flow-friction` | screen `setup-acquisitions` | related_screens |
+| walkthrough `ae-dallas-tony-setup-flow-friction` | screen `results` | related_screens |
 | walkthrough `ae-joey-chiu-dut-id-limits-and-prototype-reaction` | screen `setup-dut` | screens_visited |
 | walkthrough `ae-joey-chiu-dut-id-limits-and-prototype-reaction` | screen `setup-dut` | related_screens |
 | walkthrough `ae-joey-chiu-dut-id-limits-and-prototype-reaction` | screen `setup-dut-session-browser` | related_screens |
@@ -677,10 +677,10 @@ The pre-existing audit PDF (`uploads/pdfs/UI-app-emulator-audit.pdf`) describes 
 | walkthrough `ae-nadir-kahn-pain-points-and-automation` | screen `status-test-status` | related_screens |
 | walkthrough `ae-nadir-kahn-pain-points-and-automation` | screen `reports-configuration` | related_screens |
 | walkthrough `ae-nadir-kahn-pain-points-and-automation` | screen `setup-dut` | related_screens |
-| walkthrough `ae-sam-ddr-memory-feedback` | screen `setup-dut` | related_screens |
-| walkthrough `ae-sam-ddr-memory-feedback` | screen `setup-acquisitions` | related_screens |
-| walkthrough `ae-sam-ddr-memory-feedback` | screen `setup-acquisitions-probe-config` | related_screens |
-| walkthrough `ae-sam-ddr-memory-feedback` | screen `setup-test-selection-config` | related_screens |
+| walkthrough `ae-joe-swelland-ddr-memory-feedback` | screen `setup-dut` | related_screens |
+| walkthrough `ae-joe-swelland-ddr-memory-feedback` | screen `setup-acquisitions` | related_screens |
+| walkthrough `ae-joe-swelland-ddr-memory-feedback` | screen `setup-acquisitions-probe-config` | related_screens |
+| walkthrough `ae-joe-swelland-ddr-memory-feedback` | screen `setup-test-selection-config` | related_screens |
 | walkthrough `ae-tapo-parua-prototype-ui-feedback` | screen `status-log-view` | related_screens |
 | walkthrough `ae-tapo-parua-prototype-ui-feedback` | screen `status-test-status` | related_screens |
 | walkthrough `ae-tapo-parua-prototype-ui-feedback` | screen `results` | related_screens |

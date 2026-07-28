@@ -2,9 +2,9 @@
 provenance: observed
 class: walkthrough
 product: tek-express
-flow_id: ae-dallas-jesse-instruments-sessions-results-debug
-flow_title: "AE Interview (Dallas & Jesse) — Instrument Config, Session Files, Status/Results Tables, Debug Workflow, and Pause"
-recorded_by: "Dallas & Jesse (AEs); Bryan Kemp (facilitator)"
+flow_id: ae-dallas-tony-instruments-sessions-results-debug
+flow_title: "AE Interview (Dallas & Tony) — Instrument Config, Session Files, Status/Results Tables, Debug Workflow, and Pause"
+recorded_by: "Dallas & Tony (AEs); Bryan Kemp (facilitator)"
 recorded_date: 2026-07-15
 duration: "1:19:17"
 transcript_source: "uploads/transcripts/DallasandJesse.docx"
@@ -16,7 +16,7 @@ related_hardware: []
 related_modules: []
 ---
 
-# AE Interview (Dallas & Jesse) — Instrument Config, Session Files, Status/Results Tables, Debug Workflow, and Pause
+# AE Interview (Dallas & Tony) — Instrument Config, Session Files, Status/Results Tables, Debug Workflow, and Pause
 
 ## Summary
 
@@ -150,7 +150,7 @@ Capture the AEs' feedback on everything downstream of acquisition — instrument
 
 ## Confidence notes
 
-- Speaker attribution inferred (single-mic transcript; all lines labeled "Kemp, Bryan"). This segment has at least four voices: the two AEs, Bryan, and one or more Tek Express team members (the measurement-library/MVVM roadmap and session-format responses are clearly team-side). The transcript refers to one AE as "Tony" three times ("the stuff Tony just hit on," "to Tony's point," "Tony's got — this has been my drum for years"), which conflicts with the filename's "Dallas and Jesse"; either a nickname, a mis-transcription, or an indication of an additional attendee. Unresolved — quotes are attributed to roles (veteran AE / second AE / team member), not names.
+- Speaker attribution inferred (single-mic transcript; all lines labeled "Kemp, Bryan"). This segment has at least four voices: the two AEs, Bryan, and one or more Tek Express team members (the measurement-library/MVVM roadmap and session-format responses are clearly team-side). The transcript refers to one AE as "Tony" three times ("the stuff Tony just hit on," "to Tony's point," "Tony's got — this has been my drum for years"). This originally appeared to conflict with the session's initial "Dallas and Jesse" labeling; Bryan Kemp resolved it (2026-07-28): the AEs are Dallas and Tony, and the in-transcript "Tony" is the second AE. Per-line quotes are still attributed to roles (veteran AE / second AE / team member) where voice certainty is low.
 - A demo person referred to as "Tapa"/"Topa" appears to have been driving the Tek Express screen at points ("This is what Tapa was trying to show").
 - One competitor name is garbled: *"key site and verify it's absolute advantage"* — "Keysight and [unclear]"; possibly a third vendor name mis-transcribed. Keysight and LeCroy are unambiguous.
 - The X-drive history debate involves overlapping voices and heavy transcription damage (e.g., "render," a database startup, "Sara went out of VOC"); recounted as folklore in Annotations rather than steps.

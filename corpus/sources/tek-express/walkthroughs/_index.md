@@ -72,7 +72,7 @@ This is the **methodology family parent** of the Subhasis-authored empathy-map d
 
 ### 4. July 2026 AE interview round (2026-07-13 → 2026-07-15)
 
-**Sources:** eight single-mic live sessions in `uploads/transcripts/` (ChrisB, DallasandJesse, JoeyChiu, NadirKahn, Sam, TapojyotiParua, TravisBergerPt2, WillTeverovsky) · **Applies to:** `tek-express`, `tek-design-system`
+**Sources:** eight single-mic live sessions in `uploads/transcripts/` (ChrisB, DallasandJesse, JoeyChiu, NadirKahn, Joe, TapojyotiParua, TravisBergerPt2, WillTeverovsky) · **Applies to:** `tek-express`, `tek-design-system`
 
 Application Engineers who know TekExpress deeply react to the DS-v2 prototype and walk the existing app. 21 chunks, all prefixed `ae-`, one-to-four per session; every chunk flags the single-mic attribution caveat in its Confidence notes. The cross-session synthesis (`provenance: authored-analysis`) lives outside the corpus at [`uxr/tek-express-ae-interviews/synthesis.md`](../../../../uxr/tek-express-ae-interviews/synthesis.md) — convergence matrix, P0/P1/P2 findings, preserve-list, open decisions.
 
@@ -83,8 +83,8 @@ Application Engineers who know TekExpress deeply react to the DS-v2 prototype an
 | Joey Chiu + drop-in AE (07-14, 38:11) | [pcie-backward-compat-scaling](./ae-joey-chiu-pcie-backward-compat-scaling.md) · [dut-id-limits-and-prototype-reaction](./ae-joey-chiu-dut-id-limits-and-prototype-reaction.md) |
 | Nadir Kahn (07-14, 23:17) | [pain-points-and-automation](./ae-nadir-kahn-pain-points-and-automation.md) · [competitive-landscape-and-visual-direction](./ae-nadir-kahn-competitive-landscape-and-visual-direction.md) |
 | Chris B (07-15, 23:49) | [setup-waveforms-and-run-modes](./ae-chrisb-setup-waveforms-and-run-modes.md) · [reports-and-rerun-workflow](./ae-chrisb-reports-and-rerun-workflow.md) |
-| Dallas + Jesse (07-15, 1:19:17) | [session-context-and-overall-reactions](./ae-dallas-jesse-session-context-and-overall-reactions.md) · [setup-flow-friction](./ae-dallas-jesse-setup-flow-friction.md) · [compliance-mode-and-test-selection](./ae-dallas-jesse-compliance-mode-and-test-selection.md) · [instruments-sessions-results-debug](./ae-dallas-jesse-instruments-sessions-results-debug.md) |
-| Sam (07-15, 9:35 — truncated) | [ddr-memory-feedback](./ae-sam-ddr-memory-feedback.md) |
+| Dallas + Tony (07-15, 1:19:17) | [session-context-and-overall-reactions](./ae-dallas-tony-session-context-and-overall-reactions.md) · [setup-flow-friction](./ae-dallas-tony-setup-flow-friction.md) · [compliance-mode-and-test-selection](./ae-dallas-tony-compliance-mode-and-test-selection.md) · [instruments-sessions-results-debug](./ae-dallas-tony-instruments-sessions-results-debug.md) |
+| Joe Swelland (07-15, 9:35 — truncated) | [ddr-memory-feedback](./ae-joe-swelland-ddr-memory-feedback.md) |
 | Travis Berger (07-15, 1:14:53 — re-record) | [bench-setup-and-instrument-connection](./ae-travis-berger-bench-setup-and-instrument-connection.md) · [launcher-global-settings-and-setup-flow](./ae-travis-berger-launcher-global-settings-and-setup-flow.md) · [status-results-sessions-and-run-window](./ae-travis-berger-status-results-sessions-and-run-window.md) · [run-environments-adoption-and-reports](./ae-travis-berger-run-environments-adoption-and-reports.md) |
 
 ## Pending references (across all meetings)

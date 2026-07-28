@@ -2,9 +2,9 @@
 provenance: observed
 class: walkthrough
 product: tek-express
-flow_id: ae-dallas-jesse-setup-flow-friction
-flow_title: "AE Interview (Dallas & Jesse) — Setup Flow Friction: Test Selection, Interdependent Settings, Waveform Files, and Naming"
-recorded_by: "Dallas & Jesse (AEs); Bryan Kemp (facilitator)"
+flow_id: ae-dallas-tony-setup-flow-friction
+flow_title: "AE Interview (Dallas & Tony) — Setup Flow Friction: Test Selection, Interdependent Settings, Waveform Files, and Naming"
+recorded_by: "Dallas & Tony (AEs); Bryan Kemp (facilitator)"
 recorded_date: 2026-07-15
 duration: "1:19:17"
 transcript_source: "uploads/transcripts/DallasandJesse.docx"
@@ -16,7 +16,7 @@ related_hardware: []
 related_modules: []
 ---
 
-# AE Interview (Dallas & Jesse) — Setup Flow Friction: Test Selection, Interdependent Settings, Waveform Files, and Naming
+# AE Interview (Dallas & Tony) — Setup Flow Friction: Test Selection, Interdependent Settings, Waveform Files, and Naming
 
 ## Summary
 

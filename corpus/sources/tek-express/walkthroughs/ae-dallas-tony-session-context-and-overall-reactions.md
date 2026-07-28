@@ -2,9 +2,9 @@
 provenance: observed
 class: walkthrough
 product: tek-express
-flow_id: ae-dallas-jesse-session-context-and-overall-reactions
-flow_title: "AE Interview (Dallas & Jesse) — Session Context, Prototype Framing, and Overall Workflow Reactions"
-recorded_by: "Dallas & Jesse (AEs); Bryan Kemp (facilitator)"
+flow_id: ae-dallas-tony-session-context-and-overall-reactions
+flow_title: "AE Interview (Dallas & Tony) — Session Context, Prototype Framing, and Overall Workflow Reactions"
+recorded_by: "Dallas & Tony (AEs); Bryan Kemp (facilitator)"
 recorded_date: 2026-07-15
 duration: "1:19:17"
 transcript_source: "uploads/transcripts/DallasandJesse.docx"
@@ -16,11 +16,11 @@ related_hardware: []
 related_modules: []
 ---
 
-# AE Interview (Dallas & Jesse) — Session Context, Prototype Framing, and Overall Workflow Reactions
+# AE Interview (Dallas & Tony) — Session Context, Prototype Framing, and Overall Workflow Reactions
 
 ## Summary
 
-Opening segment (~first 10 minutes) of a 1h19m joint interview with two Tektronix Application Engineers, Dallas and Jesse, facilitated by Bryan Kemp. Bryan briefly shows the new Tek Express UI prototype "at a glance," frames it as a one-to-one functional port with an updated look and feel, and then deliberately turns the session over to the AEs: react to Tek Express as-is, surface customer likes/dislikes, and bring competitive context. The AEs' headline reactions: the guided step-down workflow of Tek Express is its greatest strength and must be preserved; the quality of error/feedback messaging is its most chronic weakness.
+Opening segment (~first 10 minutes) of a 1h19m joint interview with two Tektronix Application Engineers, Dallas and Tony, facilitated by Bryan Kemp. Bryan briefly shows the new Tek Express UI prototype "at a glance," frames it as a one-to-one functional port with an updated look and feel, and then deliberately turns the session over to the AEs: react to Tek Express as-is, surface customer likes/dislikes, and bring competitive context. The AEs' headline reactions: the guided step-down workflow of Tek Express is its greatest strength and must be preserved; the quality of error/feedback messaging is its most chronic weakness.
 
 ## Goal
 
@@ -74,7 +74,7 @@ Establish the session's purpose and capture the AEs' top-of-mind overall assessm
 
 ## Confidence notes
 
-- **Single-microphone recording; every transcript line is attributed to "Kemp, Bryan."** All speaker attribution in this chunk is inferred from context. Bryan's turns are identifiable by facilitator framing; the two AE voices are distinguishable (a veteran voice with long Tek Express history, and a second AE focused on hands-on workflow detail), but the transcript never uses the names "Dallas" or "Jesse," so mapping voices to those names was not possible.
-- The transcript references additional people apparently in or near the room: "Brent, is it recording right?" (possibly a mis-transcription of a design-team colleague's name) and, later in the session, "Tony" and "Tapa/Topa" (see the sibling chunks' confidence notes). Attendance beyond Bryan + the two AEs is uncertain.
+- **Single-microphone recording; every transcript line is attributed to "Kemp, Bryan."** All speaker attribution in this chunk is inferred from context. Bryan's turns are identifiable by facilitator framing; the two AE voices are distinguishable (a veteran voice with long Tek Express history, and a second AE focused on hands-on workflow detail). This session was originally filed as "Dallas and Jesse"; Bryan Kemp corrected the names (2026-07-28): the AEs are **Dallas and Tony**. Later in the session other speakers refer to the second AE as "Tony" (see the sibling chunks), which corroborates the corrected pairing and suggests veteran = Dallas, second AE = Tony — but per-quote voice-to-name mapping is still inferred.
+- The transcript references additional people apparently in or near the room: "Brent, is it recording right?" (possibly a mis-transcription of a design-team colleague's name) and, later in the session, "Tapa/Topa" (see the sibling chunks' confidence notes). The in-session "Tony" mentions are the second AE (see previous note). Attendance beyond Bryan + the two AEs is uncertain.
 - The source docx contains only one timestamp (0:04, at the start). No per-turn timestamps exist, so Steps are ordered segments rather than timestamped events.
 - Small talk about grabbing a meeting room and background noise (early in the session) is omitted.
