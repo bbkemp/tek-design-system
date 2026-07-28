@@ -98,6 +98,8 @@ TEK_MCP_URL=https://<host>/<secret>/mcp npm run eval --workspace=apps/mcp
 
 Scores corpus recall@5 (threshold 80%) and exact cases (must all pass); exits non-zero on failure. Baseline 2026-07-16: 96% recall@5, 7/7 exact. Don't tune queries to fit results — a miss is information about retrieval, not the question.
 
+**CI gate:** [`.github/workflows/eval-gate.yml`](../../.github/workflows/eval-gate.yml) runs the harness on every PR touching `apps/mcp/**`, against the production `TEK_MCP_URL` (repo secret) — same threshold, same exit code. This catches retrieval-logic regressions (rerank, tool code, query building) in the PR's code. It does **not** catch a PR's own corpus/token content changes, since ingestion (`ingest.yml`) only runs on push to `main` — there's no per-PR preview ingest yet. Treat corpus-content-freshness as a known gap, not a false negative.
+
 ## Current tools
 
 | Tool | What it does |
