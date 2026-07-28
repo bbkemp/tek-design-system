@@ -52,7 +52,7 @@ Second half of the core pain-points section. 3.3 probes result interpretation (r
 - `pain-points-setup-and-execution` — first half of Section 3, carrying the section-level goal and workflow-model annotation.
 - [`docs/tek-express-ddr5-tx-user-manual/results-panel.md`](../tek-express-ddr5-tx-user-manual/results-panel.md) and [`reports-panel.md`](../tek-express-ddr5-tx-user-manual/reports-panel.md) — the current results/reports surface that 3.3 and 3.4 interrogate.
 - [`docs/tek-express-ddr5-tx-user-manual/saving-recalling-test-setup.md`](../tek-express-ddr5-tx-user-manual/saving-recalling-test-setup.md) — the current setup save/recall capability that 3.5's cross-phase continuity questions extend.
-- [`walkthroughs/ae-travis-berger-run-environments-adoption-and-reports.md`](../../walkthroughs/ae-travis-berger-run-environments-adoption-and-reports.md) and [`walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md`](../../walkthroughs/ae-dallas-jesse-instruments-sessions-results-debug.md) — AE evidence on reports and debug-from-results pain.
+- [`walkthroughs/ae-travis-berger-run-environments-adoption-and-reports.md`](../../walkthroughs/ae-travis-berger-run-environments-adoption-and-reports.md) and [`walkthroughs/ae-dallas-tony-instruments-sessions-results-debug.md`](../../walkthroughs/ae-dallas-tony-instruments-sessions-results-debug.md) — AE evidence on reports and debug-from-results pain.
 
 ## Confidence notes
 

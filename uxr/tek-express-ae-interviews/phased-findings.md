@@ -81,10 +81,10 @@ The common panels (DUT, Test Selection, Acquisitions, Configuration, Status, Res
 - Configuration/Preferences: settings tiering (spec-locked vs. editable), cross-panel dependency cues ("blue dot"), fix the two-window configuration user trap.
 - Results: margin-of-failure, failure cues, live population, selective rerun with report replace/merge, column configure parity with TekScope.
 - Reports: keep PDF, guarantee CSV, restore report-to-waveform links, fix anchors, selective section regeneration, size management.
-- Per-installation: PCIe scale model, DDR/memory validation plan (Sam follow-up), USB test-mode clarity, DisplayPort migration, TekRx sequential wizard respect.
+- Per-installation: PCIe scale model, DDR/memory validation plan (Joe follow-up), USB test-mode clarity, DisplayPort migration, TekRx sequential wizard respect.
 
 ---
 
 ## Coverage caveats
 
-Carried from [synthesis.md §9](synthesis.md): prototype exposure was uneven across sessions (several "no negative reaction" reads are absence of exposure, not endorsement); DDR/memory has near-zero prototype validation until Sam's follow-up happens; single-mic attribution is inferred throughout. Phase assignments are authored judgment — where an item could arguably sit in two phases it appears once, in the earliest phase that can deliver it, with a cross-note in the detail files.
+Carried from [synthesis.md §9](synthesis.md): prototype exposure was uneven across sessions (several "no negative reaction" reads are absence of exposure, not endorsement); DDR/memory has near-zero prototype validation until Joe's follow-up happens; single-mic attribution is inferred throughout. Phase assignments are authored judgment — where an item could arguably sit in two phases it appears once, in the earliest phase that can deliver it, with a cross-note in the detail files.

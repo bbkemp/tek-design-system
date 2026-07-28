@@ -158,7 +158,7 @@ All confirmed absent from `packages/ui/src/` as of 2026-07-27.
 | J3 | UXR Phases 3-5 — research repository, cross-product taxonomy, joined qual+quant via MCP | tek-system-core L620-635 | Planned | P2 |
 | J4 | On-device telemetry SDK for instruments (opt-in, batch/upload) — flagged "the long pole" | tek-system-core L608-610 | Planned, quarters-scale | P2 |
 | J5 | Second AE study round — prototype-centric, hands-on tasks | synthesis § 9 | Explicit next study | P1 |
-| J6 | Schedule Sam DDR/memory follow-up session (agreed in-session; session truncated) | synthesis § 9, OD 9; phase-3 § B2 | Explicit, time-sensitive | P0 |
+| J6 | Schedule Joe Swelland DDR/memory follow-up session (agreed in-session; session truncated) | synthesis § 9, OD 9; phase-3 § B2 | Explicit, time-sensitive | P0 |
 | J7 | Confirm speaker attributions in AE transcripts before external quoting | synthesis § 9 L184-185 | Explicit caveat | P1 |
 | J8 | Widen future study mix to conformance products (PCI/DisplayPort/MIPI, TX+RX) | phase-3 § B5 | Explicit | P2 |
 
