@@ -237,6 +237,13 @@ Add to `~/.npmrc`:
 ```
 PAT scope required: `read:packages`
 
+> **If the install fails with `403 Forbidden … does not match expected scopes`:** your token
+> lacks the `read:packages` scope — npm's error text blames "security policy" and never says so.
+> Use a **classic** PAT with `read:packages` checked (github.com → Settings → Developer settings
+> → Personal access tokens → Tokens (classic)). Being logged in with the `gh` CLI is not enough:
+> its default token has no packages scope. If you use `gh`, run
+> `gh auth refresh -h github.com -s read:packages` and use `gh auth token` as the PAT.
+
 **2. Install:**
 ```bash
 npm install @bbkemp/tokens @bbkemp/ui
@@ -282,6 +289,11 @@ The token package has two layers. **Most projects need both.**
 ### Example
 
 ```css
+body {
+  /* page background — the first token every page needs */
+  background: var(--tek-color-canvas-background-default);
+}
+
 .my-component {
   padding: var(--tek-spacing-s05, 8px);
   border-radius: var(--tek-borders-radius-03, 5px);
