@@ -16,6 +16,35 @@
  * Type rule: components carry Geist type styles only — pill = text/regular/sm,
  * nav = text/regular/md. Font tokens are referenced via the styles; if no
  * style covers a case, raise it — never bind raw font values.
+ *
+ * @summary One tab in a `tek-tabs` group; visual style (pill/nav) is assigned by the parent.
+ *
+ * @attr {string} value - The tab's value, reported by the parent `tek-tabs`'s `tek-change` event.
+ * @attr {boolean} active - Whether this tab is currently selected. Set by the parent; do not set by hand.
+ * @attr {boolean} disabled - Excludes the tab from selection and keyboard traversal.
+ *
+ * @slot - Tab label.
+ *
+ * @cssprop --tek-color-tabs-tab-text-inactive - Pill label color, inactive.
+ * @cssprop --tek-color-tabs-tab-text-active - Pill label color, active.
+ * @cssprop --tek-color-tabs-tab-background-hover - Pill background, hover.
+ * @cssprop --tek-color-tabs-tab-background-active - Pill background, active.
+ * @cssprop --tek-color-tabs-nav-text-inactive - Nav label color, inactive.
+ * @cssprop --tek-color-tabs-nav-text-active - Nav label color, active.
+ * @cssprop --tek-color-tabs-nav-background-hover - Nav background, hover.
+ * @cssprop --tek-color-tabs-nav-background-active - Nav background, active.
+ * @cssprop --tek-color-tabs-nav-accent-default - Nav left accent bar color, active.
+ * @cssprop --tek-colors-brand-tek-blue - Focus-visible outline color.
+ * @cssprop --tek-spacing-s05 - Pill vertical padding.
+ * @cssprop --tek-spacing-s06 - Nav vertical padding.
+ * @cssprop --tek-spacing-s07 - Pill/nav horizontal padding.
+ * @cssprop --tek-borders-radius-full - Pill corner radius.
+ * @cssprop --tek-borders-width-05 - Nav left accent bar width.
+ * @cssprop --tek-fonts-family-geist - Label font family.
+ * @cssprop --tek-fonts-text-size-sm - Pill label font size.
+ * @cssprop --tek-fonts-text-line-height-sm - Pill label line height.
+ * @cssprop --tek-fonts-text-size-md - Nav label font size.
+ * @cssprop --tek-fonts-text-line-height-md - Nav label line height.
  */
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';

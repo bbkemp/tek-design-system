@@ -14,6 +14,36 @@
  * over the default background — same compositing as the Figma variants.
  *
  * Tokens: color/statusbar/* · spacing s05/s07 · borders/width/01 · mono xs
+ *
+ * @summary 32px bottom application bar with build-flag, status text, and actions regions.
+ *
+ * @attr {("default"|"error"|"loading")} [variant="default"] - Tint layered over the bar background.
+ * @attr {("ready"|"running"|"success"|"warning"|"error")} [status="ready"] - Status text color.
+ *
+ * @slot build-flag - Pre-release pill (e.g. `tek-badge`); production simply omits it.
+ * @slot - Status text.
+ * @slot actions - Right-aligned controls.
+ *
+ * @csspart build-flag - The build-flag region.
+ * @csspart status-text - The status text region.
+ * @csspart actions - The actions region.
+ *
+ * @cssprop --tek-color-statusbar-background-default - Bar background.
+ * @cssprop --tek-color-statusbar-background-error - Bar background tint, error variant.
+ * @cssprop --tek-color-statusbar-background-loading - Bar background tint, loading variant.
+ * @cssprop --tek-color-statusbar-border-default - Bar top border.
+ * @cssprop --tek-color-statusbar-text-default - Status text color, default.
+ * @cssprop --tek-color-statusbar-text-running - Status text color, running.
+ * @cssprop --tek-color-statusbar-text-success - Status text color, success.
+ * @cssprop --tek-color-statusbar-text-warning - Status text color, warning.
+ * @cssprop --tek-color-statusbar-text-error - Status text color, error.
+ * @cssprop --tek-spacing-s03 - Build-flag/actions internal gap.
+ * @cssprop --tek-spacing-s05 - Bar internal gap and vertical padding.
+ * @cssprop --tek-spacing-s07 - Bar horizontal padding.
+ * @cssprop --tek-borders-width-01 - Bar top border width.
+ * @cssprop --tek-fonts-family-mono - Status text font family.
+ * @cssprop --tek-fonts-text-size-xs - Status text font size.
+ * @cssprop --tek-fonts-text-line-height-xs - Status text line height.
  */
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';

@@ -30,6 +30,49 @@
  *   </tek-dropdown>
  *
  * Events: tek-change {value}, tek-open, tek-close
+ *
+ * @summary Single-select dropdown with a floating listbox menu; composes `tek-dropdown-item` children.
+ *
+ * @attr {string} value - Currently selected option's value.
+ * @attr {string} [placeholder="Select an option"] - Trough text shown when no option is selected.
+ * @attr {string} name - Name for the hidden form-associated input rendered when set.
+ * @attr {boolean} disabled - Disables the trough and blocks opening.
+ * @attr {boolean} error - Applies the error visual state.
+ * @attr {boolean} open - Whether the menu is open; reflects.
+ *
+ * @fires {CustomEvent<{value: string}>} tek-change - Fired when the selected value changes. Bubbles, composed.
+ * @fires {CustomEvent} tek-open - Fired when the menu opens. Bubbles, composed.
+ * @fires {CustomEvent} tek-close - Fired when the menu closes. Bubbles, composed.
+ *
+ * @slot - `tek-dropdown-item` options.
+ *
+ * @csspart trough - The clickable combobox trough.
+ * @csspart display - The selected/placeholder text.
+ * @csspart caret - The caret icon.
+ * @csspart menu - The floating listbox menu.
+ *
+ * @cssprop --tek-color-dropdown-background-default - Trough background.
+ * @cssprop --tek-color-dropdown-border-default - Trough border, default state.
+ * @cssprop --tek-color-dropdown-border-focus - Trough border, focus/open state.
+ * @cssprop --tek-color-dropdown-border-error - Trough border, error state.
+ * @cssprop --tek-color-dropdown-border-disabled - Trough border, disabled state.
+ * @cssprop --tek-color-dropdown-text-default - Placeholder text color.
+ * @cssprop --tek-color-dropdown-text-filled - Selected-value text color.
+ * @cssprop --tek-color-dropdown-text-error - Text color, error state.
+ * @cssprop --tek-color-dropdown-text-disabled - Text color, disabled state.
+ * @cssprop --tek-color-icons-default - Caret icon color.
+ * @cssprop --tek-color-dropdown-menu-background-default - Menu background.
+ * @cssprop --tek-color-dropdown-menu-border-default - Menu border.
+ * @cssprop --tek-color-dropdown-menu-shadow-default - Menu drop-shadow.
+ * @cssprop --tek-spacing-s02 - Menu padding; floating gap below the trough.
+ * @cssprop --tek-spacing-s03 - Trough icon gap.
+ * @cssprop --tek-spacing-s05 - Trough vertical padding.
+ * @cssprop --tek-spacing-s06 - Trough left padding.
+ * @cssprop --tek-borders-radius-03 - Trough and menu corner radius.
+ * @cssprop --tek-borders-width-01 - Trough and menu border width.
+ * @cssprop --tek-fonts-family-geist - Trough font family.
+ * @cssprop --tek-fonts-text-size-md - Trough font size.
+ * @cssprop --tek-fonts-text-line-height-md - Trough line height.
  */
 import { css, html, LitElement, nothing } from 'lit';
 import { property, query, state } from 'lit/decorators.js';

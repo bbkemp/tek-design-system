@@ -12,6 +12,43 @@
  *
  * Tokens: color/progress/* · borders/radius/02 · borders/width/01 ·
  * text/regular/sm (label) · text/mono/xs (meta)
+ *
+ * @summary Determinate/indeterminate progress bar with label and meta slots.
+ *
+ * @attr {("determinate"|"indeterminate")} [variant="determinate"] - Progress mode; indeterminate shows a sliding stripe.
+ * @attr {number} [value=0] - Current progress value (determinate mode).
+ * @attr {number} [max=100] - Maximum progress value (determinate mode).
+ * @attr {("sm"|"md"|"lg")} [size="md"] - Track height.
+ * @attr {("default"|"success"|"warning"|"error")} [tone="default"] - Fill color tone.
+ * @attr {boolean} paused - Freezes the indeterminate stripe animation.
+ *
+ * @fires {CustomEvent<{value: number}>} tek-complete - Fired when a determinate bar's value reaches max. Bubbles, composed.
+ *
+ * @slot label - Label text above the track.
+ * @slot meta - Meta text at the end of the meta row (percentage is auto-rendered at the start).
+ *
+ * @csspart label - The label container.
+ * @csspart track - The track background.
+ * @csspart fill - The fill bar.
+ * @csspart meta - The meta row.
+ *
+ * @cssprop --tek-color-progress-label-default - Label text color.
+ * @cssprop --tek-color-progress-track-background - Track background.
+ * @cssprop --tek-color-progress-track-border - Track border.
+ * @cssprop --tek-color-progress-fill-default - Fill color, default tone.
+ * @cssprop --tek-color-progress-fill-success - Fill color, success tone.
+ * @cssprop --tek-color-progress-fill-warning - Fill color, warning tone.
+ * @cssprop --tek-color-progress-fill-error - Fill color, error tone.
+ * @cssprop --tek-color-progress-meta-default - Meta row text color.
+ * @cssprop --tek-spacing-s03 - Row gaps.
+ * @cssprop --tek-borders-radius-02 - Track corner radius.
+ * @cssprop --tek-borders-width-01 - Track border width.
+ * @cssprop --tek-fonts-family-geist - Label font family.
+ * @cssprop --tek-fonts-text-size-sm - Label font size.
+ * @cssprop --tek-fonts-text-line-height-sm - Label line height.
+ * @cssprop --tek-fonts-family-mono - Meta row font family.
+ * @cssprop --tek-fonts-text-size-xs - Meta row font size.
+ * @cssprop --tek-fonts-text-line-height-xs - Meta row line height.
  */
 import { css, html, LitElement, nothing } from 'lit';
 import { property } from 'lit/decorators.js';

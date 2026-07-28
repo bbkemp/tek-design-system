@@ -25,6 +25,18 @@
  *     <header>…</header>
  *     <tek-modal>…</tek-modal>
  *   </tek-page>
+ *
+ * @summary Page frame primitive with responsive container-query padding, mirroring the Figma Breakpoint variants.
+ *
+ * @slot - Page content, centered within the responsive `.wrap`.
+ * @slot footer - Content rendered outside `.wrap`, below the main content.
+ *
+ * @csspart wrap - The responsive content wrapper.
+ *
+ * @cssprop --tek-spacing-s11 - Mobile bottom padding.
+ * @cssprop --tek-spacing-s13 - Mobile side padding.
+ * @cssprop --tek-spacing-s17 - Mobile top padding; section rhythm gap at all breakpoints.
+ * @cssprop --tek-spacing-s19 - Side/all-round padding at the ≥640px and ≥1280px container breakpoints.
  */
 import { css, html, LitElement } from 'lit';
 

@@ -22,6 +22,22 @@
  *     <tek-tab value="config" active>Configuration</tek-tab>
  *     <tek-tab value="view">View Settings</tek-tab>
  *   </tek-tabs>
+ *
+ * @summary Tab group with roving-tabindex keyboard navigation; composes `tek-tab` children.
+ *
+ * @attr {("horizontal"|"vertical")} [orientation="horizontal"] - Layout direction. Horizontal renders the pill container; vertical renders bare nav tabs.
+ * @attr {("pill"|"underline"|"accent"|"")} [variant] - Reserved variant hint; `underline` is deferred and falls back.
+ *
+ * @fires {CustomEvent<{value: string, previousValue: string}>} tek-change - Fired when the active tab changes. Bubbles, composed.
+ *
+ * @slot - `tek-tab` elements.
+ *
+ * @cssprop --tek-color-tabs-container-background-default - Horizontal container background.
+ * @cssprop --tek-color-tabs-container-border-default - Horizontal container border.
+ * @cssprop --tek-spacing-s02 - Horizontal container gap/padding.
+ * @cssprop --tek-spacing-s03 - Vertical (nav) gap.
+ * @cssprop --tek-borders-radius-full - Horizontal container corner radius.
+ * @cssprop --tek-borders-width-01 - Horizontal container border width.
  */
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';

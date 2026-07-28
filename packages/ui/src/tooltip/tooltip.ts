@@ -17,6 +17,30 @@
  *
  * A11y: panel has role=tooltip; the wrapper links it via aria-describedby.
  * Escape hides. Hidden for pointer + keyboard symmetrically.
+ *
+ * @summary Wraps its target and shows a floating panel on hover or focus after a delay.
+ *
+ * @attr {string} content - Tooltip text. No panel is shown when empty.
+ * @attr {("top"|"bottom"|"left"|"right")} [placement="top"] - Preferred panel placement (Floating UI flips it when there's no room).
+ * @attr {number} [delay=300] - Milliseconds to wait after hover/focus before showing.
+ * @attr {boolean} open - Whether the panel is visible; reflects.
+ * @attr {boolean} disabled - Suppresses showing the panel.
+ *
+ * @slot - The tooltip's target element.
+ *
+ * @csspart panel - The floating tooltip panel.
+ *
+ * @cssprop --tek-color-tooltip-background-default - Panel background.
+ * @cssprop --tek-color-tooltip-border-default - Panel border.
+ * @cssprop --tek-color-tooltip-shadow-default - Panel drop-shadow.
+ * @cssprop --tek-color-tooltip-text-default - Panel text color.
+ * @cssprop --tek-spacing-s03 - Panel vertical padding; floating gap from the target.
+ * @cssprop --tek-spacing-s05 - Panel horizontal padding.
+ * @cssprop --tek-borders-width-01 - Panel border width.
+ * @cssprop --tek-borders-radius-03 - Panel corner radius.
+ * @cssprop --tek-fonts-family-geist - Panel font family.
+ * @cssprop --tek-fonts-text-size-sm - Panel font size.
+ * @cssprop --tek-fonts-text-line-height-sm - Panel line height.
  */
 import { css, html, LitElement } from 'lit';
 import { property, query } from 'lit/decorators.js';

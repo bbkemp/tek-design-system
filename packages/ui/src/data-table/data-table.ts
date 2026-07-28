@@ -20,6 +20,18 @@
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 
+/**
+ * @summary Bordered table container. v1 ships readonly only; selectable/editable are v2 and fall back with a warning.
+ *
+ * @attr {("readonly"|"selectable"|"editable")} [variant="readonly"] - Table interaction mode. Non-readonly values are v2 and fall back to readonly.
+ *
+ * @slot - `tek-data-table-head` and `tek-data-table-body`.
+ *
+ * @cssprop --tek-table-columns - Grid column widths for every row, e.g. "2fr 1fr 1.5fr 0.6fr" (set on the table, consumed by `tek-data-table-row`).
+ * @cssprop --tek-borders-width-01 - Outer border width.
+ * @cssprop --tek-color-table-divider-default - Outer border color.
+ * @cssprop --tek-borders-radius-05 - Corner radius.
+ */
 export class TekDataTable extends LitElement {
   static styles = css`
     :host {
@@ -49,6 +61,11 @@ export class TekDataTable extends LitElement {
   }
 }
 
+/**
+ * @summary Header rowgroup for `tek-data-table` — wraps the header `tek-data-table-row`.
+ *
+ * @slot - `tek-data-table-row` elements with `data-context="head"` styling.
+ */
 export class TekDataTableHead extends LitElement {
   static styles = css`:host { display: block; }`;
   connectedCallback(): void {
@@ -58,6 +75,11 @@ export class TekDataTableHead extends LitElement {
   render() { return html`<slot></slot>`; }
 }
 
+/**
+ * @summary Body rowgroup for `tek-data-table` — wraps the data `tek-data-table-row` elements.
+ *
+ * @slot - `tek-data-table-row` elements.
+ */
 export class TekDataTableBody extends LitElement {
   static styles = css`:host { display: block; }`;
   connectedCallback(): void {
@@ -67,6 +89,36 @@ export class TekDataTableBody extends LitElement {
   render() { return html`<slot></slot>`; }
 }
 
+/**
+ * @summary One row of `tek-data-table` — grid columns are set by `--tek-table-columns` on the parent table. State tints layer over the default background.
+ *
+ * @attr {boolean} selected - Marks the row selected; adds a left accent bar and background tint.
+ * @attr {("default"|"disabled"|"error"|"success")} [state="default"] - Row visual state.
+ *
+ * @slot - `tek-data-table-cell` elements.
+ *
+ * @cssprop --tek-table-columns - Grid column widths, e.g. "2fr 1fr 1.5fr 0.6fr".
+ * @cssprop --tek-spacing-s06 - Column gap; header vertical padding.
+ * @cssprop --tek-spacing-s07 - Row padding.
+ * @cssprop --tek-color-table-row-background-default - Body row background.
+ * @cssprop --tek-color-table-row-background-hover - Body row background on hover.
+ * @cssprop --tek-color-table-row-background-error - Body row background, error state.
+ * @cssprop --tek-color-table-row-background-success - Body row background, success state.
+ * @cssprop --tek-color-table-row-background-selected - Body row background, selected.
+ * @cssprop --tek-color-table-row-border-selected - Left accent bar color, selected.
+ * @cssprop --tek-borders-width-01 - Row divider width.
+ * @cssprop --tek-borders-width-05 - Selected accent bar width.
+ * @cssprop --tek-color-table-divider-default - Row divider color.
+ * @cssprop --tek-color-table-header-background - Header row background.
+ * @cssprop --tek-color-table-header-text - Header row text color.
+ * @cssprop --tek-color-table-text-default - Body row text color.
+ * @cssprop --tek-color-table-text-muted - Text color, disabled state.
+ * @cssprop --tek-fonts-family-geist - Row font family.
+ * @cssprop --tek-fonts-text-size-md - Body row font size.
+ * @cssprop --tek-fonts-text-line-height-md - Body row line height.
+ * @cssprop --tek-fonts-text-size-xs - Header row font size.
+ * @cssprop --tek-fonts-text-line-height-xs - Header row line height.
+ */
 export class TekDataTableRow extends LitElement {
   static styles = css`
     :host {
@@ -140,6 +192,13 @@ export class TekDataTableRow extends LitElement {
   render() { return html`<slot></slot>`; }
 }
 
+/**
+ * @summary One cell of a `tek-data-table-row`. Overflows with ellipsis; role is derived from whether it's inside a `tek-data-table-head`.
+ *
+ * @attr {("start"|"center"|"end")} [align="start"] - Text alignment within the cell.
+ *
+ * @slot - Cell content, including a slotted `tek-badge` for status pills.
+ */
 export class TekDataTableCell extends LitElement {
   static styles = css`
     :host {

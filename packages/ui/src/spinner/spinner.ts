@@ -10,6 +10,22 @@
  * snapped to the 2px token) and width/05 (lg).
  *
  * Usage: <tek-spinner size="lg" tone="success"></tek-spinner>
+ *
+ * @summary 270-degree rotating loading arc, sizes sm/md/lg and tone variants. Freezes when paused or prefers-reduced-motion.
+ *
+ * @attr {("sm"|"md"|"lg")} [size="md"] - Spinner diameter and stroke width.
+ * @attr {("default"|"success"|"warning"|"error")} [tone="default"] - Arc color.
+ * @attr {boolean} paused - Freezes the rotation animation.
+ *
+ * @cssprop --tek-color-spinner-default - Arc color, default tone.
+ * @cssprop --tek-color-spinner-success - Arc color, success tone.
+ * @cssprop --tek-color-spinner-warning - Arc color, warning tone.
+ * @cssprop --tek-color-spinner-error - Arc color, error tone.
+ * @cssprop --tek-spacing-s09 - Diameter, size="sm".
+ * @cssprop --tek-spacing-s11 - Diameter, size="md" (default).
+ * @cssprop --tek-spacing-s15 - Diameter, size="lg".
+ * @cssprop --tek-borders-width-04 - Stroke width, sm/md.
+ * @cssprop --tek-borders-width-05 - Stroke width, lg.
  */
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';

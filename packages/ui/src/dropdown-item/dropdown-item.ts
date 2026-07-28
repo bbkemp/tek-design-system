@@ -15,6 +15,28 @@
  *
  * Usage:
  *   <tek-dropdown-item value="ch1">Channel 1</tek-dropdown-item>
+ *
+ * @summary One option in a `tek-dropdown` menu.
+ *
+ * @attr {string} value - The option's value, compared against the parent dropdown's `value`.
+ * @attr {boolean} disabled - Excludes the option from selection, typeahead, and arrow-key traversal.
+ * @attr {boolean} selected - Whether this option is the dropdown's current selection. Set by the parent; do not set by hand.
+ * @attr {boolean} current - Keyboard-highlighted option (Shoelace "current" pattern — focus stays on the trough). Set by the parent; do not set by hand.
+ *
+ * @slot - Option label.
+ *
+ * @cssprop --tek-color-dropdown-menu-text-default - Label color, default state.
+ * @cssprop --tek-color-dropdown-menu-text-selected - Label color, selected state.
+ * @cssprop --tek-color-dropdown-menu-text-disabled - Label color, disabled state.
+ * @cssprop --tek-color-dropdown-menu-background-hover - Background, hover/current state.
+ * @cssprop --tek-color-dropdown-menu-background-selected - Background, selected state.
+ * @cssprop --tek-spacing-s03 - Internal gap.
+ * @cssprop --tek-spacing-s04 - Vertical padding.
+ * @cssprop --tek-spacing-s06 - Horizontal padding.
+ * @cssprop --tek-borders-radius-none - Corner radius.
+ * @cssprop --tek-fonts-family-geist - Label font family.
+ * @cssprop --tek-fonts-text-size-md - Label font size.
+ * @cssprop --tek-fonts-text-line-height-md - Label line height.
  */
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';

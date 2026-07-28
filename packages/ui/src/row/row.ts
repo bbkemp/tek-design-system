@@ -17,6 +17,24 @@
  *   </tek-row>
  *   <tek-row gap="s02" justify="center">…</tek-row>
  *   <tek-row justify="between" align="center">…</tek-row>
+ *
+ * @summary Horizontal layout primitive. `gap` is a spacing-token-only variant axis.
+ *
+ * @attr {("s02"|"s03"|"s04"|"s05"|"s06"|"s07"|"s08"|"s09"|"s11")} [gap="s05"] - Gap between children, as a spacing token step. Non-token values fall back to s05.
+ * @attr {("start"|"center"|"end"|"stretch")} [align="stretch"] - Cross-axis (vertical) alignment.
+ * @attr {("start"|"center"|"end"|"between")} [justify="start"] - Main-axis (horizontal) alignment.
+ *
+ * @slot - Row items.
+ *
+ * @cssprop --tek-spacing-s02 - Gap, gap="s02".
+ * @cssprop --tek-spacing-s03 - Gap, gap="s03".
+ * @cssprop --tek-spacing-s04 - Gap, gap="s04".
+ * @cssprop --tek-spacing-s05 - Gap, gap="s05" (default).
+ * @cssprop --tek-spacing-s06 - Gap, gap="s06".
+ * @cssprop --tek-spacing-s07 - Gap, gap="s07".
+ * @cssprop --tek-spacing-s08 - Gap, gap="s08".
+ * @cssprop --tek-spacing-s09 - Gap, gap="s09".
+ * @cssprop --tek-spacing-s11 - Gap, gap="s11".
  */
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';

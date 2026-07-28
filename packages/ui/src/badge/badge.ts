@@ -6,6 +6,29 @@
  * Type style: text/regular/xs (Geist).
  *
  * Usage: <tek-badge type="success">Passing</tek-badge>
+ *
+ * @summary Small pill-shaped status label with neutral/blue/success/warning/error types.
+ *
+ * @attr {("neutral"|"blue"|"success"|"warning"|"error")} [type="neutral"] - Visual type; unrecognized values fall back to neutral.
+ *
+ * @slot - Badge label.
+ *
+ * @cssprop --tek-spacing-s02 - Vertical padding.
+ * @cssprop --tek-spacing-s05 - Horizontal padding.
+ * @cssprop --tek-borders-radius-full - Corner radius (pill).
+ * @cssprop --tek-fonts-family-geist - Label font family.
+ * @cssprop --tek-fonts-text-size-xs - Label font size.
+ * @cssprop --tek-fonts-text-line-height-xs - Label line height.
+ * @cssprop --tek-color-badge-neutral-background - Background, neutral type.
+ * @cssprop --tek-color-badge-neutral-text - Label color, neutral type.
+ * @cssprop --tek-color-badge-blue-background - Background, blue type.
+ * @cssprop --tek-color-badge-blue-text - Label color, blue type.
+ * @cssprop --tek-color-badge-success-background - Background, success type.
+ * @cssprop --tek-color-badge-success-text - Label color, success type.
+ * @cssprop --tek-color-badge-warning-background - Background, warning type.
+ * @cssprop --tek-color-badge-warning-text - Label color, warning type.
+ * @cssprop --tek-color-badge-error-background - Background, error type.
+ * @cssprop --tek-color-badge-error-text - Label color, error type.
  */
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';

@@ -17,6 +17,32 @@
  *
  * Tokens: color/navigation/* (bg aliases the raised surface) ·
  * spacing s03/s05/s06/s07 · borders/width/01
+ *
+ * @summary App sidebar chrome — three slot regions (brand/nav/foot); owns no routing or tab logic.
+ *
+ * @attr {("full"|"text-only"|"icon-only")} [variant="full"] - Panel width preset. Variant switching at breakpoints is the app-shell's job (container queries).
+ *
+ * @slot brand - Brand/logo row.
+ * @slot nav - Navigation tabs, typically a `tek-tabs orientation="vertical"`.
+ * @slot foot - Footer content, pushed to the bottom with a top divider when non-empty.
+ *
+ * @csspart brand - The brand row container.
+ * @csspart nav - The nav slot container.
+ * @csspart foot - The footer container.
+ *
+ * @cssprop --tek-navigation-panel-width - Panel width override (defaults to 184px/96px/56px per variant).
+ * @cssprop --tek-color-navigation-background-default - Panel background.
+ * @cssprop --tek-color-navigation-border-default - Panel right border.
+ * @cssprop --tek-color-navigation-text-default - Brand text color.
+ * @cssprop --tek-color-navigation-divider-default - Footer top divider color.
+ * @cssprop --tek-spacing-s03 - Brand row internal gap.
+ * @cssprop --tek-spacing-s05 - Panel vertical padding.
+ * @cssprop --tek-spacing-s06 - Footer internal gap.
+ * @cssprop --tek-spacing-s07 - Brand/footer padding.
+ * @cssprop --tek-borders-width-01 - Panel border and footer divider width.
+ * @cssprop --tek-fonts-family-archivo - Brand font family.
+ * @cssprop --tek-fonts-heading-size-2xs - Brand font size.
+ * @cssprop --tek-fonts-heading-line-height-2xs - Brand line height.
  */
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';

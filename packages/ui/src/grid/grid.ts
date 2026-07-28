@@ -14,6 +14,17 @@
  *   <tek-grid columns="3" gap="s09">
  *     <div>…</div><div>…</div><div>…</div>
  *   </tek-grid>
+ *
+ * @summary Column-grid layout primitive. `columns` and `gap` are spacing-token-only variant axes.
+ *
+ * @attr {("s05"|"s09"|"s11")} [gap="s09"] - Grid gap, as a spacing token step. Non-token values fall back to s09.
+ * @attr {("2"|"3"|"4")} [columns="3"] - Number of equal-width columns. Invalid values fall back to 3.
+ *
+ * @slot - Grid items.
+ *
+ * @cssprop --tek-spacing-s05 - Gap, gap="s05".
+ * @cssprop --tek-spacing-s09 - Gap, gap="s09" (default).
+ * @cssprop --tek-spacing-s11 - Gap, gap="s11".
  */
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';

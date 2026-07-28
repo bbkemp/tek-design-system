@@ -17,6 +17,30 @@
  *   <tek-group-box label="Execution Options" >
  *     <tek-selector type="checkbox" label="Enable Logging"></tek-selector>
  *   </tek-group-box>
+ *
+ * @summary Titled bordered container for grouping form controls. Always titled — the spec forbids untitled group boxes.
+ *
+ * @attr {string} label - Legend text, rendered in-flow as the first row and mirrored to `aria-label`.
+ * @attr {("default"|"error")} [variant="default"] - Visual variant; error tints the border and legend.
+ * @attr {boolean} disabled - Dims the box and blocks pointer interaction.
+ *
+ * @slot - Grouped form controls.
+ *
+ * @csspart box - The bordered container.
+ * @csspart legend - The title row.
+ *
+ * @cssprop --tek-color-groupbox-background-default - Container background.
+ * @cssprop --tek-color-groupbox-border-default - Container border, default state.
+ * @cssprop --tek-color-groupbox-border-error - Container border and legend color, error state.
+ * @cssprop --tek-color-groupbox-legend-default - Legend text color, default state.
+ * @cssprop --tek-spacing-s03 - Reserved small-gap step.
+ * @cssprop --tek-spacing-s06 - Gap between legend and content.
+ * @cssprop --tek-spacing-s09 - Container padding.
+ * @cssprop --tek-borders-width-01 - Container border width.
+ * @cssprop --tek-borders-radius-05 - Container corner radius.
+ * @cssprop --tek-fonts-family-archivo - Legend font family.
+ * @cssprop --tek-fonts-heading-size-xs - Legend font size.
+ * @cssprop --tek-fonts-heading-line-height-xs - Legend line height.
  */
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
