@@ -164,7 +164,7 @@ Each step is PR-sized. After step 8, "install" for a teammate is pasting one URL
 ## Open decisions
 
 - **Per-section embedding granularity** — revisit only if the eval harness shows misses on long chunks. Default: per-file.
-- **Neon vs Supabase** — Neon is the default; swap is cheap before ingestion ships, expensive after. Flag before P0 step 1 if there's a preference.
+- **Neon vs Supabase** — **decided: Neon** (shipped 2026-07-16; ingestion and the eval gate run against Neon pgvector in production — the cheap-swap window is closed).
 
 ---
 

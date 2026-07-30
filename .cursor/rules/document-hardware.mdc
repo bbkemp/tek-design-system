@@ -158,4 +158,4 @@ corpus/sources/<product>/screens/<screen-id>.md   (back-updated `related_hardwar
 - **Why a separate skill from `document-screens`?** Same input class (photos) but different *anatomy*. A screen has controls + state; a hardware view has ports + dimensions + indicators. The structured fields differ enough that two skills are clearer than one polymorphic skill.
 - **Can the same photo yield both a screen `.md` and a hardware `.md`?** Yes — photo-262 of the 2450-EC shows both the LCD content (→ `home.md`) and the bezel surrounding it (→ `front-panel.md`). Two chunks, two downscaled images (or one shared image referenced from both).
 - **What about exploded views, schematics, mechanical drawings?** Those are technical artifacts; use `document-artifact` (planned P2) instead.
-- **What about videos / GIFs of physical operation (e.g. inserting a probe)?** Out of scope. Walkthroughs go through `document-walkthrough` (planned P2).
+- **What about videos / GIFs of physical operation (e.g. inserting a probe)?** Out of scope. Walkthroughs go through `document-walkthrough` (shipped — see its SKILL.md).
