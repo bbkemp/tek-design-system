@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tek Corpus Browser</title>
+
+<!-- Fonts — Geist (body/UI) + Archivo (headings) + Geist Mono (code/labels) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
+
+<!--
+  @bbkemp/tokens — complete build (primitives + dark/light semantic)
+  Requires: npm run build --workspace=packages/tokens
+-->
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+
+<!--
+  @bbkemp/ui — Web Components (tek-markdown does the rendering)
+  Requires: npm run build --workspace=packages/ui
+-->
+<script type="module" src="../../packages/ui/dist/tek-ui.js"></script>
+
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    display: flex;
+    background: var(--tek-color-canvas-background-default, #1e1e1e);
+    color: var(--tek-color-table-text-default, #ffffff);
+    font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
+    font-size: var(--tek-fonts-text-size-md, 13px);
+    line-height: var(--tek-fonts-text-line-height-md, 16px);
+  }
+
+  /* ── subject rail ─────────────────────────────────────────────────── */
+  nav {
+    flex: 0 0 var(--tek-spacing-c01, 360px);
+    max-width: var(--tek-spacing-c01, 360px);
+    display: flex;
+    flex-direction: column;
+    border-right: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-navigation-divider-default, #7b7b7b);
+    background: var(--tek-color-navigation-background-default, #252525);
+    overflow-y: auto;
+  }
+  nav h1 {
+    margin: 0;
+    padding: var(--tek-spacing-s09, 16px) var(--tek-spacing-s09, 16px) var(--tek-spacing-s05, 8px);
+    font-family: var(--tek-fonts-family-archivo, system-ui, sans-serif);
+    font-weight: 600;
+    font-size: var(--tek-fonts-heading-size-2xs, 14px);
+    line-height: var(--tek-fonts-heading-line-height-2xs, 22px);
+    color: var(--tek-color-navigation-text-default, #ffffff);
+  }
+  nav h1 small {
+    display: block;
+    font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
+    font-weight: 400;
+    font-size: var(--tek-fonts-text-size-xs, 10px);
+    line-height: var(--tek-fonts-text-line-height-xs, 12px);
+    color: var(--tek-color-table-text-muted, #979797);
+  }
+  nav button {
+    display: block;
+    width: 100%;
+    padding: var(--tek-spacing-s06, 10px) var(--tek-spacing-s09, 16px);
+    border: none;
+    border-left: var(--tek-borders-width-05, 3px) solid transparent;
+    background: none;
+    color: var(--tek-color-navigation-text-default, #ffffff);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  nav button:hover { background: var(--tek-color-tabs-nav-background-hover, rgba(255, 255, 255, 0.06)); }
+  nav button[aria-current='true'] {
+    background: var(--tek-color-tabs-nav-background-active, rgba(255, 255, 255, 0.1));
+    border-left-color: var(--tek-color-tabs-nav-accent-default, #33baea);
+  }
+  nav button small {
+    display: block;
+    color: var(--tek-color-table-text-muted, #979797);
+    font-family: var(--tek-fonts-family-mono, monospace);
+    font-size: var(--tek-fonts-text-size-xs, 10px);
+    line-height: var(--tek-fonts-text-line-height-xs, 12px);
+    margin-top: var(--tek-spacing-s01, 1px);
+  }
+
+  /* ── viewer ───────────────────────────────────────────────────────── */
+  main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    gap: var(--tek-spacing-s05, 8px);
+    padding: var(--tek-spacing-s05, 8px) var(--tek-spacing-s09, 16px);
+    border-bottom: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-navigation-divider-default, #7b7b7b);
+    background: var(--tek-color-navigation-background-default, #252525);
+  }
+  /* tek-button fills its container by contract — the wrapper is the sizer */
+  .back-wrap {
+    flex: 0 0 auto;
+    width: var(--tek-spacing-s21, 96px);
+  }
+  header code {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    direction: rtl;
+    text-align: left;
+    font-family: var(--tek-fonts-family-mono, monospace);
+    font-size: var(--tek-fonts-text-size-sm, 12px);
+    color: var(--tek-color-table-text-muted, #979797);
+  }
+  #scroller {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--tek-spacing-s13, 32px) var(--tek-spacing-s11, 24px);
+  }
+  .empty {
+    max-width: var(--tek-spacing-c05, 768px);
+    margin: var(--tek-spacing-s20, 80px) auto 0;
+    text-align: center;
+    color: var(--tek-color-table-text-muted, #979797);
+    font-size: var(--tek-fonts-text-size-lg, 14px);
+    line-height: var(--tek-fonts-text-line-height-lg, 20px);
+  }
+</style>
+</head>
+<body>
+
+<nav id="rail" aria-label="Corpus subjects">
+  <h1>Corpus Browser <small>corpus/sources/</small></h1>
+</nav>
+
+<main>
+  <header>
+    <span class="back-wrap"><tek-button id="back" variant="secondary" disabled>&#8592; Back</tek-button></span>
+    <code id="path"></code>
+  </header>
+  <div id="scroller">
+    <p class="empty">Pick a subject from the rail to start reading.</p>
+    <tek-markdown id="viewer" hidden></tek-markdown>
+  </div>
+</main>
+
+<script type="module">
+  // Mirror of corpus/sources/ — update when a subject folder is added.
+  // (Static hosting can't list directories, so the rail is a registry,
+  // same pattern as apps/bench/tools.js.)
+  const SUBJECTS = [
+    { id: '2450-ec',           name: '2450 SourceMeter (EC)' },
+    { id: 'dev-core-api',      name: 'Dev Core API' },
+    { id: 'garuda',            name: 'Garuda' },
+    { id: 'gw-gdm9061',        name: 'GW Instek GDM-9061' },
+    { id: 'keysight-d9020',    name: 'Keysight D9020' },
+    { id: 'keysight-d9040',    name: 'Keysight D9040' },
+    { id: 'tek-design-system', name: 'Tek Design System' },
+    { id: 'tek-express',       name: 'Tek Express' },
+    { id: 'tek-flow',          name: 'Tek Flow' },
+    { id: 'tek-rx',            name: 'Tek RX' },
+  ];
+
+  const rail = document.getElementById('rail');
+  const viewer = document.getElementById('viewer');
+  const back = document.getElementById('back');
+  const path = document.getElementById('path');
+  const scroller = document.getElementById('scroller');
+  const empty = document.querySelector('.empty');
+
+  const repoRelative = (url) => {
+    const marker = '/corpus/';
+    const i = url.indexOf(marker);
+    return i === -1 ? url : url.slice(i + 1);
+  };
+
+  const sync = (url) => {
+    path.textContent = repoRelative(url);
+    back.toggleAttribute('disabled', !viewer.canGoBack);
+    const subject = SUBJECTS.find((s) => url.includes(`/corpus/sources/${s.id}/`));
+    rail.querySelectorAll('button').forEach((b) =>
+      b.setAttribute('aria-current', String(b.dataset.id === subject?.id))
+    );
+    scroller.scrollTop = 0;
+  };
+
+  for (const s of SUBJECTS) {
+    const b = document.createElement('button');
+    b.dataset.id = s.id;
+    b.innerHTML = `${s.name}<small>${s.id}</small>`;
+    b.addEventListener('click', () => {
+      empty.hidden = true;
+      viewer.hidden = false;
+      viewer.src = new URL(`../../corpus/sources/${s.id}/index.md`, location.href).href;
+    });
+    rail.appendChild(b);
+  }
+
+  viewer.addEventListener('tek-markdown-load', (e) => sync(e.detail.url));
+  back.addEventListener('tek-click', () => viewer.back());
+
+  // Deep link: #/2450-ec opens that subject (works inside the Bench iframe too).
+  const hash = location.hash.replace(/^#\//, '');
+  const initial = SUBJECTS.find((s) => s.id === hash);
+  if (initial) rail.querySelector(`button[data-id="${initial.id}"]`)?.click();
+</script>
+
+</body>
+</html>

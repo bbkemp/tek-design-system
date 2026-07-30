@@ -43,3 +43,4 @@ export { TekTextLink }           from './text-link/text-link.js';
 export { TekCharacterCount }     from './character-count/character-count.js';
 export { TekModal }              from './modal/modal.js';
 export { TekFooter }             from './footer/footer.js';
+export { TekMarkdown }           from './markdown/markdown.js';
