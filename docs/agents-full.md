@@ -1136,7 +1136,7 @@ corpus/sources/<product>/screens/<screen-id>.md   (back-updated `related_hardwar
 - **Why a separate skill from `document-screens`?** Same input class (photos) but different *anatomy*. A screen has controls + state; a hardware view has ports + dimensions + indicators. The structured fields differ enough that two skills are clearer than one polymorphic skill.
 - **Can the same photo yield both a screen `.md` and a hardware `.md`?** Yes — photo-262 of the 2450-EC shows both the LCD content (→ `home.md`) and the bezel surrounding it (→ `front-panel.md`). Two chunks, two downscaled images (or one shared image referenced from both).
 - **What about exploded views, schematics, mechanical drawings?** Those are technical artifacts; use `document-artifact` (planned P2) instead.
-- **What about videos / GIFs of physical operation (e.g. inserting a probe)?** Out of scope. Walkthroughs go through `document-walkthrough` (planned P2).
+- **What about videos / GIFs of physical operation (e.g. inserting a probe)?** Out of scope. Walkthroughs go through `document-walkthrough` (shipped — see its SKILL.md).
 
 ---
 
@@ -2305,7 +2305,7 @@ The user provides:
 - A subject id (e.g. `2450-ec`, `tek-express`). The skill operates on a single subject per invocation.
 
 Optional flags:
-- `--check` — print the pairing diff without writing. Used by the future `/refresh-index` CI gate to catch drift.
+- `--check` — print the pairing diff without writing. Used by the `/refresh-index` CI gate (`.github/workflows/corpus-index-check.yml`) to catch drift.
 - `--screen <id>` — limit forward pass to one screen; useful for spot fixes.
 - `--doc <doc-id>` — limit reverse pass to one manual.
 

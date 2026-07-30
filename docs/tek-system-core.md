@@ -46,7 +46,7 @@ Each system below stands on its own. Composing them is where the leverage shows 
   │         │   │  /prds   │    │   ADRs   │    │  (RAG)   │    │  Repo +  │
   │ tokens  │   │  in DSY  │    │ CLAUDE.md│    │ manuals, │    │Warehouse │
   │ ui      │   │  repo    │    │  CI gates│    │ specs,   │    │          │
-  │ qt      │   │          │    │          │    │ etc.     │    │          │
+  │ wpf     │   │          │    │          │    │ etc.     │    │          │
   └─────────┘   └──────────┘    └──────────┘    └──────────┘    └──────────┘
        │              │                │                │              │
        └──────────────┴────────────────┼────────────────┴──────────────┘
@@ -122,8 +122,7 @@ Monorepo where things release together; separate repos where they don't.
   /packages
     /tokens                        → publishes @tektronix/tokens
     /ui                            → publishes @tektronix/ui
-    /icons                         → publishes @tektronix/icons
-    /qt                            → publishes @tektronix/qt
+    /icons                         → icon set inside @tektronix/ui (OD-4 decision 2026-07-29, issue #288)
   /prds                            → PRDs co-located
   /docs/adr                        → ADRs
   /apps

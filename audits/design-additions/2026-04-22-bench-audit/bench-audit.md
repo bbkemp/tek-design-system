@@ -1,5 +1,7 @@
 # Bench Prototype — Design System Audit
 
+> **⚠️ Partially superseded (2026-07-30):** several components proposed in this audit have since shipped in waves 1–2 of `packages/ui` (status-bar, tabs, badge, toggle, dropdown, modal, progress, data-table, layout primitives). Verify against `packages/ui/src/` before acting on any proposal here; open remainders are tracked as GitHub issues from the 2026-07 backlog triage (see #202's issue tree).
+
 **Artifact audited:** `prototypes/bench/index.html` (latest drop, commit `de6d418`)
 **Token baseline:** DS v2 (`packages/tokens/src/`) + DS v2 Figma library (`3wbYstse9TYKlPtCPpZH5X`)
 **Audit date:** 2026-04-22

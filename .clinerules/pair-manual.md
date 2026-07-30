@@ -22,7 +22,7 @@ The user provides:
 - A subject id (e.g. `2450-ec`, `tek-express`). The skill operates on a single subject per invocation.
 
 Optional flags:
-- `--check` — print the pairing diff without writing. Used by the future `/refresh-index` CI gate to catch drift.
+- `--check` — print the pairing diff without writing. Used by the `/refresh-index` CI gate (`.github/workflows/corpus-index-check.yml`) to catch drift.
 - `--screen <id>` — limit forward pass to one screen; useful for spot fixes.
 - `--doc <doc-id>` — limit reverse pass to one manual.
 

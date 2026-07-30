@@ -1,5 +1,7 @@
 # DS-v2 component additions — Tek Express rr variant
 
+> **⚠️ Partially superseded (2026-07-30):** several components proposed in this document have since shipped in waves 1–2 of `packages/ui` (tabs, badge, toggle, dropdown, modal, progress, data-table, layout primitives). Verify against `packages/ui/src/` before acting on any proposal here; open remainders are tracked as GitHub issues from the 2026-07 backlog triage (tek-field → #307, tek-icon → #248, tek-readout → #247, tek-plot → #246).
+
 **Date:** 2026-06-09
 **Owner:** Bryan Kemp
 **Status:** Draft for design system team review

@@ -99,16 +99,17 @@ For Figma Code Connect mappings: use the Figma MCP tools, don't hand-edit Figma'
 
 These are flagged here so you don't act as if they exist, and don't propose them as new ideas. Context for each is in [docs/tek-system-core.md](./docs/tek-system-core.md).
 
+> Note: the PRD system (Part 2 of the architecture doc) was **retired 2026-07-29** during the backlog triage — its issues are closed and no `/prds/` directory is coming. Don't propose PRD tooling; the architecture doc's Part 2 is historical.
+
 | Item | Where in the architecture doc |
 |---|---|
 | `@bbkemp/*` → `@tektronix/*` namespace migration | Part 4 |
 | `@tektronix/.github` org-wide conventions repo | Part 4 |
-| `/prds/` directory + first PRD (likely Dashboard) | Part 2 |
 | ESLint rules for hardcoded values, type exports, import paths | Part 3 |
 | `npm run new:component` Plop scaffold | Part 3 |
 | Storybook / component explorer | Part 4 (`apps/storybook`) |
 | Per-component `.styles.ts` / `.test.ts` / `.stories.ts` split | Part 3 |
-| MCP endpoint hardening — XAML keys in token results, usage logging, org SSO (endpoint itself is **shipped**; eval gate in CI is also **shipped**, see `.github/workflows/eval-gate.yml` — per-PR preview ingest for corpus-content changes is still open, see `apps/mcp/README.md#eval-harness`) | Part 1 + [docs/mcp-server-plan.md](./docs/mcp-server-plan.md) P1/P2 |
+| MCP endpoint hardening — XAML keys in token results (folded into #228, "Update the WPF XAML library") and org SSO (#231, org-gated). Already **shipped**: the endpoint, the eval gate (`.github/workflows/eval-gate.yml`) plus its manifest-completeness check (2026-07-30), usage logging with hit/miss tracking (`mcp_usage`, surfaced via `server_info`, 2026-07-30), and the link-rotation runbook (`apps/mcp/ROTATION.md`). Per-PR preview ingest for corpus-content changes is still open, see `apps/mcp/README.md#eval-harness` | Part 1 + [docs/mcp-server-plan.md](./docs/mcp-server-plan.md) P1/P2 |
 | UXR + analytics taxonomy | Part 5 |
 
 Until namespace migration ships, packages and imports inside this repo use `@bbkemp/*`. Don't pre-emptively rename in code.
