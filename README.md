@@ -147,6 +147,8 @@ The `tek-footer` `left` slot holds the theme toggle on all preview pages.
 
 ## Fonts
 
+Full typeface reference — links, foundry info, and measured per-language support for all three families (plus CJK fallback recommendations): [docs/typefaces.md](docs/typefaces.md).
+
 ### Geist (body / UI text)
 
 [Geist](https://vercel.com/font) — Vercel's open-source variable font.
