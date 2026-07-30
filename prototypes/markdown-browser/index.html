@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tek Markdown Browser</title>
+
+<!-- Fonts — Geist (body/UI) + Archivo (headings) + Geist Mono (code/labels) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
+
+<!--
+  @bbkemp/tokens — complete build (primitives + dark/light semantic)
+  Requires: npm run build --workspace=packages/tokens
+-->
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+
+<!--
+  @bbkemp/ui — Web Components (tek-markdown does the rendering)
+  Requires: npm run build --workspace=packages/ui
+-->
+<script type="module" src="../../packages/ui/dist/tek-ui.js"></script>
+
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    display: flex;
+    background: var(--tek-color-canvas-background-default, #1e1e1e);
+    color: var(--tek-color-table-text-default, #ffffff);
+    font-family: var(--tek-fonts-family-geist, system-ui, sans-serif);
+    font-size: var(--tek-fonts-text-size-md, 13px);
+    line-height: var(--tek-fonts-text-line-height-md, 16px);
+  }
+
+  /* ── file rail ────────────────────────────────────────────────────── */
+  nav {
+    flex: 0 0 var(--tek-spacing-c01, 360px);
+    max-width: var(--tek-spacing-c01, 360px);
+    display: flex;
+    flex-direction: column;
+    border-right: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-navigation-divider-default, #7b7b7b);
+    background: var(--tek-color-navigation-background-default, #252525);
+  }
+  .rail-head {
+    padding: var(--tek-spacing-s09, 16px) var(--tek-spacing-s09, 16px) var(--tek-spacing-s05, 8px);
+  }
+  .rail-head h1 {
+    margin: 0;
+    font-family: var(--tek-fonts-family-archivo, system-ui, sans-serif);
+    font-weight: 600;
+    font-size: var(--tek-fonts-heading-size-2xs, 14px);
+    line-height: var(--tek-fonts-heading-line-height-2xs, 22px);
+    color: var(--tek-color-navigation-text-default, #ffffff);
+  }
+
+  /* breadcrumb — current document path, one crumb per folder */
+  #crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--tek-spacing-s01, 1px);
+    margin-top: var(--tek-spacing-s02, 2px);
+    font-family: var(--tek-fonts-family-mono, monospace);
+    font-size: var(--tek-fonts-text-size-xs, 10px);
+    line-height: var(--tek-fonts-text-line-height-sm, 12px);
+    color: var(--tek-color-table-text-muted, #979797);
+    word-break: break-all;
+  }
+  #crumbs .sep { opacity: 0.5; }
+  #crumbs button {
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: var(--tek-color-text-link-default, #33baea);
+    cursor: pointer;
+  }
+  #crumbs button:hover { text-decoration: underline; text-underline-offset: 2px; }
+  #crumbs .leaf { color: var(--tek-color-navigation-text-default, #ffffff); }
+
+  /* tree */
+  #tree {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--tek-spacing-s03, 4px) 0 var(--tek-spacing-s09, 16px);
+  }
+  #tree .status {
+    padding: var(--tek-spacing-s06, 10px) var(--tek-spacing-s09, 16px);
+    color: var(--tek-color-table-text-muted, #979797);
+  }
+  #tree .status.error { color: var(--tek-color-statusbar-text-error, #e74848); }
+  .node {
+    display: flex;
+    align-items: center;
+    gap: var(--tek-spacing-s03, 4px);
+    width: 100%;
+    padding: var(--tek-spacing-s03, 4px) var(--tek-spacing-s09, 16px);
+    padding-left: calc(var(--tek-spacing-s09, 16px) + var(--depth, 0) * var(--tek-spacing-s07, 12px));
+    border: none;
+    border-left: var(--tek-borders-width-05, 3px) solid transparent;
+    background: none;
+    color: var(--tek-color-navigation-text-default, #ffffff);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .node:hover { background: var(--tek-color-tabs-nav-background-hover, rgba(255, 255, 255, 0.06)); }
+  .node .caret {
+    flex: 0 0 auto;
+    width: var(--tek-spacing-s05, 8px);
+    font-size: var(--tek-fonts-text-size-xs, 10px);
+    color: var(--tek-color-table-text-muted, #979797);
+    transition: transform 0.1s;
+  }
+  .node.open .caret { transform: rotate(90deg); }
+  .node.dir { font-weight: 500; }
+  .node.file { color: var(--tek-color-table-text-muted, #cfcfcf); }
+  .node.file .caret { visibility: hidden; }
+  .node.file[aria-current='true'] {
+    background: var(--tek-color-tabs-nav-background-active, rgba(255, 255, 255, 0.1));
+    border-left-color: var(--tek-color-tabs-nav-accent-default, #33baea);
+    color: var(--tek-color-navigation-text-default, #ffffff);
+  }
+  .node .ext { color: var(--tek-color-table-text-muted, #979797); }
+
+  /* ── viewer ───────────────────────────────────────────────────────── */
+  main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    gap: var(--tek-spacing-s05, 8px);
+    padding: var(--tek-spacing-s05, 8px) var(--tek-spacing-s09, 16px);
+    border-bottom: var(--tek-borders-width-01, 0.5px) solid var(--tek-color-navigation-divider-default, #7b7b7b);
+    background: var(--tek-color-navigation-background-default, #252525);
+  }
+  /* tek-button fills its container by contract — the wrapper is the sizer */
+  .back-wrap {
+    flex: 0 0 auto;
+    width: var(--tek-spacing-s21, 96px);
+  }
+  header .src-link {
+    margin-left: auto;
+    font-family: var(--tek-fonts-family-mono, monospace);
+    font-size: var(--tek-fonts-text-size-sm, 12px);
+    color: var(--tek-color-text-link-default, #33baea);
+    text-decoration: none;
+  }
+  header .src-link:hover { text-decoration: underline; text-underline-offset: 2px; }
+  #scroller {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--tek-spacing-s13, 32px) var(--tek-spacing-s11, 24px);
+  }
+  .empty {
+    max-width: var(--tek-spacing-c05, 768px);
+    margin: var(--tek-spacing-s20, 80px) auto 0;
+    text-align: center;
+    color: var(--tek-color-table-text-muted, #979797);
+    font-size: var(--tek-fonts-text-size-lg, 14px);
+    line-height: var(--tek-fonts-text-line-height-lg, 20px);
+  }
+</style>
+</head>
+<body>
+
+<nav aria-label="Repository markdown files">
+  <div class="rail-head">
+    <h1>Markdown Browser</h1>
+    <div id="crumbs"></div>
+  </div>
+  <div id="tree"><div class="status">Loading repo tree…</div></div>
+</nav>
+
+<main>
+  <header>
+    <span class="back-wrap"><tek-button id="back" variant="secondary" disabled>&#8592; Back</tek-button></span>
+    <a id="src-link" class="src-link" target="_blank" rel="noopener" hidden>view on GitHub &#8599;</a>
+  </header>
+  <div id="scroller">
+    <p class="empty">Pick a markdown file from the rail to start reading.</p>
+    <tek-markdown id="viewer" hidden></tek-markdown>
+  </div>
+</main>
+
+<script type="module">
+  // ── The file tree is the repo's own git tree (GitHub API, CORS-open) ──
+  // Always in sync with main, no build step, no manifest to regenerate.
+  // Filtered to .md files, so a folder appears only when a .md file
+  // exists somewhere beneath it. Trade-off: files not yet pushed to main
+  // aren't listed (content is still fetched relative to this page, so
+  // local edits to a listed file DO render locally).
+  const REPO = 'bbkemp/tek-design-system';
+  const BRANCH = 'main';
+  const TREE_API = `https://api.github.com/repos/${REPO}/git/trees/${BRANCH}?recursive=1`;
+  const ROOT = new URL('../../', location.href);
+
+  const treeEl = document.getElementById('tree');
+  const crumbsEl = document.getElementById('crumbs');
+  const viewer = document.getElementById('viewer');
+  const back = document.getElementById('back');
+  const srcLink = document.getElementById('src-link');
+  const scroller = document.getElementById('scroller');
+  const empty = document.querySelector('.empty');
+
+  const expanded = new Set();
+  let currentPath = null;
+  let root = null;
+
+  const repoRelative = (url) =>
+    url.startsWith(ROOT.href) ? url.slice(ROOT.href.length) : url;
+
+  // Nested {dirs: Map<name, node>, files: string[]} from the flat path list.
+  const buildTree = (paths) => {
+    const node = () => ({ dirs: new Map(), files: [] });
+    const top = node();
+    for (const p of paths) {
+      const parts = p.split('/');
+      let cur = top;
+      for (const part of parts.slice(0, -1)) {
+        if (!cur.dirs.has(part)) cur.dirs.set(part, node());
+        cur = cur.dirs.get(part);
+      }
+      cur.files.push(parts[parts.length - 1]);
+    }
+    return top;
+  };
+
+  const renderTree = () => {
+    const walk = (n, prefix, depth) => {
+      const frag = document.createDocumentFragment();
+      const dirs = [...n.dirs.keys()].sort((a, b) => a.localeCompare(b));
+      const files = [...n.files].sort((a, b) => a.localeCompare(b));
+      for (const d of dirs) {
+        const path = prefix ? `${prefix}/${d}` : d;
+        const b = document.createElement('button');
+        b.className = 'node dir' + (expanded.has(path) ? ' open' : '');
+        b.style.setProperty('--depth', depth);
+        b.innerHTML = `<span class="caret">&#9656;</span>${d}/`;
+        b.addEventListener('click', () => {
+          expanded.has(path) ? expanded.delete(path) : expanded.add(path);
+          renderTree();
+        });
+        frag.appendChild(b);
+        if (expanded.has(path)) frag.appendChild(walk(n.dirs.get(d), path, depth + 1));
+      }
+      for (const f of files) {
+        const path = prefix ? `${prefix}/${f}` : f;
+        const b = document.createElement('button');
+        b.className = 'node file';
+        b.dataset.path = path;
+        b.style.setProperty('--depth', depth);
+        b.setAttribute('aria-current', String(path === currentPath));
+        b.innerHTML = `<span class="caret">&#9656;</span>${f.slice(0, -3)}<span class="ext">.md</span>`;
+        b.addEventListener('click', () => open(path));
+        frag.appendChild(b);
+      }
+      return frag;
+    };
+    treeEl.textContent = '';
+    treeEl.appendChild(walk(root, '', 0));
+  };
+
+  const renderCrumbs = () => {
+    crumbsEl.textContent = '';
+    if (!currentPath) {
+      crumbsEl.innerHTML = '<span class="leaf">repo root</span>';
+      return;
+    }
+    const parts = currentPath.split('/');
+    parts.forEach((part, i) => {
+      if (i) {
+        const sep = document.createElement('span');
+        sep.className = 'sep';
+        sep.textContent = '/';
+        crumbsEl.appendChild(sep);
+      }
+      if (i === parts.length - 1) {
+        const leaf = document.createElement('span');
+        leaf.className = 'leaf';
+        leaf.textContent = part;
+        crumbsEl.appendChild(leaf);
+      } else {
+        const dir = parts.slice(0, i + 1).join('/');
+        const b = document.createElement('button');
+        b.textContent = part;
+        b.title = `Reveal ${dir}/ in the rail`;
+        b.addEventListener('click', () => reveal(dir));
+        crumbsEl.appendChild(b);
+      }
+    });
+  };
+
+  // Expand every ancestor of a folder and scroll it into view.
+  const reveal = (dir) => {
+    const parts = dir.split('/');
+    for (let i = 1; i <= parts.length; i++) expanded.add(parts.slice(0, i).join('/'));
+    renderTree();
+    treeEl.querySelector(`[data-path^="${CSS.escape(dir)}/"]`)?.scrollIntoView({ block: 'center' });
+  };
+
+  const open = (path) => {
+    empty.hidden = true;
+    viewer.hidden = false;
+    viewer.src = new URL(path, ROOT).href;
+  };
+
+  const sync = (url) => {
+    currentPath = repoRelative(url);
+    history.replaceState(null, '', `#/${currentPath}`);
+    back.toggleAttribute('disabled', !viewer.canGoBack);
+    srcLink.hidden = false;
+    srcLink.href = `https://github.com/${REPO}/blob/${BRANCH}/${currentPath}`;
+    for (let p = currentPath.split('/').slice(0, -1).join('/'); p; p = p.split('/').slice(0, -1).join('/')) {
+      expanded.add(p);
+    }
+    renderTree();
+    renderCrumbs();
+    treeEl.querySelector(`[data-path="${CSS.escape(currentPath)}"]`)?.scrollIntoView({ block: 'nearest' });
+    scroller.scrollTop = 0;
+  };
+
+  viewer.addEventListener('tek-markdown-load', (e) => sync(e.detail.url));
+  back.addEventListener('tek-click', () => viewer.back());
+
+  try {
+    const res = await fetch(TREE_API);
+    if (!res.ok) throw new Error(`GitHub tree API: ${res.status} ${res.statusText}`);
+    const data = await res.json();
+    const paths = data.tree
+      .filter((t) => t.type === 'blob' && t.path.toLowerCase().endsWith('.md'))
+      .map((t) => t.path);
+    root = buildTree(paths);
+    if (data.truncated) console.warn('GitHub tree response truncated — some files may be missing from the rail.');
+    renderTree();
+    renderCrumbs();
+
+    // Deep link (#/path/to/file.md) or default to the repo README.
+    const hash = decodeURIComponent(location.hash.replace(/^#\//, ''));
+    if (hash && paths.includes(hash)) open(hash);
+    else if (paths.includes('README.md')) open('README.md');
+  } catch (err) {
+    const div = document.createElement('div');
+    div.className = 'status error';
+    div.textContent = `Couldn't load the repo tree — ${err.message}. The GitHub API may be rate-limited; try again in a minute.`;
+    treeEl.textContent = '';
+    treeEl.appendChild(div);
+  }
+</script>
+
+</body>
+</html>
