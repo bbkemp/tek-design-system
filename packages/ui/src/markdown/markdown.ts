@@ -1,6 +1,37 @@
+import { css, html, LitElement, nothing } from 'lit';
+import type { PropertyValues, TemplateResult } from 'lit';
+import { property, state } from 'lit/decorators.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { marked } from 'marked';
+import { parse as parseYaml } from 'yaml';
+import type { BadgeType } from '../badge/badge.js';
+import '../badge/badge.js';
+import '../data-table/data-table.js';
+import '../spinner/spinner.js';
+
+type Meta = Record<string, unknown>;
+type Scalar = string | number | boolean;
+
+interface ParsedDoc {
+  meta: Meta | null;
+  bodyHtml: string;
+}
+
+const FRONTMATTER_RE = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/;
+/** Frontmatter keys shown as badges rather than key/value rows. */
+const BADGE_KEYS = ['provenance', 'class', 'screen_type', 'software', 'software_version'] as const;
+/** Frontmatter keys whose value is the document title. */
+const TITLE_KEYS = ['screen_title', 'title', 'name'] as const;
+/** Object-table columns that hold prose and get a wider track. */
+const WIDE_COLUMNS = new Set(['action', 'description', 'notes', 'summary']);
+
+const isScalar = (v: unknown): v is Scalar =>
+  typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean';
+const isScalarArray = (v: unknown): v is Scalar[] => Array.isArray(v) && v.every(isScalar);
+const isRecordArray = (v: unknown): v is Meta[] =>
+  Array.isArray(v) && v.length > 0 && v.every((i) => typeof i === 'object' && i !== null && !Array.isArray(i));
+
 /**
- * tek-markdown
- *
  * Token-driven Markdown viewer — the readable surface for corpus files,
  * docs, and README-style content. Wraps `marked` (GFM) for the body and
  * `yaml` for frontmatter. YAML frontmatter renders as a structured spec
@@ -38,39 +69,6 @@
  *
  * @cssprop --tek-markdown-max-width - Content column width (default spacing/c05, 768px).
  */
-import { css, html, LitElement, nothing } from 'lit';
-import type { PropertyValues, TemplateResult } from 'lit';
-import { property, state } from 'lit/decorators.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
-import { marked } from 'marked';
-import { parse as parseYaml } from 'yaml';
-import type { BadgeType } from '../badge/badge.js';
-import '../badge/badge.js';
-import '../data-table/data-table.js';
-import '../spinner/spinner.js';
-
-type Meta = Record<string, unknown>;
-type Scalar = string | number | boolean;
-
-interface ParsedDoc {
-  meta: Meta | null;
-  bodyHtml: string;
-}
-
-const FRONTMATTER_RE = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/;
-/** Frontmatter keys shown as badges rather than key/value rows. */
-const BADGE_KEYS = ['provenance', 'class', 'screen_type', 'software', 'software_version'] as const;
-/** Frontmatter keys whose value is the document title. */
-const TITLE_KEYS = ['screen_title', 'title', 'name'] as const;
-/** Object-table columns that hold prose and get a wider track. */
-const WIDE_COLUMNS = new Set(['action', 'description', 'notes', 'summary']);
-
-const isScalar = (v: unknown): v is Scalar =>
-  typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean';
-const isScalarArray = (v: unknown): v is Scalar[] => Array.isArray(v) && v.every(isScalar);
-const isRecordArray = (v: unknown): v is Meta[] =>
-  Array.isArray(v) && v.length > 0 && v.every((i) => typeof i === 'object' && i !== null && !Array.isArray(i));
-
 export class TekMarkdown extends LitElement {
   static styles = css`
     :host {

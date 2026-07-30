@@ -1,4 +1,5 @@
 import { LitElement } from 'lit';
+export type TekCharacterCountState = 'default' | 'focus' | 'filled' | 'error' | 'warning';
 /**
  * Character counter for text fields, rendered as `current/max` (or just `current` when no max).
  *
@@ -28,7 +29,6 @@ import { LitElement } from 'lit';
  * @cssprop --tek-color-input-character-count-error - Count color, error state.
  * @cssprop --tek-color-input-character-count-warning - Count color, warning state.
  */
-export type TekCharacterCountState = 'default' | 'focus' | 'filled' | 'error' | 'warning';
 export declare class TekCharacterCount extends LitElement {
     static styles: import("lit").CSSResult;
     current: number;

@@ -1,4 +1,5 @@
 import { LitElement, type PropertyValues, type TemplateResult } from 'lit';
+export type TekSelectorType = 'checkbox' | 'radio' | 'toggle';
 /**
  * Composite selector row: a checkbox/radio/toggle control plus a state-synced
  * label. Two modes — self-contained (set `label`, the control is rendered in
@@ -39,7 +40,6 @@ import { LitElement, type PropertyValues, type TemplateResult } from 'lit';
  *
  * @cssprop --tek-spacing-s05 - Gap between control and label.
  */
-export type TekSelectorType = 'checkbox' | 'radio' | 'toggle';
 export declare class TekSelector extends LitElement {
     static styles: import("lit").CSSResult;
     checked: boolean;

@@ -1,6 +1,8 @@
 import { css, html, LitElement, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 
+export type TekLabelHelperState = 'error';
+
 /**
  * Form-field label with optional marker, helper text, and inline character
  * count. Sits above a `tek-input`.
@@ -41,8 +43,6 @@ import { property } from 'lit/decorators.js';
  * @cssprop --tek-color-input-character-count-default - Char-count color.
  * @cssprop --tek-color-input-text-error - Helper color when helper-state="error".
  */
-export type TekLabelHelperState = 'error';
-
 export class TekLabel extends LitElement {
   static styles = css`
     :host {

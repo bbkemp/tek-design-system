@@ -1,20 +1,3 @@
-/**
- * tek-grid
- *
- * Figma: DS-v2 → v2.02 → Grid (node 8377:446)
- * ADR-0002: layout primitives — always start with layout.
- *
- * Column-grid layout primitive. `columns` and `gap` mirror the Figma
- * variant axes; `gap` accepts spacing token steps ONLY (never raw px).
- *
- * Tokens:
- *   --tek-spacing-s05 | s09 | s11
- *
- * Usage:
- *   <tek-grid columns="3" gap="s09">
- *     <div>…</div><div>…</div><div>…</div>
- *   </tek-grid>
- */
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 
@@ -23,6 +6,30 @@ export type GridGapStep = (typeof GRID_GAP_STEPS)[number];
 export const GRID_COLUMNS = ['2', '3', '4'] as const;
 export type GridColumns = (typeof GRID_COLUMNS)[number];
 
+/**
+ * Column-grid layout primitive (ADR-0002: layout primitives — always start
+ * with layout). Equal-width columns; `columns` and `gap` mirror the Figma
+ * variant axes, and `gap` accepts spacing token steps ONLY (never raw px) —
+ * unknown values warn and fall back to the defaults.
+ *
+ * Figma: DS-v2 → v2.02 → Grid (node 8377:446).
+ *
+ * Usage:
+ * ```html
+ * <tek-grid columns="3" gap="s09">
+ *   <div>…</div><div>…</div><div>…</div>
+ * </tek-grid>
+ * ```
+ *
+ * @summary Column-grid layout primitive with token-step gap.
+ *
+ * @attr {'s05'|'s09'|'s11'} gap - Spacing token step between cells (default s09).
+ * @attr {'2'|'3'|'4'} columns - Number of equal-width columns (default 3).
+ *
+ * @slot - Grid cells.
+ *
+ * @cssprop --tek-spacing-s05 - Gap for gap="s05"; --tek-spacing-s09 and --tek-spacing-s11 likewise.
+ */
 export class TekGrid extends LitElement {
   static styles = css`
     :host {

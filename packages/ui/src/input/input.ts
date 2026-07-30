@@ -2,6 +2,9 @@ import { css, html, LitElement, type PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 
+export type TekInputState = 'default' | 'focus' | 'filled' | 'disabled' | 'error';
+export type TekInputHeight = 'single' | 'double' | 'triple';
+
 /**
  * Text input field. Single height renders an `<input>`; double/triple render a
  * `<textarea>` (48px / 64px). The `state` attribute is auto-managed on
@@ -46,9 +49,6 @@ import { live } from 'lit/directives/live.js';
  * @cssprop --tek-fonts-text-size-lg - Field font size.
  * @cssprop --tek-fonts-text-line-height-lg - Field line height.
  */
-export type TekInputState = 'default' | 'focus' | 'filled' | 'disabled' | 'error';
-export type TekInputHeight = 'single' | 'double' | 'triple';
-
 export class TekInput extends LitElement {
   static styles = css`
     :host {

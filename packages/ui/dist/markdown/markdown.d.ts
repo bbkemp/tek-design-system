@@ -1,6 +1,9 @@
+import { LitElement } from 'lit';
+import type { PropertyValues, TemplateResult } from 'lit';
+import '../badge/badge.js';
+import '../data-table/data-table.js';
+import '../spinner/spinner.js';
 /**
- * tek-markdown
- *
  * Token-driven Markdown viewer — the readable surface for corpus files,
  * docs, and README-style content. Wraps `marked` (GFM) for the body and
  * `yaml` for frontmatter. YAML frontmatter renders as a structured spec
@@ -38,11 +41,6 @@
  *
  * @cssprop --tek-markdown-max-width - Content column width (default spacing/c05, 768px).
  */
-import { LitElement } from 'lit';
-import type { PropertyValues, TemplateResult } from 'lit';
-import '../badge/badge.js';
-import '../data-table/data-table.js';
-import '../spinner/spinner.js';
 export declare class TekMarkdown extends LitElement {
     static styles: import("lit").CSSResult;
     src?: string;

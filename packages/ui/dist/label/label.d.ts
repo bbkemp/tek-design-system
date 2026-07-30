@@ -1,4 +1,5 @@
 import { LitElement } from 'lit';
+export type TekLabelHelperState = 'error';
 /**
  * Form-field label with optional marker, helper text, and inline character
  * count. Sits above a `tek-input`.
@@ -39,7 +40,6 @@ import { LitElement } from 'lit';
  * @cssprop --tek-color-input-character-count-default - Char-count color.
  * @cssprop --tek-color-input-text-error - Helper color when helper-state="error".
  */
-export type TekLabelHelperState = 'error';
 export declare class TekLabel extends LitElement {
     static styles: import("lit").CSSResult;
     optional: boolean;
