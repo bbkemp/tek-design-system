@@ -66,7 +66,7 @@ claude mcp add --transport http tek https://<host>/<secret>/mcp
 
 **claude.ai:** Settings → Connectors → Add custom connector → paste the URL (no auth to configure).
 
-**Cursor:** add the same block as `.mcp.json.example` to `~/.cursor/mcp.json` (or the project's `.cursor/mcp.json` — only in private repos).
+**Cursor — this repo:** copy [`.cursor/mcp.json.example`](../../.cursor/mcp.json.example) to `.cursor/mcp.json` (gitignored) and paste the real URL. Cursor also injects the root [`.cursorrules`](../../.cursorrules) (generated from CLAUDE.md by `npm run skills:export`) so Cursor sessions get the same working contract as Claude Code. Elsewhere: put the same block in `~/.cursor/mcp.json`.
 
 **Hermes Agent:** add a custom remote (streamable HTTP) MCP server with the URL — see `hermes mcp` / Hermes's MCP config docs.
 

@@ -39,3 +39,4 @@ uxr/**/*.csv
 uxr/**/*.zip
 
 .mcp.json
+.cursor/mcp.json
