@@ -18,6 +18,7 @@ status: disposable snapshot
 
 **Authored:** 2026-06-30 · **Authors:** Bryan Kemp + Claude · **Type:** competitive audit (disposable snapshot)
 **Compared:** TekExpress AppEmulator (`corpus/sources/tek-express/`) vs. Keysight D9040USBC USB4 Test Application 1.30.0.0 (`corpus/sources/keysight-d9040/`)
+**Canonical worked example** for the competitive-audit template — new audits start from [`../TEMPLATE.md`](../TEMPLATE.md), not by copying this file.
 
 ## How to read this file
 
