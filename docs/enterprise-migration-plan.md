@@ -88,6 +88,7 @@ Their stacks: **Python + uv** (services, MCP), **Jinja via Copier** (repo scaffo
 ### Migration log
 
 - **2026-07-30** — `TEK-Product-AI/tek-design-system` created (internal) by `bryan-kemp_ralliant`; full history mirror-pushed (38 branches, 12 tags); default branch set to `main`, verified identical to bbkemp `main` (`ca2260f`). bbkemp repo remains canonical until Phase 2 cutover.
+- **2026-07-30 (Phase 1 progress)** — Org repo push-triggered workflows **disabled** (ingest, publish-tokens, publish-ui, claude, figma-mcp-watch, skills-sync; PR gates corpus-index-check + eval-gate left active) so the org copy can't race the canonical repo or double-write the corpus DB — re-enable at cutover. `TEK_MCP_URL` secret set. CODEOWNERS opened as org PR #1 (Bryan to merge). **Issues dry run PASSED**: [`scripts/migrate_issues.py`](../scripts/migrate_issues.py) migrated all 98 issues (35 open / 63 closed) + 36 labels to throwaway `TEK-Product-AI/tds-migration-dryrun` with per-issue provenance footers and an old→new mapping file; counts and content spot-checks verified. Still owed: `DATABASE_URL` + `VOYAGE_API_KEY` secrets (not readable back — re-enter from dashboards or Vercel env at cutover); design-system team creation (org admin); Claude GitHub App install on org (org admin). **Cutover sync note:** org `main` now has org-only commits (CODEOWNERS), so the final sync must merge bbkemp `main` into org `main` — not a blind mirror overwrite.
 
 ## 7. Explicitly out of scope
 
