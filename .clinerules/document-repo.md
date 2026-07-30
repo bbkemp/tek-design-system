@@ -146,8 +146,8 @@ Generated <YYYY-MM-DD> by `document-repo` skill from <repo-path-or-url>.
 
 | Module | Path | Language | Published as | Version |
 |---|---|---|---|---|
-| [packages-tokens](./packages-tokens.md) | `packages/tokens` | ts | `@bbkemp/tokens` | 1.0.16 |
-| [packages-ui](./packages-ui.md) | `packages/ui` | ts | `@bbkemp/ui` | 1.0.12 |
+| [packages-tokens](../../../corpus/sources/tek-design-system/code/2026-05-12-85a6857/packages-tokens.md) | `packages/tokens` | ts | `@bbkemp/tokens` | 1.0.16 |
+| [packages-ui](../../../corpus/sources/tek-design-system/code/2026-05-12-85a6857/packages-ui.md) | `packages/ui` | ts | `@bbkemp/ui` | 1.0.12 |
 | … | … | … | … | … |
 
 ## Non-module directories
@@ -166,7 +166,7 @@ Write or update `corpus/sources/<service-id>/index.md` to list all snapshots:
 
 | Snapshot | Commit | Tag | Date | Modules |
 |---|---|---|---|---|
-| [2026-05-12-85a6857](./code/2026-05-12-85a6857/_index.md) | `85a6857` | none | 2026-05-12 | 5 |
+| [2026-05-12-85a6857](../../../corpus/sources/tek-design-system/code/2026-05-12-85a6857/_index.md) | `85a6857` | none | 2026-05-12 | 5 |
 
 ## API snapshots
 (populated by document-api)

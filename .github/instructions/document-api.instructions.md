@@ -144,7 +144,7 @@ Generated <YYYY-MM-DD> by `document-api` skill.
 
 | Resource | Cluster chunks |
 |---|---|
-| products | [products-list-create](./products-list-create.md), [products-detail](./products-detail.md), [products-files](./products-files.md) |
+| products | [products-list-create](../../../corpus/sources/dev-core-api/api/v1.0-2026-05-12/products-list-create.md), [products-detail](../../../corpus/sources/dev-core-api/api/v1.0-2026-05-12/products-detail.md), [products-files](../../../corpus/sources/dev-core-api/api/v1.0-2026-05-12/products-files.md) |
 | … | … |
 
 ## Pending resources

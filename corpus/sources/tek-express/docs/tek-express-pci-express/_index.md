@@ -47,7 +47,7 @@ This manual shares the TekExpress framework (Setup → Status → Results → Pl
   - [`../tek-express-app-emulator/`](../tek-express-app-emulator/_index.md) — Reference / starter framework (11 chunks)
 - **Tek-vs-Keysight competitive context** at [`audits/competitive/2026-06-25-tek-express-vs-keysight-d9040dppc/`](../../../../../audits/competitive/2026-06-25-tek-express-vs-keysight-d9040dppc/) — covers Tek-vs-Keysight on the platform level; PCIe-specific competitive dimensions (CTLE optimization, Switch Matrix vs Resource Arbiter) live there.
 - **Customer signal for PCIe**: NVIDIA Bangalore's *"Gen4 was late by Tek, we moved to KS"* in [`../../decks/india-customer-voc-2023-march/empathy-map-nvidia.md`](../../decks/india-customer-voc-2023-march/empathy-map-nvidia.md). Time-to-market on new PCIe generations is competitive-existential.
-- **TekFlow migration concern**: PCIe Tx customers will be forced onto TekFlow at Gen 6 + CEM testing — see [`corpus/sources/tek-flow/walkthroughs/customer-feedback-thread.md`](../../../../tek-flow/walkthroughs/customer-feedback-thread.md). Session file portability and SCPI command continuity between this product and the TekFlow equivalent are on the critical path.
+- **TekFlow migration concern**: PCIe Tx customers will be forced onto TekFlow at Gen 6 + CEM testing — see [`corpus/sources/tek-flow/walkthroughs/customer-feedback-thread.md`](../../../tek-flow/walkthroughs/customer-feedback-thread.md). Session file portability and SCPI command continuity between this product and the TekFlow equivalent are on the critical path.
 
 ## Confidence notes
 

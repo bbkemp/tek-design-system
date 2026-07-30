@@ -49,7 +49,7 @@ The empty shell created in the prior session has now been populated with the 4 a
 
 Every "button", "input", "card", "modal header" etc. in the current build is a raw `<Rectangle>` + `<Text>` — not an instance of a DS v2 component. Why:
 
-- DS v2 Figma components don't bind to the proposed semantic tokens yet (surface/text/border/status/channel from [bench-audit.md §2](../bench-audit.md#2-color-gaps--new-tokens-to-add))
+- DS v2 Figma components don't bind to the proposed semantic tokens yet (surface/text/border/status/channel from [bench-audit.md §2](../2026-04-22-bench-audit/bench-audit.md#2-color-gaps--new-tokens-to-add))
 - Binding them requires landing those tokens in `packages/tokens/src/` first, then the Figma Token Push syncs them to the DS v2 library
 - Once that round-trip is done, a follow-up pass swaps rectangles for component instances and pins fills to variables
 
@@ -121,7 +121,7 @@ First pass put all waveform traces at the top of the canvas regardless of intend
 ## Next steps (in recommended order)
 
 1. **Bryan answers [spec §9 open decisions](./riddick-alignment-spec.md#9-open-decisions-flag-to-bryan-before-building)** — especially 9A (blue scale), 9B (Ch 6 purple vs navy), 9E (gradients)
-2. **Land the proposed semantic tokens** in `packages/tokens/src/` per [bench-audit.md §7](../bench-audit.md#7-prioritized-action-list-if-you-pick-one-thing-each-day) Day 1–4
+2. **Land the proposed semantic tokens** in `packages/tokens/src/` per [bench-audit.md §7](../2026-04-22-bench-audit/bench-audit.md#7-prioritized-action-list-if-you-pick-one-thing-each-day) Day 1–4
 3. **Figma Token Push syncs** the new tokens to the DS v2 library
 4. **Follow-up session** — swap rectangles for component instances, wire fills to variables, polish fidelity on the 4 existing screens
 5. **Build the remaining 8 screens** using the same pattern
@@ -129,4 +129,4 @@ First pass put all waveform traces at the top of the canvas regardless of intend
 
 ---
 
-*Session completed 2026-04-22. Companion: [bench-audit.md](../bench-audit.md), [riddick-alignment-spec.md](./riddick-alignment-spec.md).*
+*Session completed 2026-04-22. Companion: [bench-audit.md](../2026-04-22-bench-audit/bench-audit.md), [riddick-alignment-spec.md](./riddick-alignment-spec.md).*

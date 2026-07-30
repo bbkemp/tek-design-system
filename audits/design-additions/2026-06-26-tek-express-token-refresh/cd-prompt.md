@@ -34,7 +34,7 @@ The prototype currently uses **proposed new primitives** that are not yet shippe
 
 - `tek-field`, `tek-dropdown`, `tek-wizard-stepper`, `tek-tabs`, `tek-status-bar`, `tek-status-pill`, `tek-empty-state`, `tek-group-box`
 
-These are real proposed primitives (documented in the [2026-06-25 prototype audit](../2026-06-25-tek-express-ds-v2-baseline/report.md)). For this refresh:
+These are real proposed primitives (documented in the [2026-06-25 prototype audit](../../prototype/2026-06-25-tek-express-ds-v2-baseline/report.md)). For this refresh:
 
 - **Keep them named as `tek-*` web components** in the HTML.
 - **Style them with DS-v2 tokens only.** Their internals can be CSS targeting the custom element name — that's the bridge until the real primitives ship.

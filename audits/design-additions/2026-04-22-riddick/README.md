@@ -1,6 +1,6 @@
 # Riddick — design-system alignment
 
-All Riddick-specific artifacts live in this folder. The Bench audit ([../bench-audit.md](../bench-audit.md)) is a sibling because Bench and Riddick share the proposed token set.
+All Riddick-specific artifacts live in this folder. The Bench audit ([../bench-audit.md](../2026-04-22-bench-audit/bench-audit.md)) is a sibling because Bench and Riddick share the proposed token set.
 
 ## Contents
 
@@ -12,7 +12,7 @@ All Riddick-specific artifacts live in this folder. The Bench audit ([../bench-a
 
 ## Companion docs
 
-- [`../bench-audit.md`](../bench-audit.md) — Bench prototype audit + proposed semantic tokens both Riddick and Bench depend on
+- [`../bench-audit.md`](../2026-04-22-bench-audit/bench-audit.md) — Bench prototype audit + proposed semantic tokens both Riddick and Bench depend on
 
 ## Figma
 

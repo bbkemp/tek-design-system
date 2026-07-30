@@ -53,8 +53,8 @@ Pre-run files are session snapshots taken at the moment of a previous run. Loadi
 
 - **UI documented**: [`../../screens/setup-dut-session-browser.md`](../../screens/setup-dut-session-browser.md) is the canonical session-browser screen.
 - **Persona context**: the [persona model](../../walkthroughs/personas-and-jobs-to-be-done.md) names the save/replay loop as **Guru Gus's primary value creation** — Gus configures, saves, then Pete (or Midway Max) replays the saved wizards. This document's save/load surface is the literal load-bearing UI for that handoff.
-- **Customer ask from STM France 2021**: *"Session or Saving the configurations to customize to test scenarios like My voltage 1, my voltage 2"* (see [`stm-france-tekflow-presentation/stm-customer-feedback.md`](../../../../tek-flow/decks/stm-france-tekflow-presentation/stm-customer-feedback.md)). The Save-As-with-different-name flow on page 92 directly answers this customer request.
-- **TekFlow migration concern**: PCIe customers will be forced onto TekFlow at Gen 6 CEM (per [`customer-feedback-thread.md`](../../../../tek-flow/walkthroughs/customer-feedback-thread.md)); session file portability between this product and the TekFlow equivalent is a critical-path migration concern.
+- **Customer ask from STM France 2021**: *"Session or Saving the configurations to customize to test scenarios like My voltage 1, my voltage 2"* (see [`stm-france-tekflow-presentation/stm-customer-feedback.md`](../../../tek-flow/decks/stm-france-tekflow-presentation/stm-customer-feedback.md)). The Save-As-with-different-name flow on page 92 directly answers this customer request.
+- **TekFlow migration concern**: PCIe customers will be forced onto TekFlow at Gen 6 CEM (per [`customer-feedback-thread.md`](../../../tek-flow/walkthroughs/customer-feedback-thread.md)); session file portability between this product and the TekFlow equivalent is a critical-path migration concern.
 
 ## Confidence notes
 
