@@ -94,6 +94,6 @@ No speaker notes captured.
 
 - **"Rajani Rao (Manager) · Mohit Kumar (Lead) – post-Si validation"** appears on BOTH this AMD slide AND the NVIDIA slide. This is a deck-authoring error (likely a copy-paste from the AMD template to the NVIDIA slide). The names are preserved as-extracted with this flag; the correct customer attribution for these two engineers is **AMD** (per the structural location on slide 2 / AMD's customer-specific demographics). Cross-checked against the slide 3 / NVIDIA demographics block which references **NVIDIA** chip-IP work — the names are clearly an erroneous repeat.
 - **"VnV"** = Validation and Verification. Standard semi-industry abbreviation.
-- **"PVT"** = Process / Voltage / Temperature testing. Same usage as the [Designcon Intel empathy map](../../designcon-2023-voc-summary/empathy-map-intel.md).
+- **"PVT"** = Process / Voltage / Temperature testing. Same usage as the [Designcon Intel empathy map](../designcon-2023-voc-summary/empathy-map-intel.md).
 - **"10GKR"** = 10 Gigabit Ethernet over KR backplane (IEEE 802.3ap). Preserved verbatim.
 - **"Puneet"** is the Tek-internal contact responsible for confirming the TekFlow PCIe scope — references the cover-slide attendee list.

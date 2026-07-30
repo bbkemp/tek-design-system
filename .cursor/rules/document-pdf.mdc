@@ -136,7 +136,7 @@ Generated <YYYY-MM-DD> by `document-pdf` skill from `uploads/pdfs/<filename>.pdf
 
 | Section | Pages | Chunks |
 |---|---|---|
-| Section 1: Introduction | 1-1 to 1-11 | [introduction](./introduction.md), [getting-started](./getting-started.md), [cable-assembly](./cable-assembly.md), [connections-and-usage](./connections-and-usage.md), [home-and-menu-overview](./home-and-menu-overview.md) |
+| Section 1: Introduction | 1-1 to 1-11 | [introduction](./introduction.md), [getting-started](./getting-started.md), [cable-assembly](../../../corpus/sources/2450-ec/docs/user-manual/cable-assembly.md), [connections-and-usage](../../../corpus/sources/2450-ec/docs/user-manual/connections-and-usage.md), [home-and-menu-overview](../../../corpus/sources/2450-ec/docs/user-manual/home-and-menu-overview.md) |
 | Section 2: Cyclic voltammetry | 2-1 to 2-17 | … |
 | … | … | … |
 

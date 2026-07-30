@@ -308,4 +308,4 @@ Bench has 7 ad-hoc inline SVGs. Riddick will need **dozens** (every toolbar butt
 
 ---
 
-*End of Bench audit. Next deliverable: [riddick-alignment-spec.md](./riddick-alignment-spec.md).*
+*End of Bench audit. Next deliverable: [riddick-alignment-spec.md](../2026-04-22-riddick/riddick-alignment-spec.md).*

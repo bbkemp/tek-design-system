@@ -105,7 +105,7 @@ No speaker notes captured.
 - **"Better SW support from Tek"** — software support gap. Generic; needs follow-up to specify whether the gap is application software (TekFlow / TekExpress), instrument firmware, or SDK / API.
 - **"AFG failure"** — instrument-reliability complaint about a Tek Arbitrary Function Generator. Pairs with NVIDIA's [empathy-map-nvidia](./empathy-map-nvidia.md) "61 AFGs" install-base call-out — both India customers have significant AFG use, both have AFG-related pain.
 - **"Margin Tester Demo for PCI"** — concrete next-step deliverable. Margin testing is the receiver-side compliance technique for PCIe.
-- **"A-PHY Overview to Vinod (Engagement)"** — A-PHY is the automotive PHY standard (MIPI A-PHY for in-vehicle camera / display). Same A-PHY ask as the [Designcon TI customer connect](../../designcon-2023-voc-summary/customer-connects-summary.md) (*"MIPI - CPHY-DPHY – ASA - APHY"*). Two customers, two months apart, both want A-PHY engagement.
+- **"A-PHY Overview to Vinod (Engagement)"** — A-PHY is the automotive PHY standard (MIPI A-PHY for in-vehicle camera / display). Same A-PHY ask as the [Designcon TI customer connect](../designcon-2023-voc-summary/customer-connects-summary.md) (*"MIPI - CPHY-DPHY – ASA - APHY"*). Two customers, two months apart, both want A-PHY engagement.
 - **"NDA + Connect with Trebuchet team"** — Trebuchet is the Tek-internal codename for an unreleased / pre-NDA project that Infineon is being introduced to. Preserved verbatim; codename not extractable to a published product.
 - **"De-embed filter files for CYTECH RF switch"** — concrete technical deliverable: signal-integrity de-embedding filter files for a third-party RF switch. CYTECH appears to be the RF switch vendor.
 - **The Infineon workflow** is detailed on the next slide ([customer-workflow-infineon](./customer-workflow-infineon.md)) — the only deck slide that diverges from the empathy-map template into a free-form diagram.
@@ -117,7 +117,7 @@ No speaker notes captured.
 - **"Vinod ATV VnV manager · Ramesh Babu Lab Manager & Team member · Vasavi ATV VnV Lead"** — three named attendees. **First names** for Vinod and Vasavi (no last names on slide). Ramesh Babu has both names.
 - **"USB32"** = USB 3.2. Preserved verbatim.
 - **"MII"** = Media Independent Interface (Ethernet MAC-to-PHY interface). Preserved verbatim.
-- **"BBU"** = Body Building Unit (automotive ECU). Pairs with the customer-workflow slide where BBU is the test subject. The [Designcon connects](../../designcon-2023-voc-summary/customer-connects-summary.md) does not use "BBU"; the term is Infineon-specific automotive usage here.
+- **"BBU"** = Body Building Unit (automotive ECU). Pairs with the customer-workflow slide where BBU is the test subject. The [Designcon connects](../designcon-2023-voc-summary/customer-connects-summary.md) does not use "BBU"; the term is Infineon-specific automotive usage here.
 - **"KS MXR 13G"** = Keysight Infiniium MXR-Series mixed-signal oscilloscope, 13 GHz bandwidth model. Used by Infineon for BBU testing.
 - **"40ps resolution for timing"** is a customer-specified instrument capability requirement. 40 picoseconds = 1/25 GHz. Implies a 25-GHz+ effective sampling-clock requirement.
 - **"Trebuchet"** is preserved verbatim; not associated with any published Tek product. Likely internal codename, possibly for a margin-tester or BERT product the team is preparing for NDA disclosure to Infineon.

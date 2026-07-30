@@ -777,7 +777,7 @@ Generated <YYYY-MM-DD> by `document-api` skill.
 
 | Resource | Cluster chunks |
 |---|---|
-| products | [products-list-create](./products-list-create.md), [products-detail](./products-detail.md), [products-files](./products-files.md) |
+| products | [products-list-create](../../../corpus/sources/dev-core-api/api/v1.0-2026-05-12/products-list-create.md), [products-detail](../../../corpus/sources/dev-core-api/api/v1.0-2026-05-12/products-detail.md), [products-files](../../../corpus/sources/dev-core-api/api/v1.0-2026-05-12/products-files.md) |
 | … | … |
 
 ## Pending resources
@@ -1097,7 +1097,7 @@ Add or update the **Documented hardware** section in `corpus/sources/<product>/i
 
 | part_id | part_title | view |
 |---|---|---|
-| [front-panel](hardware/front-panel.md) | Front panel | front-panel |
+| [front-panel](../../../corpus/sources/2450-ec/hardware/front-panel.md) | Front panel | front-panel |
 ```
 
 ## Output
@@ -1275,7 +1275,7 @@ Generated <YYYY-MM-DD> by `document-pdf` skill from `uploads/pdfs/<filename>.pdf
 
 | Section | Pages | Chunks |
 |---|---|---|
-| Section 1: Introduction | 1-1 to 1-11 | [introduction](./introduction.md), [getting-started](./getting-started.md), [cable-assembly](./cable-assembly.md), [connections-and-usage](./connections-and-usage.md), [home-and-menu-overview](./home-and-menu-overview.md) |
+| Section 1: Introduction | 1-1 to 1-11 | [introduction](./introduction.md), [getting-started](./getting-started.md), [cable-assembly](../../../corpus/sources/2450-ec/docs/user-manual/cable-assembly.md), [connections-and-usage](../../../corpus/sources/2450-ec/docs/user-manual/connections-and-usage.md), [home-and-menu-overview](../../../corpus/sources/2450-ec/docs/user-manual/home-and-menu-overview.md) |
 | Section 2: Cyclic voltammetry | 2-1 to 2-17 | … |
 | … | … | … |
 
@@ -1492,8 +1492,8 @@ Generated <YYYY-MM-DD> by `document-repo` skill from <repo-path-or-url>.
 
 | Module | Path | Language | Published as | Version |
 |---|---|---|---|---|
-| [packages-tokens](./packages-tokens.md) | `packages/tokens` | ts | `@bbkemp/tokens` | 1.0.16 |
-| [packages-ui](./packages-ui.md) | `packages/ui` | ts | `@bbkemp/ui` | 1.0.12 |
+| [packages-tokens](../../../corpus/sources/tek-design-system/code/2026-05-12-85a6857/packages-tokens.md) | `packages/tokens` | ts | `@bbkemp/tokens` | 1.0.16 |
+| [packages-ui](../../../corpus/sources/tek-design-system/code/2026-05-12-85a6857/packages-ui.md) | `packages/ui` | ts | `@bbkemp/ui` | 1.0.12 |
 | … | … | … | … | … |
 
 ## Non-module directories
@@ -1512,7 +1512,7 @@ Write or update `corpus/sources/<service-id>/index.md` to list all snapshots:
 
 | Snapshot | Commit | Tag | Date | Modules |
 |---|---|---|---|---|
-| [2026-05-12-85a6857](./code/2026-05-12-85a6857/_index.md) | `85a6857` | none | 2026-05-12 | 5 |
+| [2026-05-12-85a6857](../../../corpus/sources/tek-design-system/code/2026-05-12-85a6857/_index.md) | `85a6857` | none | 2026-05-12 | 5 |
 
 ## API snapshots
 (populated by document-api)

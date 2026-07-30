@@ -117,7 +117,7 @@ Add or update the **Documented hardware** section in `corpus/sources/<product>/i
 
 | part_id | part_title | view |
 |---|---|---|
-| [front-panel](hardware/front-panel.md) | Front panel | front-panel |
+| [front-panel](../../../corpus/sources/2450-ec/hardware/front-panel.md) | Front panel | front-panel |
 ```
 
 ## Output

@@ -2,7 +2,7 @@
 
 **Source:** [riddick-ui-guide.pdf](./riddick-ui-guide.pdf) (35pp, June 2018 — original `UI_Guide_Riddick translated into WPF.pdf`)
 **Target Figma file:** [Riddick — DS v2 Alignment](https://www.figma.com/design/7L4Zc8IFcs6xKbNFYmU3X1)
-**Token baseline:** DS v2 (`packages/tokens/src/`) + new tokens proposed in [bench-audit.md](../bench-audit.md)
+**Token baseline:** DS v2 (`packages/tokens/src/`) + new tokens proposed in [bench-audit.md](../2026-04-22-bench-audit/bench-audit.md)
 **Spec date:** 2026-04-22
 
 ---
@@ -348,7 +348,7 @@ Specialized mini-app inside a modal. Contains a math expression editor, button p
 Build in this order so dependencies are in place before composite screens:
 
 **Sprint 1 — foundations (do first)**
-1. Token additions from [bench-audit.md §2–4](../bench-audit.md#2-color-gaps--new-tokens-to-add) — surface, text, border, status, channel, shadow, glow, space, radius, motion
+1. Token additions from [bench-audit.md §2–4](../2026-04-22-bench-audit/bench-audit.md#2-color-gaps--new-tokens-to-add) — surface, text, border, status, channel, shadow, glow, space, radius, motion
 2. Re-alias existing component tokens to the new semantic layer where relevant
 
 **Sprint 2 — primitives**
@@ -467,7 +467,7 @@ color.interaction.active        // #F45618 (Radio orange — cursor handle, trig
 
 ## 7. Things explicitly out of scope (for now)
 
-- **Waveform rendering tokens** — separate Phase per your note; see [bench-audit.md §6B](../bench-audit.md#6b-waveforms-will-need-their-own-mini-system)
+- **Waveform rendering tokens** — separate Phase per your note; see [bench-audit.md §6B](../2026-04-22-bench-audit/bench-audit.md#6b-waveforms-will-need-their-own-mini-system)
 - **Equation Editor internals** — complex enough to be its own spec; build the shell, stub the body
 - **Keyboard shortcut overlays** — not shown in PDF
 - **Touch gesture handling** — scope uses touch + mouse; interaction layer is a separate doc
@@ -573,4 +573,4 @@ Getting those four right sets the tone for the rest.
 
 ---
 
-*End of Riddick alignment spec. Companion: [bench-audit.md](../bench-audit.md).*
+*End of Riddick alignment spec. Companion: [bench-audit.md](../2026-04-22-bench-audit/bench-audit.md).*

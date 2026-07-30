@@ -58,7 +58,7 @@ Configures the application to execute multiple session files in sequence within 
 - **Setup DUT UI** documented at [`../../screens/setup-dut.md`](../../screens/setup-dut.md).
 - **DUT Comments popup** documented at [`../../screens/setup-dut-comments.md`](../../screens/setup-dut-comments.md).
 - **Run/Config Sessions browser** documented at [`../../screens/setup-dut-session-browser.md`](../../screens/setup-dut-session-browser.md).
-- **PCIe 6.0 CEM migration to TekFlow** flagged in [`corpus/sources/tek-flow/walkthroughs/customer-feedback-thread.md`](../../../../tek-flow/walkthroughs/customer-feedback-thread.md): PCIe Tx customers will be forced onto TekFlow for Gen 6 + CEM testing. PI command continuity and session file portability between this product and the TekFlow equivalent are on the critical path.
+- **PCIe 6.0 CEM migration to TekFlow** flagged in [`corpus/sources/tek-flow/walkthroughs/customer-feedback-thread.md`](../../../tek-flow/walkthroughs/customer-feedback-thread.md): PCIe Tx customers will be forced onto TekFlow for Gen 6 + CEM testing. PI command continuity and session file portability between this product and the TekFlow equivalent are on the critical path.
 - **NVIDIA Bangalore's** *"Gen4 was late by Tek, we moved to KS"* customer-context from [`../../decks/india-customer-voc-2023-march/empathy-map-nvidia.md`](../../decks/india-customer-voc-2023-march/empathy-map-nvidia.md) — the PCIe generation field on this screen is directly upstream of that competitive risk; release latency on new generations costs accounts.
 
 ## Confidence notes

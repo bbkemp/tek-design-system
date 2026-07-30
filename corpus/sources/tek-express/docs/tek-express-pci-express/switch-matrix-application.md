@@ -75,12 +75,12 @@ Catalog of error conditions and their meanings — discovery failures, conflicti
 
 ## Cross-references
 
-- **Tek-vs-Keysight competitive context**: Keysight has a comparable but architecturally different solution (D9040USBC framework uses the **Resource Arbiter** approach instead — see [`corpus/sources/keysight-d9040/screens/resource-arbiter.md`](../../../../keysight-d9040/screens/resource-arbiter.md) + [`resource-arbiter-console.md`](../../../../keysight-d9040/screens/resource-arbiter-console.md)). Both vendors solve the multi-lane routing problem; Tek uses a separate companion app, Keysight builds resource-arbitration into the test framework.
+- **Tek-vs-Keysight competitive context**: Keysight has a comparable but architecturally different solution (D9040USBC framework uses the **Resource Arbiter** approach instead — see [`corpus/sources/keysight-d9040/screens/resource-arbiter.md`](../../../keysight-d9040/screens/resource-arbiter.md) + [`resource-arbiter-console.md`](../../../keysight-d9040/screens/resource-arbiter-console.md)). Both vendors solve the multi-lane routing problem; Tek uses a separate companion app, Keysight builds resource-arbitration into the test framework.
 - **Customer signal for multi-lane parallel testing**:
   - Infineon ATV: *"Test only one interface at a time · need to check multiple lanes together"* — see [`../../decks/india-customer-voc-2023-march/empathy-map-infineon.md`](../../decks/india-customer-voc-2023-march/empathy-map-infineon.md)
   - AMD Bangalore: complete-automation ask — [`../../decks/india-customer-voc-2023-march/empathy-map-amd.md`](../../decks/india-customer-voc-2023-march/empathy-map-amd.md)
   - The Switch Matrix application is Tek's most concrete answer to these asks. PCIe is the first/most-developed variant.
-- **TekFlow's Multi-lane UX Implementation roadmap item** (Q1 2023, see [`tek-flow/decks/tekflow-voc-synthesis-2022-12-emea-update/platform-roadmap.md`](../../../../tek-flow/decks/tekflow-voc-synthesis-2022-12-emea-update/platform-roadmap.md)) — likely overlaps with this Switch Matrix's roadmap.
+- **TekFlow's Multi-lane UX Implementation roadmap item** (Q1 2023, see [`tek-flow/decks/tekflow-voc-synthesis-2022-12-emea-update/platform-roadmap.md`](../../../tek-flow/decks/tekflow-voc-synthesis-2022-12-emea-update/platform-roadmap.md)) — likely overlaps with this Switch Matrix's roadmap.
 
 ## Confidence notes
 

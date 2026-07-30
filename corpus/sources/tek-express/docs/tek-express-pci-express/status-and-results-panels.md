@@ -71,7 +71,7 @@ Filter dropdown to show only failures, only passes, only specific test categorie
 ## Cross-references
 
 - **UI documented**: [`../../screens/status-test-status.md`](../../screens/status-test-status.md), [`../../screens/status-log-view.md`](../../screens/status-log-view.md), [`../../screens/results.md`](../../screens/results.md), [`../../screens/running-test.md`](../../screens/running-test.md).
-- **Customer feedback signal**: the [TekFlow customer feedback thread](../../../../tek-flow/walkthroughs/customer-feedback-thread.md) Inspur-CHN entry asks for failed-test debug information and waveform thumbnails on Results — directly applicable here.
+- **Customer feedback signal**: the [TekFlow customer feedback thread](../../../tek-flow/walkthroughs/customer-feedback-thread.md) Inspur-CHN entry asks for failed-test debug information and waveform thumbnails on Results — directly applicable here.
 - **Persona alignment**: per the [persona model](../../walkthroughs/personas-and-jobs-to-be-done.md), Push-Button Pete operates primarily on Results and (via Reports) shares the outcome. The Filter the test results affordance is Pete's most-used post-run control.
 
 ## Confidence notes

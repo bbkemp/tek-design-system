@@ -66,7 +66,7 @@ Bryan has finished the DS architecture overview. Bill is positioned to make his 
 
 ## Cross-references
 
-- The Tek Design System's existing Qt translation layer (`qt/TekTokens.h`, `tek.dark.qss`, `tek.light.qss`) is the closest existing precedent: [`corpus/sources/tek-design-system/code/<latest>/qt.md`](../../../tek-design-system/index.md).
+- The Tek Design System's existing Qt translation layer (`qt/TekTokens.h`, `tek.dark.qss`, `tek.light.qss`) is the closest existing precedent: [`corpus/sources/tek-design-system/code/<latest>/qt.md`](../../tek-design-system/index.md).
 - The `wpf/` directory exists at the repo root as a planned placeholder but contains no implementation yet.
 - The CLAUDE.md "what's in flight" table lists "WPF translation layer" as planned but not yet shipped.
 
