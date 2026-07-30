@@ -22,105 +22,27 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Archivo:wdth,wght@75..125,100..900&display=swap" rel="stylesheet">
 
+<!--
+  @bbkemp/tokens — complete build (primitives + dark/light semantic)
+  In production: @import '@bbkemp/tokens/css/complete'
+  Requires: npm run build --workspace=packages/tokens
+  Dark = default (:root). Light = [data-theme="light"] overrides.
+  All --tek-* vars cascade into shadow DOM.
+-->
+<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
+
+<!--
+  @bbkemp/ui — Web Components
+  In production: import '@bbkemp/ui'
+  Requires: npm run build --workspace=packages/ui
+-->
+<script type="module" src="../../packages/ui/dist/tek-ui.js?v=w1"></script>
+
+<!-- AutoAnimate — ambient DOM transitions (light DOM only) -->
 <script src="https://cdn.jsdelivr.net/npm/@formkit/auto-animate@latest/index.umd.js"></script>
 
 <style>
-/* ============================================================
-   @bbkemp/tokens — in production: @import '@bbkemp/tokens/css'
-   Dark = default (:root). Light = [data-theme="light"] overrides.
-   All --tek-* vars cascade into shadow DOM.
-============================================================ */
 :root {
-  /* ── Type scale — primitives/fonts.json ────────────────── */
-  --tek-fonts-family-geist:   'Geist', system-ui, sans-serif;
-  --tek-fonts-family-archivo: 'Archivo', sans-serif;
-  --tek-fonts-family-mono:    'Geist Mono', monospace;
-
-  --tek-fonts-text-size-xs:        10px;
-  --tek-fonts-text-size-sm:        12px;
-  --tek-fonts-text-size-md:        13px;
-  --tek-fonts-text-size-lg:        14px;
-  --tek-fonts-text-size-xl:        16px;
-  --tek-fonts-text-line-height-xs: 12px;
-  --tek-fonts-text-line-height-sm: 12px;
-  --tek-fonts-text-line-height-md: 16px;
-  --tek-fonts-text-line-height-lg: 20px;
-  --tek-fonts-text-line-height-xl: 24px;
-
-  --tek-fonts-heading-size-xs:        16px;
-  --tek-fonts-heading-size-md:        24px;
-  --tek-fonts-heading-line-height-xs: 24px;
-  --tek-fonts-heading-line-height-md: 32px;
-
-  /* ── Color primitives — primitives/color.json ────────────── */
-  --tek-colors-neutral-100:    #cccccc;
-  --tek-colors-neutral-200:    #afafaf;
-  --tek-colors-neutral-300:    #979797;
-  --tek-colors-neutral-400:    #7b7b7b;
-  --tek-colors-neutral-450:    #646464;
-  --tek-colors-neutral-500:    #454545;
-  --tek-colors-neutral-600:    #333333;
-  --tek-colors-neutral-700:    #252525;
-  --tek-colors-neutral-800:    #1e1e1e;
-  --tek-colors-neutral-900:    #181818;
-  --tek-colors-neutral-black:  #000000;
-  --tek-colors-neutral-white:  #ffffff;
-  --tek-colors-brand-tek-blue: #33baea;
-  --tek-colors-ui-error:       #e74848;
-  --tek-colors-ui-warning:     #e0b732;
-  --tek-colors-ui-success:     #42b54c;
-  --tek-colors-ui-shadow:      #00000033;
-  --tek-colors-backdrop-dark:  #181818cc;
-  --tek-colors-backdrop-light: #cccccccc;
-
-  /* ── Semantic — dark defaults (semantic/tokens.json) ──────── */
-  --tek-color-modal-background-default: #181818cc;
-  --tek-color-modal-border-default:     #7b7b7b;
-  --tek-color-modal-text-default:       #ffffff;
-  --tek-color-modal-shadow-default:     #00000033;
-
-  --tek-color-input-background-default: #252525;
-  --tek-color-input-border-default:     #7b7b7b;
-  --tek-color-input-border-focus:       #ffffff;
-  --tek-color-input-border-filled:      #afafaf;
-  --tek-color-input-border-disabled:    #454545;
-  --tek-color-input-border-error:       #e74848;
-  --tek-color-input-text-default:       #979797;
-  --tek-color-input-text-focus:         #ffffff;
-  --tek-color-input-text-filled:        #cccccc;
-  --tek-color-input-text-disabled:      #454545;
-  --tek-color-input-text-error:         #ffffff;
-  --tek-color-input-label-default:      #cccccc;
-  --tek-color-input-character-count-default: #cccccc;
-  --tek-color-input-character-count-focus:   #ffffff;
-  --tek-color-input-character-count-filled:  #afafaf;
-  --tek-color-input-character-count-error:   #e74848;
-  --tek-color-input-character-count-warning: #e0b732;
-
-  --tek-color-selector-background-default:   #252525;
-  --tek-color-selector-background-unchecked: #454545;
-  --tek-color-selector-background-checked:   #cccccc;
-  --tek-color-selector-border-unchecked:     #7b7b7b;
-  --tek-color-selector-border-checked:       #979797;
-  --tek-color-selector-border-error:         #e74848;
-  --tek-color-selector-label-unchecked:      #cccccc;
-  --tek-color-selector-label-checked:        #ffffff;
-  --tek-color-selector-label-error:          #ffffff;
-
-  --tek-color-button-background-default:  #1e1e1e;
-  --tek-color-button-background-hover:    #000000;
-  --tek-color-button-background-inactive: #181818;
-  --tek-color-button-border-default:      #33baea;
-  --tek-color-button-border-inactive:     #454545;
-  --tek-color-button-text-default:        #cccccc;
-  --tek-color-button-text-hover:          #ffffff;
-  --tek-color-button-text-inactive:       #454545;
-
-  --tek-color-footer-background-default:  #252525;
-  --tek-color-footer-text-default:        #cccccc;
-  --tek-color-text-link-default:          #33baea;
-  --tek-color-icons-default:              #ffffff;
-
   /* ── Page chrome — doc-layer values, not component tokens ───── */
   --cl-chrome-bg:         var(--tek-colors-neutral-900);
   --cl-chrome-sidebar-bg: #0d0d0d;
@@ -134,48 +56,9 @@
   --cl-token-row-hover:   #161616;
 }
 
-/* ============================================================
-   LIGHT MODE — resolved from semantic/tokens.light.json
-   Toggle via sidebar 🌚/🌝 toggle. Chrome vars stay dark intentionally.
-============================================================ */
-[data-theme="light"] {
-  --tek-color-modal-background-default: #cccccccc;
-  --tek-color-modal-border-default:     #333333;
-  --tek-color-modal-text-default:       #000000;
-
-  --tek-color-input-background-default: #ffffff;
-  --tek-color-input-border-default:     #333333;
-  --tek-color-input-border-focus:       #000000;
-  --tek-color-input-border-filled:      #1e1e1e;
-  --tek-color-input-border-disabled:    #646464;
-  --tek-color-input-text-default:       #252525;
-  --tek-color-input-text-focus:         #000000;
-  --tek-color-input-text-filled:        #181818;
-  --tek-color-input-text-disabled:      #646464;
-  --tek-color-input-text-error:         #000000;
-  --tek-color-input-label-default:      #181818;
-
-  --tek-color-selector-background-default:   #ffffff;
-  --tek-color-selector-background-unchecked: #646464;
-  --tek-color-selector-background-checked:   #181818;
-  --tek-color-selector-border-unchecked:     #333333;
-  --tek-color-selector-border-checked:       #252525;
-  --tek-color-selector-label-unchecked:      #000000;
-  --tek-color-selector-label-checked:        #000000;
-  --tek-color-selector-label-error:          #000000;
-
-  --tek-color-button-background-default:  #ffffff;
-  --tek-color-button-background-hover:    #33baea;
-  --tek-color-button-background-inactive: #afafaf;
-  --tek-color-button-border-inactive:     #646464;
-  --tek-color-button-text-default:        #000000;
-  --tek-color-button-text-hover:          #000000;
-  --tek-color-button-text-inactive:       #646464;
-
-  --tek-color-footer-background-default:  #afafaf;
-  --tek-color-footer-text-default:        #181818;
-  --tek-color-icons-default:              #000000;
-}
+/* Light mode comes from the built stylesheet's [data-theme="light"]
+   overrides (semantic/tokens.light.json). Toggle via sidebar 🌚/🌝.
+   Chrome vars (--cl-*) stay dark intentionally. */
 
 /* box-sizing is safe globally — margin/padding reset is NOT: a bare
    `* { padding:0 }` in light DOM beats every component's :host padding
@@ -374,12 +257,6 @@ code {
   color: var(--tek-colors-brand-tek-blue);
 }
 </style>
-
-<!-- Real built packages — this page is an integration test like the sign-in pages.
-     The inline :root token block above is a legacy snapshot; the built stylesheet
-     below overrides it in cascade order. -->
-<link rel="stylesheet" href="../../packages/tokens/dist/tek.complete.css">
-<script type="module" src="../../packages/ui/dist/tek-ui.js?v=w1"></script>
 </head>
 <body>
 <div class="shell">
