@@ -21,6 +21,7 @@ import type { TekTextLink } from './text-link/text-link.js';
 import type { TekCharacterCount } from './character-count/character-count.js';
 import type { TekModal } from './modal/modal.js';
 import type { TekFooter } from './footer/footer.js';
+import type { TekMarkdown } from './markdown/markdown.js';
 /** Detail payload of the `tek-change` event fired by selectors. */
 export interface TekChangeEventDetail {
     checked: boolean;
@@ -53,6 +54,7 @@ declare global {
         'tek-character-count': TekCharacterCount;
         'tek-modal': TekModal;
         'tek-footer': TekFooter;
+        'tek-markdown': TekMarkdown;
     }
     interface HTMLElementEventMap {
         'tek-change': TekChangeEvent;
