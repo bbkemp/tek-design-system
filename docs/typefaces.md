@@ -7,8 +7,10 @@ The Tek Design System uses three typeface families. This doc records what each o
 | [Geist](#geist) | Body / UI text (`--tek-fonts-family-geist`) | Latin, Cyrillic | 374 |
 | [Iosevka Mono](#iosevka-mono) | Code / monospace / instrument readouts (`--tek-fonts-family-mono`; replacing Geist Mono, in flight) | Latin, Cyrillic, Greek, Armenian (full build) · Latin-1 subset (Tek webfonts) | 591 full / 210 Tek subset |
 | [Archivo](#archivo) | Headings / button labels (`--tek-fonts-family-archivo`, SemiBold `wdth` 120) | Latin | 340 |
+| [Sarasa Term](#sarasa-gothic-cjk-mono-companion) | **CJK mono companion** — fallback behind Iosevka Mono for zh/ja/ko locales | Latin, Cyrillic, Greek, Armenian, Chinese, Japanese, Korean | 607 (SC variant) |
+| [Noto Sans SC / JP](#noto-sans-scjp-cjk-ui--heading-companion) | **CJK UI + heading companion** — fallback behind Geist and Archivo for zh/ja locales | Latin, Cyrillic, CJK (per locale variant) | 271 (SC) / 264 (JP) |
 
-**The short version for localization planning:** all three families cover Western and Central European Latin languages plus Vietnamese (with one exception: the Tek Iosevka **web subset** is Western-European/Latin-1 only — no Polish, Czech, Turkish, etc.; see below). Cyrillic (Russian, Ukrainian, …) works in Geist and full Iosevka but **not** in Archivo or the current Tek Iosevka web subset. Greek works only in full Iosevka. **None of the three cover Chinese, Japanese, Korean, Arabic, Hebrew, or Thai** — see [CJK and other scripts](#cjk-and-other-scripts-open-decision).
+**The short version for localization planning:** all three families cover Western and Central European Latin languages plus Vietnamese (with one exception: the Tek Iosevka **web subset** is Western-European/Latin-1 only — no Polish, Czech, Turkish, etc.; see below). Cyrillic (Russian, Ukrainian, …) works in Geist and full Iosevka but **not** in Archivo or the current Tek Iosevka web subset. Greek works only in full Iosevka. None of the three core families cover CJK — that gap is closed by the **adopted CJK companions**: [Sarasa Term](#sarasa-gothic-cjk-mono-companion) behind the mono stack and [Noto Sans SC/JP](#noto-sans-scjp-cjk-ui--heading-companion) behind Geist and Archivo. Arabic, Hebrew, and Thai remain uncovered everywhere.
 
 ## How this was measured
 
@@ -20,6 +22,9 @@ Language support below is not copied from marketing pages — it was measured wi
 | Iosevka Mono (full build) | `~/.cache/iosevka-build/Iosevka/dist/IosevkaMono/TTF/IosevkaMono-Regular.ttf` | v34.7.0 |
 | Iosevka Mono (Tek web subset) | `prototypes/font-lab/fonts/IosevkaMono-Regular.woff2` | v34.7.0 |
 | Archivo | `prototypes/dragonstorm/font-export/ttf/Archivo_Expanded-Medium.ttf` | 2.001 |
+| Sarasa Term SC | `SarasaTermSC-Regular.ttf` (GitHub release download) | 1.0.40 |
+| Noto Sans SC | `NotoSansSC[wght].ttf` (google/fonts download) | 2.004 |
+| Noto Sans JP | `NotoSansJP[wght].ttf` (google/fonts download) | 2.004 |
 
 "Supports language X" means: every character of X's **primary orthography base character set** (per hyperglot's database of verified languages) is present in the font's cmap. This is strict — e.g. English formally requires Æ/Œ for loanwords, so a font missing Œ fails English even though it renders everyday English fine. Counts shift slightly with hyperglot database versions; treat them as a precise snapshot, not a marketing number. Note also that a language appearing under **Latin** means its *Latin orthography* is covered — e.g. Japanese shows up in Latin lists because hyperglot includes rōmaji; it does **not** mean the font renders native Japanese.
 
@@ -123,21 +128,192 @@ Acheron, Achinese, Acholi, Achuar-Shiwiar, Afar, Afrikaans, Aguaruna, Ahtna, Ale
 
 ---
 
-## CJK and other scripts (open decision)
+## CJK companions (adopted 2026-07-30)
 
-None of the three families cover Chinese, Japanese, Korean, Arabic, Hebrew, or Thai. If Tek products localize into Chinese or Japanese (plausible for T&M markets), the recommended companions are:
+None of the three core families cover Chinese, Japanese, or Korean. The decision (Bryan, 2026-07-30) is to adopt **fallback companions** rather than replace any core family:
 
-| Role | Recommended CJK companion | Why |
+| Role | Companion | Why |
 |---|---|---|
-| Mono / readouts (Iosevka) | [Sarasa Gothic](https://github.com/be5invis/Sarasa-Gothic) (Sarasa Term / Mono, SC + J variants) | Built by the same author **from Iosevka + Source Han Sans** — it is literally Iosevka's CJK companion; metrics match, CJK glyphs are exactly 2 Latin advance widths |
-| Body / UI (Geist) | [Noto Sans SC](https://fonts.google.com/noto/specimen/Noto+Sans+SC) / [Noto Sans JP](https://fonts.google.com/noto/specimen/Noto+Sans+JP) (= Source Han Sans) | Industry-standard OFL CJK sans; neutral grotesque tone sits well under Geist |
-| Headings (Archivo) | Noto Sans SC/JP at heavier weights | There is no expanded-width CJK; CJK doesn't really do width variants — headings fall back to weight for emphasis |
+| Mono / readouts (behind Iosevka Mono) | **Sarasa Term** (SC for zh-CN, J for ja-JP) | Built by Iosevka's own author **from Iosevka + Source Han Sans** — the Latin half is literally Iosevka, so the fallback is visually seamless; CJK glyphs are exactly 2 Latin advance widths |
+| Body / UI (behind Geist) | **Noto Sans SC / JP** (= Source Han Sans) | Industry-standard OFL CJK sans; neutral grotesque tone sits well under Geist |
+| Headings (behind Archivo) | **Noto Sans SC / JP** at heavier weights | There is no expanded-width CJK; CJK doesn't do width variants — headings fall back to weight for emphasis |
 
-Implementation would be **fallback stacks in the family tokens** (e.g. `--tek-fonts-family-mono: 'Iosevka Mono', 'Sarasa Term SC', monospace`), with CJK files loaded per-locale only — full CJK webfonts are 5–15 MB+ and need subsetting or `unicode-range` splitting. **Not adopted yet — decision pending on which locales Tek products actually ship.**
+Implementation is **fallback stacks in the family tokens** (e.g. `--tek-fonts-family-mono: 'Iosevka Mono', 'Sarasa Term SC', monospace`), with CJK files loaded per-locale only — full CJK fonts are 10–50 MB and need subsetting or `unicode-range` splitting. **Always ship the locale-matched variant**: SC and JP share many codepoints but draw them with different regional glyph conventions, so a Japanese UI must load the J/JP fonts even though the SC fonts technically contain most of the characters.
+
+---
+
+## Sarasa Gothic (CJK mono companion)
+
+**Links:** [GitHub](https://github.com/be5invis/Sarasa-Gothic) · [Releases](https://github.com/be5invis/Sarasa-Gothic/releases)
+
+By Renzhi Li — the same author as Iosevka — licensed SIL OFL 1.1. Sarasa Gothic hybridizes **Iosevka** (Latin, Greek, Cyrillic, symbols) with **Source Han Sans** (CJK), in orthography variants (SC, TC, HC, J, K — Simplified/Traditional Chinese, Hong Kong, Japanese, Korean glyph conventions) and spacing styles; **Sarasa Term** is the terminal-oriented monospace cut where every CJK glyph is exactly two Latin advance widths, which keeps instrument-readout column alignment intact. We use Term SC for Simplified Chinese and Term J for Japanese, behind Iosevka Mono in the stack.
+
+**Measured coverage (Sarasa Term SC Regular v1.0.40): 607 languages — a strict superset of the full Iosevka build (591), adding Chinese, Japanese (kana + Jōyō kanji), and Korean (Hangul + Hanja).**
+
+<details>
+<summary><strong>Armenian</strong> — 2 languages</summary>
+
+Armenian, Western Armenian
+
+</details>
+
+<details>
+<summary><strong>Chinese</strong> — 7 languages</summary>
+
+Gan Chinese, Hakka Chinese, Jinyu Chinese, Mandarin Chinese, Min Nan Chinese, Wu Chinese, Yue Chinese
+
+</details>
+
+<details>
+<summary><strong>Cyrillic</strong> — 84 languages</summary>
+
+Abaza, Abkhazian, Adyghe, Aghul, Andi, Avaric, Bashkir, Belarusian, Budukh, Bulgarian, Central Siberian Yupik, Chamalal, Chechen, China Buriat, Chukot, Chuvash, Crimean Tatar, Dargwa, Dolgan, Dungan, Eastern Mari, Erzya, Even, Forest Enets, Halh Mongolian, Hunzib, Ingush, Judeo-Tat, Kabardian, Kalmyk, Karachay-Balkar, Karaim, Karata, Kazakh, Ket, Khakas, Khanty, Kildin Sami, Kirghiz, Komi-Permyak, Komi-Zyrian, Koryak, Krymchak, Kumyk, Lak, Lezghian, Macedonian, Mansi, Moksha, Mongolia Buriat, Montenegrin, Muslim Tat, Nenets, Nganasan, Nogai, North Azerbaijani, Northern Altai, Northern Kurdish, Northern Yukaghir, Orok, Ossetian, Russia Buriat, Russian, Rusyn, Rutul, Selkup, Serbian, Shor, Shughni, Southern Altai, Southern Yukaghir, Tabassaran, Tajik, Tatar, Tsakhur, Tundra Enets, Tuvinian, Udi, Udmurt, Ukrainian, Urum, Western Mari, Yagnobi, Yakut
+
+</details>
+
+<details>
+<summary><strong>Greek</strong> — 2 languages</summary>
+
+Arvanitika Albanian, Modern Greek (1453-)
+
+</details>
+
+<details>
+<summary><strong>Hangul</strong> — 1 languages</summary>
+
+Korean
+
+</details>
+
+<details>
+<summary><strong>Hanja</strong> — 1 languages</summary>
+
+Korean
+
+</details>
+
+<details>
+<summary><strong>Hiragana</strong> — 2 languages</summary>
+
+Japanese, Okinawan
+
+</details>
+
+<details>
+<summary><strong>Kanji</strong> — 1 languages</summary>
+
+Japanese
+
+</details>
+
+<details>
+<summary><strong>Katakana</strong> — 3 languages</summary>
+
+Ainu, Japanese, Okinawan
+
+</details>
+
+<details>
+<summary><strong>Latin</strong> — 504 languages</summary>
+
+Abidji, Abron, Abua, Acheron, Achinese, Acholi, Achuar-Shiwiar, Adamawa Fulfulde, Adangme, Adele, Afar, Afrikaans, Aghem, Agni, Aguaruna, Ahanta, Ahtna, Ainu, Aja (Benin), Akebu, Akoose, Alekano, Aleut, Algonquin, Alutiiq, Amahuaca, Amarakaeri, Amis, Anaang, Andaandi, Angas, Anii, Anufo, Anuta, Ao Naga, Apinayé, Arabela, Aragonese, Arbëreshë Albanian, Arvanitika Albanian, Asháninka, Ashéninka Perené, Asturian, Asu (Tanzania), Atayal, Avatime, Awa-Cuaiquer, Awetí, Awing, Ayizo Gbe, Baatonum, Bafia, Bagirmi Fulfulde, Balante-Ganja, Balinese, Balkan Romani, Bambara, Banjar, Baoulé, Bari, Basa (Cameroon), Basque, Bassari, Batak Dairi, Batak Karo, Batak Mandailing, Batak Simalungun, Batak Toba, Bemba (Zambia), Bena (Tanzania), Biali, Bikol, Bini, Bislama, Bissa, Boko (Benin), Bomu, Bora, Borana-Arsi-Guji Oromo, Borgu Fulfulde, Bosnian, Bouna Kulango, Breton, Buginese, Candoshi-Shapra, Caquinte, Caribbean Hindustani, Cashibo-Cacataibo, Cashinahua, Catalan, Cebuano, Central Atlas Tamazight, Central Aymara, Central Kurdish, Central Mazahua, Central Nahuatl, Central-Eastern Niger Fulfulde, Cerma, Chachi, Chamorro, Chavacano, Chayahuita, Chiga, Chiltepec Chinantec, Chokwe, Chuukese, Cimbrian, Cofán, Colorado, Comox, Congo Swahili, Cornish, Corsican, Creek, Crimean Tatar, Croatian, Czech, Dagbani, Danish, Dehu, Dendi (Benin), Dimli (individual language), Dinka, Ditammari, Duala, Dutch, Dyula, Eastern Arrernte, Eastern Maninkakan, Eastern Oromo, Efik, Embu, English, Ese Ejja, Ewe, Ewondo, Falam Chin, Fanti, Faroese, Fe'Fe', Fijian, Filipino, Finnish, Fon, Foodo, French, Friulian, Ga, Ga'anda, Gagauz, Galician, Ganda, Garifuna, Gen, German, Gheg Albanian, Gilbertese, Gonja, Gooniyandi, Gourmanchéma, Guadeloupean Creole French, Guinea Kpelle, Gusii, Gwichʼin, Haitian, Hakha Chin, Halkomelem, Han, Hani, Hassaniyya, Hawaiian, Hiligaynon, Ho-Chunk, Hopi, Huastec, Hungarian, Ibibio, Icelandic, Idoma, Igbo, Iloko, Inari Sami, Indonesian, Irish, Istro Romanian, Italian, Ixcatlán Mazatec, Jamaican Creole English, Japanese, Javanese, Jenaama Bozo, Jola-Fonyi, K'iche', Kabiyè, Kabuverdianu, Kabyle, Kaingang, Kala Lagaw Ya, Kalaallisut, Kalenjin, Kamba (Kenya), Kanuri, Kaonde, Kaqchikel, Kara-Kalpak, Karelian, Kasem, Kashubian, Kekchí, Kenzi, Khasi, Khoekhoe, Kikuyu, Kimbundu, Kinyarwanda, Kirmanjki (individual language), Kituba (Democratic Republic of Congo), Kongo, Konzo, Koyra Chiini Songhay, Koyraboro Senni Songhai, Krio, Kuanyama, Kusaal, Kven Finnish, Kwak’wala, Kwasio, Kölsch, Ladin, Ladino, Lakota, Lama, Lamnso', Langi, Latgalian, Ligurian, Lingala, Lithuanian, Lobi, Lombard, Low German, Lower Sorbian, Lozi, Luba-Katanga, Luba-Lulua, Lukpa, Lule Sami, Luo (Kenya and Tanzania), Lushai, Luxembourgish, Maasina Fulfulde, Macedo-Romanian, Madurese, Makhuwa, Makhuwa-Meetto, Makonde, Makwe, Malagasy, Malay (individual language), Maltese, Mam, Mamara Senoufo, Mandinka, Mandjak, Mankanya, Manx, Maore Comorian, Maori, Mapudungun, Masai, Masana, Matsés, Mbelime, Medumba, Megleno Romanian, Mende (Sierra Leone), Meriam Mir, Meru, Meta', Metlatónoc Mixtec, Mezquital Otomi, Mi'kmaq, Minangkabau, Mirandese, Miyobe, Moba, Mohawk, Montagnais, Montenegrin, Morisyen, Mossi, Mundang, Munsee, Murrinh-Patha, Murui Huitoto, Muslim Tat, Mwani, Ménik, Mískito, Naga Pidgin, Nateni, Ndonga, Neapolitan, Ngazidja Comorian, Ngiemboon, Ngomba, Nigerian Fulfulde, Niuean, Nobiin, Nomatsiguenga, Noon, North Azerbaijani, North Marquesan, North Ndebele, Northeastern Dinka, Northern Bobo Madaré, Northern Kissi, Northern Kurdish, Northern Qiandong Miao, Northern Sami, Northern Uzbek, Northwestern Ojibwa, Norwegian, Nuuchahnulth, Nyamwezi, Nyanja, Nyankole, Nyemba, Nzima, Occitan (post 1500), Ojitlán Chinantec, Omaha-Ponca, Orma, Oroqen, Otuho, Palauan, Paluan, Pampanga, Papantla Totonac, Papiamento, Pedi, Picard, Pichis Ashéninka, Piemontese, Pijin, Pintupi-Luritja, Pipil, Pite Sami, Pohnpeian, Polish, Portuguese, Potawatomi, Prussian, Pulaar, Pular, Purepecha, Páez, Quechua, Rarotongan, Romanian, Romansh, Rotokas, Rundi, Rwa, Saafi-Saafi, Samburu, Samoan, Sango, Sangu (Tanzania), Saramaccan, Sardinian, Saxwe Gbe, Scots, Scottish Gaelic, Secoya, Sena, Serbian, Serer, Seri, Seselwa Creole French, Shambala, Sharanahua, Shawnee, Shilluk, Shipibo-Conibo, Shona, Shuar, Sicilian, Silesian, Siona, Skolt Sami, Slovak, Slovenian, Soga, Somali, Soninke, South Azerbaijani, South Marquesan, South Ndebele, Southern Aymara, Southern Bobo Madaré, Southern Dagaare, Southern Qiandong Miao, Southern Sami, Southern Sotho, Spanish, Sranan Tongo, Standard Estonian, Standard Latvian, Standard Malay, Sukuma, Sundanese, Susu, Swahili (individual language), Swati, Swedish, Swiss German, Syenara Senoufo, Tachelhit, Tagalog, Tahitian, Taita, Talysh, Tasawaq, Tedim Chin, Tem, Teso, Tetum, Tetun Dili, Thompson, Ticuna, Tigon Mbembe, Timne, Tiv, Tiéyaxo Bozo, Toba, Tojolabal, Tok Pisin, Tokelau, Toma, Tonga (Tonga Islands), Tonga (Zambia), Tosk Albanian, Totontepec Mixe, Tsakhur, Tsonga, Tswana, Tumbuka, Turkish, Turkmen, Tuvalu, Twi, Tzeltal, Tzotzil, Uab Meto, Umbundu, Ume Sami, Upper Guinea Crioulo, Upper Sorbian, Urarina, Venda, Venetian, Veps, Vietnamese, Vlax Romani, Võro, Waama, Waci Gbe, Wallisian, Walloon, Walser, Wamey, Wangaaybuwan-Ngiyambaa, Waorani, Waray (Philippines), Warlpiri, Wasa, Wayuu, Welsh, West Central Oromo, West-Central Limba, Western Abnaki, Western Frisian, Western Niger Fulfulde, Wik-Mungkan, Wiradjuri, Wolof, Xavánte, Xhosa, Xwela Gbe, Yagua, Yanesha', Yangben, Yanomamö, Yao, Yapese, Yindjibarndi, Yom, Yoruba, Yucateco, Zarma, Zulu, Zuni, Záparo
+
+</details>
+
+---
+
+## Noto Sans SC / JP (CJK UI + heading companion)
+
+**Links:** [Noto Sans SC — Google Fonts](https://fonts.google.com/noto/specimen/Noto+Sans+SC) · [Noto Sans JP — Google Fonts](https://fonts.google.com/noto/specimen/Noto+Sans+JP) · [Noto CJK GitHub](https://github.com/notofonts/noto-cjk)
+
+Google's CJK sans family (SIL OFL 1.1), developed with Adobe — Noto Sans CJK and Adobe's **Source Han Sans** are the same fonts under different names, principally designed by Ryoko Nishizuka. Regional variants (SC, TC, JP, KR, HK) carry the same design with locale-correct glyph forms; each ships as a variable-weight font. These sit behind Geist for body/UI text and behind Archivo (at heavier weights) for headings in CJK locales.
+
+**Measured coverage (v2.004): Noto Sans SC 271 languages, Noto Sans JP 264 languages.** Each covers its own locale plus Latin and basic Cyrillic (including Russian); neither covers Greek or Korean, and JP does not cover Chinese. Note the SC variant passes hyperglot's Japanese check at the codepoint level — but its glyphs follow Simplified-Chinese conventions, so Japanese UIs must use JP (see the locale-variant rule above).
+
+### Noto Sans SC
+
+<details>
+<summary><strong>Chinese</strong> — 7 languages</summary>
+
+Gan Chinese, Hakka Chinese, Jinyu Chinese, Mandarin Chinese, Min Nan Chinese, Wu Chinese, Yue Chinese
+
+</details>
+
+<details>
+<summary><strong>Cyrillic</strong> — 7 languages</summary>
+
+Abaza, Crimean Tatar, Erzya, Kumyk, Moksha, Nogai, Russian
+
+</details>
+
+<details>
+<summary><strong>Hiragana</strong> — 2 languages</summary>
+
+Japanese, Okinawan
+
+</details>
+
+<details>
+<summary><strong>Kanji</strong> — 1 languages</summary>
+
+Japanese
+
+</details>
+
+<details>
+<summary><strong>Katakana</strong> — 3 languages</summary>
+
+Ainu, Japanese, Okinawan
+
+</details>
+
+<details>
+<summary><strong>Latin</strong> — 251 languages</summary>
+
+Acheron, Achinese, Achuar-Shiwiar, Afar, Afrikaans, Aguaruna, Ainu, Alekano, Algonquin, Amahuaca, Amarakaeri, Amis, Anaang, Andaandi, Anuta, Ao Naga, Apinayé, Aragonese, Arbëreshë Albanian, Arvanitika Albanian, Asháninka, Ashéninka Perené, Asu (Tanzania), Balinese, Banjar, Basque, Batak Dairi, Batak Karo, Batak Mandailing, Batak Simalungun, Batak Toba, Bemba (Zambia), Bena (Tanzania), Bikol, Bini, Bislama, Borana-Arsi-Guji Oromo, Breton, Buginese, Candoshi-Shapra, Caquinte, Cashibo-Cacataibo, Cashinahua, Catalan, Cebuano, Central Aymara, Chachi, Chamorro, Chavacano, Chiga, Chiltepec Chinantec, Chokwe, Chuukese, Cofán, Congo Swahili, Cornish, Corsican, Creek, Danish, Dehu, Eastern Arrernte, Eastern Oromo, Efik, Embu, English, Ese Ejja, Faroese, Fijian, Filipino, Finnish, Friulian, Galician, Garifuna, German, Gheg Albanian, Gilbertese, Gooniyandi, Guadeloupean Creole French, Gusii, Haitian, Hani, Hawaiian, Hiligaynon, Hopi, Huastec, Icelandic, Iloko, Indonesian, Irish, Italian, Ixcatlán Mazatec, Jamaican Creole English, Japanese, Javanese, K'iche', Kabuverdianu, Kaingang, Kalaallisut, Kalenjin, Kamba (Kenya), Kaonde, Kekchí, Kenzi, Khasi, Kimbundu, Kinyarwanda, Kituba (Democratic Republic of Congo), Kongo, Konzo, Kuanyama, Ladino, Ligurian, Lombard, Low German, Luba-Lulua, Luo (Kenya and Tanzania), Luxembourgish, Makhuwa, Makhuwa-Meetto, Makonde, Makwe, Malagasy, Malay (individual language), Manx, Maore Comorian, Maori, Mapudungun, Matsés, Meriam Mir, Meru, Minangkabau, Mirandese, Mohawk, Morisyen, Munsee, Murrinh-Patha, Mwani, Mískito, Naga Pidgin, Ndonga, Neapolitan, Ngazidja Comorian, Niuean, Nobiin, Nomatsiguenga, North Marquesan, North Ndebele, Northern Qiandong Miao, Northern Uzbek, Northwestern Ojibwa, Norwegian, Nyankole, Occitan (post 1500), Ojitlán Chinantec, Orma, Oroqen, Paluan, Pampanga, Papantla Totonac, Papiamento, Pichis Ashéninka, Piemontese, Pijin, Pintupi-Luritja, Pipil, Pohnpeian, Portuguese, Potawatomi, Purepecha, Páez, Quechua, Rarotongan, Romansh, Rotokas, Rundi, Rwa, Samburu, Samoan, Sango, Sangu (Tanzania), Saramaccan, Sardinian, Scots, Scottish Gaelic, Sena, Seri, Seselwa Creole French, Shambala, Shawnee, Shipibo-Conibo, Shona, Shuar, Sicilian, Soga, Somali, Soninke, South Marquesan, South Ndebele, Southern Aymara, Southern Qiandong Miao, Southern Sami, Spanish, Sranan Tongo, Standard Malay, Sundanese, Swahili (individual language), Swati, Swedish, Swiss German, Tagalog, Tahitian, Taita, Tedim Chin, Tetum, Tetun Dili, Tiv, Toba, Tok Pisin, Tokelau, Tonga (Tonga Islands), Tonga (Zambia), Tosk Albanian, Tsonga, Tumbuka, Tuvalu, Tzeltal, Tzotzil, Uab Meto, Umbundu, Upper Guinea Crioulo, Vietnamese, Wallisian, Walloon, Wangaaybuwan-Ngiyambaa, Waorani, Waray (Philippines), Warlpiri, Wayuu, West Central Oromo, Western Abnaki, Western Frisian, Wik-Mungkan, Wiradjuri, Xavánte, Xhosa, Yanesha', Yapese, Yindjibarndi, Yucateco, Zulu, Záparo
+
+</details>
+
+### Noto Sans JP
+
+<details>
+<summary><strong>Cyrillic</strong> — 7 languages</summary>
+
+Abaza, Crimean Tatar, Erzya, Kumyk, Moksha, Nogai, Russian
+
+</details>
+
+<details>
+<summary><strong>Hiragana</strong> — 2 languages</summary>
+
+Japanese, Okinawan
+
+</details>
+
+<details>
+<summary><strong>Kanji</strong> — 1 languages</summary>
+
+Japanese
+
+</details>
+
+<details>
+<summary><strong>Katakana</strong> — 3 languages</summary>
+
+Ainu, Japanese, Okinawan
+
+</details>
+
+<details>
+<summary><strong>Latin</strong> — 251 languages</summary>
+
+Acheron, Achinese, Achuar-Shiwiar, Afar, Afrikaans, Aguaruna, Ainu, Alekano, Algonquin, Amahuaca, Amarakaeri, Amis, Anaang, Andaandi, Anuta, Ao Naga, Apinayé, Aragonese, Arbëreshë Albanian, Arvanitika Albanian, Asháninka, Ashéninka Perené, Asu (Tanzania), Balinese, Banjar, Basque, Batak Dairi, Batak Karo, Batak Mandailing, Batak Simalungun, Batak Toba, Bemba (Zambia), Bena (Tanzania), Bikol, Bini, Bislama, Borana-Arsi-Guji Oromo, Breton, Buginese, Candoshi-Shapra, Caquinte, Cashibo-Cacataibo, Cashinahua, Catalan, Cebuano, Central Aymara, Chachi, Chamorro, Chavacano, Chiga, Chiltepec Chinantec, Chokwe, Chuukese, Cofán, Congo Swahili, Cornish, Corsican, Creek, Danish, Dehu, Eastern Arrernte, Eastern Oromo, Efik, Embu, English, Ese Ejja, Faroese, Fijian, Filipino, Finnish, Friulian, Galician, Garifuna, German, Gheg Albanian, Gilbertese, Gooniyandi, Guadeloupean Creole French, Gusii, Haitian, Hani, Hawaiian, Hiligaynon, Hopi, Huastec, Icelandic, Iloko, Indonesian, Irish, Italian, Ixcatlán Mazatec, Jamaican Creole English, Japanese, Javanese, K'iche', Kabuverdianu, Kaingang, Kalaallisut, Kalenjin, Kamba (Kenya), Kaonde, Kekchí, Kenzi, Khasi, Kimbundu, Kinyarwanda, Kituba (Democratic Republic of Congo), Kongo, Konzo, Kuanyama, Ladino, Ligurian, Lombard, Low German, Luba-Lulua, Luo (Kenya and Tanzania), Luxembourgish, Makhuwa, Makhuwa-Meetto, Makonde, Makwe, Malagasy, Malay (individual language), Manx, Maore Comorian, Maori, Mapudungun, Matsés, Meriam Mir, Meru, Minangkabau, Mirandese, Mohawk, Morisyen, Munsee, Murrinh-Patha, Mwani, Mískito, Naga Pidgin, Ndonga, Neapolitan, Ngazidja Comorian, Niuean, Nobiin, Nomatsiguenga, North Marquesan, North Ndebele, Northern Qiandong Miao, Northern Uzbek, Northwestern Ojibwa, Norwegian, Nyankole, Occitan (post 1500), Ojitlán Chinantec, Orma, Oroqen, Paluan, Pampanga, Papantla Totonac, Papiamento, Pichis Ashéninka, Piemontese, Pijin, Pintupi-Luritja, Pipil, Pohnpeian, Portuguese, Potawatomi, Purepecha, Páez, Quechua, Rarotongan, Romansh, Rotokas, Rundi, Rwa, Samburu, Samoan, Sango, Sangu (Tanzania), Saramaccan, Sardinian, Scots, Scottish Gaelic, Sena, Seri, Seselwa Creole French, Shambala, Shawnee, Shipibo-Conibo, Shona, Shuar, Sicilian, Soga, Somali, Soninke, South Marquesan, South Ndebele, Southern Aymara, Southern Qiandong Miao, Southern Sami, Spanish, Sranan Tongo, Standard Malay, Sundanese, Swahili (individual language), Swati, Swedish, Swiss German, Tagalog, Tahitian, Taita, Tedim Chin, Tetum, Tetun Dili, Tiv, Toba, Tok Pisin, Tokelau, Tonga (Tonga Islands), Tonga (Zambia), Tosk Albanian, Tsonga, Tumbuka, Tuvalu, Tzeltal, Tzotzil, Uab Meto, Umbundu, Upper Guinea Crioulo, Vietnamese, Wallisian, Walloon, Wangaaybuwan-Ngiyambaa, Waorani, Waray (Philippines), Warlpiri, Wayuu, West Central Oromo, Western Abnaki, Western Frisian, Wik-Mungkan, Wiradjuri, Xavánte, Xhosa, Yanesha', Yapese, Yindjibarndi, Yucateco, Zulu, Záparo
+
+</details>
 
 ## Open decisions
 
-- **CJK companions** — adopt the table above? Depends on which locales Tek products localize into (Chinese/Japanese likely candidates for T&M).
+- **CJK rollout details** — companions are adopted (see above) but not yet wired: fallback stacks need to land in the family tokens, and the loading strategy (per-locale bundles, subsetting / `unicode-range` splitting) plus which locales ship first are still open.
 - **Iosevka web subset breadth** — current Latin-1-only subset excludes Polish/Czech/Turkish/Hungarian/Romanian etc. from the mono webfonts. Intentional for font-lab exploration; needs a decision before Iosevka becomes the production mono.
 - **Archivo Cyrillic/Greek gap** — no action needed until a localization requirement appears; recorded here so it isn't a surprise.
 - **Where this doc lives** — it sits in `docs/`, which the Tek MCP endpoint does **not** ingest (only tokens, components, and `corpus/`). If typeface/language info should be queryable via MCP corpus search, it needs a corpus-side mirror or an ingest rule change.
