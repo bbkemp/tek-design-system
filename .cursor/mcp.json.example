@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "tek": {
+      "url": "https://<host>/<MCP_PATH_SECRET>/mcp"
+    }
+  }
+}
