@@ -17,6 +17,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Manifest completeness — every custom element has a description
+        run: npm run manifest --workspace=apps/mcp && node apps/mcp/scripts/check-manifest.mjs
       - run: npm run eval --workspace=apps/mcp
         env:
           TEK_MCP_URL: ${{ secrets.TEK_MCP_URL }}

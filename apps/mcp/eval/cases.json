@@ -37,8 +37,13 @@
     { "name": "tek-color-button-border-default", "expect_value_dark": "#33baea" }
   ],
   "components": [
-    { "tag": "tek-button", "expect_class": "TekButton" },
+    { "tag": "tek-button", "expect_class": "TekButton", "expect_description": true, "expect_attrs": ["variant", "inactive", "disabled"] },
     { "tag": "tek-modal", "expect_class": "TekModal" },
-    { "tag": "tek-input", "expect_class": "TekInput" }
+    { "tag": "tek-input", "expect_class": "TekInput" },
+    { "tag": "tek-dropdown", "expect_class": "TekDropdown", "expect_description": true, "expect_attrs": ["value", "placeholder", "open"] },
+    { "tag": "tek-badge", "expect_class": "TekBadge", "expect_description": true, "expect_attrs": ["type"] },
+    { "tag": "tek-tabs", "expect_class": "TekTabs", "expect_description": true, "expect_attrs": ["orientation", "variant"] },
+    { "tag": "tek-progress", "expect_class": "TekProgress", "expect_description": true, "expect_attrs": ["variant", "value", "max"] },
+    { "tag": "tek-stack", "expect_class": "TekStack", "expect_description": true, "expect_attrs": ["gap", "align"] }
   ]
 }
