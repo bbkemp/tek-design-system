@@ -25,7 +25,7 @@ interface Cases {
   corpus: { query: string; subject?: string; class?: string; expect_any: string[] }[];
   tokens: { query: string; expect: string }[];
   token_gets: { name: string; expect_value_dark: string }[];
-  components: { tag: string; expect_class: string }[];
+  components: { tag: string; expect_class: string; expect_description?: boolean; expect_attrs?: string[] }[];
 }
 
 interface ToolResult {
@@ -87,10 +87,15 @@ async function main(): Promise<void> {
   console.log(`\ncomponent cases:`);
   for (const c of cases.components) {
     const out = await callTool("get_component", { tag: c.tag });
-    const declaration = out.declaration as { name?: string } | undefined;
-    const hit = declaration?.name === c.expect_class;
-    if (!hit) exactFailures++;
-    console.log(`  ${hit ? "PASS" : "FAIL"}  ${c.tag} → class ${c.expect_class}`);
+    const declaration = out.declaration as { name?: string; attributes?: { name: string }[] } | undefined;
+    const problems: string[] = [];
+    if (declaration?.name !== c.expect_class) problems.push(`class ${String(declaration?.name)} ≠ ${c.expect_class}`);
+    if (c.expect_description && !String(out.description ?? "").trim()) problems.push("empty description");
+    for (const attr of c.expect_attrs ?? []) {
+      if (!declaration?.attributes?.some((a) => a.name === attr)) problems.push(`missing attr '${attr}'`);
+    }
+    if (problems.length > 0) exactFailures++;
+    console.log(`  ${problems.length === 0 ? "PASS" : "FAIL"}  ${c.tag}${problems.length ? ` — ${problems.join("; ")}` : ""}`);
   }
 
   console.log(`\n— summary —`);
