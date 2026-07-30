@@ -73,17 +73,21 @@ Their stacks: **Python + uv** (services, MCP), **Jinja via Copier** (repo scaffo
 - **Don't adopt:** rewriting any of our Node token pipeline in Python (Style Dictionary is the right tool and works), or their corpus/SQLite patterns (our markdown-in-git + pgvector corpus is reproducible from source; theirs currently isn't — their own README says so).
 - **Steer clear of (their own known weaknesses):** shipping docs that claim more coverage than the artifact has; hardcoded special-case branches (their `_skip_*` debt) — our "consistency over cleverness" rule already forbids this; missing LICENSE files; Windows-first tooling that has caused UTF-16 file corruption for them.
 
-## 6. Open decisions — none resolved unilaterally
+## 6. Decisions — resolved by Bryan, 2026-07-30
 
-| ID | Decision | Options / notes | Leaning |
-|---|---|---|---|
-| D1 | **Repo visibility** | `internal` (required for org reusable CI; gates Pages behind sign-in) vs `public` (keeps Pages/bench frictionless, forfeits reusable CI). | internal — the org expects it and IP protection likely applies |
-| D2 | **Bench/prototypes hosting** | (a) internal Pages behind org sign-in; (b) move bench to Vercel; (c) keep a slim public mirror just for bench. Affects every phone-installed PWA link. | needs Bryan + org policy check |
-| D3 | **MCP endpoint hosting/auth** | (a) keep Vercel + secret URL (works today; secret-URL threat model actually *improves* once repo is internal); (b) Vercel + GitHub org SSO (#231, now realistic); (c) rehost on Ralliance-blessed infra (unknown — ask their platform team). GitHub itself doesn't host MCP servers. | (a) now, (b) as fast-follow |
-| D4 | **Repo + package names** | Repo: keep `tek-design-system`. Package scope: `@tek-product-ai/*`? (GitHub Packages scope must match the org). Also: our "Tek MCP endpoint" vs their "tek-mcp-python" naming collision — ours likely becomes `design-mcp` or similar. | keep repo name; decide scope with org |
-| D5 | **Fate of bbkemp repo** | Archive with pointer README (recommended) vs keep as public read-only mirror (extra sync burden). | archive |
-| D6 | **Scaffolder** | Copier/Jinja (org standard, updateable) vs Plop.js (Node-native, as previously planned) for `new:component`. | Copier |
-| D7 | **Review workflow** | Org culture may expect human PR review (CODEOWNERS everywhere). Does the Bryan+Claude squash-merge workflow survive as-is, or adapt? Needs a conversation, not a guess. | raise with org admin |
+| ID | Decision | **Resolution** |
+|---|---|---|
+| D1 | Repo visibility | **Internal.** Enables org reusable CI; corpus no longer world-readable. |
+| D2 | Bench/prototypes hosting | **Vercel.** Static bench moves to Vercel hosting, decoupled from repo visibility; phone PWAs re-add once at the new URL. Old bbkemp Pages retire at cutover. |
+| D3 | MCP endpoint access | **Keep Vercel + secret URL.** Model strengthens once the repo is internal. Org SSO (#231) stays a fast-follow, not on the critical path. |
+| D4 | Names | **Repo: `tek-design-system`** (created 2026-07-30, internal, Bryan admin). **Packages: `@tek-product-ai/tek-sys-tokens`, `@tek-product-ai/tek-sys-ui`** — future packages follow the `tek-sys-*` name pattern (GitHub Packages forces the org scope; the `tek-sys` prefix carries the design-system identity). |
+| D5 | Fate of bbkemp repo | **Archive with pointer README** at cutover. Never delete; history and PR record stay browsable. |
+| D6 | Scaffolder | **Copier + Jinja** (org standard) for the future `new:component` generator. Supersedes the Plop.js/Hygen line in CLAUDE.md. |
+| D7 | Review workflow | **Keep current Bryan+Claude flow until told otherwise.** Adapt if an org ruleset or admin says so; no preemptive change. |
+
+### Migration log
+
+- **2026-07-30** — `TEK-Product-AI/tek-design-system` created (internal) by `bryan-kemp_ralliant`; full history mirror-pushed (38 branches, 12 tags); default branch set to `main`, verified identical to bbkemp `main` (`ca2260f`). bbkemp repo remains canonical until Phase 2 cutover.
 
 ## 7. Explicitly out of scope
 
