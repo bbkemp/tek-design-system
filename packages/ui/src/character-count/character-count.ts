@@ -1,6 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 
+export type TekCharacterCountState = 'default' | 'focus' | 'filled' | 'error' | 'warning';
+
 /**
  * Character counter for text fields, rendered as `current/max` (or just `current` when no max).
  *
@@ -30,8 +32,6 @@ import { property } from 'lit/decorators.js';
  * @cssprop --tek-color-input-character-count-error - Count color, error state.
  * @cssprop --tek-color-input-character-count-warning - Count color, warning state.
  */
-export type TekCharacterCountState = 'default' | 'focus' | 'filled' | 'error' | 'warning';
-
 export class TekCharacterCount extends LitElement {
   static styles = css`
     :host {

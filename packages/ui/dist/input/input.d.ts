@@ -1,4 +1,6 @@
 import { LitElement, type PropertyValues } from 'lit';
+export type TekInputState = 'default' | 'focus' | 'filled' | 'disabled' | 'error';
+export type TekInputHeight = 'single' | 'double' | 'triple';
 /**
  * Text input field. Single height renders an `<input>`; double/triple render a
  * `<textarea>` (48px / 64px). The `state` attribute is auto-managed on
@@ -43,8 +45,6 @@ import { LitElement, type PropertyValues } from 'lit';
  * @cssprop --tek-fonts-text-size-lg - Field font size.
  * @cssprop --tek-fonts-text-line-height-lg - Field line height.
  */
-export type TekInputState = 'default' | 'focus' | 'filled' | 'disabled' | 'error';
-export type TekInputHeight = 'single' | 'double' | 'triple';
 export declare class TekInput extends LitElement {
     static styles: import("lit").CSSResult;
     state: TekInputState;

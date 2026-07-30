@@ -119,6 +119,31 @@ __decorate([
 ], TekBaseSelector.prototype, "disabled", void 0);
 
 const STACK_GAP_STEPS = ['s02', 's03', 's04', 's05', 's06', 's07', 's08', 's09', 's11'];
+/**
+ * Vertical layout primitive (ADR-0002: layout primitives — always start with
+ * layout). `gap` accepts spacing token steps ONLY (never raw px) — the same
+ * steps as the Figma Gap variant axis; an unknown step warns and falls back
+ * to s05.
+ *
+ * Figma: DS-v2 → v2.02 → Stack (node 8376:373).
+ *
+ * Usage:
+ * ```html
+ * <tek-stack gap="s04">
+ *   <tek-label>Email</tek-label>
+ *   <tek-input></tek-input>
+ * </tek-stack>
+ * ```
+ *
+ * @summary Vertical layout primitive with token-step gap.
+ *
+ * @attr {'s02'|'s03'|'s04'|'s05'|'s06'|'s07'|'s08'|'s09'|'s11'} gap - Spacing token step between children (default s05).
+ * @attr {'start'|'center'|'end'|'stretch'} align - Cross-axis alignment (default stretch).
+ *
+ * @slot - Stacked children.
+ *
+ * @cssprop --tek-spacing-s02 - Through --tek-spacing-s09, plus --tek-spacing-s11: gap value for the matching `gap` step.
+ */
 class TekStack extends i$1 {
     constructor() {
         super(...arguments);
@@ -168,6 +193,32 @@ __decorate([
 customElements.define('tek-stack', TekStack);
 
 const ROW_GAP_STEPS = ['s02', 's03', 's04', 's05', 's06', 's07', 's08', 's09', 's11'];
+/**
+ * Horizontal layout primitive (ADR-0002: layout primitives — always start
+ * with layout). `gap` accepts spacing token steps ONLY (never raw px) — the
+ * same steps as the Figma Gap variant axis; an unknown step warns and falls
+ * back to s05.
+ *
+ * Figma: DS-v2 → v2.02 → Row (node 8377:373).
+ *
+ * Usage:
+ * ```html
+ * <tek-row gap="s05" justify="between" align="center">
+ *   <tek-stack gap="s04">…</tek-stack>
+ *   <tek-stack gap="s04">…</tek-stack>
+ * </tek-row>
+ * ```
+ *
+ * @summary Horizontal layout primitive with token-step gap and alignment.
+ *
+ * @attr {'s02'|'s03'|'s04'|'s05'|'s06'|'s07'|'s08'|'s09'|'s11'} gap - Spacing token step between children (default s05).
+ * @attr {'start'|'center'|'end'|'stretch'} align - Cross-axis alignment (default stretch).
+ * @attr {'start'|'center'|'end'|'between'} justify - Main-axis distribution (default start).
+ *
+ * @slot - Row children.
+ *
+ * @cssprop --tek-spacing-s02 - Through --tek-spacing-s09, plus --tek-spacing-s11: gap value for the matching `gap` step.
+ */
 class TekRow extends i$1 {
     constructor() {
         super(...arguments);
@@ -227,6 +278,30 @@ customElements.define('tek-row', TekRow);
 
 const GRID_GAP_STEPS = ['s05', 's09', 's11'];
 const GRID_COLUMNS = ['2', '3', '4'];
+/**
+ * Column-grid layout primitive (ADR-0002: layout primitives — always start
+ * with layout). Equal-width columns; `columns` and `gap` mirror the Figma
+ * variant axes, and `gap` accepts spacing token steps ONLY (never raw px) —
+ * unknown values warn and fall back to the defaults.
+ *
+ * Figma: DS-v2 → v2.02 → Grid (node 8377:446).
+ *
+ * Usage:
+ * ```html
+ * <tek-grid columns="3" gap="s09">
+ *   <div>…</div><div>…</div><div>…</div>
+ * </tek-grid>
+ * ```
+ *
+ * @summary Column-grid layout primitive with token-step gap.
+ *
+ * @attr {'s05'|'s09'|'s11'} gap - Spacing token step between cells (default s09).
+ * @attr {'2'|'3'|'4'} columns - Number of equal-width columns (default 3).
+ *
+ * @slot - Grid cells.
+ *
+ * @cssprop --tek-spacing-s05 - Gap for gap="s05"; --tek-spacing-s09 and --tek-spacing-s11 likewise.
+ */
 class TekGrid extends i$1 {
     constructor() {
         super(...arguments);
@@ -272,32 +347,36 @@ __decorate([
 customElements.define('tek-grid', TekGrid);
 
 /**
- * tek-page
+ * Page frame primitive (ADR-0002: layout primitives — always start with
+ * layout). Encodes the responsive `.wrap` contract from the sign-in reference
+ * pages as container queries — the code analog of the Figma Breakpoint
+ * variants (Mobile / SM / XL): mobile pads s17 / s13 / s11 (top / sides /
+ * bottom) top-aligned, ≥ 640px widens side padding to s19, ≥ 1280px pads s19
+ * all round and vertically centers content; section rhythm gap is s17
+ * throughout. Layout-only: the canvas background stays on the page/body theme
+ * layer — the host is kept transparent so page-level backdrops show through.
  *
- * Figma: DS-v2 → v2.02 → Page (node 8378:350)
- * ADR-0002: layout primitives — always start with layout.
- *
- * Page frame primitive. Encodes the responsive `.wrap` contract from the
- * sign-in reference pages as container queries — the code analog of the
- * Figma Breakpoint variants (Mobile / SM / XL):
- *
- *   Mobile          padding s17 / s13 / s11 (top / sides / bottom), top-aligned
- *   ≥ 640px  (c04)  side padding s19
- *   ≥ 1280px (c07)  padding s19 all round, content vertically centered
- *   All             section rhythm gap s17
- *
- * Layout-only: the canvas background stays on the page/body theme layer
- * (the Figma component shows color/canvas/background/default as context;
- * code keeps the host transparent so page-level backdrops show through).
- *
- * Tokens:
- *   --tek-spacing-s11, --tek-spacing-s13, --tek-spacing-s17, --tek-spacing-s19
+ * Figma: DS-v2 → v2.02 → Page (node 8378:350).
  *
  * Usage:
- *   <tek-page>
- *     <header>…</header>
- *     <tek-modal>…</tek-modal>
- *   </tek-page>
+ * ```html
+ * <tek-page>
+ *   <header>…</header>
+ *   <tek-modal>…</tek-modal>
+ * </tek-page>
+ * ```
+ *
+ * @summary Responsive page frame primitive with breakpoint-driven padding and rhythm.
+ *
+ * @slot - Page content, laid out inside the responsive wrap.
+ * @slot footer - Rendered after the wrap (e.g. tek-footer).
+ *
+ * @csspart wrap - The responsive content container.
+ *
+ * @cssprop --tek-spacing-s11 - Mobile/SM bottom padding.
+ * @cssprop --tek-spacing-s13 - Mobile side padding.
+ * @cssprop --tek-spacing-s17 - Section rhythm gap and top padding.
+ * @cssprop --tek-spacing-s19 - Side padding ≥ 640px; all-round padding ≥ 1280px.
  */
 class TekPage extends i$1 {
     render() {
@@ -345,6 +424,42 @@ TekPage.styles = i$4 `
   `;
 customElements.define('tek-page', TekPage);
 
+/**
+ * One entry in a `tek-dropdown` menu. `selected` and `current` reflect so the
+ * Figma states (Default / Hover / Selected / Disabled) map to attributes;
+ * `current` marks the keyboard-highlighted option (Shoelace "current" pattern —
+ * focus stays on the trough). Blueprint: Shoelace sl-option anatomy/API,
+ * tek-native implementation.
+ *
+ * Figma: DS-v2 → DropdownItem (node 8386:346).
+ *
+ * Usage:
+ * ```html
+ * <tek-dropdown-item value="ch1">Channel 1</tek-dropdown-item>
+ * ```
+ *
+ * @summary Option row inside a tek-dropdown menu.
+ *
+ * @attr {string} value - Value reported by the parent dropdown when this option is selected.
+ * @attr {boolean} disabled - Blocks selection and dims the row.
+ * @attr {boolean} selected - Whether this is the selected option. Managed by the parent dropdown.
+ * @attr {boolean} current - Keyboard-highlighted option. Managed by the parent dropdown.
+ *
+ * @slot - Option label text.
+ *
+ * @cssprop --tek-color-dropdown-menu-text-default - Label color.
+ * @cssprop --tek-color-dropdown-menu-text-selected - Label color when selected.
+ * @cssprop --tek-color-dropdown-menu-text-disabled - Label color when disabled.
+ * @cssprop --tek-color-dropdown-menu-background-hover - Background on hover / when current.
+ * @cssprop --tek-color-dropdown-menu-background-selected - Background when selected.
+ * @cssprop --tek-borders-radius-none - Row corner radius.
+ * @cssprop --tek-spacing-s03 - Row content gap.
+ * @cssprop --tek-spacing-s04 - Vertical padding.
+ * @cssprop --tek-spacing-s06 - Horizontal padding.
+ * @cssprop --tek-fonts-family-geist - Label font family.
+ * @cssprop --tek-fonts-text-size-md - Label font size.
+ * @cssprop --tek-fonts-text-line-height-md - Label line height.
+ */
 class TekDropdownItem extends i$1 {
     constructor() {
         super(...arguments);
@@ -2041,6 +2156,61 @@ const computePosition = (reference, floating, options) => {
   });
 };
 
+/**
+ * Select-style dropdown: focus stays on the trough and the keyboard-highlighted
+ * option is marked `current`, since aria-activedescendant cannot cross shadow
+ * boundaries to light-DOM options. Supports Arrow/Home/End/Escape and typeahead;
+ * the menu is positioned with Floating UI (flip + width-sync + max-height), the
+ * first overlay under the ADR-0001 framework budget. Blueprint: Shoelace
+ * sl-select API + Lion listbox semantics, reimplemented tek-native.
+ *
+ * Figma: DS-v2 → Dropdown (node 8387:386), DropdownMenu (node 8386:347).
+ *
+ * Usage:
+ * ```html
+ * <tek-dropdown placeholder="Select a channel">
+ *   <tek-dropdown-item value="ch1">Channel 1</tek-dropdown-item>
+ *   <tek-dropdown-item value="ch2">Channel 2</tek-dropdown-item>
+ * </tek-dropdown>
+ * ```
+ *
+ * @summary Select-style dropdown with keyboard navigation, typeahead, and a Floating UI menu.
+ *
+ * @attr {string} value - Value of the selected item.
+ * @attr {string} [placeholder="Select an option"] - Trough text when nothing is selected.
+ * @attr {string} name - When set, renders a hidden input with this name for form submission.
+ * @attr {boolean} disabled - Blocks interaction and dims the control.
+ * @attr {boolean} error - Error state; red border, white display text.
+ * @attr {boolean} open - Whether the menu is open. Reflected; managed by the component.
+ *
+ * @fires {CustomEvent} tek-change - Fired when the selection changes, with `detail.value`. Bubbles, composed.
+ * @fires {CustomEvent} tek-open - Fired when the menu opens. Bubbles, composed.
+ * @fires {CustomEvent} tek-close - Fired when the menu closes. Bubbles, composed.
+ *
+ * @slot - The `tek-dropdown-item` options.
+ *
+ * @csspart trough - The closed-control container.
+ * @csspart display - The selected-value / placeholder span.
+ * @csspart caret - The caret icon span.
+ * @csspart menu - The floating menu container.
+ *
+ * @cssprop --tek-color-dropdown-background-default - Trough background.
+ * @cssprop --tek-color-dropdown-border-default - Trough border per state; also `-focus`, `-error`, `-disabled`.
+ * @cssprop --tek-color-dropdown-text-default - Display text per state; also `-filled`, `-error`, `-disabled`.
+ * @cssprop --tek-color-dropdown-menu-background-default - Menu background.
+ * @cssprop --tek-color-dropdown-menu-border-default - Menu border.
+ * @cssprop --tek-color-dropdown-menu-shadow-default - Menu drop shadow.
+ * @cssprop --tek-color-icons-default - Caret color.
+ * @cssprop --tek-borders-radius-03 - Trough and menu corner radius.
+ * @cssprop --tek-borders-width-01 - Trough and menu border width.
+ * @cssprop --tek-spacing-s02 - Menu padding; also the trough-to-menu gap.
+ * @cssprop --tek-spacing-s03 - Trough content gap and right padding.
+ * @cssprop --tek-spacing-s05 - Trough vertical padding.
+ * @cssprop --tek-spacing-s06 - Trough left padding.
+ * @cssprop --tek-fonts-family-geist - Text font family.
+ * @cssprop --tek-fonts-text-size-md - Display text font size.
+ * @cssprop --tek-fonts-text-line-height-md - Display text line height.
+ */
 class TekDropdown extends i$1 {
     constructor() {
         super(...arguments);
@@ -2370,6 +2540,37 @@ __decorate([
 ], TekDropdown.prototype, "menu", void 0);
 customElements.define('tek-dropdown', TekDropdown);
 
+/**
+ * One tab item of a `<tek-tabs>` group. Its visual style (pill | nav) is
+ * assigned by the parent tek-tabs via the `data-style` attribute — never set
+ * it by hand. Type follows the Geist styles only: pill = text/regular/sm,
+ * nav = text/regular/md.
+ *
+ * Figma: DS-v2 → v2.02 → Tab (node 8393:377).
+ * Spec: audits/design-additions/2026-06-09-ds-v2-rr-component-additions §3.
+ *
+ * Usage:
+ * ```html
+ * <tek-tab value="config" active>Configuration</tek-tab>
+ * ```
+ *
+ * @summary Single tab item, styled as pill or nav by its parent tek-tabs.
+ *
+ * @attr {string} value - Value reported by tek-tabs when this tab is selected.
+ * @attr {boolean} active - Whether this tab is the selected one.
+ * @attr {boolean} disabled - Blocks interaction and dims the tab.
+ *
+ * @slot - Tab label.
+ *
+ * @cssprop --tek-color-tabs-tab-* - Pill colors: text-inactive/-active, background-hover/-active.
+ * @cssprop --tek-color-tabs-nav-* - Nav colors: text-inactive/-active, background-hover/-active, accent-default (active left bar).
+ * @cssprop --tek-colors-brand-tek-blue - Focus-visible outline color.
+ * @cssprop --tek-spacing-s05 - Pill vertical padding (s06 for nav; s07 horizontal for both).
+ * @cssprop --tek-borders-radius-full - Pill corner radius.
+ * @cssprop --tek-borders-width-05 - Nav left accent bar width.
+ * @cssprop --tek-fonts-family-geist - Label font family.
+ * @cssprop --tek-fonts-text-size-sm - Pill type size (md for nav, with matching line-height tokens).
+ */
 class TekTab extends i$1 {
     constructor() {
         super(...arguments);
@@ -2463,6 +2664,40 @@ __decorate([
 ], TekTab.prototype, "disabled", void 0);
 customElements.define('tek-tab', TekTab);
 
+/**
+ * Tab group with two shipped structures (underline deferred per spec):
+ * horizontal — a sub-tab pill group whose container mirrors the input trough —
+ * and vertical — app-nav with a left accent bar. Keyboard: arrows move focus
+ * among tabs (roving tabindex), Home/End jump, Enter/Space activates the
+ * focused tab (manual activation).
+ *
+ * Figma: DS-v2 → v2.02 → Tabs (node 8393:395), Tab (8393:377).
+ * Spec: audits/design-additions/2026-06-09-ds-v2-rr-component-additions §3.
+ *
+ * Usage:
+ * ```html
+ * <tek-tabs orientation="horizontal" aria-label="Report views">
+ *   <tek-tab value="config" active>Configuration</tek-tab>
+ *   <tek-tab value="view">View Settings</tek-tab>
+ * </tek-tabs>
+ * ```
+ *
+ * @summary Tab group: horizontal pill sub-tabs or vertical accent-bar app-nav.
+ *
+ * @attr {'horizontal'|'vertical'} orientation - horizontal renders tabs as pills; vertical renders the nav style.
+ * @attr {'pill'|'underline'|'accent'|''} variant - Optional override; "underline" is deferred and falls back (with a console warning) to the orientation default.
+ *
+ * @slot - The `<tek-tab>` children.
+ *
+ * @fires {CustomEvent} tek-change - Fired on selection with `detail.value` and `detail.previousValue` (the spec's `tab-change` renamed to the tek-* event convention). Bubbles, composed.
+ *
+ * @cssprop --tek-color-tabs-container-background-default - Horizontal pill-container background.
+ * @cssprop --tek-color-tabs-container-border-default - Horizontal pill-container border color.
+ * @cssprop --tek-spacing-s02 - Horizontal gap and container padding.
+ * @cssprop --tek-spacing-s03 - Vertical gap between nav tabs.
+ * @cssprop --tek-borders-radius-full - Horizontal container corner radius.
+ * @cssprop --tek-borders-width-01 - Horizontal container border width.
+ */
 class TekTabs extends i$1 {
     constructor() {
         super(...arguments);
@@ -2586,6 +2821,33 @@ __decorate([
 customElements.define('tek-tabs', TekTabs);
 
 const BADGE_TYPES = ['neutral', 'blue', 'success', 'warning', 'error'];
+/**
+ * Small pill-shaped status label. The `type` attribute picks one of five
+ * background/text color pairs; unknown values fall back to neutral with a
+ * console warning.
+ *
+ * Figma: DS-v2 → Badge (node 8400:377). Geist Regular 10px.
+ *
+ * Usage:
+ * ```html
+ * <tek-badge type="success">Passing</tek-badge>
+ * ```
+ *
+ * @summary Pill-shaped status badge — neutral/blue/success/warning/error types.
+ *
+ * @attr {("neutral"|"blue"|"success"|"warning"|"error")} [type="neutral"] - Color pair. Unknown values fall back to neutral.
+ *
+ * @slot - Badge text.
+ *
+ * @cssprop --tek-color-badge-neutral-background - Background, neutral type. Same pattern per type: `--tek-color-badge-<type>-background` for blue, success, warning, error.
+ * @cssprop --tek-color-badge-neutral-text - Text color, neutral type. Same pattern per type: `--tek-color-badge-<type>-text`.
+ * @cssprop --tek-borders-radius-full - Corner radius (pill).
+ * @cssprop --tek-spacing-s02 - Vertical padding.
+ * @cssprop --tek-spacing-s05 - Horizontal padding.
+ * @cssprop --tek-fonts-family-geist - Text font family.
+ * @cssprop --tek-fonts-text-size-xs - Font size.
+ * @cssprop --tek-fonts-text-line-height-xs - Line height.
+ */
 class TekBadge extends i$1 {
     constructor() {
         super(...arguments);
@@ -2624,6 +2886,46 @@ __decorate([
 ], TekBadge.prototype, "type", void 0);
 customElements.define('tek-badge', TekBadge);
 
+/**
+ * 32px bottom application bar with three regions: a pre-release build-flag
+ * slot, flexible status text, and right-aligned actions. `variant` tints the
+ * whole bar (error/loading) by layering the tint token over the default
+ * background — the same compositing as the Figma variants; `status` colors
+ * the status text.
+ *
+ * Figma: DS-v2 → v2.02 → StatusBar (node 8406:409).
+ * Spec: audits/design-additions/2026-06-09-ds-v2-rr-component-additions §4.
+ *
+ * Usage:
+ * ```html
+ * <tek-status-bar status="running">Acquiring waveform…</tek-status-bar>
+ * ```
+ *
+ * @summary Bottom application status bar with build flag, status text, and actions.
+ *
+ * @attr {'default'|'error'|'loading'} variant - Tints the whole bar over the default background.
+ * @attr {'ready'|'running'|'success'|'warning'|'error'} status - Colors the status text.
+ *
+ * @slot - Status text (text/mono/xs; color follows `status`).
+ * @slot build-flag - Pre-release pill (tek-badge); production simply omits it — never baked into the component.
+ * @slot actions - Right-aligned controls.
+ *
+ * @csspart build-flag - The build-flag container.
+ * @csspart status-text - The status text container (role=status).
+ * @csspart actions - The actions container.
+ *
+ * @cssprop --tek-color-statusbar-background-default - Bar background.
+ * @cssprop --tek-color-statusbar-background-error - Error variant tint layer.
+ * @cssprop --tek-color-statusbar-background-loading - Loading variant tint layer.
+ * @cssprop --tek-color-statusbar-border-default - Top border color.
+ * @cssprop --tek-color-statusbar-text-default - Status text color; -running/-success/-warning/-error take over per `status`.
+ * @cssprop --tek-spacing-s03 - Gap inside the build-flag and actions regions.
+ * @cssprop --tek-spacing-s05 - Region gap and vertical padding.
+ * @cssprop --tek-spacing-s07 - Horizontal padding.
+ * @cssprop --tek-borders-width-01 - Top border width.
+ * @cssprop --tek-fonts-family-mono - Text font family.
+ * @cssprop --tek-fonts-text-size-xs - Text size (with the matching line-height token).
+ */
 class TekStatusBar extends i$1 {
     constructor() {
         super(...arguments);
@@ -2694,6 +2996,45 @@ __decorate([
 ], TekStatusBar.prototype, "status", void 0);
 customElements.define('tek-status-bar', TekStatusBar);
 
+/**
+ * Titled bordered container for grouping form controls. The title sits
+ * IN-FLOW inside the box as the first row (Bryan, 2026-07-22 — matches the
+ * Tek Express reference; the border-straddling fieldset legend was rejected).
+ * Always titled, per spec; title type is the Archivo heading-xs style.
+ * Background aliases color/canvas/background/raised.
+ *
+ * Figma: DS-v2 → GroupBox (node 8408:456).
+ * Spec: audits/design-additions/2026-06-09-ds-v2-rr-component-additions §1.
+ *
+ * Usage:
+ * ```html
+ * <tek-group-box label="Execution Options">
+ *   <tek-selector type="checkbox" label="Enable Logging"></tek-selector>
+ * </tek-group-box>
+ * ```
+ *
+ * @summary Titled bordered container for grouping form controls.
+ *
+ * @attr {string} label - Legend text — always shown; the spec forbids untitled group boxes.
+ * @attr {("default"|"error")} [variant="default"] - Error turns the border and legend red.
+ * @attr {boolean} disabled - Dims the box, blocks pointer events, sets `aria-disabled`.
+ *
+ * @slot - Grouped content (form controls).
+ *
+ * @csspart box - The bordered container.
+ * @csspart legend - The title row.
+ *
+ * @cssprop --tek-spacing-s06 - Gap between legend and content.
+ * @cssprop --tek-spacing-s09 - Box padding.
+ * @cssprop --tek-color-groupbox-background-default - Box background.
+ * @cssprop --tek-color-groupbox-border-default - Box border color.
+ * @cssprop --tek-color-groupbox-border-error - Border and legend color in error state.
+ * @cssprop --tek-color-groupbox-legend-default - Legend text color.
+ * @cssprop --tek-borders-width-01 - Border width.
+ * @cssprop --tek-borders-radius-05 - Corner radius.
+ * @cssprop --tek-fonts-family-archivo - Legend font family.
+ * @cssprop --tek-fonts-heading-size-xs - Legend type size (with matching line-height token).
+ */
 class TekGroupBox extends i$1 {
     constructor() {
         super(...arguments);
@@ -2757,6 +3098,53 @@ __decorate([
 ], TekGroupBox.prototype, "disabled", void 0);
 customElements.define('tek-group-box', TekGroupBox);
 
+/**
+ * App sidebar CHROME only — a composition of three slot regions: `brand`,
+ * `nav` (a `tek-tabs orientation="vertical"`), and `foot`, pushed to the
+ * bottom with a top divider and hidden when empty. Tab behavior lives in the
+ * slotted tek-tabs; this panel owns no routing and no tab logic, per the
+ * spec's composition rule. Widths per variant: full 184 / text-only 96 /
+ * icon-only 56 — no spacing tokens exist at these values (PROPOSED in the
+ * wave-2 audit). Variant switching at breakpoints is the app-shell's job
+ * (container queries), per spec.
+ *
+ * Figma: DS-v2 → NavigationPanel (node 8411:503).
+ * Spec: audits/design-additions/2026-06-09-ds-v2-rr-component-additions §6.
+ *
+ * Usage:
+ * ```html
+ * <tek-navigation-panel>
+ *   <span slot="brand">Tek Bench</span>
+ *   <tek-tabs slot="nav" orientation="vertical">…</tek-tabs>
+ *   <tek-selector slot="foot" type="toggle" label="Dark mode"></tek-selector>
+ * </tek-navigation-panel>
+ * ```
+ *
+ * @summary App sidebar chrome with brand, nav, and foot slot regions.
+ *
+ * @attr {("full"|"text-only"|"icon-only")} [variant="full"] - Width preset: 184 / 96 / 56px.
+ *
+ * @slot brand - Brand row at the top (Archivo heading-2xs type).
+ * @slot nav - Navigation content, typically a vertical `tek-tabs`.
+ * @slot foot - Bottom-pinned content behind a top divider; hidden when empty.
+ *
+ * @csspart brand - The brand row container.
+ * @csspart nav - The nav container.
+ * @csspart foot - The foot container.
+ *
+ * @cssprop --tek-navigation-panel-width - Overrides the per-variant width.
+ * @cssprop --tek-color-navigation-background-default - Panel background (aliases the raised surface).
+ * @cssprop --tek-color-navigation-border-default - Right border color.
+ * @cssprop --tek-color-navigation-divider-default - Foot top divider color.
+ * @cssprop --tek-color-navigation-text-default - Brand text color.
+ * @cssprop --tek-spacing-s03 - Brand row gap.
+ * @cssprop --tek-spacing-s05 - Host vertical padding.
+ * @cssprop --tek-spacing-s06 - Foot gap.
+ * @cssprop --tek-spacing-s07 - Brand and foot padding.
+ * @cssprop --tek-borders-width-01 - Border and divider width.
+ * @cssprop --tek-fonts-family-archivo - Brand font family.
+ * @cssprop --tek-fonts-heading-size-2xs - Brand type size (with matching line-height token).
+ */
 class TekNavigationPanel extends i$1 {
     constructor() {
         super(...arguments);
@@ -2822,6 +3210,56 @@ __decorate([
 ], TekNavigationPanel.prototype, "variant", void 0);
 customElements.define('tek-navigation-panel', TekNavigationPanel);
 
+/**
+ * Determinate / indeterminate progress bar with label + meta slots. The
+ * indeterminate stripe is CSS-keyframes only (no JS animation) and freezes
+ * under prefers-reduced-motion, both per spec; `paused` freezes the stripe
+ * too. Emits `tek-complete` when value reaches max (spec's
+ * `progress-complete`, renamed to the DS event convention — see audit).
+ *
+ * Figma: DS-v2 → Progress (node 8413:560).
+ * Spec: audits/design-additions/2026-06-09-ds-v2-rr-component-additions §5.
+ *
+ * Usage:
+ * ```html
+ * <tek-progress value="40" max="100" tone="success">
+ *   <span slot="label">Uploading firmware</span>
+ *   <span slot="meta">00:12 remaining</span>
+ * </tek-progress>
+ * ```
+ *
+ * @summary Determinate/indeterminate progress bar with label and meta slots.
+ *
+ * @attr {("determinate"|"indeterminate")} [variant="determinate"] - Bar mode.
+ * @attr {number} [value=0] - Current value (determinate mode).
+ * @attr {number} [max=100] - Maximum value.
+ * @attr {("sm"|"md"|"lg")} [size="md"] - Track height: 4 / 8 / 12px.
+ * @attr {("default"|"success"|"warning"|"error")} [tone="default"] - Fill color tone.
+ * @attr {boolean} paused - Pauses the indeterminate stripe animation.
+ *
+ * @fires {CustomEvent} tek-complete - Fired when a determinate `value` reaches `max`, with `detail.value`. Bubbles, composed.
+ *
+ * @slot label - Text above the track (Geist sm).
+ * @slot meta - Right side of the meta row below the track (mono xs); the left side shows the percentage.
+ *
+ * @csspart label - The label row.
+ * @csspart track - The bar track.
+ * @csspart fill - The bar fill.
+ * @csspart meta - The meta row.
+ *
+ * @cssprop --tek-spacing-s03 - Gap between rows and within the meta row.
+ * @cssprop --tek-color-progress-track-background - Track background.
+ * @cssprop --tek-color-progress-track-border - Track border color.
+ * @cssprop --tek-color-progress-fill-default - Fill color (success/warning/error variants per tone).
+ * @cssprop --tek-color-progress-label-default - Label text color.
+ * @cssprop --tek-color-progress-meta-default - Meta row text color.
+ * @cssprop --tek-borders-width-01 - Track border width.
+ * @cssprop --tek-borders-radius-02 - Track corner radius.
+ * @cssprop --tek-fonts-family-geist - Label font family.
+ * @cssprop --tek-fonts-family-mono - Meta row font family.
+ * @cssprop --tek-fonts-text-size-sm - Label type size (with matching line-height token).
+ * @cssprop --tek-fonts-text-size-xs - Meta row type size (with matching line-height token).
+ */
 class TekProgress extends i$1 {
     constructor() {
         super(...arguments);
@@ -2949,6 +3387,47 @@ __decorate([
 ], TekProgress.prototype, "paused", void 0);
 customElements.define('tek-progress', TekProgress);
 
+/**
+ * Data table container: bordered, rounded shell that slots
+ * `<tek-data-table-head>` and `<tek-data-table-body>`. v1 ships READONLY only,
+ * per the spec's own scoping note — `selectable` / `editable` are v2 (the attr
+ * warns and falls back). Unvirtualized per the §11 decision (Tek Express worst
+ * case ~30 rows). tek-status-pill is tek-badge — cells slot badges; no
+ * separate pill component. Fixed columns are the contract (users scan by
+ * position — corpus 17:30): set `--tek-table-columns` on the table (a single
+ * columns prop rather than the spec's per-column --col-N sketch — one prop,
+ * same idea, flagged).
+ *
+ * Figma: DS-v2 → DataTable (node 8415:513).
+ * Spec: audits/design-additions/2026-06-09-ds-v2-rr-component-additions §2.
+ *
+ * Usage:
+ * ```html
+ * <tek-data-table style="--tek-table-columns: 2fr 1fr 1.5fr 0.6fr">
+ *   <tek-data-table-head>
+ *     <tek-data-table-row>
+ *       <tek-data-table-cell>Name</tek-data-table-cell>
+ *     </tek-data-table-row>
+ *   </tek-data-table-head>
+ *   <tek-data-table-body>
+ *     <tek-data-table-row>
+ *       <tek-data-table-cell>PSU-2231A</tek-data-table-cell>
+ *     </tek-data-table-row>
+ *   </tek-data-table-body>
+ * </tek-data-table>
+ * ```
+ *
+ * @summary Read-only data table container composed of head/body/row/cell sub-elements.
+ *
+ * @attr {("readonly"|"selectable"|"editable")} [variant="readonly"] - Table mode. Only `readonly` ships in v1; other values warn and fall back.
+ *
+ * @slot - `tek-data-table-head` and `tek-data-table-body` sections.
+ *
+ * @cssprop --tek-table-columns - Grid template columns, consumed by slotted rows (e.g. "2fr 1fr 1.5fr 0.6fr").
+ * @cssprop --tek-borders-width-01 - Outer border width.
+ * @cssprop --tek-color-table-divider-default - Outer border color.
+ * @cssprop --tek-borders-radius-05 - Corner radius.
+ */
 class TekDataTable extends i$1 {
     constructor() {
         super(...arguments);
@@ -2979,6 +3458,15 @@ TekDataTable.styles = i$4 `
 __decorate([
     n({ reflect: true })
 ], TekDataTable.prototype, "variant", void 0);
+/**
+ * Header section of `<tek-data-table>` — a `rowgroup` wrapping header rows.
+ * Rows inside it detect the head context and render with header background,
+ * padding, and XS type.
+ *
+ * @summary Header rowgroup of the data table.
+ *
+ * @slot - Header `tek-data-table-row` elements.
+ */
 class TekDataTableHead extends i$1 {
     connectedCallback() {
         super.connectedCallback();
@@ -2987,6 +3475,14 @@ class TekDataTableHead extends i$1 {
     render() { return b$1 `<slot></slot>`; }
 }
 TekDataTableHead.styles = i$4 `:host { display: block; }`;
+/**
+ * Body section of `<tek-data-table>` — a `rowgroup` wrapping data rows.
+ * Rows inside it detect the body context and gain hover/state tints.
+ *
+ * @summary Body rowgroup of the data table.
+ *
+ * @slot - Body `tek-data-table-row` elements.
+ */
 class TekDataTableBody extends i$1 {
     connectedCallback() {
         super.connectedCallback();
@@ -2995,6 +3491,30 @@ class TekDataTableBody extends i$1 {
     render() { return b$1 `<slot></slot>`; }
 }
 TekDataTableBody.styles = i$4 `:host { display: block; }`;
+/**
+ * Single table row — a CSS grid whose columns come from `--tek-table-columns`
+ * set on the table. Detects head/body context on connect (`data-context`);
+ * body rows layer hover/selected/error/success tints over the default
+ * background, matching the Figma fills.
+ *
+ * Figma: DS-v2 → TableRow (node 8415:512).
+ *
+ * @summary Grid row of the data table with selection and state tints.
+ *
+ * @attr {boolean} selected - Selected tint plus a left accent bar.
+ * @attr {("default"|"disabled"|"error"|"success")} [state="default"] - Row state; `disabled` mutes text and blocks pointer events.
+ *
+ * @slot - `tek-data-table-cell` elements.
+ *
+ * @cssprop --tek-table-columns - Grid template columns (set on the table).
+ * @cssprop --tek-color-table-* - Row/header backgrounds, hover/selected/error/success tints, divider, selected accent, and text colors.
+ * @cssprop --tek-spacing-s06 - Column gap; also header row vertical padding.
+ * @cssprop --tek-spacing-s07 - Row padding.
+ * @cssprop --tek-borders-width-01 - Row divider width.
+ * @cssprop --tek-borders-width-05 - Selected accent bar width.
+ * @cssprop --tek-fonts-family-geist - Row font family.
+ * @cssprop --tek-fonts-text-size-md - Body row type size (xs in header rows).
+ */
 class TekDataTableRow extends i$1 {
     constructor() {
         super(...arguments);
@@ -3073,6 +3593,16 @@ __decorate([
 __decorate([
     n({ reflect: true })
 ], TekDataTableRow.prototype, "state", void 0);
+/**
+ * Single cell — one grid column of its row. Truncates overflow with an
+ * ellipsis. Renders as `columnheader` inside the head, `cell` in the body.
+ *
+ * @summary Data table cell with alignment and ellipsis truncation.
+ *
+ * @attr {("start"|"center"|"end")} [align="start"] - Text alignment.
+ *
+ * @slot - Cell content (text, or slotted components such as `tek-badge`).
+ */
 class TekDataTableCell extends i$1 {
     constructor() {
         super(...arguments);
@@ -3105,6 +3635,45 @@ customElements.define('tek-data-table-body', TekDataTableBody);
 customElements.define('tek-data-table-row', TekDataTableRow);
 customElements.define('tek-data-table-cell', TekDataTableCell);
 
+/**
+ * Wraps its target (default slot) and shows a text panel on hover or focus
+ * after a short delay, positioned with Floating UI (offset + flip + shift);
+ * no arrow by design. Blueprint: Shoelace sl-tooltip's hover/focus model,
+ * tek-native. A11y: the panel has role=tooltip, linked from the wrapper via
+ * aria-describedby; Escape hides, symmetrically for pointer and keyboard.
+ *
+ * Figma: DS-v2 → v2.02 → Tooltip (node 8400:378).
+ *
+ * Usage:
+ * ```html
+ * <tek-tooltip content="Saves the current setup">
+ *   <tek-button>Save</tek-button>
+ * </tek-tooltip>
+ * ```
+ *
+ * @summary Hover/focus tooltip panel around a slotted target.
+ *
+ * @attr {string} content - Tooltip text; with empty content the panel never shows.
+ * @attr {'top'|'bottom'|'left'|'right'} placement - Preferred panel side; flips when it doesn't fit.
+ * @attr {number} delay - Show delay in milliseconds (default 300).
+ * @attr {boolean} open - Whether the panel is visible; managed by the component.
+ * @attr {boolean} disabled - Prevents the panel from showing.
+ *
+ * @slot - The target element the tooltip describes.
+ *
+ * @csspart panel - The tooltip panel.
+ *
+ * @cssprop --tek-color-tooltip-background-default - Panel background (color/tooltip/* alias the same primitives as the dropdown panel).
+ * @cssprop --tek-color-tooltip-border-default - Panel border color.
+ * @cssprop --tek-color-tooltip-shadow-default - Panel drop-shadow color.
+ * @cssprop --tek-color-tooltip-text-default - Panel text color.
+ * @cssprop --tek-spacing-s03 - Vertical padding; also the target-to-panel gap.
+ * @cssprop --tek-spacing-s05 - Horizontal padding.
+ * @cssprop --tek-borders-width-01 - Panel border width.
+ * @cssprop --tek-borders-radius-03 - Panel corner radius.
+ * @cssprop --tek-fonts-family-geist - Panel font family.
+ * @cssprop --tek-fonts-text-size-sm - Panel type size (with the matching line-height token).
+ */
 class TekTooltip extends i$1 {
     constructor() {
         super(...arguments);
@@ -3223,6 +3792,32 @@ __decorate([
 ], TekTooltip.prototype, "panel", void 0);
 customElements.define('tek-tooltip', TekTooltip);
 
+/**
+ * Loading spinner: a 270-degree arc rotating 360deg/1.2s. Frozen when
+ * `paused` or when the user sets prefers-reduced-motion (spec requirement).
+ * Announces as `role="status"` with a default "Loading" aria-label.
+ *
+ * Figma: DS-v2 → Spinner (node 8401:391).
+ * Spec: audits/design-additions/2026-06-09-ds-v2-rr-component-additions §7.
+ *
+ * Usage:
+ * ```html
+ * <tek-spinner size="lg" tone="success"></tek-spinner>
+ * ```
+ *
+ * @summary Rotating 270-degree arc loading spinner.
+ *
+ * @attr {("sm"|"md"|"lg")} [size="md"] - Diameter: 16 / 24 / 40px (spacing tokens s09/s11/s15).
+ * @attr {("default"|"success"|"warning"|"error")} [tone="default"] - Arc color tone (color/spinner/*).
+ * @attr {boolean} paused - Pauses the rotation.
+ *
+ * @cssprop --tek-spacing-s09 - sm diameter.
+ * @cssprop --tek-spacing-s11 - md diameter.
+ * @cssprop --tek-spacing-s15 - lg diameter.
+ * @cssprop --tek-color-spinner-default - Arc color (success/warning/error variants per tone).
+ * @cssprop --tek-borders-width-04 - Stroke width for sm/md (spec's 2.5px md snapped to the 2px token).
+ * @cssprop --tek-borders-width-05 - Stroke width for lg.
+ */
 class TekSpinner extends i$1 {
     constructor() {
         super(...arguments);
@@ -3572,6 +4167,46 @@ customElements.define('tek-selector-label', TekSelectorLabel);
  * SPDX-License-Identifier: BSD-3-Clause
  */const o$1=o=>o??A$1;
 
+/**
+ * Composite selector row: a checkbox/radio/toggle control plus a state-synced
+ * label. Two modes — self-contained (set `label`, the control is rendered in
+ * shadow DOM) or slot-based (slot in your own control + `<tek-selector-label>`).
+ * Styling comes from the composed child components.
+ *
+ * Figma: DS-v2 → Selector (node 7002:378).
+ *
+ * Usage — self-contained:
+ * ```html
+ * <tek-selector type="checkbox" label="Enable feature"></tek-selector>
+ * <tek-selector type="radio" name="group" label="Option A"></tek-selector>
+ * <tek-selector type="toggle" label="Live mode"></tek-selector>
+ * ```
+ *
+ * Usage — slot-based:
+ * ```html
+ * <tek-selector>
+ *   <tek-checkbox></tek-checkbox>
+ *   <tek-selector-label>Enable feature</tek-selector-label>
+ * </tek-selector>
+ * ```
+ *
+ * @summary Checkbox/radio/toggle control paired with a state-synced label.
+ *
+ * @attr {boolean} checked - Checked state; forwarded to the inner control and label.
+ * @attr {boolean} error - Error state; forwarded to the inner control and label.
+ * @attr {boolean} disabled - Disabled state; forwarded to the inner control and label.
+ * @attr {string} label - Self-contained mode: label text. When absent, the default slot is used instead.
+ * @attr {("checkbox"|"radio"|"toggle")} [type="checkbox"] - Which control to render in self-contained mode.
+ * @attr {string} name - Group name, passed through to the inner control (used by `tek-radio` for grouping).
+ *
+ * @fires {CustomEvent} tek-change - Bubbles up from the inner control when toggled, with `detail.checked`.
+ *
+ * @slot - Slot-based mode: a selector control (`tek-checkbox`/`tek-radio`/`tek-toggle`) plus a `tek-selector-label`.
+ *
+ * @csspart inner - The row container div.
+ *
+ * @cssprop --tek-spacing-s05 - Gap between control and label.
+ */
 class TekSelector extends i$1 {
     constructor() {
         super(...arguments);
@@ -3723,6 +4358,50 @@ const t={ATTRIBUTE:1,CHILD:2,PROPERTY:3,BOOLEAN_ATTRIBUTE:4},e$1=t=>(...e)=>({_$
  * SPDX-License-Identifier: BSD-3-Clause
  */const l=e$1(class extends i{constructor(r$1){if(super(r$1),r$1.type!==t.PROPERTY&&r$1.type!==t.ATTRIBUTE&&r$1.type!==t.BOOLEAN_ATTRIBUTE)throw Error("The `live` directive is not allowed on child or event bindings");if(!r(r$1))throw Error("`live` bindings can only contain a single expression")}render(r){return r}update(i,[t$1]){if(t$1===E$1||t$1===A$1)return t$1;const o=i.element,l=i.name;if(i.type===t.PROPERTY){if(t$1===o[l])return E$1}else if(i.type===t.BOOLEAN_ATTRIBUTE){if(!!t$1===o.hasAttribute(l))return E$1}else if(i.type===t.ATTRIBUTE&&o.getAttribute(l)===t$1+"")return E$1;return p(i),t$1}});
 
+/**
+ * Text input field. Single height renders an `<input>`; double/triple render a
+ * `<textarea>` (48px / 64px). The `state` attribute is auto-managed on
+ * focus/blur (default → focus → filled) but can be set explicitly.
+ *
+ * Figma: DS-v2 → Input (node 7003:495). Geist 14px / lh 20px.
+ *
+ * Usage:
+ * ```html
+ * <tek-input placeholder="Email"></tek-input>
+ * <tek-input type="password" placeholder="Password"></tek-input>
+ * <tek-input height="triple" placeholder="Message"></tek-input>
+ * <tek-input state="error" value="not-an-email"></tek-input>
+ * ```
+ *
+ * @summary Text input with default/focus/filled/disabled/error states and three heights.
+ *
+ * @attr {("default"|"focus"|"filled"|"disabled"|"error")} [state="default"] - Visual state. Auto-managed on focus/blur; set explicitly for disabled/error.
+ * @attr {("single"|"double"|"triple")} [height="single"] - Field height. Double and triple render a textarea.
+ * @attr {string} placeholder - Placeholder text.
+ * @attr {string} value - Field value. Also settable via the `value` property.
+ * @attr {string} [type="text"] - Native input type (text, password, email, …). Single height only.
+ *
+ * @fires {CustomEvent} tek-input - Fired on every keystroke, with `detail.value`. Bubbles, composed.
+ *
+ * @cssprop --tek-color-input-background-default - Field background.
+ * @cssprop --tek-color-input-border-default - Border, default state.
+ * @cssprop --tek-color-input-border-focus - Border, focus state.
+ * @cssprop --tek-color-input-border-filled - Border, filled state.
+ * @cssprop --tek-color-input-border-disabled - Border, disabled state.
+ * @cssprop --tek-color-input-border-error - Border, error state.
+ * @cssprop --tek-color-input-text-default - Text/placeholder color, default state.
+ * @cssprop --tek-color-input-text-focus - Text color, focus state.
+ * @cssprop --tek-color-input-text-filled - Text color, filled state.
+ * @cssprop --tek-color-input-text-disabled - Text color, disabled state.
+ * @cssprop --tek-color-input-text-error - Text color, error state.
+ * @cssprop --tek-borders-radius-03 - Corner radius.
+ * @cssprop --tek-spacing-s02 - Right padding.
+ * @cssprop --tek-spacing-s05 - Vertical padding.
+ * @cssprop --tek-spacing-s06 - Left padding.
+ * @cssprop --tek-fonts-family-geist - Field font family.
+ * @cssprop --tek-fonts-text-size-lg - Field font size.
+ * @cssprop --tek-fonts-text-line-height-lg - Field line height.
+ */
 class TekInput extends i$1 {
     constructor() {
         super(...arguments);
@@ -3831,6 +4510,52 @@ __decorate([
 ], TekInput.prototype, "type", void 0);
 customElements.define('tek-input', TekInput);
 
+/**
+ * Pill-shaped action button.
+ *
+ * Figma: DS-v2 → Button (node 202:2605).
+ * Primary: px-24 py-12, Archivo SemiBold 600 16px / lh 24px. Secondary: px-14 py-6, Archivo 13px / lh 16px.
+ * Fills its container (`width: 100%`) — size it via a wrapper.
+ *
+ * Usage:
+ * ```html
+ * <tek-button>Sign In</tek-button>
+ * <tek-button variant="secondary">Cancel</tek-button>
+ * <tek-button inactive>Sign In</tek-button>
+ * ```
+ *
+ * @summary Pill-shaped action button — primary/secondary variants, default/hover/inactive states.
+ *
+ * @attr {("primary"|"secondary")} [variant="primary"] - Visual variant: primary (large, 16px label) or secondary (compact, 13px label).
+ * @attr {boolean} inactive - Greys the button out and blocks activation. Styled identically to disabled.
+ * @attr {boolean} disabled - Greys the button out and blocks activation.
+ *
+ * @fires {CustomEvent} tek-click - Fired on click or Space/Enter, unless inactive/disabled. Bubbles, composed.
+ *
+ * @slot - Button label.
+ *
+ * @csspart label - The label span.
+ *
+ * @cssprop --tek-color-button-background-default - Background, default state.
+ * @cssprop --tek-color-button-background-hover - Background on hover.
+ * @cssprop --tek-color-button-background-inactive - Background when inactive/disabled.
+ * @cssprop --tek-color-button-border-default - Border, default state.
+ * @cssprop --tek-color-button-border-hover - Border on hover. Also the focus-ring color.
+ * @cssprop --tek-color-button-border-inactive - Border when inactive/disabled.
+ * @cssprop --tek-color-button-text-default - Label color, default state.
+ * @cssprop --tek-color-button-text-hover - Label color on hover.
+ * @cssprop --tek-color-button-text-inactive - Label color when inactive/disabled.
+ * @cssprop --tek-borders-radius-full - Corner radius (pill).
+ * @cssprop --tek-spacing-s07 - Primary vertical padding.
+ * @cssprop --tek-spacing-s11 - Primary horizontal padding.
+ * @cssprop --tek-spacing-s04 - Secondary vertical padding.
+ * @cssprop --tek-spacing-s08 - Secondary horizontal padding.
+ * @cssprop --tek-fonts-family-archivo - Label font family.
+ * @cssprop --tek-fonts-heading-size-xs - Primary label font size.
+ * @cssprop --tek-fonts-heading-line-height-xs - Primary label line height.
+ * @cssprop --tek-fonts-text-size-md - Secondary label font size.
+ * @cssprop --tek-fonts-text-line-height-md - Secondary label line height.
+ */
 class TekButton extends i$1 {
     constructor() {
         super(...arguments);
@@ -3954,6 +4679,46 @@ __decorate([
 ], TekButton.prototype, "disabled", void 0);
 customElements.define('tek-button', TekButton);
 
+/**
+ * Form-field label with optional marker, helper text, and inline character
+ * count. Sits above a `tek-input`.
+ *
+ * Figma: DS-v2 → Label (node 780:10209). Geist Regular 13px / lh 16px.
+ *
+ * Usage:
+ * ```html
+ * <tek-label>Email</tek-label>
+ * <tek-label optional>Email</tek-label>
+ * <tek-label helper-text="Must be 8+ characters">Password</tek-label>
+ * <tek-label helper-text="Too short" helper-state="error">Password</tek-label>
+ * <tek-label char-count="10/52">Message</tek-label>
+ * ```
+ *
+ * @summary Form-field label with optional/helper-text/char-count variants.
+ *
+ * @attr {boolean} optional - Appends an italic "(optional)" marker.
+ * @attr {string} helper-text - Helper line rendered below the label.
+ * @attr {string} char-count - Character count rendered right-aligned, e.g. "10/52".
+ * @attr {("error")} helper-state - Set to "error" to color the helper text red.
+ * @attr {string} link - Reserved for the Figma Link variant; not rendered yet.
+ *
+ * @slot - Label text.
+ *
+ * @csspart text - The label text container.
+ * @csspart helper - The helper-text div (when helper-text is set).
+ *
+ * @cssprop --tek-spacing-s02 - Gap between label row and helper text.
+ * @cssprop --tek-fonts-family-geist - Font family for all text.
+ * @cssprop --tek-fonts-text-size-md - Label font size.
+ * @cssprop --tek-fonts-text-line-height-md - Label line height.
+ * @cssprop --tek-fonts-text-size-sm - "(optional)" marker font size.
+ * @cssprop --tek-fonts-text-size-xs - Helper and char-count font size.
+ * @cssprop --tek-fonts-text-line-height-xs - Helper and char-count line height.
+ * @cssprop --tek-color-input-label-default - Label text color.
+ * @cssprop --tek-color-input-helper-default - Helper and "(optional)" color.
+ * @cssprop --tek-color-input-character-count-default - Char-count color.
+ * @cssprop --tek-color-input-text-error - Helper color when helper-state="error".
+ */
 class TekLabel extends i$1 {
     constructor() {
         super(...arguments);
@@ -4126,6 +4891,35 @@ __decorate([
 ], TekTextLink.prototype, "target", void 0);
 customElements.define('tek-text-link', TekTextLink);
 
+/**
+ * Character counter for text fields, rendered as `current/max` (or just `current` when no max).
+ *
+ * Figma: DS-v2 → CharacterCount (node 7011:143). Geist Regular 10px.
+ *
+ * Usage:
+ * ```html
+ * <tek-character-count current="10" max="52"></tek-character-count>
+ * <tek-character-count current="50" max="52" state="warning"></tek-character-count>
+ * <tek-character-count current="53" max="52" state="error"></tek-character-count>
+ * ```
+ *
+ * @summary Character counter (current/max) with default/focus/filled/error/warning states.
+ *
+ * @attr {number} [current=0] - Characters typed so far.
+ * @attr {number} [max=0] - Character limit. When 0 or absent, only `current` is shown.
+ * @attr {("default"|"focus"|"filled"|"error"|"warning")} [state="default"] - Visual state; colors the count.
+ *
+ * @csspart count - The count span.
+ *
+ * @cssprop --tek-fonts-family-geist - Count font family.
+ * @cssprop --tek-fonts-text-size-xs - Count font size.
+ * @cssprop --tek-fonts-text-line-height-xs - Count line height.
+ * @cssprop --tek-color-input-character-count-default - Count color, default state.
+ * @cssprop --tek-color-input-character-count-focus - Count color, focus state.
+ * @cssprop --tek-color-input-character-count-filled - Count color, filled state.
+ * @cssprop --tek-color-input-character-count-error - Count color, error state.
+ * @cssprop --tek-color-input-character-count-warning - Count color, warning state.
+ */
 class TekCharacterCount extends i$1 {
     constructor() {
         super(...arguments);
@@ -11331,6 +12125,44 @@ const WIDE_COLUMNS = new Set(['action', 'description', 'notes', 'summary']);
 const isScalar = (v) => typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean';
 const isScalarArray = (v) => Array.isArray(v) && v.every(isScalar);
 const isRecordArray = (v) => Array.isArray(v) && v.length > 0 && v.every((i) => typeof i === 'object' && i !== null && !Array.isArray(i));
+/**
+ * Token-driven Markdown viewer — the readable surface for corpus files,
+ * docs, and README-style content. Wraps `marked` (GFM) for the body and
+ * `yaml` for frontmatter. YAML frontmatter renders as a structured spec
+ * card: title, badge row, frontmatter image, key/value grid, and any
+ * array-of-objects field (e.g. a corpus `controls:` inventory) as a
+ * tek-data-table.
+ *
+ * Figma: none yet — new component; typography binds to the shipped ramps
+ * (Archivo headings, Geist body, Geist Mono code) and colors to existing
+ * semantic tokens. A dedicated color/markdown/* token family is flagged
+ * for the design-additions audit; until it lands, the nearest existing
+ * semantic tokens are used (table/text, table/divider, canvas, text-link).
+ *
+ * TRUSTED CONTENT ONLY: the markdown body is rendered without a
+ * sanitizer. Point this at repo-owned files (corpus/, docs/), never at
+ * user-supplied input.
+ *
+ * Usage:
+ * ```html
+ * <tek-markdown src="corpus/sources/2450-ec/index.md"></tek-markdown>
+ * <tek-markdown content="# Inline markdown"></tek-markdown>
+ * ```
+ *
+ * Relative `.md` links navigate in place (cancelable
+ * `tek-markdown-navigate` event, then `tek-markdown-load` once fetched);
+ * relative images resolve against `src`; absolute http(s) links open in a
+ * new tab. `back()` walks the internal navigation history.
+ *
+ * @attr {string} [src] - URL of a markdown file to fetch and render.
+ * @attr {string} [content] - Raw markdown to render (takes precedence over src).
+ * @attr {'card'|'hidden'} [frontmatter="card"] - Render YAML frontmatter as a spec card, or hide it.
+ *
+ * @fires tek-markdown-navigate - Cancelable. detail: { href, url } — an internal relative link was clicked.
+ * @fires tek-markdown-load - detail: { url } — a document fetched via src finished loading.
+ *
+ * @cssprop --tek-markdown-max-width - Content column width (default spacing/c05, 768px).
+ */
 class TekMarkdown extends i$1 {
     constructor() {
         super(...arguments);

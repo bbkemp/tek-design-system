@@ -1,6 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 
+export type TekButtonVariant = 'primary' | 'secondary';
+
 /**
  * Pill-shaped action button.
  *
@@ -47,8 +49,6 @@ import { property } from 'lit/decorators.js';
  * @cssprop --tek-fonts-text-size-md - Secondary label font size.
  * @cssprop --tek-fonts-text-line-height-md - Secondary label line height.
  */
-export type TekButtonVariant = 'primary' | 'secondary';
-
 export class TekButton extends LitElement {
   static styles = css`
     :host {

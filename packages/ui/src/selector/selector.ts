@@ -2,6 +2,8 @@ import { css, html, LitElement, type PropertyValues, type TemplateResult } from 
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
+export type TekSelectorType = 'checkbox' | 'radio' | 'toggle';
+
 /**
  * Composite selector row: a checkbox/radio/toggle control plus a state-synced
  * label. Two modes — self-contained (set `label`, the control is rendered in
@@ -42,8 +44,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
  *
  * @cssprop --tek-spacing-s05 - Gap between control and label.
  */
-export type TekSelectorType = 'checkbox' | 'radio' | 'toggle';
-
 export class TekSelector extends LitElement {
   static styles = css`
     :host { display:inline-flex; gap:0; align-items:center; padding:0; cursor:pointer; user-select:none; }
