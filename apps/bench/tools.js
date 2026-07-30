@@ -30,13 +30,13 @@ export const TOOLS = [
     source: 'prototypes/font-lab/',
   },
   {
-    id: 'corpus-browser',
+    id: 'markdown-browser',
     group: 'tools',
     kind: 'tool',
-    name: 'Corpus Browser',
-    desc: 'Read the RAG corpus like a wiki — tek-markdown renders each file with its frontmatter as a spec card; relative links navigate in place.',
-    path: 'prototypes/corpus-browser/index.html',
-    source: 'prototypes/corpus-browser/',
+    name: 'Markdown Browser',
+    desc: 'File browser over every .md in the repo — tek-markdown renders each file with its frontmatter as a spec card; relative links navigate in place.',
+    path: 'prototypes/markdown-browser/index.html',
+    source: 'prototypes/markdown-browser/',
   },
   {
     id: 'type-annotation',
