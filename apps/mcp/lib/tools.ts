@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "./db";
 import { embedQuery } from "./voyage";
 import { rerank } from "./cohere";
+import { logged } from "./usage";
 
 export const SERVER_NAME = "tek-mcp-endpoint";
 export const SERVER_VERSION = "0.2.0";
@@ -32,7 +33,7 @@ export function registerTools(server: McpServer): void {
     "server_info",
     "Report the Tek MCP Endpoint's status, version, and live data counts. Use to verify connectivity.",
     {},
-    async () => {
+    logged("server_info", async () => {
       const sql = db();
       const counts = await sql`
         SELECT
@@ -40,14 +41,22 @@ export function registerTools(server: McpServer): void {
           (SELECT count(*)::int FROM corpus_chunks WHERE embedding IS NOT NULL) AS embedded,
           (SELECT count(*)::int FROM ds_tokens) AS tokens,
           (SELECT count(*)::int FROM ds_components) AS components`;
+      let usage: unknown = "no usage recorded yet";
+      try {
+        const u = await sql`SELECT count(*)::int AS calls, count(*) FILTER (WHERE miss)::int AS misses, count(*) FILTER (WHERE error)::int AS errors FROM mcp_usage`;
+        usage = u[0];
+      } catch {
+        // table appears after the first logged call; absence is not an error
+      }
       return json({
         name: SERVER_NAME,
         version: SERVER_VERSION,
         surfaces: { tokens: "live", components: "live", corpus: "live" },
         data: counts[0],
+        usage,
         plan: "docs/mcp-server-plan.md in bbkemp/tek-design-system",
       });
-    },
+    }),
   );
 
   // ---------- tokens ----------
@@ -59,7 +68,7 @@ export function registerTools(server: McpServer): void {
       query: z.string().describe("Words to match against token names, e.g. 'button background hover'"),
       type: z.string().optional().describe("Filter by token type: color, spacing, borders, fonts, radius…"),
     },
-    async ({ query, type }) => {
+    logged("search_tokens", async ({ query, type }) => {
       const sql = db();
       const pattern = `%${query.trim().toLowerCase().split(/\s+/).join("%")}%`;
       const rows = await sql`
@@ -70,14 +79,14 @@ export function registerTools(server: McpServer): void {
         ORDER BY name
         LIMIT 25`;
       return json({ query, matches: rows.length, tokens: rows });
-    },
+    }),
   );
 
   server.tool(
     "get_token",
     "Get one Tek design token by exact name (accepts 'tek-color-input-border-error', '--tek-…', or without the tek- prefix). Includes the resolved primitive if the token is an alias.",
     { name: z.string().describe("Token name, e.g. 'tek-color-button-border-default'") },
-    async ({ name }) => {
+    logged("get_token", async ({ name }) => {
       const sql = db();
       const normalized = normalizeTokenName(name);
       const rows = await sql`SELECT name, css_var, type, value_dark, value_light, alias FROM ds_tokens WHERE name = ${normalized}`;
@@ -89,7 +98,7 @@ export function registerTools(server: McpServer): void {
         resolvesTo = primitive[0] ?? null;
       }
       return json({ ...token, resolves_to: resolvesTo });
-    },
+    }),
   );
 
   // ---------- components ----------
@@ -98,25 +107,25 @@ export function registerTools(server: McpServer): void {
     "list_components",
     "List every Web Component in the Tek design system (@bbkemp/ui). Rule of the design system: if a component exists, use it — never rebuild one.",
     {},
-    async () => {
+    logged("list_components", async () => {
       const sql = db();
       const rows = await sql`SELECT tag, description, module_path FROM ds_components ORDER BY tag`;
       return json({ count: rows.length, components: rows });
-    },
+    }),
   );
 
   server.tool(
     "get_component",
     "Get one Tek component's full API: attributes, properties, events, slots — from its generated custom-elements manifest.",
     { tag: z.string().describe("Custom element tag, e.g. 'tek-button'") },
-    async ({ tag }) => {
+    logged("get_component", async ({ tag }) => {
       const sql = db();
       const normalized = tag.trim().toLowerCase();
       const rows = await sql`SELECT tag, description, module_path, declaration FROM ds_components WHERE tag = ${normalized.startsWith("tek-") ? normalized : `tek-${normalized}`}`;
       if (rows.length === 0) return json({ error: `No component '${tag}'. Use list_components for the full set.` });
       const c = rows[0];
       return json({ ...c, usage: `<${c.tag}></${c.tag}>` });
-    },
+    }),
   );
 
   // ---------- corpus ----------
@@ -125,7 +134,7 @@ export function registerTools(server: McpServer): void {
     "list_subjects",
     "List the corpus subjects (Tek products, competitor products, internal services, repos) with per-class chunk counts (screens, docs, walkthroughs, hardware, api, code).",
     {},
-    async () => {
+    logged("list_subjects", async () => {
       const sql = db();
       const rows = await sql`
         SELECT subject, class, count(*)::int AS chunks
@@ -137,14 +146,14 @@ export function registerTools(server: McpServer): void {
         subjects[subject][r.class as string] = r.chunks as number;
       }
       return json({ count: Object.keys(subjects).length, subjects });
-    },
+    }),
   );
 
   server.tool(
     "get_subject_index",
     "Get the full chunk listing for one corpus subject, grouped by class — the map of everything documented about it.",
     { subject: z.string().describe("Subject id, e.g. '2450-ec', 'tek-express', 'dev-core-api'") },
-    async ({ subject }) => {
+    logged("get_subject_index", async ({ subject }) => {
       const sql = db();
       const rows = await sql`
         SELECT path, class, title, provenance FROM corpus_chunks
@@ -157,7 +166,7 @@ export function registerTools(server: McpServer): void {
         byClass[klass].push({ path: r.path as string, title: r.title as string, provenance: r.provenance as string | null });
       }
       return json({ subject, chunks: rows.length, classes: byClass });
-    },
+    }),
   );
 
   server.tool(
@@ -171,7 +180,7 @@ export function registerTools(server: McpServer): void {
       provenance: z.enum(["observed", "authored-analysis"]).optional(),
       limit: z.number().int().min(1).max(10).optional().describe("Results to return (default 5)"),
     },
-    async ({ query, subject, class: klass, applies_to: appliesTo, provenance, limit }) => {
+    logged("search_corpus", async ({ query, subject, class: klass, applies_to: appliesTo, provenance, limit }) => {
       const sql = db();
       const finalLimit = limit ?? 5;
       const vector = JSON.stringify(await embedQuery(query));
@@ -230,21 +239,21 @@ export function registerTools(server: McpServer): void {
         ranking: reranked ? "hybrid+cohere-rerank" : "hybrid (rerank unavailable — RRF order)",
         results,
       });
-    },
+    }),
   );
 
   server.tool(
     "get_chunk",
     "Fetch one corpus chunk in full (markdown body + frontmatter) by its repo path — the follow-up to a search_corpus citation.",
     { path: z.string().describe("Repo path from a search result, e.g. 'corpus/sources/2450-ec/screens/home.md'") },
-    async ({ path }) => {
+    logged("get_chunk", async ({ path }) => {
       const sql = db();
       const rows = await sql`
         SELECT path, subject, class, title, provenance, applies_to, frontmatter, body
         FROM corpus_chunks WHERE path = ${path}`;
       if (rows.length === 0) return json({ error: `No chunk at '${path}'. Paths come from search_corpus or get_subject_index.` });
       return json(rows[0]);
-    },
+    }),
   );
 
   // ---------- resources ----------
