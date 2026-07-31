@@ -1,5 +1,7 @@
 # Tek Design System
 
+> **📦 This repository has moved → [TEK-Product-AI/tek-design-system](https://github.com/TEK-Product-AI/tek-design-system)** (Ralliance/Tektronix enterprise org, 2026-07-30). This copy is archived and read-only: all issues were migrated (see [`docs/enterprise-issue-mapping.json`](docs/enterprise-issue-mapping.json)), packages are now published as `@tek-product-ai/tek-sys-tokens` / `@tek-product-ai/tek-sys-ui`, and active development continues at the new home. GitHub Pages content here (bench, prototypes) remains live for existing links.
+
 ![tokens](https://img.shields.io/badge/@bbkemp%2Ftokens-stable-33baea?style=flat-square) ![ui](https://img.shields.io/badge/@bbkemp%2Fui-stable-33baea?style=flat-square) ![status](https://img.shields.io/badge/status-stable-42b54c?style=flat-square)
 
 A token-driven, framework-agnostic design system for Tektronix. Built on Figma Variables → W3C design tokens → Web Components, with a fully automated publish pipeline.
