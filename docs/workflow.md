@@ -14,7 +14,8 @@ What Bryan says → what the assistant does. No variance.
 |---|---|
 | **"let's push it"** / **"ship it"** | If on `main`, cut a branch named `type/short-kebab` from current changes. Stage only files touched by this work. Commit with a Conventional Commits message. Push. Open a PR via GitHub MCP using the standard PR template. Reply with the PR URL and a one-line summary. |
 | **"status"** / **"where's the PR"** | Check PR status via GitHub MCP (CI checks, review state, mergeable). Reply with one line. |
-| **"merge it"** | Squash-merge the open PR via GitHub MCP. Branch auto-deletes. `cd` to the main repo root. `git checkout main && git pull origin main`. Wait for direction on the next branch — do not start new work unprompted. |
+| **"merge it"** | Squash-merge the open PR via GitHub MCP. Branch auto-deletes. `cd` to the main repo root. `git checkout main && git pull origin main`. Wait for direction on the next branch — do not start new work unprompted. *(Since 2026-07-27 this phrase is optional for the assistant's own PRs — see Merge policy below — but it still works, and it's still the only way to merge a held PR.)* |
+| **"hold it"** / **"let me review"** | Do not merge the open PR until Bryan says "merge it", regardless of the default merge policy. |
 | **"new branch for X"** | `cd` to main repo root. `git checkout main && git pull origin main`. Cut `type/x-name`. |
 | **"park it"** / **"wip"** | Commit current state with a `wip:` prefix, push the branch, **do not open a PR**. Reply with branch name + commit SHA. |
 | **"undo that"** | Soft-reset the last local-only commit and restage as directed. Confirm before any destructive action. Never run on a pushed commit without explicit confirmation. |
@@ -83,6 +84,20 @@ For docs-only PRs the test plan can be `- [ ] read it`. For UI changes, list the
 
 - **Squash merge.** One clean commit per PR on `main`.
 - **Branch auto-deletes** on merge.
+
+### Merge policy (updated 2026-07-27)
+
+The explicit "merge it" gate is retired for the assistant's **own PRs**: once the work is verified (CI green, evidence gathered per the no-confidence-without-proof rule), the assistant squash-merges without waiting for the phrase, then pulls `main`.
+
+The assistant still **holds for Bryan's word** when any of these apply:
+
+- The PR contains **open questions**, flagged decisions, or a scope reduction
+- The PR touches **publish/release workflows, secrets, or repo settings**
+- The PR was **authored by someone else** (e.g. Broc, or a Claude GitHub Action run Bryan hasn't reviewed)
+- There are **merge conflicts** (existing rule: stop and report)
+- Bryan said **"hold it"**, **"let me review"**, or "park it"
+
+"Merge it" always works and always wins over a hold.
 - **No force-push** to any branch.
 - **No direct commits to `main`.** Ever.
 
@@ -94,7 +109,7 @@ For docs-only PRs the test plan can be `- [ ] read it`. For UI changes, list the
 2. Assistant does the work on the current branch. If we're on `main`, the first edit triggers cutting a `type/...` branch — assistant doesn't ask, just does it.
 3. Bryan says **"let's push it"**. Assistant commits, pushes, opens the PR. Replies with PR URL.
 4. (Optional) Bryan says **"status"**. Assistant reports CI + review state in one line.
-5. Bryan says **"merge it"**. Assistant squash-merges via GitHub MCP, then `cd`s to main repo root and pulls `main`.
+5. Assistant squash-merges its own PR once verified (see Merge policy), then `cd`s to main repo root and pulls `main`. If the PR is held (open questions, someone else's PR, "hold it"), Bryan's **"merge it"** is what merges it.
 6. Assistant waits for the next instruction. Does **not** start new work or cut a new branch unprompted.
 
 That's the whole loop.
